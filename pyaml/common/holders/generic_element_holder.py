@@ -2,7 +2,9 @@
 
 from typing import TYPE_CHECKING, Generic, TypeVar
 
+from ...arrays.element_array import ElementArray
 from ..element import Element, __pyaml_repr__
+from ..name_matching import is_wildcard, resolve_names
 
 if TYPE_CHECKING:
     from .element_holder import ElementHolder
@@ -72,6 +74,37 @@ class GenericElementHolder(Generic[T]):
             Element registered under ``name``.
         """
         return self._peer._get(self._what, name, self._store)
+
+    def __getitem__(self, key: str | list[str] | tuple[str, ...]) -> "T | ElementArray":
+        """
+        Return an element, or a selection typed as a generic ElementArray.
+
+        Parameters
+        ----------
+        key : str, list[str] or tuple[str, ...]
+            An exact literal name returns the stored element. An fnmatch
+            wildcard (``*``, ``?`` or ``[``), a ``re:``-prefixed regular
+            expression, or a list/tuple of such patterns returns an
+            :class:`~pyaml.arrays.element_array.ElementArray` of matches
+            (possibly empty).
+
+        Returns
+        -------
+        T or ElementArray
+            The stored element for an exact literal name, otherwise an
+            ElementArray of matches.
+
+        Raises
+        ------
+        PyAMLException
+            If an exact literal name, or a literal entry within a list or
+            tuple, does not match any element in this holder, or a ``re:``
+            pattern is not a valid regular expression.
+        """
+        if isinstance(key, str) and not key.startswith("re:") and not is_wildcard(key):
+            return self._peer._get(self._what, key, self._store)
+        names = resolve_names(self._store.keys(), key, what=self._what)
+        return ElementArray("", [self._store[n] for n in names])
 
     def add(self, m: T):
         """

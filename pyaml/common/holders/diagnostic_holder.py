@@ -6,6 +6,7 @@ from ...arrays.element_array import ElementArray
 from ...diagnostics.tune_monitor import BetatronTuneMonitor
 from ..element import Element, __pyaml_repr__
 from ..exception import PyAMLException
+from ..name_matching import is_wildcard, resolve_names
 from .sub_holders import BPMHolder, BPMsHolder
 
 if TYPE_CHECKING:
@@ -94,6 +95,37 @@ class DiagnosticHolder:
         if name is None:
             return ElementArray("", list(self._peer._DIAG.values()))
         return self._peer._get_diagnostic(name)
+
+    def __getitem__(self, key: str | list[str] | tuple[str, ...]) -> "Element | ElementArray":
+        """
+        Return a diagnostic, or a selection typed as a generic ElementArray.
+
+        Parameters
+        ----------
+        key : str, list[str] or tuple[str, ...]
+            An exact literal name returns the stored diagnostic. An fnmatch
+            wildcard, a ``re:``-prefixed regular expression, or a list/tuple
+            of such patterns returns an ElementArray of matches (possibly
+            empty).
+
+        Returns
+        -------
+        Element or ElementArray
+            The stored diagnostic for an exact literal name, otherwise an
+            ElementArray of matches.
+
+        Raises
+        ------
+        PyAMLException
+            If an exact literal name, or a literal entry within a list or
+            tuple, does not match any diagnostic, or a ``re:`` pattern is
+            not a valid regular expression.
+        """
+        store = self._peer._DIAG
+        if isinstance(key, str) and not key.startswith("re:") and not is_wildcard(key):
+            return self._peer._get_diagnostic(key)
+        names = resolve_names(store.keys(), key, what="Diagnostic")
+        return ElementArray("", [store[n] for n in names])
 
     @property
     def betatron_tune(self) -> BetatronTuneMonitor:
