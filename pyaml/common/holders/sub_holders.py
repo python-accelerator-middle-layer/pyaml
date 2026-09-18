@@ -221,11 +221,12 @@ class BPMsHolder(GenericArrayHolder[BPM, BPMArray]):
         """
         Initialize the BPMsHolder.
         """
+        bpm_holder = BPMHolder(peer)
         super().__init__(
             peer,
             peer._BPM_ARRAYS,
-            peer.bpm.all,
-            peer.bpm.get,
+            bpm_holder.all,
+            bpm_holder.get,
             BPMArray,
             "BPM array",
         )

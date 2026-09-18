@@ -28,7 +28,7 @@ def test_dynamic_attribute_returns_named_combined_function_magnet_array(holder):
 
 
 def test_dynamic_attribute_returns_named_bpm_array(holder):
-    assert holder.bpms.BPMS is holder.bpms.get("BPMS")
+    assert holder.diagnostic.bpms.BPMS is holder.diagnostic.bpms.get("BPMS")
 
 
 def test_dynamic_attribute_returns_named_serialized_magnet_array(serialized_holder):
@@ -60,7 +60,7 @@ def test_dynamic_attribute_rejects_non_identifier_names(holder):
 def test_dir_includes_configured_array_names(holder):
     assert {"HCORR", "VCORR", "HVCORR"} <= set(dir(holder.magnets))
     assert "CFM" in dir(holder.combined_function_magnets)
-    assert "BPMS" in dir(holder.bpms)
+    assert "BPMS" in dir(holder.diagnostic.bpms)
 
 
 def test_dir_excludes_non_identifier_array_names(holder):

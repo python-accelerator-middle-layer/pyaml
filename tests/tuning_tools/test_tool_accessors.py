@@ -27,7 +27,7 @@ def test_tuning_tools_expose_configured_elements():
     assert design.crm.chromaticity_monitor is chromaticity_monitor
     assert design.crm.sextupoles is sextupoles
 
-    bpms = design.bpms.get("BPM")
+    bpms = design.diagnostic.bpms.get("BPM")
     rf_plant = design.rf.get("DEFAULT_RF_PLANT")
     assert chromaticity_monitor.tune_monitor is tune_monitor
     assert chromaticity_monitor.bpms is bpms
@@ -49,7 +49,7 @@ def test_tuning_tools_expose_configured_elements():
     for name in ("BBA-BPM_C04-04", "BBA2-BPM_C04-04"):
         bba = design.get_bba(name)
         assert bba.bpms is bpms
-        assert bba.bpm is design.bpm.get("BPM_C04-04")
+        assert bba.bpm is design.diagnostic.bpm.get("BPM_C04-04")
         assert bba.hcorrector is design.magnet.get("SF2E-C02-H")
         assert bba.vcorrector is design.magnet.get("SD1A-C26-V")
         assert bba.quadrupole is design.magnet.get("QF6B-C04")

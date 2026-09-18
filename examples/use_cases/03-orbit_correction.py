@@ -84,7 +84,7 @@ print(SR)  # string representation
 # In[4]:
 
 
-bpms = SR.bpms.get("BPM")
+bpms = SR.diagnostic.bpms.get("BPM")
 hcorr = SR.magnets.get("HCorr")
 vcorr = SR.magnets.get("VCorr")
 print(f"BPMs: {len(bpms)}, H correctors: {len(hcorr)}, V correctors: {len(vcorr)}")

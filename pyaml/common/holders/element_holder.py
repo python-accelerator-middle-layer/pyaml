@@ -17,10 +17,9 @@ from ...tuning_tools.chromaticity_monitor import ChromaticityMonitor
 from ..abstract_aggregator import ScalarAggregator
 from ..element import Element
 from ..exception import PyAMLException
+from .diagnostic_holder import DiagnosticHolder
 from .rf_holder import RFHolder
 from .sub_holders import (
-    BPMHolder,
-    BPMsHolder,
     CombinedFunctionMagnetHolder,
     CombinedFunctionMagnetsHolder,
     MagnetHolder,
@@ -58,14 +57,14 @@ class ElementHolder(metaclass=ABCMeta):
     ----------
     magnet, magnets
         Single magnet by name, or a named magnet array.
-    bpm, bpms
-        Single BPM by name, or a named BPM array.
     combined_function_magnet, combined_function_magnets
         Single combined-function magnet by name, or a named array.
     serialized_magnet, serialized_magnets
         Single serialized magnet group by name, or a named array.
     rf
         RF plant and transmitters of this mode.
+    diagnostic
+        Diagnostics of this mode, with typed default-name access.
     tool
         Tuning and measurement tools of this mode, with typed default-name access.
     tune, chromaticity, orbit, dispersion
@@ -160,9 +159,8 @@ class ElementHolder(metaclass=ABCMeta):
         self._serialized_magnets_holder = SerializedMagnetsHolder(self)
         self._combined_function_magnet_holder = CombinedFunctionMagnetHolder(self)
         self._combined_function_magnets_holder = CombinedFunctionMagnetsHolder(self)
-        self._bpm_holder = BPMHolder(self)
-        self._bpms_holder = BPMsHolder(self)
         self._rf_holder = RFHolder(self)
+        self._diagnostic_holder = DiagnosticHolder(self)
         self._tool_holder = ToolHolder(self)
 
     @property
@@ -203,19 +201,14 @@ class ElementHolder(metaclass=ABCMeta):
         return self._combined_function_magnets_holder
 
     @property
-    def bpm(self) -> BPMHolder:
-        """Return the bpm."""
-        return self._bpm_holder
-
-    @property
-    def bpms(self) -> BPMsHolder:
-        """Return the bpms."""
-        return self._bpms_holder
-
-    @property
     def rf(self) -> RFHolder:
         """Return the rf."""
         return self._rf_holder
+
+    @property
+    def diagnostic(self) -> DiagnosticHolder:
+        """Return the diagnostic."""
+        return self._diagnostic_holder
 
     @property
     def tool(self) -> ToolHolder:
@@ -679,13 +672,13 @@ class ElementHolder(metaclass=ABCMeta):
 
     @property
     def chromaticity(self) -> "Chromaticity":
-        """Return the chromaticity. Alias for ``tool.chromaticity``."""
-        return self.tool.chromaticity
+        """Return the chromaticity."""
+        return self.get_chromaticity_tuning("DEFAULT_CHROMATICITY_CORRECTION")
 
     @property
     def crm(self) -> "ChromaticityResponseMatrix":
-        """Return the crm. Alias for ``tool.crm``."""
-        return self.tool.crm
+        """Return the crm."""
+        return self.get_crm_tuning("DEFAULT_CHROMATICITY_RESPONSE_MATRIX")
 
     # ---- Tune ---------------------------------------------------------
 
@@ -707,8 +700,8 @@ class ElementHolder(metaclass=ABCMeta):
 
     @property
     def tune(self) -> "Tune":
-        """Return the tune. Alias for ``tool.tune``."""
-        return self.tool.tune
+        """Return the tune."""
+        return self.get_tune_tuning("DEFAULT_TUNE_CORRECTION")
 
     def get_trm_tuning(self, name: str) -> "TuneResponseMatrix":
         """
@@ -728,8 +721,8 @@ class ElementHolder(metaclass=ABCMeta):
 
     @property
     def trm(self) -> "TuneResponseMatrix":
-        """Return the default tune response-matrix tool. Alias for ``tool.trm``."""
-        return self.tool.trm
+        """Return the default tune response-matrix tool."""
+        return self.get_trm_tuning("DEFAULT_TUNE_RESPONSE_MATRIX")
 
     # ---- Orbit --------------------------------------------------------
 
@@ -751,8 +744,8 @@ class ElementHolder(metaclass=ABCMeta):
 
     @property
     def orbit(self) -> "Orbit":
-        """Return the orbit. Alias for ``tool.orbit``."""
-        return self.tool.orbit
+        """Return the orbit."""
+        return self.get_orbit_tuning("DEFAULT_ORBIT_CORRECTION")
 
     def get_orm_tuning(self, name: str) -> "OrbitResponseMatrix":
         """
@@ -772,8 +765,8 @@ class ElementHolder(metaclass=ABCMeta):
 
     @property
     def orm(self) -> "OrbitResponseMatrix":
-        """Return the default orbit response-matrix tool. Alias for ``tool.orm``."""
-        return self.tool.orm
+        """Return the default orbit response-matrix tool."""
+        return self.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
 
     # ---- BBA --------------------------------------------------------
 
@@ -813,8 +806,8 @@ class ElementHolder(metaclass=ABCMeta):
 
     @property
     def dispersion(self) -> "Dispersion":
-        """Return the dispersion. Alias for ``tool.dispersion``."""
-        return self.tool.dispersion
+        """Return the dispersion."""
+        return self.get_dispersion_tuning("DEFAULT_DISPERSION")
 
     def _get_array(self, name: str):
         """
