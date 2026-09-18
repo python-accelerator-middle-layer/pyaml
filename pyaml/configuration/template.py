@@ -1,15 +1,11 @@
 import json
-import logging
 
 import yaml
 from pydantic import BaseModel
 
-from pyaml.configuration.factory import Factory
-from pyaml.validation import StaticValidation, register_schema
-
 from ..common.exception import PyAMLConfigException
-
-logger = logging.getLogger(__name__)
+from ..configuration.factory import Factory
+from ..validation import StaticValidation, register_schema
 
 
 def load_json_or_yaml(string_to_load: str) -> dict:
