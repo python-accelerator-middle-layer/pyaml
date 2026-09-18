@@ -32,7 +32,7 @@ autodoc_typehints_description_target = "documented"
 autodoc_typehints_format = "short"
 # autosummary_generate_overwrite = False
 # autosummary_ignore_module_all = False
-autoclass_content = "both"  # include both class docstring and __init__
+autoclass_content = "class"  # include only class docstring and ignore __init__
 
 napoleon_use_rtype = False  # More legible
 # napoleon_numpy_docstring = False  # Force consistency, leave only Google
