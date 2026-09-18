@@ -71,6 +71,18 @@ class IdentityCFMagnetModel(MagnetModel, DynamicValidation):
         Return whether the model provides physics strengths.
     has_hardware()
         Return whether the model provides hardware values.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        type: pyaml.magnet.identity_cfm_model
+        multipoles: [B2, B0, A0]
+        units: [1/m**2, rad, rad]
+        physics:
+          - DEVICE/SEXTUPOLE_STRENGTH
+          - DEVICE/HORIZONTAL_KICK
+          - DEVICE/VERTICAL_KICK
     """
 
     def __init__(

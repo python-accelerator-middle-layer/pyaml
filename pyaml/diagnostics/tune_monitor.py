@@ -61,6 +61,16 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         Set the harmonic number used for tune-frequency conversion.
     attach(peer, betatron_tune)
         Attach the tune monitor to a peer with betatron tune data.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.diagnostics.tune_monitor
+          name: BETATRON_TUNE
+          tune_h: DEVICE/HORIZONTAL_TUNE
+          tune_v: DEVICE/VERTICAL_TUNE
+          rf_plant_name: RF
     """
 
     def __init__(

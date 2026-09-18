@@ -36,7 +36,7 @@ autoclass_content = "both"  # include both class docstring and __init__
 
 napoleon_use_rtype = False  # More legible
 # napoleon_numpy_docstring = False  # Force consistency, leave only Google
-# napoleon_custom_sections = [("Returns", "params_style")]
+napoleon_custom_sections = ["Configuration"]
 
 templates_path = ["_templates"]
 exclude_patterns = []

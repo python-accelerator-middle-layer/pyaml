@@ -106,6 +106,22 @@ class BBA(MeasurementTool, DynamicValidation):
         Vertical corrector used for the alignment.
     quadrupole : Magnet
         Quadrupole being aligned.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.tuning_tools.bba
+          name: BBA
+          bpm_array_name: BPM
+          bpm_name: BPM_NAME
+          hcorr_name: HORIZONTAL_CORRECTOR_NAME
+          vcorr_name: VERTICAL_CORRECTOR_NAME
+          quad_name: QUADRUPOLE_NAME
+          hcorr_delta: 1e-5
+          vcorr_delta: 1e-5
+          hquad_delta: 5e-3
+          vquad_delta: 5e-3
     """
 
     def __init__(

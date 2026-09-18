@@ -61,6 +61,19 @@ class BPM(Element, DynamicValidation):
         Return the configured device key used for tilt access.
     get_offset_devices()
         Return configured device keys used for offset control.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.bpm.bpm
+          name: BPM_NAME
+          lattice_names: LATTICE_BPM_NAME
+          x_pos: DEVICE/X_POSITION
+          y_pos: DEVICE/Y_POSITION
+          x_offset: DEVICE/X_OFFSET
+          y_offset: DEVICE/Y_OFFSET
+          tilt: DEVICE/TILT
     """
 
     def __init__(

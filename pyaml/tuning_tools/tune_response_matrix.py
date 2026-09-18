@@ -109,6 +109,16 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
 
     Quadrupole strengths are restored after each individual scan and again when
     the measurement exits because of an error or interruption.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.tuning_tools.tune_response_matrix
+          name: TUNE_RESPONSE_MATRIX
+          quad_array_name: QUADRUPOLES
+          betatron_tune_name: BETATRON_TUNE
+          quad_delta: 1e-4
     """
 
     def __init__(
