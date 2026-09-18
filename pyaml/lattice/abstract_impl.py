@@ -5,6 +5,8 @@ This module adapts Accelerator Toolbox lattice elements to PyAML accessors for
 magnet strengths, hardware values, BPM readings, RF parameters, and tune data.
 """
 
+import warnings
+
 import at
 import numpy as np
 from numpy.typing import NDArray
@@ -12,7 +14,6 @@ from scipy.constants import speed_of_light
 
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
-from ..common.exception import PyAMLException
 from ..magnet.model import MagnetModel
 from .polynom_info import PolynomInfo
 
@@ -23,7 +24,12 @@ from .polynom_info import PolynomInfo
 
 def _divide_by_length(value: float, length: float) -> float:
     if length == 0:
-        raise PyAMLException("Cannot set magnet value: lattice element length must be non-zero")
+        warnings.warn(
+            "Magnet length is zero; using 1.0 for strength conversion",
+            UserWarning,
+            stacklevel=2,
+        )
+        length = 1.0
     return value / length
 
 
