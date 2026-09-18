@@ -1,0 +1,24 @@
+- class: pyaml.configuration.template.Template
+  template: |
+    class: pyaml.magnet.hcorrector.HCorrector
+    name: %template_parameter%
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      unit: rad
+      hardware_unit: str
+      calibration_factor: 1.0
+      powerconverter: MAGNET/%template_parameter%/B1L
+  string_to_replace: "%template_parameter%"
+  parameter_list:
+    - PKDK_WL_108
+    - PKDK_WL_93
+    - PKDK_WL_79
+    - PKDK_WL_64
+- class: pyaml.magnet.hcorrector.HCorrector
+  name: ANOTHER
+  model:
+    class: pyaml.magnet.linear_model.LinearMagnetModel
+    unit: rad
+    hardware_unit: str
+    calibration_factor: 1.0
+    powerconverter: MAGNET/ANOTHER/B1L
