@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 from ...arrays.element_array import ElementArray
 from ..element import Element, __pyaml_repr__
 from ..exception import PyAMLException
+from ..name_matching import is_wildcard, resolve_names
 
 if TYPE_CHECKING:
     from ...tuning_tools.chromaticity import Chromaticity
@@ -85,6 +86,37 @@ class ToolHolder:
         if name is None:
             return ElementArray("", list(self._peer._TOOLS.values()))
         return self._peer._get_tool(name)
+
+    def __getitem__(self, key: str | list[str] | tuple[str, ...]) -> "Element | ElementArray":
+        """
+        Return a tool, or a selection typed as a generic ElementArray.
+
+        Parameters
+        ----------
+        key : str, list[str] or tuple[str, ...]
+            An exact literal name returns the stored tool. An fnmatch
+            wildcard, a ``re:``-prefixed regular expression, or a list/tuple
+            of such patterns returns an ElementArray of matches (possibly
+            empty).
+
+        Returns
+        -------
+        Element or ElementArray
+            The stored tool for an exact literal name, otherwise an
+            ElementArray of matches.
+
+        Raises
+        ------
+        PyAMLException
+            If an exact literal name, or a literal entry within a list or
+            tuple, does not match any tool, or a ``re:`` pattern is not a
+            valid regular expression.
+        """
+        store = self._peer._TOOLS
+        if isinstance(key, str) and not key.startswith("re:") and not is_wildcard(key):
+            return self._peer._get_tool(key)
+        names = resolve_names(store.keys(), key, what="Tool")
+        return ElementArray("", [store[n] for n in names])
 
     def _validate_type(self, name: str, obj: Element, expected_type: type) -> Element:
         """
