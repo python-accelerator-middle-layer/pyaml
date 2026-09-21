@@ -113,7 +113,7 @@ class ToolHolder:
             valid regular expression.
         """
         store = self._peer._TOOLS
-        if isinstance(key, str) and not key.startswith("re:") and not is_wildcard(key):
+        if isinstance(key, str) and not key.startswith(("re:", "~")) and not is_wildcard(key):
             return self._peer._get_tool(key)
         names = resolve_names(store.keys(), key, what="Tool")
         return ElementArray("", [store[n] for n in names])

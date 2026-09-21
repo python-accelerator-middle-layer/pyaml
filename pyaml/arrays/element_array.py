@@ -567,7 +567,9 @@ class ElementArray(list[Element]):
             literal name (must match an element in this array), an fnmatch
             wildcard (``*``, ``?`` or ``[``), or a ``re:``-prefixed regular
             expression. A list or tuple resolves each entry independently
-            and unions the results.
+            and unions the results. Prefix a name pattern with ``~`` to
+            exclude its matches instead; a lone ``~pattern`` means every
+            element except those matches.
 
         Returns
         -------
@@ -592,6 +594,7 @@ class ElementArray(list[Element]):
         >>> correctors = magnets["SH*"]  # MagnetArray
         >>> correctors = magnets["re:^SH1A-C0[12]-H$"]  # MagnetArray
         >>> selection = magnets[["SH1A-C01-H", "SH*-V"]]  # Union of patterns
+        >>> all_but_one = magnets["~SH1A-C01-H"]  # Every magnet except one
         """
         if isinstance(key, slice):
             # Slicing

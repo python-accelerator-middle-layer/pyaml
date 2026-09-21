@@ -78,7 +78,7 @@ class RFTransmitterHolder:
             not a valid regular expression.
         """
         store = self._peer._RFTRANSMITTER
-        if isinstance(key, str) and not key.startswith("re:") and not is_wildcard(key):
+        if isinstance(key, str) and not key.startswith(("re:", "~")) and not is_wildcard(key):
             return self._peer._get("RFTransmitter", key, store)
         names = resolve_names(store.keys(), key, what="RFTransmitter")
         return ElementArray("", [store[n] for n in names])
@@ -193,7 +193,7 @@ class RFHolder:
             a valid regular expression.
         """
         store = self._peer._RFPLANT
-        if isinstance(key, str) and not key.startswith("re:") and not is_wildcard(key):
+        if isinstance(key, str) and not key.startswith(("re:", "~")) and not is_wildcard(key):
             return self._peer._get("RFPlant", key, store)
         names = resolve_names(store.keys(), key, what="RFPlant")
         return ElementArray("", [store[n] for n in names])

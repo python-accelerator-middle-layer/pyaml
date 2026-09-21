@@ -101,7 +101,7 @@ class GenericElementHolder(Generic[T]):
             tuple, does not match any element in this holder, or a ``re:``
             pattern is not a valid regular expression.
         """
-        if isinstance(key, str) and not key.startswith("re:") and not is_wildcard(key):
+        if isinstance(key, str) and not key.startswith(("re:", "~")) and not is_wildcard(key):
             return self._peer._get(self._what, key, self._store)
         names = resolve_names(self._store.keys(), key, what=self._what)
         return ElementArray("", [self._store[n] for n in names])
