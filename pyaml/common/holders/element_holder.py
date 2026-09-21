@@ -319,9 +319,11 @@ class ElementHolder(metaclass=ABCMeta):
         filter : str, list[str] or tuple[str, ...]
             Pattern, or patterns, to match. A pattern is a literal name, an
             fnmatch wildcard (``*``, ``?`` or ``[`` anywhere in the string),
-            or a regular expression prefixed with ``re:``. Several patterns
-            are resolved independently and unioned, de-duplicated, in
-            first-encounter order.
+            or a regular expression prefixed with ``re:``. Prefix any of
+            those with ``~`` to exclude its matches instead, as in the
+            ``elements:`` selector list of a YAML array declaration, e.g.
+            ``["QD2*", "QF1*", "~QF1E-C05"]``. A lone ``~pattern`` (or a list
+            made only of ``~`` entries) means "every element except those".
 
         Returns
         -------
@@ -331,8 +333,8 @@ class ElementHolder(metaclass=ABCMeta):
         Raises
         ------
         PyAMLException
-            If a literal pattern matches no element, or a ``re:`` pattern is
-            not a valid regular expression.
+            If a literal pattern (or a ``~``-prefixed literal) matches no
+            element, or a ``re:`` pattern is not a valid regular expression.
         """
         return resolve_names(self._ALL.keys(), filter, what="Element")
 
@@ -467,7 +469,10 @@ class ElementHolder(metaclass=ABCMeta):
             ``[`` use fnmatch matching; a ``re:`` prefix uses a regular
             expression instead. Any other string is an exact registry key.
             Colons are literal. A list or tuple resolves each entry
-            independently and unions the results.
+            independently and unions the results. Prefix any pattern with
+            ``~`` to exclude its matches instead, as in a YAML array's
+            ``elements:`` list; a lone ``~pattern`` means every element
+            except those matches.
 
         Returns
         -------
@@ -508,12 +513,14 @@ class ElementHolder(metaclass=ABCMeta):
         >>> bpms = sr.live["BPM0[!3]"]  # One character after BPM0, except 3
         >>> bpms = sr.live["re:^BPM0[12]$"]  # Regular expression
         >>> mixed = sr.live[["BPM01", "QF1*"]]  # Union of several patterns
+        >>> all_but_one = sr.live["~BPM01"]  # Every element except BPM01
+        >>> most_quads = sr.live[["QF1*", "~QF1A-C01"]]  # QF1* minus one name
         >>> first = sr.live[0]
         >>> subset = sr.live[1:10]
         >>> all_elements = sr.live[:]
         """
         if isinstance(key, str):
-            if key.startswith("re:") or is_wildcard(key):
+            if key.startswith("re:") or key.startswith("~") or is_wildcard(key):
                 names = resolve_names(self._ALL.keys(), key)
                 return self.get()._typed_array([self._ALL[n] for n in names])
             if key not in self._ALL:

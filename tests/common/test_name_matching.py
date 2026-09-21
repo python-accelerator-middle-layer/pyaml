@@ -72,3 +72,43 @@ def test_list_with_one_missing_literal_raises():
 def test_list_mixing_literal_wildcard_and_regex():
     result = resolve_names(NAMES, ["QF1A-C01", "BPM*", "re:^QF1A-C02$"])
     assert result == ["QF1A-C01", "BPM_C04-01", "BPM_C04-02", "QF1A-C02"]
+
+
+def test_overlapping_wildcard_patterns_in_a_list_do_not_duplicate_a_match():
+    names = ["BPM_01", "BPM_02", "BPM_03", "BPM_04", "BPM_05"]
+    result = resolve_names(names, ["BPM_0[1-3]", "BPM_0[3-5]"])
+    assert result == ["BPM_01", "BPM_02", "BPM_03", "BPM_04", "BPM_05"]
+
+
+def test_lone_exclusion_pattern_means_everything_except():
+    assert resolve_names(NAMES, "~QF1A-C01") == ["BPM_C04-01", "BPM_C04-02", "QF1A-C02"]
+
+
+def test_list_of_only_exclusion_patterns_means_everything_except():
+    result = resolve_names(NAMES, ["~QF1A-C01", "~QF1A-C02"])
+    assert result == ["BPM_C04-01", "BPM_C04-02"]
+
+
+def test_exclusion_removes_matches_from_an_inclusion_pattern():
+    assert resolve_names(NAMES, ["BPM*", "~BPM_C04-01"]) == ["BPM_C04-02"]
+
+
+def test_exclusion_order_does_not_matter():
+    forward = resolve_names(NAMES, ["BPM*", "~BPM_C04-01"])
+    backward = resolve_names(NAMES, ["~BPM_C04-01", "BPM*"])
+    assert forward == backward == ["BPM_C04-02"]
+
+
+def test_exclusion_of_a_wildcard_pattern_removes_all_its_matches():
+    result = resolve_names(NAMES, ["QF1A-C01", "QF1A-C02", "BPM_C04-01", "~QF1A-*"])
+    assert result == ["BPM_C04-01"]
+
+
+def test_exclusion_of_a_regex_pattern_removes_all_its_matches():
+    result = resolve_names(NAMES, ["BPM*", "~re:^BPM_C04-01$"])
+    assert result == ["BPM_C04-02"]
+
+
+def test_exclusion_of_a_missing_literal_raises():
+    with pytest.raises(PyAMLException, match="Element UNKNOWN not defined"):
+        resolve_names(NAMES, ["BPM*", "~UNKNOWN"])

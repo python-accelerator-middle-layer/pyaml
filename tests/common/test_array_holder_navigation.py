@@ -113,6 +113,23 @@ def test_configured_exclusion_family_reproduced_with_selection_and_difference():
     assert reproduced == q_for_test
 
 
+def test_configured_exclusion_family_reproduced_in_a_single_getitem_call():
+    """The YAML `elements:` selector list (`[QD2*, QF1*, ~QF1E-C05, ~Q???-C06]`) works verbatim through `[]`.
+
+    Selection goes through the top-level holder, not `.magnets`, so it resolves patterns
+    against the same global element pool `find_elements()`/`_fill_array` use to build
+    `QForTest` in the YAML, and so lands in the same order.
+    """
+    sr = Accelerator.load("tests/config/EBSTune-patterns.yaml", ignore_external=True)
+    sr.design.get_lattice().disable_6d()
+
+    q_for_test = sr.design.magnets.get("QForTest")
+    reproduced = sr.design[["QD2*", "QF1*", "~QF1E-C05", "~Q???-C06"]]
+
+    assert type(reproduced) is type(q_for_test)
+    assert reproduced == q_for_test
+
+
 def test_magnet_holder_getitem_exact_name_matches_get(holder):
     assert holder.magnet["SH1A-C01-H"] is holder.magnet.get("SH1A-C01-H")
 

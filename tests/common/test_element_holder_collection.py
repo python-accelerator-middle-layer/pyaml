@@ -254,3 +254,24 @@ def test_find_elements_supports_regex(holder):
 
 def test_find_elements_supports_a_list_of_patterns(holder):
     assert holder.find_elements(["BPM_C04-01", "SH1A-C0?-H"]) == ["BPM_C04-01", "SH1A-C01-H", "SH1A-C02-H"]
+
+
+def test_find_elements_supports_an_exclusion_in_a_list(holder):
+    both_planes = holder.find_elements(["SH1A-C0?-H", "SH1A-C0?-V"])
+    assert both_planes == ["SH1A-C01-H", "SH1A-C02-H", "SH1A-C01-V", "SH1A-C02-V"]
+
+    minus_one = holder.find_elements(["SH1A-C0?-H", "SH1A-C0?-V", "~SH1A-C02-V"])
+    assert minus_one == ["SH1A-C01-H", "SH1A-C02-H", "SH1A-C01-V"]
+
+
+def test_getitem_supports_an_exclusion_in_a_list(holder):
+    selected = holder[["SH1A-C0?-H", "SH1A-C0?-V", "~SH1A-C02-V"]]
+    assert selected.names() == ["SH1A-C01-H", "SH1A-C02-H", "SH1A-C01-V"]
+
+
+def test_getitem_lone_exclusion_pattern_means_everything_except(holder):
+    all_names = holder.get_all_elements()
+    selected = holder["~QF1A-C01"]
+
+    assert "QF1A-C01" not in selected.names()
+    assert len(selected) == len(all_names) - 1
