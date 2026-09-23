@@ -4,6 +4,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 
+import re
+
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
@@ -32,7 +34,8 @@ autodoc_typehints_description_target = "documented"
 autodoc_typehints_format = "short"
 # autosummary_generate_overwrite = False
 # autosummary_ignore_module_all = False
-autoclass_content = "both"  # include both class docstring and __init__
+# Class docstrings document the constructor parameters; __init__ docstrings are not rendered.
+autoclass_content = "class"
 
 napoleon_use_rtype = False  # More legible
 # napoleon_numpy_docstring = False  # Force consistency, leave only Google
@@ -40,6 +43,55 @@ napoleon_custom_sections = ["Configuration"]
 
 templates_path = ["_templates"]
 exclude_patterns = []
+
+
+# -- Class docstring "Methods"/"Attributes" sections ---------------------------
+# Class docstrings list their methods and attributes so that ``help(obj)`` is
+# self-contained. autodoc already documents each member from its own docstring,
+# so on the rendered page the ``.. method::`` / ``.. attribute::`` blocks that
+# napoleon emits for these sections are collapsed into a linked summary table
+# instead of a second full description of every member.
+
+_MEMBER_DIRECTIVE = re.compile(r"^\.\. (method|attribute):: (\S[^(]*)")
+_SUMMARY_TITLES = {"attribute": ("Attributes", "attr"), "method": ("Methods", "meth")}
+
+
+def _read_member_block(lines, i):
+    """Return ``(kind, member, description, next_index)`` for the directive at ``lines[i]``."""
+    kind, member = _MEMBER_DIRECTIVE.match(lines[i]).groups()
+    description = []
+    i += 1
+    while i < len(lines) and (not lines[i].strip() or lines[i].startswith("   ")):
+        text = lines[i].strip()
+        if text and not text.startswith(":"):  # skip directive options such as ``:type:``
+            description.append(text)
+        i += 1
+    return kind, member.strip(), " ".join(description), i
+
+
+def summarize_member_sections(app, what, name, obj, options, lines):
+    if what != "class":
+        return
+    out = []
+    i = 0
+    while i < len(lines):
+        if not _MEMBER_DIRECTIVE.match(lines[i]):
+            out.append(lines[i])
+            i += 1
+            continue
+        kind = _MEMBER_DIRECTIVE.match(lines[i]).group(1)
+        title, role = _SUMMARY_TITLES[kind]
+        out += [f".. rubric:: {title}", "", ".. list-table::", "   :widths: 30 70", "   :class: pyaml-member-summary", ""]
+        while i < len(lines) and (m := _MEMBER_DIRECTIVE.match(lines[i])) and m.group(1) == kind:
+            _, member, description, i = _read_member_block(lines, i)
+            out += [f"   * - :py:{role}:`~{name}.{member}`", f"     - {description}"]
+        out.append("")
+    lines[:] = out
+
+
+def setup(app):
+    # Run after napoleon (default priority 500), which produces the member directives.
+    app.connect("autodoc-process-docstring", summarize_member_sections, priority=600)
 
 
 # -- Options for HTML output -------------------------------------------------
