@@ -137,13 +137,17 @@ class ElementArray(list[Element]):
             array_class = getattr(m, "BPMArray", None)
             return array_class(array_name, elements, self.__use_aggregator)
         elif issubclass(element_type, CombinedFunctionMagnet):
+            # CombinedFunctionMagnetArray has no aggregator support, unlike the
+            # array type this selection was derived from.
             m = importlib.import_module("pyaml.arrays.cfm_magnet_array")
             array_class = getattr(m, "CombinedFunctionMagnetArray", None)
-            return array_class(array_name, elements, self.__use_aggregator)
+            return array_class(array_name, elements, False)
         elif issubclass(element_type, SerializedMagnets):
+            # SerializedMagnetsArray has no aggregator support, unlike the
+            # array type this selection was derived from.
             m = importlib.import_module("pyaml.arrays.serialized_magnet_array")
             array_class = getattr(m, "SerializedMagnetsArray", None)
-            return array_class(array_name, elements, self.__use_aggregator)
+            return array_class(array_name, elements, False)
         elif issubclass(element_type, Element):
             return ElementArray(array_name, elements, self.__use_aggregator)
         else:
