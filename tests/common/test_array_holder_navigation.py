@@ -203,6 +203,26 @@ def test_magnet_and_magnets_holder_getitem_agree_on_order(holder):
     assert forward_plural.names() == backward_plural.names() == forward.names()
 
 
+@pytest.mark.parametrize(
+    "select",
+    [
+        pytest.param(lambda h, k: h[k].names(), id="holder[]"),
+        pytest.param(lambda h, k: h.find_elements(k), id="holder.find_elements"),
+        pytest.param(lambda h, k: h.get()[k].names(), id="holder.get()[]"),
+        pytest.param(lambda h, k: h.magnet[k].names(), id="holder.magnet[]"),
+        pytest.param(lambda h, k: h.magnets[k].names(), id="holder.magnets[]"),
+    ],
+)
+@pytest.mark.parametrize("reverse", [False, True], ids=["forward", "reversed"])
+def test_every_accessor_returns_a_list_selection_in_configuration_order(holder, select, reverse):
+    """Every name-based accessor must return a list-of-patterns selection in configuration
+    order, whatever the order of the requested names, so that positional values line up the
+    same way whichever accessor built the array."""
+    key = ["SH1A-C01-H", "SH1A-C01-V", "SH1A-C02-H"]
+    expected = [n for n in holder.get().names() if n in key]
+    assert select(holder, key[::-1] if reverse else key) == expected
+
+
 def test_subtracting_a_magnet_selection_from_a_mixed_selection_yields_a_cfm_array(holder):
     """A top-level selection mixing CombinedFunctionMagnet and their virtual correctors, minus
     the corrector-only .magnets selection, must yield the CFMs alone as a
