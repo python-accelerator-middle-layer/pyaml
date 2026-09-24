@@ -13,6 +13,7 @@ import numpy as np
 from ..bpm.bpm import BPM
 from ..common.element import Element, __pyaml_repr__
 from ..common.exception import PyAMLException
+from ..common.name_matching import resolve_names
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..magnet.serialized_magnet import SerializedMagnets
@@ -136,13 +137,17 @@ class ElementArray(list[Element]):
             array_class = getattr(m, "BPMArray", None)
             return array_class(array_name, elements, self.__use_aggregator)
         elif issubclass(element_type, CombinedFunctionMagnet):
+            # CombinedFunctionMagnetArray has no aggregator support, unlike the
+            # array type this selection was derived from.
             m = importlib.import_module("pyaml.arrays.cfm_magnet_array")
             array_class = getattr(m, "CombinedFunctionMagnetArray", None)
-            return array_class(array_name, elements, self.__use_aggregator)
+            return array_class(array_name, elements, False)
         elif issubclass(element_type, SerializedMagnets):
+            # SerializedMagnetsArray has no aggregator support, unlike the
+            # array type this selection was derived from.
             m = importlib.import_module("pyaml.arrays.serialized_magnet_array")
             array_class = getattr(m, "SerializedMagnetsArray", None)
-            return array_class(array_name, elements, self.__use_aggregator)
+            return array_class(array_name, elements, False)
         elif issubclass(element_type, Element):
             return ElementArray(array_name, elements, self.__use_aggregator)
         else:
@@ -239,22 +244,6 @@ class ElementArray(list[Element]):
                 break
 
         return self.__create_array("", chosen, elements)
-
-    def _select_names(self, pattern: str) -> "ElementArray":
-        """Select names without interpreting field selectors.
-
-        Parameters
-        ----------
-        pattern : str
-            A fnmatch pattern applied to each element name.
-
-        Returns
-        -------
-        ElementArray
-            Typed selection in the original order, including an empty array
-            when no names match.
-        """
-        return self._typed_array([element for element in self if fnmatch.fnmatch(element.get_name(), pattern)])
 
     def __is_bool_mask(self, other: object) -> bool:
         """Return True if 'other' looks like a boolean mask (list or numpy array)."""
@@ -576,8 +565,15 @@ class ElementArray(list[Element]):
 
         Parameters
         ----------
-        key : int, slice or str
-            Element index, slice, name pattern, or existing field selector.
+        key : int, slice, str, list[str] or tuple[str, ...]
+            Element index, slice, name pattern (or ``field:pattern`` field
+            selector), or a list/tuple of name patterns. A name pattern is a
+            literal name (must match an element in this array), an fnmatch
+            wildcard (``*``, ``?`` or ``[``), or a ``re:``-prefixed regular
+            expression. A list or tuple resolves each entry independently
+            and unions the results. Prefix a name pattern with ``~`` to
+            exclude its matches instead; a lone ``~pattern`` means every
+            element except those matches.
 
         Returns
         -------
@@ -585,33 +581,47 @@ class ElementArray(list[Element]):
             Indexed element or an array inferred from all selected elements.
             Different Magnet subclasses produce a MagnetArray; mixed element
             families produce an ElementArray. Empty selections return an
-            empty ElementArray.
+            empty ElementArray, except a literal name pattern (or literal
+            entry within a list/tuple) matching nothing, which raises.
+
+        Raises
+        ------
+        PyAMLException
+            If a literal name pattern, or a literal entry within a list or
+            tuple, matches no element in this array, or a ``re:`` pattern is
+            not a valid regular expression.
 
         Examples
         --------
         >>> magnets = sr.design.magnets.get()
         >>> subset = magnets[:]  # MagnetArray, including mixed magnet classes
         >>> correctors = magnets["SH*"]  # MagnetArray
+        >>> correctors = magnets["re:^SH1A-C0[12]-H$"]  # MagnetArray
+        >>> selection = magnets[["SH1A-C01-H", "SH*-V"]]  # Union of patterns
+        >>> all_but_one = magnets["~SH1A-C01-H"]  # Every magnet except one
         """
         if isinstance(key, slice):
             # Slicing
             r = super().__getitem__(key)
 
+        elif isinstance(key, (list, tuple)):
+            # Selection by a list/tuple of name patterns
+            matched = set(resolve_names([e.get_name() for e in self], key))
+            r = [e for e in self if e.get_name() in matched]
+
         elif isinstance(key, str):
-            fields = key.split(":")
+            fields = [] if key.lstrip("~").startswith("re:") else key.split(":")
 
             if len(fields) <= 1:
-                # Selection by name
-                r = []
-                for e in self:
-                    if fnmatch.fnmatch(e.get_name(), key):
-                        r.append(e)
+                # Selection by name pattern
+                matched = set(resolve_names([e.get_name() for e in self], key))
+                r = [e for e in self if e.get_name() in matched]
             else:
                 # Selection by fields
                 r = []
                 for e in self:
                     txt = self.__eval_field(fields[0], e)
-                    if fnmatch.fnmatch(txt, fields[1]):
+                    if fnmatch.fnmatchcase(txt, fields[1]):
                         r.append(e)
 
         else:

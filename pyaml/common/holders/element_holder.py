@@ -1,7 +1,5 @@
 """Store, resolve, and group elements shared by runtime backends."""
 
-import fnmatch
-import re
 from abc import ABCMeta, abstractmethod
 from typing import TYPE_CHECKING, overload
 
@@ -17,6 +15,7 @@ from ...tuning_tools.chromaticity_monitor import ChromaticityMonitor
 from ..abstract_aggregator import ScalarAggregator
 from ..element import Element
 from ..exception import PyAMLException
+from ..name_matching import is_wildcard, resolve_names
 from .diagnostic_holder import DiagnosticHolder
 from .rf_holder import RFHolder
 from .sub_holders import (
@@ -311,29 +310,33 @@ class ElementHolder(metaclass=ABCMeta):
 
     # Elements
 
-    def find_elements(self, filter: str) -> list[str]:
+    def find_elements(self, filter: str | list[str] | tuple[str, ...]) -> list[str]:
         """
-        Find element names matching a literal, wildcard, or regular expression.
+        Find element names matching one or several literal, wildcard, or regex patterns.
 
         Parameters
         ----------
-        filter : str
-            Pattern to match. Prefix with ``re:`` for a regular expression.
+        filter : str, list[str] or tuple[str, ...]
+            Pattern, or patterns, to match. A pattern is a literal name, an
+            fnmatch wildcard (``*``, ``?`` or ``[`` anywhere in the string),
+            or a regular expression prefixed with ``re:``. Prefix any of
+            those with ``~`` to exclude its matches instead, as in the
+            ``elements:`` selector list of a YAML array declaration, e.g.
+            ``["QD2*", "QF1*", "~QF1E-C05"]``. A lone ``~pattern`` (or a list
+            made only of ``~`` entries) means "every element except those".
 
         Returns
         -------
         list[str]
             Matching element names.
-        """
-        if filter.startswith("re:"):
-            pattern = re.compile(rf"{filter[3:]}")
-            elements = [k for k in self._ALL.keys() if pattern.fullmatch(k)]
-        elif "*" in filter or "?" in filter:
-            elements = [k for k in self._ALL.keys() if fnmatch.fnmatch(k, filter)]
-        else:
-            elements = [filter]
 
-        return elements
+        Raises
+        ------
+        PyAMLException
+            If a literal pattern (or a ``~``-prefixed literal) matches no
+            element, or a ``re:`` pattern is not a valid regular expression.
+        """
+        return resolve_names(self._ALL.keys(), filter, what="Element")
 
     def _fill_array(
         self,
@@ -343,7 +346,6 @@ class ElementHolder(metaclass=ABCMeta):
         constructor,
         ARR: dict,
     ):
-        # Handle wildcard, regexp and exclusion pattern
         """
         Resolve selectors and store a constructed element array.
 
@@ -361,16 +363,14 @@ class ElementHolder(metaclass=ABCMeta):
             Destination array store.
         """
         all_names: list[str] = []
-        excluded_names: list[str] = []
+        excluded_names: set[str] = set()
         for name in element_names:
             if name.startswith("~"):
-                names = self.find_elements(name[1:])
-                excluded_names.extend(names)
+                excluded_names.update(self.find_elements(name[1:]))
             else:
-                names = self.find_elements(name)
-                all_names.extend(names)
+                all_names.extend(self.find_elements(name))
 
-        [all_names.remove(name) for name in excluded_names]
+        all_names = [n for n in all_names if n not in excluded_names]
 
         a = []
         for n in all_names:
@@ -379,7 +379,7 @@ class ElementHolder(metaclass=ABCMeta):
             except Exception as err:
                 raise PyAMLException(f"{constructor.__name__} {array_name} : {err} @index {len(a)}") from None
             if m in a:
-                raise PyAMLException(f"{constructor.__name__} {array_name} : duplicate name {name} @index {len(a)}") from None
+                raise PyAMLException(f"{constructor.__name__} {array_name} : duplicate name {n} @index {len(a)}") from None
             a.append(m)
         ARR[array_name] = constructor(array_name, a)
 
@@ -450,32 +450,46 @@ class ElementHolder(metaclass=ABCMeta):
     def __getitem__(self, key: slice) -> ElementArray: ...
 
     @overload
-    def __getitem__(self, key: str) -> Element | ElementArray | None: ...
+    def __getitem__(self, key: str) -> Element: ...
 
-    def __getitem__(self, key: int | slice | str) -> Element | ElementArray | None:
+    @overload
+    def __getitem__(self, key: list[str] | tuple[str, ...]) -> ElementArray: ...
+
+    def __getitem__(self, key: int | slice | str | list[str] | tuple[str, ...]) -> Element | ElementArray:
         """Retrieve an element or select a collection.
 
         Parameters
         ----------
-        key : int, slice or str
-            Index in registration order, slice, exact name, or name pattern.
-            Strings containing ``*``, ``?`` or ``[`` use fnmatch matching.
-            Other strings are exact registry keys. Colons are literal.
+        key : int, slice, str, list[str] or tuple[str, ...]
+            Index in registration order, slice, exact name, name pattern, or
+            a list/tuple of patterns. Strings containing ``*``, ``?`` or
+            ``[`` use fnmatch matching; a ``re:`` prefix uses a regular
+            expression instead. Any other string is an exact registry key.
+            Colons are literal. A list or tuple resolves each entry
+            independently and unions the results. Prefix any pattern with
+            ``~`` to exclude its matches instead, as in a YAML array's
+            ``elements:`` list; a lone ``~pattern`` means every element
+            except those matches.
 
         Returns
         -------
-        Element or ElementArray or None
-            An index returns an element. An exact name returns its element
-            or None. Patterns and slices return the most specific compatible
-            array, or an empty ElementArray when nothing matches.
+        Element or ElementArray
+            An index or an exact literal name returns its element. Patterns,
+            lists/tuples of patterns, and slices return the most specific
+            compatible array, or an empty ElementArray when nothing matches.
             The full slice ``[:]`` returns a generic ElementArray, like get().
 
         Raises
         ------
+        PyAMLException
+            If an exact literal name, or a literal entry within a list or
+            tuple, does not match any registered element, or if a ``re:``
+            pattern is not a valid regular expression.
         IndexError
             If the index is out of bounds.
         TypeError
-            If the key is neither an integer, a slice, nor a string.
+            If the key is neither an integer, a slice, a string, nor a
+            list/tuple of strings.
         ValueError
             If a slice has a zero step.
 
@@ -483,25 +497,35 @@ class ElementHolder(metaclass=ABCMeta):
         -----
         Indices follow insertion order, not necessarily lattice order.
         Collections share element references but do not modify the registry.
-        Field filters and regular expressions are not interpreted here.
+        Field filters are not interpreted here.
 
         Examples
         --------
         >>> bpm = sr.live["BPM01"]
-        >>> missing = sr.live["UNKNOWN"]  # None
+        >>> missing = sr.live["UNKNOWN"]  # raises PyAMLException
         >>> bpms = sr.live["BPM*"]
         >>> bpms = sr.live["BPM0[123]"]  # BPM01, BPM02 or BPM03
         >>> bpms = sr.live["BPM0[1-3]"]  # Same selection using a range
         >>> quads = sr.live["Q[FD]*"]  # Names starting with QF or QD
         >>> bpms = sr.live["BPM0[!3]"]  # One character after BPM0, except 3
+        >>> bpms = sr.live["re:^BPM0[12]$"]  # Regular expression
+        >>> mixed = sr.live[["BPM01", "QF1*"]]  # Union of several patterns
+        >>> all_but_one = sr.live["~BPM01"]  # Every element except BPM01
+        >>> most_quads = sr.live[["QF1*", "~QF1A-C01"]]  # QF1* minus one name
         >>> first = sr.live[0]
         >>> subset = sr.live[1:10]
         >>> all_elements = sr.live[:]
         """
         if isinstance(key, str):
-            if any(marker in key for marker in "*?["):
-                return self.get()._select_names(key)
-            return self._ALL.get(key)
+            if key.startswith("re:") or key.startswith("~") or is_wildcard(key):
+                names = resolve_names(self._ALL.keys(), key)
+                return self.get()._typed_array([self._ALL[n] for n in names])
+            if key not in self._ALL:
+                raise PyAMLException(f"Element {key} not defined")
+            return self._ALL[key]
+        if isinstance(key, (list, tuple)):
+            names = resolve_names(self._ALL.keys(), key)
+            return self.get()._typed_array([self._ALL[n] for n in names])
         if isinstance(key, int):
             return list(self._ALL.values())[key]
         if isinstance(key, slice):
@@ -509,7 +533,7 @@ class ElementHolder(metaclass=ABCMeta):
             if key == slice(None):
                 return elements
             return elements._typed_array(list(elements)[key])
-        raise TypeError("ElementHolder keys must be integers, slices or strings")
+        raise TypeError("ElementHolder keys must be integers, slices, strings, or lists/tuples of strings")
 
     def fill_element_array(self, arrayName: str, elementNames: list[str]):
         """

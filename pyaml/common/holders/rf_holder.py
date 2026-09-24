@@ -2,10 +2,12 @@
 
 from typing import TYPE_CHECKING
 
+from ...arrays.element_array import ElementArray
 from ...rf.rf_plant import RFPlant
 from ...rf.rf_transmitter import RFTransmitter
 from ..abstract import ReadWriteFloatScalar
 from ..element import __pyaml_repr__
+from ..name_matching import is_wildcard, resolve_names
 
 if TYPE_CHECKING:
     from .element_holder import ElementHolder
@@ -49,6 +51,37 @@ class RFTransmitterHolder:
             Matching RF transmitter.
         """
         return self._peer._get("RFTransmitter", name, self._peer._RFTRANSMITTER)
+
+    def __getitem__(self, key: str | list[str] | tuple[str, ...]) -> "RFTransmitter | ElementArray":
+        """
+        Return a transmitter, or a selection typed as a generic ElementArray.
+
+        Parameters
+        ----------
+        key : str, list[str] or tuple[str, ...]
+            An exact literal name returns the stored transmitter. An fnmatch
+            wildcard, a ``re:``-prefixed regular expression, or a list/tuple
+            of such patterns returns an ElementArray of matches (possibly
+            empty).
+
+        Returns
+        -------
+        RFTransmitter or ElementArray
+            The stored transmitter for an exact literal name, otherwise an
+            ElementArray of matches.
+
+        Raises
+        ------
+        PyAMLException
+            If an exact literal name, or a literal entry within a list or
+            tuple, does not match any transmitter, or a ``re:`` pattern is
+            not a valid regular expression.
+        """
+        store = self._peer._RFTRANSMITTER
+        if isinstance(key, str) and not key.startswith(("re:", "~")) and not is_wildcard(key):
+            return self._peer._get("RFTransmitter", key, store)
+        names = resolve_names(store.keys(), key, what="RFTransmitter")
+        return ElementArray("", [store[n] for n in names])
 
     def add(self, rf: RFTransmitter):
         """
@@ -133,6 +166,37 @@ class RFHolder:
             RF plant registered under ``name``.
         """
         return self._peer._get("RFPlant", name, self._peer._RFPLANT)
+
+    def __getitem__(self, key: str | list[str] | tuple[str, ...]) -> "RFPlant | ElementArray":
+        """
+        Return an RF plant, or a selection typed as a generic ElementArray.
+
+        Parameters
+        ----------
+        key : str, list[str] or tuple[str, ...]
+            An exact literal name returns the stored RF plant. An fnmatch
+            wildcard, a ``re:``-prefixed regular expression, or a list/tuple
+            of such patterns returns an ElementArray of matches (possibly
+            empty).
+
+        Returns
+        -------
+        RFPlant or ElementArray
+            The stored RF plant for an exact literal name, otherwise an
+            ElementArray of matches.
+
+        Raises
+        ------
+        PyAMLException
+            If an exact literal name, or a literal entry within a list or
+            tuple, does not match any RF plant, or a ``re:`` pattern is not
+            a valid regular expression.
+        """
+        store = self._peer._RFPLANT
+        if isinstance(key, str) and not key.startswith(("re:", "~")) and not is_wildcard(key):
+            return self._peer._get("RFPlant", key, store)
+        names = resolve_names(store.keys(), key, what="RFPlant")
+        return ElementArray("", [store[n] for n in names])
 
     def add(self, rf: RFPlant):
         """
