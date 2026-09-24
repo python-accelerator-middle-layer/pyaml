@@ -3,6 +3,7 @@ import pytest
 from pyaml.accelerator import Accelerator
 from pyaml.arrays.cfm_magnet_array import CombinedFunctionMagnetArray
 from pyaml.common.exception import PyAMLException
+from pyaml.configuration.manager import ConfigurationManager
 
 
 @pytest.fixture
@@ -128,6 +129,39 @@ def test_configured_exclusion_family_reproduced_in_a_single_getitem_call():
 
     assert type(reproduced) is type(q_for_test)
     assert reproduced == q_for_test
+
+
+def test_array_getitem_supports_a_negated_regex_pattern():
+    """`~re:...` on an ElementArray excludes regex matches, same as `~wildcard`."""
+    sr = Accelerator.load("tests/config/EBSTune-patterns.yaml", ignore_external=True)
+    sr.design.get_lattice().disable_6d()
+
+    magnets = sr.design.magnets[:]
+    wildcard_exclusion = magnets["~QF1*"]
+    regex_exclusion = magnets["~re:^QF1.*$"]
+
+    assert len(regex_exclusion) > 0
+    assert len(regex_exclusion) < len(magnets)
+    assert regex_exclusion == wildcard_exclusion
+
+
+def test_fill_array_supports_an_exclusion_outside_a_single_getitem_call_shape():
+    """A YAML `elements:` list combining an inclusion and an exclusion builds an array, not a ValueError.
+
+    `_fill_array` previously did its own include/exclude bookkeeping with `list.remove`,
+    which raised whenever the excluded name wasn't already gathered by an inclusion
+    pattern processed earlier in the same call. Delegating to `find_elements` (used here
+    with the same list, for comparison) avoids that ordering trap.
+    """
+    manager = ConfigurationManager()
+    manager.add("tests/config/EBSTune-patterns.yaml")
+    manager.add({"arrays": [{"type": "pyaml.arrays.magnet", "name": "QD2Family", "elements": ["QD2*", "~QF1E-C05"]}]})
+    sr = manager.build(ignore_external=True)
+    sr.design.get_lattice().disable_6d()
+
+    qd2_family = sr.design.magnets.get("QD2Family")
+
+    assert qd2_family.names() == sr.design.find_elements(["QD2*", "~QF1E-C05"])
 
 
 def test_magnet_holder_getitem_exact_name_matches_get(holder):

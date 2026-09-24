@@ -606,7 +606,7 @@ class ElementArray(list[Element]):
             r = [e for e in self if e.get_name() in matched]
 
         elif isinstance(key, str):
-            fields = [] if key.startswith("re:") else key.split(":")
+            fields = [] if key.lstrip("~").startswith("re:") else key.split(":")
 
             if len(fields) <= 1:
                 # Selection by name pattern
