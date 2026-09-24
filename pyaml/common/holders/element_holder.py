@@ -346,7 +346,6 @@ class ElementHolder(metaclass=ABCMeta):
         constructor,
         ARR: dict,
     ):
-        # Handle wildcard, regexp and exclusion pattern
         """
         Resolve selectors and store a constructed element array.
 
@@ -364,16 +363,14 @@ class ElementHolder(metaclass=ABCMeta):
             Destination array store.
         """
         all_names: list[str] = []
-        excluded_names: list[str] = []
+        excluded_names: set[str] = set()
         for name in element_names:
             if name.startswith("~"):
-                names = self.find_elements(name[1:])
-                excluded_names.extend(names)
+                excluded_names.update(self.find_elements(name[1:]))
             else:
-                names = self.find_elements(name)
-                all_names.extend(names)
+                all_names.extend(self.find_elements(name))
 
-        [all_names.remove(name) for name in excluded_names]
+        all_names = [n for n in all_names if n not in excluded_names]
 
         a = []
         for n in all_names:
@@ -382,7 +379,7 @@ class ElementHolder(metaclass=ABCMeta):
             except Exception as err:
                 raise PyAMLException(f"{constructor.__name__} {array_name} : {err} @index {len(a)}") from None
             if m in a:
-                raise PyAMLException(f"{constructor.__name__} {array_name} : duplicate name {name} @index {len(a)}") from None
+                raise PyAMLException(f"{constructor.__name__} {array_name} : duplicate name {n} @index {len(a)}") from None
             a.append(m)
         ARR[array_name] = constructor(array_name, a)
 
