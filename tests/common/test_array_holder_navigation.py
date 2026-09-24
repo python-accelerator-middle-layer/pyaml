@@ -2,6 +2,7 @@ import pytest
 
 from pyaml.accelerator import Accelerator
 from pyaml.arrays.cfm_magnet_array import CombinedFunctionMagnetArray
+from pyaml.arrays.magnet_array import MagnetArray
 from pyaml.common.exception import PyAMLException
 from pyaml.configuration.manager import ConfigurationManager
 
@@ -180,6 +181,40 @@ def test_magnet_holder_getitem_wildcard_and_list_return_an_array(holder):
 
     listed = holder.magnet[["SH1A-C01-H", "SH1A-C01-V"]]
     assert listed.names() == ["SH1A-C01-H", "SH1A-C01-V"]
+
+
+def test_magnet_holder_getitem_wildcard_returns_a_magnet_array(holder):
+    """A wildcard restricted to the .magnet store is auto-typed as MagnetArray, like the
+    top-level and .magnets holders, instead of falling back to a generic ElementArray."""
+    wildcard = holder.magnet["SH1A-C0[12]-[HVQ]*"]
+    assert type(wildcard) is MagnetArray
+
+
+def test_magnet_and_magnets_holder_getitem_agree_on_order(holder):
+    """.magnet (singular) and .magnets (plural) must return the same elements in the same
+    order for the same name list, regardless of the order the names were requested in. The
+    reference order is the configuration order, not the order of the requested names."""
+    forward = holder.magnet[["SH1A-C01-H", "SH1A-C01-V"]]
+    backward = holder.magnet[["SH1A-C01-V", "SH1A-C01-H"]]
+    assert forward.names() == backward.names() == ["SH1A-C01-H", "SH1A-C01-V"]
+
+    forward_plural = holder.magnets[["SH1A-C01-H", "SH1A-C01-V"]]
+    backward_plural = holder.magnets[["SH1A-C01-V", "SH1A-C01-H"]]
+    assert forward_plural.names() == backward_plural.names() == forward.names()
+
+
+def test_subtracting_a_magnet_selection_from_a_mixed_selection_yields_a_cfm_array(holder):
+    """A top-level selection mixing CombinedFunctionMagnet and their virtual correctors, minus
+    the corrector-only .magnets selection, must yield the CFMs alone as a
+    CombinedFunctionMagnetArray. Regression test: this used to raise 'Aggregator not
+    implemented for CombinedFunctionMagnetArray' because the derived array blindly inherited
+    the use_aggregator flag of the ElementArray it was built from."""
+    mixed = holder["SH*"]
+    only_magnets = holder.magnets["SH*"]
+    only_cfm = mixed - only_magnets
+
+    assert type(only_cfm) is CombinedFunctionMagnetArray
+    assert only_cfm.names() == ["SH1A-C01", "SH1A-C02"]
 
 
 def test_magnet_holder_getitem_regex(holder):
