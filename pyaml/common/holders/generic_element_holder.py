@@ -77,22 +77,22 @@ class GenericElementHolder(Generic[T]):
 
     def __getitem__(self, key: str | list[str] | tuple[str, ...]) -> "T | ElementArray":
         """
-        Return an element, or a selection typed as a generic ElementArray.
+        Return an element, or a selection typed as the most specific compatible array.
 
         Parameters
         ----------
         key : str, list[str] or tuple[str, ...]
             An exact literal name returns the stored element. An fnmatch
             wildcard (``*``, ``?`` or ``[``), a ``re:``-prefixed regular
-            expression, or a list/tuple of such patterns returns an
-            :class:`~pyaml.arrays.element_array.ElementArray` of matches
-            (possibly empty).
+            expression, or a list/tuple of such patterns returns the most
+            specific compatible array of matches (possibly empty), like
+            :meth:`.ElementHolder.__getitem__`.
 
         Returns
         -------
         T or ElementArray
-            The stored element for an exact literal name, otherwise an
-            ElementArray of matches.
+            The stored element for an exact literal name, otherwise a
+            typed array of matches.
 
         Raises
         ------
@@ -103,8 +103,9 @@ class GenericElementHolder(Generic[T]):
         """
         if isinstance(key, str) and not key.startswith(("re:", "~")) and not is_wildcard(key):
             return self._peer._get(self._what, key, self._store)
-        names = resolve_names(self._store.keys(), key, what=self._what)
-        return ElementArray("", [self._store[n] for n in names])
+        matched = set(resolve_names(self._store.keys(), key, what=self._what))
+        elements = [v for n, v in self._store.items() if n in matched]
+        return ElementArray("", elements)._typed_array(elements)
 
     def add(self, m: T):
         """
