@@ -42,6 +42,19 @@ class MagnetsHolder(GenericArrayHolder[Magnet, MagnetArray]):
     ----------
     peer : 'ElementHolder'
         Parent element holder that owns this specialized holder.
+
+    Notes
+    -----
+    A configured magnet family is also reachable as an attribute when its
+    name is a valid Python identifier, e.g. ``magnets.QuadForTune`` is
+    equivalent to ``magnets.get("QuadForTune")``. Family names appear in
+    ``dir(magnets)`` for interactive completion.
+
+    Examples
+    --------
+    >>> quad_family = sr.live.magnets.get("QuadForTune")
+    >>> same_quad_family = sr.live.magnets.QuadForTune
+    >>> combined_function_magnets = sr.live.magnets.get_cfm()
     """
 
     def __init__(self, peer: "ElementHolder"):
@@ -56,6 +69,22 @@ class MagnetsHolder(GenericArrayHolder[Magnet, MagnetArray]):
             MagnetArray,
             "Magnet array",
         )
+
+    def get_cfm(self) -> CombinedFunctionMagnetArray:
+        """
+        Return all combined-function magnets.
+
+        Returns
+        -------
+        CombinedFunctionMagnetArray
+            New unnamed container with every registered combined-function
+            magnet.
+
+        Examples
+        --------
+        >>> combined_function_magnets = sr.live.magnets.get_cfm()
+        """
+        return self._peer.combined_function_magnets.get()
 
 
 class CombinedFunctionMagnetHolder(GenericElementHolder[CombinedFunctionMagnet]):
@@ -83,6 +112,13 @@ class CombinedFunctionMagnetsHolder(GenericArrayHolder[CombinedFunctionMagnet, C
     ----------
     peer : 'ElementHolder'
         Parent element holder that owns this specialized holder.
+
+    Notes
+    -----
+    A configured array is also reachable as an attribute when its name is a
+    valid Python identifier, e.g. ``combined_function_magnets.CFM`` is
+    equivalent to ``combined_function_magnets.get("CFM")``. Array names
+    appear in ``dir(combined_function_magnets)`` for interactive completion.
     """
 
     def __init__(self, peer: "ElementHolder"):
@@ -124,6 +160,13 @@ class SerializedMagnetsHolder(GenericArrayHolder[SerializedMagnets, SerializedMa
     ----------
     peer : 'ElementHolder'
         Parent element holder that owns this specialized holder.
+
+    Notes
+    -----
+    A configured array is also reachable as an attribute when its name is a
+    valid Python identifier, e.g. ``serialized_magnets.QForTune`` is
+    equivalent to ``serialized_magnets.get("QForTune")``. Array names appear
+    in ``dir(serialized_magnets)`` for interactive completion.
     """
 
     def __init__(self, peer: "ElementHolder"):
@@ -165,17 +208,25 @@ class BPMsHolder(GenericArrayHolder[BPM, BPMArray]):
     ----------
     peer : 'ElementHolder'
         Parent element holder that owns this specialized holder.
+
+    Notes
+    -----
+    A configured array is also reachable as an attribute when its name is a
+    valid Python identifier, e.g. ``bpms.BPMS`` is equivalent to
+    ``bpms.get("BPMS")``. Array names appear in ``dir(bpms)`` for interactive
+    completion.
     """
 
     def __init__(self, peer: "ElementHolder"):
         """
         Initialize the BPMsHolder.
         """
+        bpm_holder = BPMHolder(peer)
         super().__init__(
             peer,
             peer._BPM_ARRAYS,
-            peer.bpm.all,
-            peer.bpm.get,
+            bpm_holder.all,
+            bpm_holder.get,
             BPMArray,
             "BPM array",
         )

@@ -291,7 +291,9 @@ class Simulator(ElementHolder, DynamicValidation):
         if len(bpm_elt.Offset) != 2:
             raise PyAMLException(f"BPM {bpm.get_name()} offset must be a 2-element array.")
         update_bpm_transform_matrix(bpm_elt)
-        self.bpm.add(bpm.attach(self, RBpmArray(bpm_elt, self.ring), RWBpmOffsetArray(bpm_elt), RWBpmTiltScalar(bpm_elt)))
+        self.diagnostic.bpm.add(
+            bpm.attach(self, RBpmArray(bpm_elt, self.ring), RWBpmOffsetArray(bpm_elt), RWBpmTiltScalar(bpm_elt))
+        )
 
     def _fill_rf_plant(self, rf_plant: RFPlant) -> None:
         if rf_plant.transmitters:

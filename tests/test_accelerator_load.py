@@ -19,8 +19,8 @@ def test_peer():
 
 def test_repr_is_informative_and_bounded():
     sr = Accelerator.load("tests/config/EBSOrbit.yaml")
-    bpm = sr.design.bpm.get("BPM_C04-04")
-    bpms = sr.design.bpms.get("BPM")
+    bpm = sr.design.diagnostic.bpm.get("BPM_C04-04")
+    bpms = sr.design.diagnostic.bpms.get("BPM")
 
     assert repr(bpm) == (
         "BPM(name='BPM_C04-04', lattice_names='BPM_C04-04', "
@@ -46,7 +46,7 @@ def test_repr_options_limit_sequences():
         set_repr_options(max_items=1)
         sr = Accelerator.load("tests/config/EBSOrbit.yaml")
 
-        bpms = sr.design.bpms.get("BPM")
+        bpms = sr.design.diagnostic.bpms.get("BPM")
         assert f"... +{len(bpms) - 1} more ..." in repr(bpms)
     finally:
         set_repr_options(
