@@ -124,8 +124,8 @@ class DiagnosticHolder:
         store = self._peer._DIAG
         if isinstance(key, str) and not key.startswith(("re:", "~")) and not is_wildcard(key):
             return self._peer._get_diagnostic(key)
-        names = resolve_names(store.keys(), key, what="Diagnostic")
-        return ElementArray("", [store[n] for n in names])
+        matched = set(resolve_names(store.keys(), key, what="Diagnostic"))
+        return ElementArray("", [v for n, v in store.items() if n in matched])
 
     @property
     def betatron_tune(self) -> BetatronTuneMonitor:

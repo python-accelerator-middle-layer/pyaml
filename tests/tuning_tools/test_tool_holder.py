@@ -33,6 +33,15 @@ def test_tool_holder_getitem_list_of_patterns(design):
     assert selected.names() == ["DEFAULT_TUNE_CORRECTION", "DEFAULT_ORBIT_CORRECTION"]
 
 
+def test_tool_holder_getitem_list_selection_ignores_request_order(design):
+    """A list-of-patterns selection lands in configuration order, whatever order the names
+    were requested in, same as every other holder (see
+    test_every_accessor_returns_a_list_selection_in_configuration_order)."""
+    forward = design.tool[["DEFAULT_TUNE_CORRECTION", "DEFAULT_ORBIT_CORRECTION"]]
+    backward = design.tool[["DEFAULT_ORBIT_CORRECTION", "DEFAULT_TUNE_CORRECTION"]]
+    assert forward.names() == backward.names() == ["DEFAULT_TUNE_CORRECTION", "DEFAULT_ORBIT_CORRECTION"]
+
+
 def test_tool_holder_getitem_regex(design):
     matching = design.tool["re:^DEFAULT_(TUNE|ORBIT)_CORRECTION$"]
     assert sorted(matching.names()) == ["DEFAULT_ORBIT_CORRECTION", "DEFAULT_TUNE_CORRECTION"]

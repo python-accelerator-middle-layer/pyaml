@@ -336,7 +336,8 @@ class ElementHolder(metaclass=ABCMeta):
             If a literal pattern (or a ``~``-prefixed literal) matches no
             element, or a ``re:`` pattern is not a valid regular expression.
         """
-        return resolve_names(self._ALL.keys(), filter, what="Element")
+        matched = set(resolve_names(self._ALL.keys(), filter, what="Element"))
+        return [n for n in self._ALL if n in matched]
 
     def _fill_array(
         self,
@@ -518,14 +519,14 @@ class ElementHolder(metaclass=ABCMeta):
         """
         if isinstance(key, str):
             if key.startswith("re:") or key.startswith("~") or is_wildcard(key):
-                names = resolve_names(self._ALL.keys(), key)
-                return self.get()._typed_array([self._ALL[n] for n in names])
+                matched = set(resolve_names(self._ALL.keys(), key))
+                return self.get()._typed_array([v for n, v in self._ALL.items() if n in matched])
             if key not in self._ALL:
                 raise PyAMLException(f"Element {key} not defined")
             return self._ALL[key]
         if isinstance(key, (list, tuple)):
-            names = resolve_names(self._ALL.keys(), key)
-            return self.get()._typed_array([self._ALL[n] for n in names])
+            matched = set(resolve_names(self._ALL.keys(), key))
+            return self.get()._typed_array([v for n, v in self._ALL.items() if n in matched])
         if isinstance(key, int):
             return list(self._ALL.values())[key]
         if isinstance(key, slice):
