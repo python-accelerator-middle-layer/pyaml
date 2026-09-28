@@ -24,6 +24,7 @@ def load_json_or_yaml(string_to_load: str) -> dict:
 
 
 class TemplateValidationModel(BaseModel):
+    name: str
     template: str
     string_to_replace: str
     parameter_list: list[str]
@@ -33,7 +34,7 @@ class TemplateValidationModel(BaseModel):
 class Template(StaticValidation):
     validation_model = TemplateValidationModel
 
-    def __new__(cls, template: str, string_to_replace: str, parameter_list: list[str]):
+    def __new__(cls, name: str, template: str, string_to_replace: str, parameter_list: list[str]):
         for par in parameter_list:
             new_string = template.replace(string_to_replace, par)
             new_dict = load_json_or_yaml(new_string)

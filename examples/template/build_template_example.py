@@ -1,8 +1,5 @@
-import yaml
+from pyaml.accelerator import Accelerator
 
-from pyaml.configuration.factory import Factory
-
-cc = yaml.safe_load(open("templated_config.yaml"))
-
-obj = Factory.build(cc)
-print(obj)
+sr = Accelerator.load("templated_config.yaml")
+for dev in sr._devices:
+    print(dev)
