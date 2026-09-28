@@ -115,8 +115,8 @@ class ToolHolder:
         store = self._peer._TOOLS
         if isinstance(key, str) and not key.startswith(("re:", "~")) and not is_wildcard(key):
             return self._peer._get_tool(key)
-        names = resolve_names(store.keys(), key, what="Tool")
-        return ElementArray("", [store[n] for n in names])
+        matched = set(resolve_names(store.keys(), key, what="Tool"))
+        return ElementArray("", [v for n, v in store.items() if n in matched])
 
     def _validate_type(self, name: str, obj: Element, expected_type: type) -> Element:
         """

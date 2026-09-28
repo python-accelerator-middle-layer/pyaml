@@ -226,8 +226,9 @@ def test_invalid_regex_raises_pyaml_exception(holder):
 
 
 def test_list_of_patterns_unions_results(holder):
+    """Order follows configuration (registration) order, not the order patterns were requested in."""
     selected = holder[["BPM_C04-01", "SH1A-C0?-H"]]
-    assert selected.names() == ["BPM_C04-01", "SH1A-C01-H", "SH1A-C02-H"]
+    assert selected.names() == ["SH1A-C01-H", "SH1A-C02-H", "BPM_C04-01"]
 
 
 def test_list_of_patterns_with_missing_literal_raises(holder):
@@ -253,20 +254,21 @@ def test_find_elements_supports_regex(holder):
 
 
 def test_find_elements_supports_a_list_of_patterns(holder):
-    assert holder.find_elements(["BPM_C04-01", "SH1A-C0?-H"]) == ["BPM_C04-01", "SH1A-C01-H", "SH1A-C02-H"]
+    """Order follows configuration (registration) order, not the order patterns were requested in."""
+    assert holder.find_elements(["BPM_C04-01", "SH1A-C0?-H"]) == ["SH1A-C01-H", "SH1A-C02-H", "BPM_C04-01"]
 
 
 def test_find_elements_supports_an_exclusion_in_a_list(holder):
     both_planes = holder.find_elements(["SH1A-C0?-H", "SH1A-C0?-V"])
-    assert both_planes == ["SH1A-C01-H", "SH1A-C02-H", "SH1A-C01-V", "SH1A-C02-V"]
+    assert both_planes == ["SH1A-C01-H", "SH1A-C01-V", "SH1A-C02-H", "SH1A-C02-V"]
 
     minus_one = holder.find_elements(["SH1A-C0?-H", "SH1A-C0?-V", "~SH1A-C02-V"])
-    assert minus_one == ["SH1A-C01-H", "SH1A-C02-H", "SH1A-C01-V"]
+    assert minus_one == ["SH1A-C01-H", "SH1A-C01-V", "SH1A-C02-H"]
 
 
 def test_getitem_supports_an_exclusion_in_a_list(holder):
     selected = holder[["SH1A-C0?-H", "SH1A-C0?-V", "~SH1A-C02-V"]]
-    assert selected.names() == ["SH1A-C01-H", "SH1A-C02-H", "SH1A-C01-V"]
+    assert selected.names() == ["SH1A-C01-H", "SH1A-C01-V", "SH1A-C02-H"]
 
 
 def test_getitem_lone_exclusion_pattern_means_everything_except(holder):

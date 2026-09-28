@@ -1,3 +1,5 @@
+import copy
+
 import pytest
 
 from pyaml.accelerator import Accelerator
@@ -112,6 +114,27 @@ def test_diagnostic_getitem_wildcard_returns_an_array():
     matching = design.diagnostic["BETATRON*"]
     assert matching.names() == ["BETATRON_TUNE"]
     assert design.diagnostic["MISSING*"].names() == []
+
+
+def test_diagnostic_getitem_list_selection_ignores_request_order():
+    """A list-of-patterns selection lands in configuration order, whatever order the names
+    were requested in, same as every other holder (see
+    test_every_accessor_returns_a_list_selection_in_configuration_order). Only one diagnostic
+    is registered by any existing fixture, so a distinct second entry is poked directly into
+    the store (a renamed copy of the existing monitor) to make request order and
+    configuration order observably different."""
+    design = Accelerator.load(
+        "tests/config/EBSOrbit.yaml",
+        ignore_external=True,
+        include_locations=False,
+    ).design
+    spare_monitor = copy.copy(design.get_betatron_tune_monitor("BETATRON_TUNE"))
+    spare_monitor._name = "SPARE_BETATRON_TUNE"
+    design._DIAG["SPARE_BETATRON_TUNE"] = spare_monitor
+
+    forward = design.diagnostic[["BETATRON_TUNE", "SPARE_BETATRON_TUNE"]]
+    backward = design.diagnostic[["SPARE_BETATRON_TUNE", "BETATRON_TUNE"]]
+    assert forward.names() == backward.names() == ["BETATRON_TUNE", "SPARE_BETATRON_TUNE"]
 
 
 def test_diagnostic_bpm_getitem_exact_name_matches_get():

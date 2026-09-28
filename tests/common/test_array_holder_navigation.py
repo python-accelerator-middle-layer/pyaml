@@ -116,11 +116,17 @@ def test_configured_exclusion_family_reproduced_with_selection_and_difference():
 
 
 def test_configured_exclusion_family_reproduced_in_a_single_getitem_call():
-    """The YAML `elements:` selector list (`[QD2*, QF1*, ~QF1E-C05, ~Q???-C06]`) works verbatim through `[]`.
+    """The YAML `elements:` selector list (`[QD2*, QF1*, ~QF1E-C05, ~Q???-C06]`) selects the
+    same *family* of elements through `[]` as declared for `QForTest`.
 
     Selection goes through the top-level holder, not `.magnets`, so it resolves patterns
     against the same global element pool `find_elements()`/`_fill_array` use to build
-    `QForTest` in the YAML, and so lands in the same order.
+    `QForTest` in the YAML. The two therefore agree on *which* elements are selected, but not
+    necessarily on their order: `_fill_array` concatenates matches pattern by pattern (all
+    `QD2*` matches, then all `QF1*` matches) to build the named array, while `[]` (like every
+    other list-selection accessor, see `test_every_accessor_returns_a_list_selection_in_configuration_order`)
+    normalizes its result to configuration order regardless of how many patterns were
+    involved or in what order they matched.
     """
     sr = Accelerator.load("tests/config/EBSTune-patterns.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
@@ -129,7 +135,8 @@ def test_configured_exclusion_family_reproduced_in_a_single_getitem_call():
     reproduced = sr.design[["QD2*", "QF1*", "~QF1E-C05", "~Q???-C06"]]
 
     assert type(reproduced) is type(q_for_test)
-    assert reproduced == q_for_test
+    assert set(reproduced.names()) == set(q_for_test.names())
+    assert reproduced.names() == [n for n in sr.design.get().names() if n in set(q_for_test.names())]
 
 
 def test_array_getitem_supports_a_negated_regex_pattern():
@@ -193,7 +200,9 @@ def test_magnet_holder_getitem_wildcard_returns_a_magnet_array(holder):
 def test_magnet_and_magnets_holder_getitem_agree_on_order(holder):
     """.magnet (singular) and .magnets (plural) must return the same elements in the same
     order for the same name list, regardless of the order the names were requested in. The
-    reference order is the configuration order, not the order of the requested names."""
+    reference order is the configuration order, not the order of the requested names. This
+    must also hold for the top-level holder itself (`[]` and `find_elements`), not just its
+    typed sub-holders."""
     forward = holder.magnet[["SH1A-C01-H", "SH1A-C01-V"]]
     backward = holder.magnet[["SH1A-C01-V", "SH1A-C01-H"]]
     assert forward.names() == backward.names() == ["SH1A-C01-H", "SH1A-C01-V"]
@@ -201,6 +210,33 @@ def test_magnet_and_magnets_holder_getitem_agree_on_order(holder):
     forward_plural = holder.magnets[["SH1A-C01-H", "SH1A-C01-V"]]
     backward_plural = holder.magnets[["SH1A-C01-V", "SH1A-C01-H"]]
     assert forward_plural.names() == backward_plural.names() == forward.names()
+
+    forward_top_level = holder[["SH1A-C01-H", "SH1A-C01-V"]]
+    backward_top_level = holder[["SH1A-C01-V", "SH1A-C01-H"]]
+    assert forward_top_level.names() == backward_top_level.names() == forward.names()
+
+    assert holder.find_elements(["SH1A-C01-H", "SH1A-C01-V"]) == forward.names()
+    assert holder.find_elements(["SH1A-C01-V", "SH1A-C01-H"]) == forward.names()
+
+
+def test_combined_function_magnet_and_bpm_holders_return_list_selections_in_configuration_order(holder):
+    """Every typed sub-holder must normalize list selections to configuration order, not just
+    .magnet/.magnets: this must also hold for .combined_function_magnet(s) and .bpm(s)."""
+    cfm_forward = holder.combined_function_magnet[["SH1A-C01", "SH1A-C02"]]
+    cfm_backward = holder.combined_function_magnet[["SH1A-C02", "SH1A-C01"]]
+    assert cfm_forward.names() == cfm_backward.names() == ["SH1A-C01", "SH1A-C02"]
+
+    cfm_forward_plural = holder.combined_function_magnets[["SH1A-C01", "SH1A-C02"]]
+    cfm_backward_plural = holder.combined_function_magnets[["SH1A-C02", "SH1A-C01"]]
+    assert cfm_forward_plural.names() == cfm_backward_plural.names() == cfm_forward.names()
+
+    bpm_forward = holder.diagnostic.bpm[["BPM_C04-01", "BPM_C04-02"]]
+    bpm_backward = holder.diagnostic.bpm[["BPM_C04-02", "BPM_C04-01"]]
+    assert bpm_forward.names() == bpm_backward.names() == ["BPM_C04-01", "BPM_C04-02"]
+
+    bpm_forward_plural = holder.diagnostic.bpms[["BPM_C04-01", "BPM_C04-02"]]
+    bpm_backward_plural = holder.diagnostic.bpms[["BPM_C04-02", "BPM_C04-01"]]
+    assert bpm_forward_plural.names() == bpm_backward_plural.names() == bpm_forward.names()
 
 
 @pytest.mark.parametrize(
@@ -214,12 +250,29 @@ def test_magnet_and_magnets_holder_getitem_agree_on_order(holder):
     ],
 )
 @pytest.mark.parametrize("reverse", [False, True], ids=["forward", "reversed"])
-def test_every_accessor_returns_a_list_selection_in_configuration_order(holder, select, reverse):
+@pytest.mark.parametrize(
+    "key, expected_members",
+    [
+        pytest.param(
+            ["SH1A-C01-H", "SH1A-C01-V", "SH1A-C02-H"],
+            {"SH1A-C01-H", "SH1A-C01-V", "SH1A-C02-H"},
+            id="literal-names",
+        ),
+        pytest.param(
+            ["SH1A-C0?-H", "SH1A-C01-V"],
+            {"SH1A-C01-H", "SH1A-C02-H", "SH1A-C01-V"},
+            id="wildcard-and-literal",
+        ),
+    ],
+)
+def test_every_accessor_returns_a_list_selection_in_configuration_order(holder, select, reverse, key, expected_members):
     """Every name-based accessor must return a list-of-patterns selection in configuration
-    order, whatever the order of the requested names, so that positional values line up the
-    same way whichever accessor built the array."""
-    key = ["SH1A-C01-H", "SH1A-C01-V", "SH1A-C02-H"]
-    expected = [n for n in holder.get().names() if n in key]
+    order, whatever the order of the requested names/patterns, so that positional values line
+    up the same way whichever accessor built the array. This must hold both for a list of
+    literal names and for a list mixing a wildcard (matching several names) with a literal
+    name, since a wildcard entry is where a naive pattern-order passthrough diverges from
+    configuration order the most visibly."""
+    expected = [n for n in holder.get().names() if n in expected_members]
     assert select(holder, key[::-1] if reverse else key) == expected
 
 

@@ -80,8 +80,8 @@ class RFTransmitterHolder:
         store = self._peer._RFTRANSMITTER
         if isinstance(key, str) and not key.startswith(("re:", "~")) and not is_wildcard(key):
             return self._peer._get("RFTransmitter", key, store)
-        names = resolve_names(store.keys(), key, what="RFTransmitter")
-        return ElementArray("", [store[n] for n in names])
+        matched = set(resolve_names(store.keys(), key, what="RFTransmitter"))
+        return ElementArray("", [v for n, v in store.items() if n in matched])
 
     def add(self, rf: RFTransmitter):
         """
@@ -195,8 +195,8 @@ class RFHolder:
         store = self._peer._RFPLANT
         if isinstance(key, str) and not key.startswith(("re:", "~")) and not is_wildcard(key):
             return self._peer._get("RFPlant", key, store)
-        names = resolve_names(store.keys(), key, what="RFPlant")
-        return ElementArray("", [store[n] for n in names])
+        matched = set(resolve_names(store.keys(), key, what="RFPlant"))
+        return ElementArray("", [v for n, v in store.items() if n in matched])
 
     def add(self, rf: RFPlant):
         """
