@@ -112,14 +112,14 @@ print(f"Reset to {str_before:.4f}")
 
 # ### Standard tune correction tool
 #
-# `SR.tune` is the `DEFAULT_TUNE_CORRECTION` tool. `SR.trm` is the `DEFAULT_TUNE_RESPONSE_MATRIX` tool.
+# `SR.tool.tune` is the `DEFAULT_TUNE_CORRECTION` tool. `SR.tool.trm` is the `DEFAULT_TUNE_RESPONSE_MATRIX` tool.
 #
 # Before correcting the tune you need a response matrix. It can be measured (below) or loaded from a previously saved file.
 
 # In[7]:
 
 
-print(SR.tune)  # string representation
+print(SR.tool.tune)  # string representation
 
 
 # #### Measuring the tune response matrix
@@ -145,36 +145,36 @@ def tune_callback(action: int, cb_data: dict):
 # In[9]:
 
 
-if SR.tune.response_matrix is None:
-    SR.trm.measure(sleep_between_step=wait_time, callback=tune_callback)
-    SR.trm.save(CONFIG_DIR / "trm.json")
+if SR.tool.tune.response_matrix is None:
+    SR.tool.trm.measure(sleep_between_step=wait_time, callback=tune_callback)
+    SR.tool.trm.save(CONFIG_DIR / "trm.json")
 
-SR.tune.load(CONFIG_DIR / "trm.json")
+SR.tool.tune.load(CONFIG_DIR / "trm.json")
 print("Response matrix loaded.")
-print(SR.trm)  # string representation
+print(SR.tool.trm)  # string representation
 
 
 # #### Correcting the tune
 #
-# `SR.tune.set([qx, qy])` runs the correction iteratively. The `iter` parameter controls
+# `SR.tool.tune.set([qx, qy])` runs the correction iteratively. The `iter` parameter controls
 # the number of iterations and `wait_time` the settling time between each iteration.
 
 # In[10]:
 
 
-print(f"Tune before correction: {SR.tune.readback()}")
+print(f"Tune before correction: {SR.tool.tune.readback()}")
 
 qx, qy = 0.19, 0.28
 print(f"\nSetting tune to [{qx}, {qy}]")
-SR.tune.set([qx, qy], iter=10, wait_time=wait_time)
-print(f"Tune after correction: {SR.tune.readback()}")
+SR.tool.tune.set([qx, qy], iter=10, wait_time=wait_time)
+print(f"Tune after correction: {SR.tool.tune.readback()}")
 
 qx, qy = 0.21, 0.30
 print(f"\nSetting tune to [{qx}, {qy}]")
-SR.tune.set([qx, qy], iter=10, wait_time=wait_time)
-print(f"Tune after correction: {SR.tune.readback()}")
+SR.tool.tune.set([qx, qy], iter=10, wait_time=wait_time)
+print(f"Tune after correction: {SR.tool.tune.readback()}")
 
-print(SR.tune)  # string representation
+print(SR.tool.tune)  # string representation
 
 
 # In[ ]:

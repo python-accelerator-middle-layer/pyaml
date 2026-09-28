@@ -102,8 +102,8 @@ class ORM(Device):
 
     def orm_run(self):
         # On design sleep 10ms to allow thread schedule
-        self.SR.design.orm.measure(callback=orbit_callback, sleep_between_meas=0.01)
-        self.orm_data = self.SR.design.orm.get()
+        self.SR.design.tool.orm.measure(callback=orbit_callback, sleep_between_meas=0.01)
+        self.orm_data = self.SR.design.tool.orm.get()
         self.set_status(f"Ready to scan: {self.ConfigFileName}")
         self.set_state(DevState.ON)
 

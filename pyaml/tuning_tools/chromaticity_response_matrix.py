@@ -151,10 +151,10 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
             sr = Accelerator.load("tests/config/EBSOrbit.yaml")
             acc = sr.design
 
-            if acc.crm.measure(callback=callback):
-                acc.crm.save("ideal_crm.json")
-                acc.crm.save("ideal_crm.yaml", with_type="yaml")
-                acc.crm.save("ideal_crm.npz", with_type="npz")
+            if acc.tool.crm.measure(callback=callback):
+                acc.tool.crm.save("ideal_crm.json")
+                acc.tool.crm.save("ideal_crm.yaml", with_type="yaml")
+                acc.tool.crm.save("ideal_crm.npz", with_type="npz")
 
         Parameters
         ----------

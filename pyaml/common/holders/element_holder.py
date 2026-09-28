@@ -66,11 +66,6 @@ class ElementHolder(metaclass=ABCMeta):
         Diagnostics of this mode, with typed default-name access.
     tool
         Tuning and measurement tools of this mode, with typed default-name access.
-    tune, chromaticity, orbit, dispersion
-        Backward-compatible aliases for ``tool.tune``, ``tool.chromaticity``, ``tool.orbit``
-        and ``tool.dispersion``.
-    trm, crm, orm
-        Backward-compatible aliases for ``tool.trm``, ``tool.crm`` and ``tool.orm``.
 
     Methods
     -------
@@ -695,16 +690,6 @@ class ElementHolder(metaclass=ABCMeta):
         """
         return self._get("ChromaticityResponseMatrix tool", name, self._TOOLS)
 
-    @property
-    def chromaticity(self) -> "Chromaticity":
-        """Return the chromaticity. Alias for ``tool.chromaticity``."""
-        return self.tool.chromaticity
-
-    @property
-    def crm(self) -> "ChromaticityResponseMatrix":
-        """Return the crm. Alias for ``tool.crm``."""
-        return self.tool.crm
-
     # ---- Tune ---------------------------------------------------------
 
     def get_tune_tuning(self, name: str) -> "Tune":
@@ -723,11 +708,6 @@ class ElementHolder(metaclass=ABCMeta):
         """
         return self._get("Tune tuning tool", name, self._TOOLS)
 
-    @property
-    def tune(self) -> "Tune":
-        """Return the tune. Alias for ``tool.tune``."""
-        return self.tool.tune
-
     def get_trm_tuning(self, name: str) -> "TuneResponseMatrix":
         """
         Return a named tune response-matrix tool.
@@ -743,11 +723,6 @@ class ElementHolder(metaclass=ABCMeta):
             The tune response-matrix tool registered under ``name``.
         """
         return self._get("TuneResponseMatrix tool", name, self._TOOLS)
-
-    @property
-    def trm(self) -> "TuneResponseMatrix":
-        """Return the default tune response-matrix tool. Alias for ``tool.trm``."""
-        return self.tool.trm
 
     # ---- Orbit --------------------------------------------------------
 
@@ -767,11 +742,6 @@ class ElementHolder(metaclass=ABCMeta):
         """
         return self._get("Orbit tuning tool", name, self._TOOLS)
 
-    @property
-    def orbit(self) -> "Orbit":
-        """Return the orbit. Alias for ``tool.orbit``."""
-        return self.tool.orbit
-
     def get_orm_tuning(self, name: str) -> "OrbitResponseMatrix":
         """
         Return a named orbit response-matrix tool.
@@ -787,11 +757,6 @@ class ElementHolder(metaclass=ABCMeta):
             The orbit response-matrix tool registered under ``name``.
         """
         return self._get("OrbitResponseMatrix tool", name, self._TOOLS)
-
-    @property
-    def orm(self) -> "OrbitResponseMatrix":
-        """Return the default orbit response-matrix tool. Alias for ``tool.orm``."""
-        return self.tool.orm
 
     # ---- BBA --------------------------------------------------------
 
@@ -828,11 +793,6 @@ class ElementHolder(metaclass=ABCMeta):
             The dispersion tuning tool registered under ``name``.
         """
         return self._get("Dispersion tool", name, self._TOOLS)
-
-    @property
-    def dispersion(self) -> "Dispersion":
-        """Return the dispersion. Alias for ``tool.dispersion``."""
-        return self.tool.dispersion
 
     def _get_array(self, name: str):
         """

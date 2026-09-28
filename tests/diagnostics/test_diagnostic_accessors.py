@@ -54,7 +54,7 @@ def test_diagnostic_raises_when_default_wrong_type():
     ).design
 
     # Swap the registered default so it points to an object of the wrong type.
-    design._DIAG["BETATRON_TUNE"] = design.orbit
+    design._DIAG["BETATRON_TUNE"] = design.tool.orbit
 
     with pytest.raises(PyAMLException) as exc:
         _ = design.diagnostic.betatron_tune

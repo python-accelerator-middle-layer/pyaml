@@ -40,12 +40,6 @@ class ToolHolder:
     get(name=None)
         Return a named tool, or all configured tools when no name is given.
 
-    Notes
-    -----
-    :attr:`ElementHolder.tune <pyaml.common.holders.element_holder.ElementHolder.tune>`,
-    ``.trm``, ``.orbit``, ``.orm``, ``.chromaticity``, ``.crm`` and ``.dispersion`` are
-    backward-compatible aliases for the corresponding properties here.
-
     Examples
     --------
     >>> tune_correction = sr.live.tool.tune
@@ -137,7 +131,7 @@ class ToolHolder:
         from ...tuning_tools.chromaticity import Chromaticity
 
         name = "DEFAULT_CHROMATICITY_CORRECTION"
-        return self._validate_type(name, self._peer.get_chromaticity_tuning(name), Chromaticity)
+        return self._validate_type(name, self.get(name), Chromaticity)
 
     @property
     def crm(self) -> "ChromaticityResponseMatrix":
@@ -145,7 +139,7 @@ class ToolHolder:
         from ...tuning_tools.chromaticity_response_matrix import ChromaticityResponseMatrix
 
         name = "DEFAULT_CHROMATICITY_RESPONSE_MATRIX"
-        return self._validate_type(name, self._peer.get_crm_tuning(name), ChromaticityResponseMatrix)
+        return self._validate_type(name, self.get(name), ChromaticityResponseMatrix)
 
     @property
     def tune(self) -> "Tune":
@@ -153,7 +147,7 @@ class ToolHolder:
         from ...tuning_tools.tune import Tune
 
         name = "DEFAULT_TUNE_CORRECTION"
-        return self._validate_type(name, self._peer.get_tune_tuning(name), Tune)
+        return self._validate_type(name, self.get(name), Tune)
 
     @property
     def trm(self) -> "TuneResponseMatrix":
@@ -161,7 +155,7 @@ class ToolHolder:
         from ...tuning_tools.tune_response_matrix import TuneResponseMatrix
 
         name = "DEFAULT_TUNE_RESPONSE_MATRIX"
-        return self._validate_type(name, self._peer.get_trm_tuning(name), TuneResponseMatrix)
+        return self._validate_type(name, self.get(name), TuneResponseMatrix)
 
     @property
     def orbit(self) -> "Orbit":
@@ -169,7 +163,7 @@ class ToolHolder:
         from ...tuning_tools.orbit import Orbit
 
         name = "DEFAULT_ORBIT_CORRECTION"
-        return self._validate_type(name, self._peer.get_orbit_tuning(name), Orbit)
+        return self._validate_type(name, self.get(name), Orbit)
 
     @property
     def orm(self) -> "OrbitResponseMatrix":
@@ -177,7 +171,7 @@ class ToolHolder:
         from ...tuning_tools.orbit_response_matrix import OrbitResponseMatrix
 
         name = "DEFAULT_ORBIT_RESPONSE_MATRIX"
-        return self._validate_type(name, self._peer.get_orm_tuning(name), OrbitResponseMatrix)
+        return self._validate_type(name, self.get(name), OrbitResponseMatrix)
 
     @property
     def dispersion(self) -> "Dispersion":
@@ -185,7 +179,7 @@ class ToolHolder:
         from ...tuning_tools.dispersion import Dispersion
 
         name = "DEFAULT_DISPERSION"
-        return self._validate_type(name, self._peer.get_dispersion_tuning(name), Dispersion)
+        return self._validate_type(name, self.get(name), Dispersion)
 
     def __repr__(self):
         return __pyaml_repr__(self)

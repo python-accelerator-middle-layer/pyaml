@@ -15,7 +15,7 @@ def test_tuning_orm():
     sr = Accelerator.load(config_path)
     element_holder = sr.design
 
-    orm = element_holder.orm
+    orm = element_holder.tool.orm
 
     bpms = element_holder.diagnostic.bpms.get("BPM")
     hcorr_names = element_holder.magnets.get("HCorr").names()[:4]
@@ -31,4 +31,4 @@ def test_tuning_orm():
         orm.save(save_path=f.name)
 
         # load saved file
-        element_holder.orbit.load(f.name)
+        element_holder.tool.orbit.load(f.name)
