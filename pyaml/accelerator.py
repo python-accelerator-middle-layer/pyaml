@@ -392,6 +392,10 @@ class Accelerator(DynamicValidation):
         """
 
         manager = ConfigurationManager()
+        # ensure TemplateManager is clean before loading a new accelerator config
+        from .configuration.template import TemplateManager
+
+        TemplateManager.clear()
 
         if not validate and include_locations:
             warnings.warn(

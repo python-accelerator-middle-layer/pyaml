@@ -293,6 +293,39 @@ def resolve_file(value: str, context: LoadContext | None = None) -> Any:
     return _load(value, context)
 
 
+@resolver("template")
+def resolve_template(value: str, _context: LoadContext | None = None) -> Any:
+    """
+    Resolve a configuration by template.
+
+    Parameters
+    ----------
+    value : str
+        Name and arguments of the template.
+        Must be in the format: NAME,ARG1,ARG2,...
+    _context : LoadContext or None, optional
+        Unused loading context retained for resolver compatibility.
+
+    Returns
+    -------
+    object
+        Parsed and expanded configuration data.
+
+    Raises
+    ------
+    PyAMLException
+        If the environment variable is not set.
+    """
+    try:
+        from .template import TemplateManager
+
+        name, args = value.split(",", maxsplit=1)
+        arguments = args.split(",")
+        return TemplateManager.generate(name, *arguments)
+    except KeyError as exc:
+        raise PyAMLException(f"Invalid template resolver call {value}.") from exc
+
+
 def load(filename: str, include_locations: bool = False) -> Union[dict, list]:
     """
     Load a configuration file.
@@ -363,6 +396,16 @@ class ConfigLoader(ABC):
         """
 
         if isinstance(obj, dict):
+            if "templates" in obj:
+                from .template import TemplateManager
+
+                if "templates" in obj:
+                    templates = obj.pop("templates")
+                    for template in templates:
+                        TemplateManager.add(
+                            name=template["name"], parameters=template["parameters"], config=template["config"]
+                        )
+
             return self._expand_dict(obj)
         if isinstance(obj, list):
             return self._expand_list(obj)
