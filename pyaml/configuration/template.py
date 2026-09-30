@@ -9,13 +9,15 @@ file, environment, or template references.
 import copy
 import logging
 import re
+from collections.abc import Mapping
+from typing import Any
 
 from ..common.exception import PyAMLConfigException
 
 logger = logging.getLogger(__name__)
 
 
-def substitute(obj, arguments):
+def substitute(obj: Any, arguments: Mapping[str, object]) -> Any:
     """
     Recursively substitute named placeholders in configuration values.
 
@@ -24,7 +26,7 @@ def substitute(obj, arguments):
     obj : object
         Configuration value to process. Dictionaries and lists are traversed;
         dictionary keys and non-string scalar values are left unchanged.
-    arguments : dict[str, object]
+    arguments : Mapping[str, object]
         Parameter names mapped to replacement values, converted to strings.
 
     Returns
@@ -65,12 +67,12 @@ class TemplateManager:
         Remove all definitions from this registry.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize an empty template registry."""
         self.template_parameters: dict[str, list[str]] = {}
-        self.template_codes: dict[str, dict] = {}
+        self.template_codes: dict[str, dict[str, Any]] = {}
 
-    def add(self, name: str, parameters: list[str], config: dict):
+    def add(self, name: str, parameters: list[str], config: dict[str, Any]) -> None:
         """
         Register a template, copying its parameters and configuration.
 
@@ -80,7 +82,7 @@ class TemplateManager:
             Template name, unique within this registry.
         parameters : list[str]
             Parameter names in the order expected by :meth:`generate`.
-        config : dict
+        config : dict[str, Any]
             Configuration body containing ``{parameter}`` placeholders.
 
         Raises
@@ -94,7 +96,7 @@ class TemplateManager:
         self.template_parameters[name] = list(parameters)
         self.template_codes[name] = copy.deepcopy(config)
 
-    def generate(self, name: str, *args):
+    def generate(self, name: str, *args: object) -> dict[str, Any]:
         """
         Generate a configuration by substituting positional arguments.
 
@@ -108,7 +110,7 @@ class TemplateManager:
 
         Returns
         -------
-        dict
+        dict[str, Any]
             Independent configuration with placeholders replaced. Resolver
             expressions and file references are left for the loader to expand.
 
@@ -134,7 +136,7 @@ class TemplateManager:
             )
 
         # name the arguments by position
-        arguments_dict = {}
+        arguments_dict: dict[str, object] = {}
         for arg_name, arg_value in zip(self.template_parameters[name], args, strict=True):
             # check if {...} is included in any of the arguments, and a raise a warning if so.
             if re.search(r"\{[^{}]+\}", str(arg_value)):
@@ -148,7 +150,7 @@ class TemplateManager:
 
         return config
 
-    def clear(self):
+    def clear(self) -> None:
         """Remove all definitions from this registry without affecting other instances."""
         self.template_parameters.clear()
         self.template_codes.clear()
