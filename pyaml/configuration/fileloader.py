@@ -1,8 +1,9 @@
 """
 Load PyAML configuration files and expand nested references.
 
-The loader supports YAML and JSON files, environment and path resolvers,
-recursive file includes, and optional source-location metadata for diagnostics.
+The loader supports YAML and JSON files, parameterized templates, environment
+and path resolvers, recursive file includes, and optional source-location
+metadata for diagnostics.
 """
 
 import io
@@ -139,6 +140,9 @@ class LoadContext:
         Preserve source locations in loaded mappings.
     include_stack : list[pathlib.Path], optional
         Active include chain. Usually left empty for a new session.
+    expand : callable or None, optional
+        Callback used to expand generated configurations. Installed temporarily
+        by the active file loader and restored when that loader finishes.
     templates : TemplateManager, optional
         Template registry shared by files in this session. Defaults to a fresh registry.
 
@@ -302,15 +306,17 @@ def resolve_file(value: str, context: LoadContext | None = None) -> Any:
 @resolver("template")
 def resolve_template(value: str, context: LoadContext | None = None) -> Any:
     """
-    Resolve a configuration by template.
+    Instantiate a template and recursively expand its configuration.
 
     Parameters
     ----------
     value : str
-        Name and arguments of the template.
-        Must be in the format: NAME,ARG1,ARG2,... or NAME for no arguments.
+        Name and comma-separated string arguments in the format
+        ``NAME,ARG1,ARG2,...``, or ``NAME`` for no arguments. A trailing comma
+        supplies an empty-string argument. Commas in arguments are not escaped.
     context : LoadContext or None, optional
-        Active loading context providing the template registry and expansion callback.
+        Active loading context providing the template registry and expansion
+        callback. Required for resolution despite the compatibility default.
 
     Returns
     -------
@@ -320,7 +326,10 @@ def resolve_template(value: str, context: LoadContext | None = None) -> Any:
     Raises
     ------
     PyAMLException
-        If the template call is invalid or expansion exceeds the recursion limit.
+        If the active context is missing, the template name is unknown, or
+        expansion exceeds the recursion limit. Expansion errors also propagate.
+    PyAMLConfigException
+        If the number of arguments does not match the template parameters.
     """
     if context is None or context.expand is None:
         raise PyAMLException("Template resolver requires an active loading context.")
@@ -342,13 +351,31 @@ def resolve_template(value: str, context: LoadContext | None = None) -> Any:
 
 def load(filename: str, include_locations: bool = False, *, templates: TemplateManager | None = None) -> Union[dict, list]:
     """
-    Load a configuration file.
+    Load a configuration file, register templates, and expand references.
 
-    When include_locations is False, uses the faster C-based YAML loader
-    and skips including source location metadata.
+    Parameters
+    ----------
+    filename : str
+        YAML or JSON filename. Relative paths are resolved against ``ROOT``.
+    include_locations : bool, optional
+        Preserve source-location metadata in YAML mappings. Defaults to False,
+        which uses the faster C-based YAML loader without location metadata.
+    templates : TemplateManager or None, optional
+        Registry to share across configuration fragments. If omitted, a fresh
+        registry is created. Included files share the same registry.
 
-    ``templates`` may be supplied to share definitions across configuration
-    fragments. When omitted, this load gets its own registry.
+    Returns
+    -------
+    dict or list
+        Expanded configuration with root-level template definitions removed.
+
+    Raises
+    ------
+    PyAMLException
+        If the file format is unsupported, parsing fails, or reference
+        expansion fails.
+    PyAMLConfigException
+        If template registration or argument-count validation fails.
     """
 
     # Create a new context
@@ -401,6 +428,8 @@ class ConfigLoader(ABC):
     -------
     expand(obj)
         Recursively expand configuration values.
+    register_templates(config)
+        Register and remove root-level template definitions before expansion.
     load()
         Load and parse the current configuration file.
     """
@@ -574,6 +603,23 @@ class ConfigLoader(ABC):
         return expanded
 
     def register_templates(self, config):
+        """
+        Register root-level templates in the current loading context.
+
+        Parameters
+        ----------
+        config : object
+            Parsed configuration. For dictionaries, the ``templates`` section
+            is removed in place and its definitions are registered. Other
+            values are left unchanged.
+
+        Raises
+        ------
+        PyAMLConfigException
+            If a template name is already registered in this context's registry.
+        KeyError
+            If a definition lacks ``name``, ``parameters``, or ``config``.
+        """
         if not isinstance(config, dict):
             return
 
@@ -604,7 +650,7 @@ class YAMLLoader(ConfigLoader):
     Methods
     -------
     load()
-        Parse the YAML file and expand nested configuration references.
+        Parse YAML, register root-level templates, and expand references.
     """
 
     def __init__(self, path: Path, context: LoadContext):
@@ -614,7 +660,7 @@ class YAMLLoader(ConfigLoader):
         self._loader = SafeLineLoader if context.include_locations else CLoader
 
     def load(self) -> Union[dict, list]:
-        """Parse the YAML file and expand nested configuration references."""
+        """Parse YAML, register root-level templates, and expand configuration references."""
 
         logger.log(logging.DEBUG, f"Loading YAML file '{self.path}'")
         with open(self.path) as file:
@@ -641,7 +687,7 @@ class JSONLoader(ConfigLoader):
     Methods
     -------
     load()
-        Parse the JSON file and expand nested configuration references.
+        Parse JSON, register root-level templates, and expand references.
     """
 
     def __init__(self, path: Path, context: LoadContext):
@@ -650,7 +696,7 @@ class JSONLoader(ConfigLoader):
         super().__init__(path, context)
 
     def load(self) -> Union[dict, list]:
-        """Parse the JSON file and expand nested configuration references."""
+        """Parse JSON, register root-level templates, and expand configuration references."""
 
         logger.log(logging.DEBUG, f"Loading JSON file '{self.path}'")
         with open(self.path) as file:

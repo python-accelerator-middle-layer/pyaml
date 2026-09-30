@@ -290,12 +290,14 @@ class ConfigurationManager:
 
     def clear(self, category: str | None = None) -> None:
         r"""
-        Clear the aggregated state, or a single root field/category.
+        Clear all configuration state and templates, or one root field/category.
 
         Parameters
         ----------
         category : str, optional
-            If provided, only that category or root field is cleared.
+            If provided, only that category or root field is cleared and
+            template definitions are retained. If omitted, all aggregated
+            state and this manager's template registry are cleared.
 
         Examples
         --------
