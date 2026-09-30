@@ -70,7 +70,7 @@ class TemplateManager:
     def __init__(self) -> None:
         """Initialize an empty template registry."""
         self.template_parameters: dict[str, list[str]] = {}
-        self.template_codes: dict[str, dict[str, Any]] = {}
+        self.template_configs: dict[str, dict[str, Any]] = {}
 
     def add(self, name: str, parameters: list[str], config: dict[str, Any]) -> None:
         """
@@ -90,11 +90,11 @@ class TemplateManager:
         PyAMLConfigException
             If the name is already registered.
         """
-        if name in self.template_codes:
+        if name in self.template_configs:
             raise PyAMLConfigException(f"Template '{name}' has already been registered.")
 
         self.template_parameters[name] = list(parameters)
-        self.template_codes[name] = copy.deepcopy(config)
+        self.template_configs[name] = copy.deepcopy(config)
 
     def generate(self, name: str, *args: object) -> dict[str, Any]:
         """
@@ -146,11 +146,11 @@ class TemplateManager:
                 )
             arguments_dict[arg_name] = arg_value
 
-        config = substitute(copy.deepcopy(self.template_codes[name]), arguments_dict)
+        config = substitute(copy.deepcopy(self.template_configs[name]), arguments_dict)
 
         return config
 
     def clear(self) -> None:
         """Remove all definitions from this registry without affecting other instances."""
         self.template_parameters.clear()
-        self.template_codes.clear()
+        self.template_configs.clear()
