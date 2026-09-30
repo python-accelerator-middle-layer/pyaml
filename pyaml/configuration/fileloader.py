@@ -15,7 +15,7 @@ from collections.abc import Callable, Hashable
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any, Union
 
 import yaml
 from yaml import CLoader
@@ -139,6 +139,8 @@ class LoadContext:
         Preserve source locations in loaded mappings.
     include_stack : list[pathlib.Path], optional
         Active include chain. Usually left empty for a new session.
+    templates : TemplateManager, optional
+        Template registry shared by files in this session. Defaults to a fresh registry.
 
     Methods
     -------
@@ -148,8 +150,9 @@ class LoadContext:
 
     include_locations: bool = False
     include_stack: list[Path] = field(default_factory=list)
-    expand: Optional[Callable] = None
+    expand: Callable[[Any], Any] | None = None
     # Is populated with ConfigLoader's expand function for use in template resolver
+    templates: TemplateManager = field(default_factory=TemplateManager)
 
     @contextmanager
     def loading(self, path: Path):
@@ -306,8 +309,8 @@ def resolve_template(value: str, context: LoadContext | None = None) -> Any:
     value : str
         Name and arguments of the template.
         Must be in the format: NAME,ARG1,ARG2,...
-    _context : LoadContext or None, optional
-        Unused loading context retained for resolver compatibility.
+    context : LoadContext or None, optional
+        Active loading context providing the template registry and expansion callback.
 
     Returns
     -------
@@ -317,15 +320,16 @@ def resolve_template(value: str, context: LoadContext | None = None) -> Any:
     Raises
     ------
     PyAMLException
-        If the environment variable is not set.
+        If the template call is invalid or expansion exceeds the recursion limit.
     """
-    try:
-        from .template import TemplateManager
+    if context is None or context.expand is None:
+        raise PyAMLException("Template resolver requires an active loading context.")
 
+    try:
         name, args = value.split(",", maxsplit=1)
         arguments = args.split(",")
         try:
-            generated = TemplateManager.generate(name, *arguments)
+            generated = context.templates.generate(name, *arguments)
             return context.expand(generated)
         except RecursionError as exc:
             raise PyAMLException(
@@ -336,16 +340,22 @@ def resolve_template(value: str, context: LoadContext | None = None) -> Any:
         raise PyAMLException(f"Invalid template resolver call {value}.") from exc
 
 
-def load(filename: str, include_locations: bool = False) -> Union[dict, list]:
+def load(filename: str, include_locations: bool = False, *, templates: TemplateManager | None = None) -> Union[dict, list]:
     """
     Load a configuration file.
 
     When include_locations is False, uses the faster C-based YAML loader
     and skips including source location metadata.
+
+    ``templates`` may be supplied to share definitions across configuration
+    fragments. When omitted, this load gets its own registry.
     """
 
     # Create a new context
-    context = LoadContext(include_locations=include_locations)
+    context = LoadContext(
+        include_locations=include_locations,
+        templates=templates if templates is not None else TemplateManager(),
+    )
 
     return _load(filename, context)
 
@@ -363,8 +373,12 @@ def _load(filename: str, context: LoadContext) -> Union[dict, list]:
         else:
             raise PyAMLException(f"{filename} File format not supported (only .yaml .yml or .json)")
 
+        previous_expand = context.expand
         context.expand = loader.expand
-        return loader.load()
+        try:
+            return loader.load()
+        finally:
+            context.expand = previous_expand
 
 
 def _is_supported_file(value: Any) -> bool:
@@ -564,7 +578,7 @@ class ConfigLoader(ABC):
             return
 
         for template in config.pop("templates", []):
-            TemplateManager.add(
+            self.context.templates.add(
                 name=template["name"],
                 parameters=template["parameters"],
                 config=template["config"],

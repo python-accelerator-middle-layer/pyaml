@@ -24,6 +24,7 @@ from typing import Any
 from ..common.exception import PyAMLConfigException
 from .fileloader import ROOT, load
 from .restfetcher import REMOTE_BASE_URL_KEY, SourceRoot, fetch_remote_config, is_remote_url, resolve_reference
+from .template import TemplateManager
 
 _INTERNAL_METADATA_KEYS = {"__location__", "__fieldlocations__", REMOTE_BASE_URL_KEY}
 _VALID_QUERY_KEY_RE = re.compile(r"^[A-Z0-9_]+$")
@@ -59,7 +60,7 @@ class ConfigurationManager:
     replace(category, element)
         Replace an existing named entry in an aggregated category.
     clear(category=None)
-        Clear the aggregated state, or a single root field/category.
+        Clear the aggregated state and templates, or a single root field/category.
     categories()
         Return categories that currently contain entries.
     keys(category=None)
@@ -156,7 +157,8 @@ class ConfigurationManager:
         Initialize an empty configuration manager.
 
         The manager starts with the default accelerator type and empty named
-        categories.  Source tracking is enabled as fragments are added.
+        categories. Source tracking is enabled as fragments are added. Local
+        file fragments share this manager's private template registry.
         """
         self._state: dict[str, Any] = {"class_path": self.DEFAULT_CLASS_PATH}
         self._items_by_category: dict[str, dict[str, dict[str, Any]]] = {category: {} for category in self.NAMED_CATEGORIES}
@@ -164,6 +166,7 @@ class ConfigurationManager:
         self._field_sources: dict[str, str] = {}
         self._build_root: SourceRoot = ROOT.get()
         self._build_root_locked = False
+        self._templates = TemplateManager()
 
     def add(self, payload, **kwargs) -> None:
         r"""
@@ -306,6 +309,7 @@ class ConfigurationManager:
             >>> manager.clear()
         """
         if category is None:
+            self._templates.clear()
             self._state = {"class_path": self.DEFAULT_CLASS_PATH}
             self._field_sources.clear()
             for name in self.NAMED_CATEGORIES:
@@ -698,7 +702,7 @@ class ConfigurationManager:
         source_root = resolved_path.parent
         try:
             ROOT.set(source_root)
-            fragment = load(resolved_path.name, include_locations)
+            fragment = load(resolved_path.name, include_locations, templates=self._templates)
         finally:
             ROOT.set(previous_root)
 

@@ -2,7 +2,6 @@ import copy
 import logging
 import re
 
-from ..common.element import Element
 from ..common.exception import PyAMLConfigException
 
 logger = logging.getLogger(__name__)
@@ -21,22 +20,21 @@ def substitute(obj, arguments):
 
 
 class TemplateManager:
-    template_names = []
-    template_parameters = {}
-    template_codes = {}
+    """Store template definitions for one configuration manager or loading session."""
 
-    @classmethod
-    def add(cls, name: str, parameters: list[str], config: dict):
-        if name in cls.template_names:
-            raise PyAMLConfigException("Template '{name}' has already been registered.")
+    def __init__(self):
+        self.template_parameters: dict[str, list[str]] = {}
+        self.template_codes: dict[str, dict] = {}
 
-        cls.template_names.append(name)
-        cls.template_parameters[name] = parameters
-        cls.template_codes[name] = config
+    def add(self, name: str, parameters: list[str], config: dict):
+        if name in self.template_codes:
+            raise PyAMLConfigException(f"Template '{name}' has already been registered.")
 
-    @classmethod
-    def generate(cls, name: str, *args):
-        number_of_parameters = len(cls.template_parameters[name])
+        self.template_parameters[name] = list(parameters)
+        self.template_codes[name] = copy.deepcopy(config)
+
+    def generate(self, name: str, *args):
+        number_of_parameters = len(self.template_parameters[name])
         number_of_arguments = len(args)
 
         if number_of_parameters != number_of_arguments:
@@ -47,7 +45,7 @@ class TemplateManager:
 
         # name the arguments by position
         arguments_dict = {}
-        for arg_name, arg_value in zip(cls.template_parameters[name], args, strict=True):
+        for arg_name, arg_value in zip(self.template_parameters[name], args, strict=True):
             # check if {...} is included in any of the arguments, and a raise a warning if so.
             if re.search(r"\{[^{}]+\}", str(arg_value)):
                 logger.warning(
@@ -56,12 +54,10 @@ class TemplateManager:
                 )
             arguments_dict[arg_name] = arg_value
 
-        config = substitute(copy.deepcopy(cls.template_codes[name]), arguments_dict)
+        config = substitute(copy.deepcopy(self.template_codes[name]), arguments_dict)
 
         return config
 
-    @classmethod
-    def clear(cls):
-        cls.template_names = []
-        cls.template_parameters = {}
-        cls.template_codes = {}
+    def clear(self):
+        self.template_parameters.clear()
+        self.template_codes.clear()
