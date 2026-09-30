@@ -15,7 +15,7 @@ from collections.abc import Callable, Hashable
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Union
+from typing import Any, Optional, Union
 
 import yaml
 from yaml import CLoader
@@ -23,6 +23,7 @@ from yaml.constructor import ConstructorError
 from yaml.loader import SafeLoader
 
 from .. import PyAMLException
+from .template import TemplateManager
 
 logger = logging.getLogger(__name__)
 
@@ -147,6 +148,8 @@ class LoadContext:
 
     include_locations: bool = False
     include_stack: list[Path] = field(default_factory=list)
+    expand: Optional[Callable] = None
+    # Is populated with ConfigLoader's expand function for use in template resolver
 
     @contextmanager
     def loading(self, path: Path):
@@ -321,7 +324,8 @@ def resolve_template(value: str, _context: LoadContext | None = None) -> Any:
 
         name, args = value.split(",", maxsplit=1)
         arguments = args.split(",")
-        return TemplateManager.generate(name, *arguments)
+        generated = TemplateManager.generate(name, *arguments)
+        return _context.expand(generated)
     except KeyError as exc:
         raise PyAMLException(f"Invalid template resolver call {value}.") from exc
 
@@ -353,6 +357,7 @@ def _load(filename: str, context: LoadContext) -> Union[dict, list]:
         else:
             raise PyAMLException(f"{filename} File format not supported (only .yaml .yml or .json)")
 
+        context.expand = loader.expand
         return loader.load()
 
 
@@ -396,16 +401,6 @@ class ConfigLoader(ABC):
         """
 
         if isinstance(obj, dict):
-            if "templates" in obj:
-                from .template import TemplateManager
-
-                if "templates" in obj:
-                    templates = obj.pop("templates")
-                    for template in templates:
-                        TemplateManager.add(
-                            name=template["name"], parameters=template["parameters"], config=template["config"]
-                        )
-
             return self._expand_dict(obj)
         if isinstance(obj, list):
             return self._expand_list(obj)
@@ -558,6 +553,17 @@ class ConfigLoader(ABC):
 
         return expanded
 
+    def register_templates(self, config):
+        if not isinstance(config, dict):
+            return
+
+        for template in config.pop("templates", []):
+            TemplateManager.add(
+                name=template["name"],
+                parameters=template["parameters"],
+                config=template["config"],
+            )
+
     @abstractmethod
     def load(self) -> Union[dict, list]:
         """Load and parse the current configuration file."""
@@ -593,7 +599,10 @@ class YAMLLoader(ConfigLoader):
         logger.log(logging.DEBUG, f"Loading YAML file '{self.path}'")
         with open(self.path) as file:
             try:
-                return self.expand(yaml.load(file, Loader=self._loader))
+                parsed_config = yaml.load(file, Loader=self._loader)
+                # "templates" is popped out here if it exists
+                self.register_templates(parsed_config)
+                return self.expand(parsed_config)
             except yaml.YAMLError as exc:
                 raise PyAMLException(f"{self.path}: {exc}") from exc
 
@@ -626,7 +635,10 @@ class JSONLoader(ConfigLoader):
         logger.log(logging.DEBUG, f"Loading JSON file '{self.path}'")
         with open(self.path) as file:
             try:
-                return self.expand(json.load(file))
+                parsed_config = json.load(file)
+                # "templates" is popped out here if it exists
+                self.register_templates(parsed_config)
+                return self.expand(parsed_config)
             except json.JSONDecodeError as exc:
                 raise PyAMLException(f"{self.path}: {exc}") from exc
 
