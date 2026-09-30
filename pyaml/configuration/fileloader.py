@@ -308,7 +308,7 @@ def resolve_template(value: str, context: LoadContext | None = None) -> Any:
     ----------
     value : str
         Name and arguments of the template.
-        Must be in the format: NAME,ARG1,ARG2,...
+        Must be in the format: NAME,ARG1,ARG2,... or NAME for no arguments.
     context : LoadContext or None, optional
         Active loading context providing the template registry and expansion callback.
 
@@ -326,8 +326,8 @@ def resolve_template(value: str, context: LoadContext | None = None) -> Any:
         raise PyAMLException("Template resolver requires an active loading context.")
 
     try:
-        name, args = value.split(",", maxsplit=1)
-        arguments = args.split(",")
+        name, separator, argument_text = value.partition(",")
+        arguments = argument_text.split(",") if separator else []
         try:
             generated = context.templates.generate(name, *arguments)
             return context.expand(generated)

@@ -174,6 +174,35 @@ def test_explicit_registry_can_be_shared_between_standalone_loads(tmp_path):
     assert result["devices"][0]["name"] == "Q1"
 
 
+def test_template_calls_distinguish_no_arguments_from_an_empty_argument(tmp_path):
+    path = _write_config(
+        tmp_path / "arguments.yaml",
+        {
+            "templates": [
+                {"name": "constant", "parameters": [], "config": {"name": "Q1"}},
+                _template_definition(),
+            ],
+            "constant": "${template:constant}",
+            "empty": "${template:device,}",
+        },
+    )
+
+    result = load(str(path))
+
+    assert result["constant"]["name"] == "Q1"
+    assert result["empty"]["name"] == ""
+
+
+def test_template_call_without_required_arguments_reports_count_error(tmp_path):
+    path = _write_config(
+        tmp_path / "missing_argument.yaml",
+        {"templates": [_template_definition()], "result": "${template:device}"},
+    )
+
+    with pytest.raises(PyAMLConfigException, match=r"Invalid number of arguments.*Expected 1"):
+        load(str(path))
+
+
 def test_recursive_template_still_reports_configuration_error(tmp_path):
     path = _write_config(
         tmp_path / "recursive.yaml",
