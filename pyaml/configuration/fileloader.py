@@ -297,7 +297,7 @@ def resolve_file(value: str, context: LoadContext | None = None) -> Any:
 
 
 @resolver("template")
-def resolve_template(value: str, _context: LoadContext | None = None) -> Any:
+def resolve_template(value: str, context: LoadContext | None = None) -> Any:
     """
     Resolve a configuration by template.
 
@@ -324,8 +324,14 @@ def resolve_template(value: str, _context: LoadContext | None = None) -> Any:
 
         name, args = value.split(",", maxsplit=1)
         arguments = args.split(",")
-        generated = TemplateManager.generate(name, *arguments)
-        return _context.expand(generated)
+        try:
+            generated = TemplateManager.generate(name, *arguments)
+            return context.expand(generated)
+        except RecursionError as exc:
+            raise PyAMLException(
+                f"Recursion limit reached while expanding template {name!r}. "
+                "Check for circular template references or excessive nesting."
+            ) from exc
     except KeyError as exc:
         raise PyAMLException(f"Invalid template resolver call {value}.") from exc
 
