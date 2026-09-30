@@ -92,23 +92,23 @@ print(f"BPMs: {len(bpms)}, H correctors: {len(hcorr)}, V correctors: {len(vcorr)
 
 # ### Orbit response matrix
 #
-# The ORM can be saved in multiple formats. Load it into `SR.orbit` before correcting.
+# The ORM can be saved in multiple formats. Load it into `SR.tool.orbit` before correcting.
 
 # In[5]:
 
 
-print(SR.orm)  # string representation
+print(SR.tool.orm)  # string representation
 
 
 # In[6]:
 
 
-SR.orm.measure(sleep_between_step=wait_time)
-SR.orm.save(CONFIG_DIR / "orm.json")
-SR.orm.save(CONFIG_DIR / "orm.yaml", with_type="yaml")
-SR.orm.save(CONFIG_DIR / "orm.npz", with_type="npz")
+SR.tool.orm.measure(sleep_between_step=wait_time)
+SR.tool.orm.save(CONFIG_DIR / "orm.json")
+SR.tool.orm.save(CONFIG_DIR / "orm.yaml", with_type="yaml")
+SR.tool.orm.save(CONFIG_DIR / "orm.npz", with_type="npz")
 
-SR.orbit.load(CONFIG_DIR / "orm.json")
+SR.tool.orbit.load(CONFIG_DIR / "orm.json")
 print("ORM measured, saved and loaded.")
 
 
@@ -117,7 +117,7 @@ print("ORM measured, saved and loaded.")
 # In[7]:
 
 
-orm_data = SR.orm.get()
+orm_data = SR.tool.orm.get()
 plt.imshow(np.array(orm_data["matrix"]))
 plt.colorbar()
 plt.title("Orbit response matrix")
@@ -147,8 +147,8 @@ plt.show()
 #         print("Restoring RF frequency")
 #     return True
 
-# SR.dispersion.measure(callback=disp_callback)
-# disp_data = SR.dispersion.get()
+# SR.tool.dispersion.measure(callback=disp_callback)
+# disp_data = SR.tool.dispersion.get()
 # plt.plot(disp_data["frequency_response_x"], label="H dispersion")
 # plt.plot(disp_data["frequency_response_y"], label="V dispersion")
 # plt.xlabel("BPM index")
@@ -202,7 +202,7 @@ plt.show()
 
 # ### Correct the orbit
 #
-# Standard correction: `SR.orbit.correct(reference=reference)`.
+# Standard correction: `SR.tool.orbit.correct(reference=reference)`.
 #
 # Optional variants (uncomment to use):
 # - **Virtual corrector weight**: down-weights correctors that are already at large strengths.
@@ -213,17 +213,17 @@ plt.show()
 
 
 # Standard correction
-SR.orbit.correct(reference=reference)
+SR.tool.orbit.correct(reference=reference)
 
 # With virtual corrector weight (ESRF style):
-# SR.orbit.set_virtual_weight(1000)
-# SR.orbit.correct(reference=reference)
+# SR.tool.orbit.set_virtual_weight(1000)
+# SR.tool.orbit.correct(reference=reference)
 
 # With RF orbit correction (ESRF style, requires dispersion in ORM):
-# SR.orbit.correct(reference=reference, rf=True)
+# SR.tool.orbit.correct(reference=reference, rf=True)
 
 # BESSY2 live mode — BPMs in nm, use gain to compensate unit mismatch:
-# SR.orbit.correct(reference=reference, gain=1e-9)
+# SR.tool.orbit.correct(reference=reference, gain=1e-9)
 
 sleep(wait_time)
 

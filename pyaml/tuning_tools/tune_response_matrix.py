@@ -190,10 +190,10 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
             sr = Accelerator.load("tests/config/EBSTune.yaml")
             acc = sr.design
 
-            if acc.trm.measure(n_avg_meas=3,sleep_between_meas=5,callback=callback):
-                acc.trm.save("ideal_trm.json")
-                acc.trm.save("ideal_trm.yaml", with_type="yaml")
-                acc.trm.save("ideal_trm.npz", with_type="npz")
+            if acc.tool.trm.measure(n_avg_meas=3,sleep_between_meas=5,callback=callback):
+                acc.tool.trm.save("ideal_trm.json")
+                acc.tool.trm.save("ideal_trm.yaml", with_type="yaml")
+                acc.tool.trm.save("ideal_trm.npz", with_type="npz")
 
         Parameters
         ----------
