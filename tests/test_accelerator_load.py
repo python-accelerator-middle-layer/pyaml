@@ -9,10 +9,10 @@ from pyaml.control.controlsystem import ControlSystemAdapter
 
 def test_peer():
     sr = Accelerator.load("tests/config/tune_monitor.yaml")
-    tm = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
+    tm = sr.design.diagnostic.get("BETATRON_TUNE")
     assert isinstance(tm.peer.peer, Accelerator)
     assert isinstance(tm.peer, ElementHolder)
-    tm = sr.live.get_betatron_tune_monitor("BETATRON_TUNE")
+    tm = sr.live.diagnostic.get("BETATRON_TUNE")
     assert isinstance(tm.peer.peer, Accelerator)
     assert isinstance(tm.peer, ElementHolder)
 
@@ -160,5 +160,5 @@ def test_config_dict():
     assert sr.live.dconfig()["prefix"] == "VA:"
     assert sr.live.dconfig()["info"]["param1"] == "Param1 value"
     assert sr.live.dconfig()["info"]["param2"] == 12345.0
-    assert isinstance(sr.live.get_element("MY_ELEMENT"), MyElement)
-    assert sr.live.get_element("MY_ELEMENT")._cfg.device_h == "TUNEZR:rdH"
+    assert isinstance(sr.live["MY_ELEMENT"], MyElement)
+    assert sr.live["MY_ELEMENT"]._cfg.device_h == "TUNEZR:rdH"

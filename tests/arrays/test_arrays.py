@@ -164,10 +164,10 @@ def test_arrays(install_test_package):
     assert np.abs(pos[1][1] - 7.4265634524358045e-06) < 1e-10
 
     # Radom array
-    elts = sr.design.get_elements("ElArray")
+    elts = sr.design.get("ElArray")
 
     # Create an array that contains all elements
-    allElts = ElementArray("AllElements", sr.design.get_all_elements())
+    allElts = ElementArray("AllElements", sr.design.get())
     assert len(allElts) == 11
 
     # Create an array that contains all elements
@@ -210,7 +210,7 @@ def test_arrays(install_test_package):
     # Test dynamic arrays
 
     sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml", include_locations=False)
-    ae = ElementArray("All", sr.design.get_all_elements())
+    ae = ElementArray("All", sr.design.get())
     acfm = ElementArray("AllCFM", sr.design.combined_function_magnet.all(), use_aggregator=False)
 
     bpmC5 = ae["BPM*"][10:20]  # All BPM C5

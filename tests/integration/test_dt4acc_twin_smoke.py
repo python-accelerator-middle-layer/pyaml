@@ -135,8 +135,8 @@ def deactivated_test_orbit_correction(config_key: str):
         accelerator = _build_accelerator(config_key)
         control_mode = accelerator.live
         bpms = control_mode.diagnostic.bpms.get("bpms")
-        orbit_response_matrix = control_mode.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
-        orbit_correction = control_mode.get_orbit_tuning("DEFAULT_ORBIT_CORRECTION")
+        orbit_response_matrix = control_mode.tool.get("DEFAULT_ORBIT_RESPONSE_MATRIX")
+        orbit_correction = control_mode.tool.get("DEFAULT_ORBIT_CORRECTION")
         orbit_response_matrix.measure()
         ormdata = orbit_response_matrix.get()
         orbit_response_matrix.save("orm.json")

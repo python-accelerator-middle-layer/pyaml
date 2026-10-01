@@ -13,7 +13,7 @@ def test_tuning_tools_expose_configured_elements():
     )
     design = sr.design
 
-    tune_monitor = design.get_betatron_tune_monitor("BETATRON_TUNE")
+    tune_monitor = design.diagnostic.get("BETATRON_TUNE")
     quadrupoles = design.magnets.get("QForTune")
     assert design.tool.tune.tune_monitor is tune_monitor
     assert design.tool.tune.quadrupoles is quadrupoles

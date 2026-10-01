@@ -80,7 +80,7 @@ print(SR)  # string representation
 # In[4]:
 
 
-tune_monitor = SR.get_betatron_tune_monitor("BETATRON_TUNE")
+tune_monitor = SR.diagnostic.get("BETATRON_TUNE")
 print(f"Current tune: {tune_monitor.tune.get()}")
 print(tune_monitor)  # string representation
 

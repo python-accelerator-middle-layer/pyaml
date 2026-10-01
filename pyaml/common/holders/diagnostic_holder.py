@@ -35,13 +35,6 @@ class DiagnosticHolder:
     get(name=None)
         Return a named diagnostic, or all configured diagnostics when no name is given.
 
-    Notes
-    -----
-    :meth:`ElementHolder.get_betatron_tune_monitor
-    <pyaml.common.holders.element_holder.ElementHolder.get_betatron_tune_monitor>` stays
-    available as the named, untyped lookup. This holder adds the default-name,
-    type-validated convenience property.
-
     Examples
     --------
     >>> default_tune_monitor = sr.live.diagnostic.betatron_tune
@@ -144,7 +137,7 @@ class DiagnosticHolder:
             :class:`~pyaml.diagnostics.tune_monitor.BetatronTuneMonitor`.
         """
         name = "BETATRON_TUNE"
-        obj = self._peer.get_betatron_tune_monitor(name)
+        obj = self.get(name)
         if not isinstance(obj, BetatronTuneMonitor):
             raise PyAMLException(f"{name}: BetatronTuneMonitor expected but got {type(obj).__name__}")
         return obj

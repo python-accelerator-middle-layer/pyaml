@@ -274,7 +274,7 @@ class BBA2(MeasurementTool, DynamicValidation):
     def tune_correction(self) -> "Tune":
         """Return the tune-correction tool used during alignment."""
         self.check_peer()
-        return self.peer.get_tune_tuning(self.tune_correction_name)
+        return self.peer.tool.get(self.tune_correction_name)
 
     @staticmethod
     def _x_intercept(x, k, n):
@@ -360,8 +360,8 @@ class BBA2(MeasurementTool, DynamicValidation):
         sth = design.magnet.get(steererhname)
         stv = design.magnet.get(steerervname)
         orbit = design.diagnostic.bpms.get(bpmname).positions
-        tune_design = design.get_tune_tuning(tunename)
-        tune_live = self._peer.get_tune_tuning(tunename)
+        tune_design = design.tool.get(tunename)
+        tune_live = self._peer.tool.get(tunename)
 
         # Get tune from live and adjust the model to improve quad response phase
         tune0 = tune_design.readback()

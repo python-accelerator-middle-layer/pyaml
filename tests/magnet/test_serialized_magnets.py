@@ -27,11 +27,11 @@ def test_config_load(sr_file):
     sr: Accelerator = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
     assert sr is not None
     magnets = [
-        sr.design.get_element("QF8B-C04"),
-        sr.design.get_element("QF8B-C04"),
-        sr.design.get_element("QD5D-C04"),
-        sr.design.get_element("QF6D-C04"),
-        sr.design.get_element("QF4D-C04"),
+        sr.design["QF8B-C04"],
+        sr.design["QF8B-C04"],
+        sr.design["QD5D-C04"],
+        sr.design["QF6D-C04"],
+        sr.design["QF4D-C04"],
     ]
     assert None not in [magnets]
 
@@ -115,7 +115,7 @@ def test_tune(sr_file):
     assert len(m.get_magnets()) == m.get_nb_magnets()
 
     quadForTuneDesign = sr.design.serialized_magnets.get("QForTune")
-    tune_monitor = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
+    tune_monitor = sr.design.diagnostic.get("BETATRON_TUNE")
     # Build tune response matrix
     tunemat = np.zeros((len(quadForTuneDesign), 2))
 

@@ -22,7 +22,7 @@ def test_exact_name_returns_the_element_or_raises(holder):
 
 
 def test_get_and_full_slice_keep_registration_order(holder):
-    names = [element.get_name() for element in holder.get_all_elements()]
+    names = [element.get_name() for element in holder.get()]
 
     assert type(holder.get()) is ElementArray
     assert type(holder[:]) is ElementArray
@@ -79,7 +79,7 @@ def test_colons_are_part_of_names(holder):
 def test_magnet_subclasses_share_a_typed_array_in_either_order(holder):
     horizontal = holder.magnet.get("SH1A-C01-H")
     vertical = holder.magnet.get("SH1A-C01-V")
-    start = holder.get_all_elements().index(horizontal)
+    start = holder.get().index(horizontal)
 
     assert type(horizontal) is not type(vertical)
     assert isinstance(holder["SH1A-C01-[HV]"], MagnetArray)
@@ -97,7 +97,7 @@ def test_mixed_selection_returns_a_generic_array(holder):
 
 
 def test_indices_and_slices_follow_insertion_order(holder):
-    registered = holder.get_all_elements()
+    registered = holder.get()
 
     assert holder[0] is registered[0]
     assert holder[-1] is registered[-1]
@@ -119,7 +119,7 @@ def test_empty_holder_returns_empty_collections(ebs_lattice_file):
 
 
 def test_invalid_indices_and_keys_raise_clear_errors(holder):
-    size = len(holder.get_all_elements())
+    size = len(holder.get())
 
     with pytest.raises(IndexError):
         holder[size]
@@ -132,14 +132,21 @@ def test_invalid_indices_and_keys_raise_clear_errors(holder):
 
 
 def test_selection_intersects_with_a_configured_family(holder):
-    selected = holder["SH1A-C0?-H"] & holder.get_elements("ElArray")
+    selected = holder["SH1A-C0?-H"] & holder.get("ElArray")
 
     assert isinstance(selected, MagnetArray)
     assert selected.names() == ["SH1A-C02-H"]
-    assert holder.get_element("SH1A-C02-H") is holder["SH1A-C02-H"]
-    assert holder.get_all_elements() == list(holder.get())
+
+
+def test_get_resolves_a_named_array_regardless_of_its_concrete_family(holder):
+    """`get(name)` must not be limited to generic element arrays, unlike the old `get_elements`."""
+    assert isinstance(holder.get("HCORR"), MagnetArray)
+    assert holder.get("HCORR").names() == ["SH1A-C01-H", "SH1A-C02-H"]
+    assert isinstance(holder.get("BPMS"), BPMArray)
+    assert holder.get("BPMS").names() == ["BPM_C04-01", "BPM_C04-02"]
+    assert holder.get("ElArray").names() == ["BPM_C04-01", "BPM_C04-02", "SH1A-C01-V", "SH1A-C02-H"]
     with pytest.raises(PyAMLException):
-        holder.get_element("UNKNOWN")
+        holder.get("UNKNOWN")
 
 
 def test_existing_array_field_filters_still_work(holder):
@@ -204,7 +211,7 @@ def test_disjoint_regex_and_list_selections_produce_a_plain_list(holder):
 
 def test_selection_combined_with_a_configured_family_via_regex_and_list(holder):
     """`re:` and list-of-patterns selections intersect with a configured family, same as wildcards."""
-    el_array = holder.get_elements("ElArray")  # BPM_C04-01, BPM_C04-02, SH1A-C01-V, SH1A-C02-H
+    el_array = holder.get("ElArray")  # BPM_C04-01, BPM_C04-02, SH1A-C01-V, SH1A-C02-H
 
     by_regex = holder["re:^SH1A-C0[12]-H$"] & el_array
     assert isinstance(by_regex, MagnetArray)
@@ -272,7 +279,7 @@ def test_getitem_supports_an_exclusion_in_a_list(holder):
 
 
 def test_getitem_lone_exclusion_pattern_means_everything_except(holder):
-    all_names = holder.get_all_elements()
+    all_names = holder.get()
     selected = holder["~QF1A-C01"]
 
     assert "QF1A-C01" not in selected.names()
