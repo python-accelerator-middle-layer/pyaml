@@ -28,6 +28,7 @@ from ..control.abstract_impl import (
     RWRFFrequencyScalar,
     RWRFPhaseScalar,
     RWRFVoltageScalar,
+    RWSerializedStrengthScalar,
     RWStrengthArray,
     RWStrengthScalar,
 )
@@ -226,16 +227,14 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             self.magnet.add(virtual_magnet)
 
     def _fill_serialized_magnets(self, magnets: SerializedMagnets) -> None:
-        devices = self.get_devices_access(magnets.model.get_device_names())
+        # All magnets of the group share the same power supply
+        device = self.get_device_access(magnets.model.get_device_names()[0])
         currents = []
         strengths = []
         for index in range(magnets.get_nb_magnets()):
-            currents.append(
-                RWHardwareScalar(magnets.model.get_sub_model(index), devices[index]) if magnets.model.has_hardware() else None
-            )
-            strengths.append(
-                RWStrengthScalar(magnets.model.get_sub_model(index), devices[index]) if magnets.model.has_physics() else None
-            )
+            sub_model = magnets.model.get_sub_model(index)
+            currents.append(RWHardwareScalar(sub_model, device) if magnets.model.has_hardware() else None)
+            strengths.append(RWSerializedStrengthScalar(sub_model, device, index) if magnets.model.has_physics() else None)
         attached_magnets = magnets.attach(self, strengths, currents)
         self.serialized_magnet.add(attached_magnets[0])
         for magnet in attached_magnets[1:]:
