@@ -18,6 +18,7 @@ from ..common.holders.element_holder import ElementHolder
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
     CSScalarAggregator,
+    CSSparseScalarAggregator,
     CSStrengthScalarAggregator,
     RBetatronTuneArray,
     RBpmArray,
@@ -197,12 +198,14 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         -------
         list[ScalarAggregator | None]
             Aggregators for combined, horizontal, and vertical positions.
+            A plane without device (e.g. the horizontal plane of a
+            vertical-only XBPM) reads NaN, the other devices are still read
+            in one grouped call.
         """
-        agg = self._create_scalar_aggregator()
-        aggh = self._create_scalar_aggregator()
-        aggv = self._create_scalar_aggregator()
-        if agg is None or aggh is None or aggv is None:
+        aggs = [self.get_aggregator() for _ in range(3)]
+        if any(a is None for a in aggs):
             return [None, None, None]
+        agg, aggh, aggv = (CSSparseScalarAggregator(a) for a in aggs)
         for b in bpms:
             devs = self.get_devices_access(b.get_pos_devices())
             agg.add_devices(devs)
