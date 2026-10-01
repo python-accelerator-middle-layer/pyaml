@@ -11,7 +11,6 @@ from ...magnet.magnet import Magnet
 from ...magnet.serialized_magnet import SerializedMagnets
 from ...rf.rf_plant import RFPlant
 from ...rf.rf_transmitter import RFTransmitter
-from ...tuning_tools.chromaticity_monitor import ChromaticityMonitor
 from ..abstract_aggregator import ScalarAggregator
 from ..element import Element
 from ..exception import PyAMLException
@@ -31,7 +30,6 @@ from .tool_holder import ToolHolder
 if TYPE_CHECKING:
     from ...accelerator import Accelerator
     from ...configuration.unbound_element import UnboundElement
-    from ...tuning_tools.bba import BBA
     from ...tuning_tools.measurement_tool import MeasurementTool
     from ...tuning_tools.tuning_tool import TuningTool
 
@@ -84,10 +82,6 @@ class ElementHolder(metaclass=ABCMeta):
         Add a betatron tune monitor to the diagnostics store.
     add_tool(tool)
         Add a tuning or measurement tool to the tool store.
-    get_chromaticity_monitor(name)
-        Return a named chromaticity monitor.
-    get_bba(name)
-        Return a named beam-based alignment tool.
     """
 
     def __init__(self):
@@ -582,43 +576,6 @@ class ElementHolder(metaclass=ABCMeta):
             Tuning or measurement tool to register, keyed by its own name.
         """
         self._add(self._TOOLS, tool)
-
-    # ---- Chromaticity -------------------------------------------------
-
-    def get_chromaticity_monitor(self, name: str) -> ChromaticityMonitor:
-        """
-        Return a named chromaticity monitor.
-
-        Parameters
-        ----------
-        name : str
-            Name of the chromaticity monitor to look up, as declared in the configuration.
-
-        Returns
-        -------
-        ChromaticityMonitor
-            The chromaticity monitor registered under ``name``.
-        """
-        obj = self._get("Chromaticity monitor", name, self._TOOLS)
-        return obj
-
-    # ---- BBA --------------------------------------------------------
-
-    def get_bba(self, name: str) -> "BBA":
-        """
-        Return a named beam-based alignment tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the beam-based alignment tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'BBA'
-            The beam-based alignment tool registered under ``name``.
-        """
-        return self._get("BBA tool", name, self._TOOLS)
 
     def _get_array(self, name: str):
         """

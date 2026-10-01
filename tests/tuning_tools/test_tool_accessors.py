@@ -20,7 +20,7 @@ def test_tuning_tools_expose_configured_elements():
     assert design.tool.trm.tune_monitor is tune_monitor
     assert design.tool.trm.quadrupoles is quadrupoles
 
-    chromaticity_monitor = design.get_chromaticity_monitor("CHROMATICITY_MONITOR")
+    chromaticity_monitor = design.tool.get("CHROMATICITY_MONITOR")
     sextupoles = design.magnets.get("Sext")
     assert design.tool.chromaticity.chromaticity_monitor is chromaticity_monitor
     assert design.tool.chromaticity.sextupoles is sextupoles
@@ -47,14 +47,14 @@ def test_tuning_tools_expose_configured_elements():
     assert design.tool.orm.vcorrectors is vcorrectors
 
     for name in ("BBA-BPM_C04-04", "BBA2-BPM_C04-04"):
-        bba = design.get_bba(name)
+        bba = design.tool.get(name)
         assert bba.bpms is bpms
         assert bba.bpm is design.diagnostic.bpm.get("BPM_C04-04")
         assert bba.hcorrector is design.magnet.get("SF2E-C02-H")
         assert bba.vcorrector is design.magnet.get("SD1A-C26-V")
         assert bba.quadrupole is design.magnet.get("QF6B-C04")
 
-    assert design.get_bba("BBA2-BPM_C04-04").tune_correction is design.tool.tune
+    assert design.tool.get("BBA2-BPM_C04-04").tune_correction is design.tool.tune
 
 
 def test_tool_get_returns_named_tool():

@@ -585,7 +585,7 @@ class BBA2(MeasurementTool, DynamicValidation):
 
             sr = Accelerator.load("tests/config/EBSOrbit.yaml")
             SR = sr.live
-            bba = SR.get_bba("BBA2-BPM_C04-04")
+            bba = SR.tool.get("BBA2-BPM_C04-04")
 
             # Add a misalignement
             SR.get_bpm("BPM_C04-04").offset.set([200e-6,-150e-6])

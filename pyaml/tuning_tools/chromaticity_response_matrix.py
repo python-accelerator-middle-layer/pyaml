@@ -115,7 +115,7 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
     def chromaticity_monitor(self) -> "ChromaticityMonitor":
         """Return the chromaticity monitor used for the measurement."""
         self.check_peer()
-        return self.peer.get_chromaticity_monitor(self.chromaticity_name)
+        return self.peer.tool.get(self.chromaticity_name)
 
     def measure(
         self,

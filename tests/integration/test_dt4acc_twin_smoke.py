@@ -179,7 +179,7 @@ def deactivated_test_chromaticity_measurement(config_key: str):
 
         accelerator = _build_accelerator(config_key)
         control_mode = accelerator.live
-        chromaticity_measurement = control_mode.get_chromaticity_monitor("DEFAULT_CHROMATICITY_MEASUREMENT")
+        chromaticity_measurement = control_mode.tool.get("DEFAULT_CHROMATICITY_MEASUREMENT")
 
         def chroma_callback(action: int, cb_data: dict):
             if action == Action.MEASURE:
