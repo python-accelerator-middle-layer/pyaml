@@ -44,7 +44,7 @@ def test_magnet_holder_selection_uses_the_same_typing(design):
 
 
 def test_mixed_array_stays_generic_until_only_magnets_are_selected(design):
-    mixed = design.get_elements("ElArray")
+    mixed = design.get("ElArray")
 
     assert type(mixed[:]) is ElementArray
     assert mixed[:].names() == mixed.names()

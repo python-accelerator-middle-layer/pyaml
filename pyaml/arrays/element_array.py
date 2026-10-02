@@ -61,7 +61,7 @@ class ElementArray(list[Element]):
     .. code-block:: python
 
         >>> sr = Accelerator.load("acc.yaml")
-        >>> elements = sr.design.get_elements("QuadForTune")
+        >>> elements = sr.design.get("QuadForTune")
     """
 
     def __init__(self, array_name: str, elements: list[Element], use_aggregator=True):
@@ -282,7 +282,7 @@ class ElementArray(list[Element]):
 
            .. code-block:: python
 
-               >>> cell1 = sr.live.get_elements("C01")
+               >>> cell1 = sr.live.get("C01")
                >>> sexts = sr.live.get_magnets("SEXT")
                >>> cell1_sext = cell1 & sexts
 

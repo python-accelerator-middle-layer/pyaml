@@ -14,7 +14,7 @@ def test_diagnostic_get_returns_named_monitor():
         include_locations=False,
     ).design
 
-    assert design.diagnostic.get("BETATRON_TUNE") is design.get_betatron_tune_monitor("BETATRON_TUNE")
+    assert design.diagnostic.get("BETATRON_TUNE") is design._DIAG["BETATRON_TUNE"]
 
 
 def test_diagnostic_get_with_no_name_returns_all_configured_diagnostics():
@@ -25,7 +25,7 @@ def test_diagnostic_get_with_no_name_returns_all_configured_diagnostics():
     ).design
 
     all_diagnostics = design.diagnostic.get()
-    assert design.get_betatron_tune_monitor("BETATRON_TUNE") in all_diagnostics
+    assert design.diagnostic.get("BETATRON_TUNE") in all_diagnostics
 
 
 def test_diagnostic_betatron_tune_returns_default_monitor():
@@ -35,7 +35,7 @@ def test_diagnostic_betatron_tune_returns_default_monitor():
         include_locations=False,
     ).design
 
-    assert design.diagnostic.betatron_tune is design.get_betatron_tune_monitor("BETATRON_TUNE")
+    assert design.diagnostic.betatron_tune is design.diagnostic.get("BETATRON_TUNE")
 
 
 def test_diagnostic_raises_when_default_missing(ebs_lattice_file):
@@ -128,7 +128,7 @@ def test_diagnostic_getitem_list_selection_ignores_request_order():
         ignore_external=True,
         include_locations=False,
     ).design
-    spare_monitor = copy.copy(design.get_betatron_tune_monitor("BETATRON_TUNE"))
+    spare_monitor = copy.copy(design.diagnostic.get("BETATRON_TUNE"))
     spare_monitor._name = "SPARE_BETATRON_TUNE"
     design._DIAG["SPARE_BETATRON_TUNE"] = spare_monitor
 

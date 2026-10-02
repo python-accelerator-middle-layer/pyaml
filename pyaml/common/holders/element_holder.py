@@ -11,7 +11,6 @@ from ...magnet.magnet import Magnet
 from ...magnet.serialized_magnet import SerializedMagnets
 from ...rf.rf_plant import RFPlant
 from ...rf.rf_transmitter import RFTransmitter
-from ...tuning_tools.chromaticity_monitor import ChromaticityMonitor
 from ..abstract_aggregator import ScalarAggregator
 from ..element import Element
 from ..exception import PyAMLException
@@ -31,15 +30,7 @@ from .tool_holder import ToolHolder
 if TYPE_CHECKING:
     from ...accelerator import Accelerator
     from ...configuration.unbound_element import UnboundElement
-    from ...tuning_tools.bba import BBA
-    from ...tuning_tools.chromaticity import Chromaticity
-    from ...tuning_tools.chromaticity_response_matrix import ChromaticityResponseMatrix
-    from ...tuning_tools.dispersion import Dispersion
     from ...tuning_tools.measurement_tool import MeasurementTool
-    from ...tuning_tools.orbit import Orbit
-    from ...tuning_tools.orbit_response_matrix import OrbitResponseMatrix
-    from ...tuning_tools.tune import Tune
-    from ...tuning_tools.tune_response_matrix import TuneResponseMatrix
     from ...tuning_tools.tuning_tool import TuningTool
 
 
@@ -85,36 +76,12 @@ class ElementHolder(metaclass=ABCMeta):
         Create and register a generic element array.
     add_element(element)
         Add an element to the global element store.
-    get_element(name)
-        Return a named element from the global store.
-    get_elements(name)
-        Return a named generic element array.
-    get_all_elements()
-        Return all registered elements in insertion order.
-    get_betatron_tune_monitor(name)
-        Return a named betatron tune monitor.
+    get(name=None)
+        Return a named element array, or every registered element when no name is given.
     add_betatron_tune_monitor(tune_monitor)
         Add a betatron tune monitor to the diagnostics store.
     add_tool(tool)
         Add a tuning or measurement tool to the tool store.
-    get_chromaticity_monitor(name)
-        Return a named chromaticity monitor.
-    get_chromaticity_tuning(name)
-        Return a named chromaticity tuning tool.
-    get_crm_tuning(name)
-        Return a named chromaticity response-matrix tool.
-    get_tune_tuning(name)
-        Return a named tune correction tool.
-    get_trm_tuning(name)
-        Return a named tune response-matrix tool.
-    get_orbit_tuning(name)
-        Return a named orbit correction tool.
-    get_orm_tuning(name)
-        Return a named orbit response-matrix tool.
-    get_bba(name)
-        Return a named beam-based alignment tool.
-    get_dispersion_tuning(name)
-        Return a named dispersion tuning tool.
     """
 
     def __init__(self):
@@ -211,7 +178,7 @@ class ElementHolder(metaclass=ABCMeta):
 
     def post_init(self):
         """Run post-initialization hooks for every stored element."""
-        for e in self.get_all_elements():
+        for e in self._ALL.values():
             e.post_init()
 
     def fill_device(self, elements: list[Element]):
@@ -418,13 +385,27 @@ class ElementHolder(metaclass=ABCMeta):
         return array[name]
 
     # Generic elements
-    def get(self) -> ElementArray:
-        """Return all registered elements in insertion order.
+    def get(self, name: str | None = None) -> ElementArray:
+        """Return a named element array, or every registered element when no name is given.
+
+        Parameters
+        ----------
+        name : str, optional
+            Name of the element array to look up, as declared in the configuration.
+            When omitted, every registered element is returned instead.
 
         Returns
         -------
         ElementArray
-            New unnamed container sharing the registered element references.
+            The element array registered under ``name``, regardless of its concrete
+            family (magnet, BPM, combined-function magnet, serialized-magnet, or
+            generic element array), or a new unnamed container of every registered
+            element, in insertion order, when ``name`` is omitted.
+
+        Raises
+        ------
+        PyAMLException
+            If ``name`` is given and no array is registered under it.
 
         Notes
         -----
@@ -436,8 +417,11 @@ class ElementHolder(metaclass=ABCMeta):
         --------
         >>> elements = sr.live.get()
         >>> names = elements.names()
+        >>> cell08 = sr.live.get("CELL08")
         """
-        return ElementArray("", list(self._ALL.values()))
+        if name is None:
+            return ElementArray("", list(self._ALL.values()))
+        return self._get_array(name)
 
     @overload
     def __getitem__(self, key: int) -> Element: ...
@@ -545,7 +529,7 @@ class ElementHolder(metaclass=ABCMeta):
         self._fill_array(
             arrayName,
             elementNames,
-            self.get_element,
+            self._get_element,
             ElementArray,
             self._ELEMENT_ARRAYS,
         )
@@ -561,59 +545,13 @@ class ElementHolder(metaclass=ABCMeta):
         """
         self._ALL[element.get_name()] = element
 
-    def get_element(self, name: str) -> Element:
+    def _get_element(self, name: str) -> Element:
         """
-        Return a named element from the global store.
-
-        Parameters
-        ----------
-        name : str
-            Name of the element to look up, as declared in the configuration.
-
-        Returns
-        -------
-        Element
-            The element registered under ``name``.
+        Generic single-element resolver used internally to build element arrays.
         """
         return self._get("Element", name, self._ALL)
 
-    def get_elements(self, name: str) -> ElementArray:
-        """
-        Return a named generic element array.
-
-        Parameters
-        ----------
-        name : str
-            Name of the element array to look up, as declared in the configuration.
-
-        Returns
-        -------
-        ElementArray
-            The element array registered under ``name``.
-        """
-        return self._get("Element array", name, self._ELEMENT_ARRAYS)
-
-    def get_all_elements(self) -> list[Element]:
-        """Return all registered elements in insertion order."""
-        return [value for key, value in self._ALL.items()]
-
     # Tune monitor
-
-    def get_betatron_tune_monitor(self, name: str) -> BetatronTuneMonitor:
-        """
-        Return a named betatron tune monitor.
-
-        Parameters
-        ----------
-        name : str
-            Name of the betatron tune monitor to look up, as declared in the configuration.
-
-        Returns
-        -------
-        BetatronTuneMonitor
-            The betatron tune monitor registered under ``name``.
-        """
-        return self._get("Diagnostic", name, self._DIAG)
 
     def add_betatron_tune_monitor(self, tune_monitor: Element):
         """
@@ -638,161 +576,6 @@ class ElementHolder(metaclass=ABCMeta):
             Tuning or measurement tool to register, keyed by its own name.
         """
         self._add(self._TOOLS, tool)
-
-    # ---- Chromaticity -------------------------------------------------
-
-    def get_chromaticity_monitor(self, name: str) -> ChromaticityMonitor:
-        """
-        Return a named chromaticity monitor.
-
-        Parameters
-        ----------
-        name : str
-            Name of the chromaticity monitor to look up, as declared in the configuration.
-
-        Returns
-        -------
-        ChromaticityMonitor
-            The chromaticity monitor registered under ``name``.
-        """
-        obj = self._get("Chromaticity monitor", name, self._TOOLS)
-        return obj
-
-    def get_chromaticity_tuning(self, name: str) -> "Chromaticity":
-        """
-        Return a named chromaticity tuning tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the chromaticity tuning tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'Chromaticity'
-            The chromaticity tuning tool registered under ``name``.
-        """
-        return self._get("Chromaticity tool", name, self._TOOLS)
-
-    def get_crm_tuning(self, name: str) -> "ChromaticityResponseMatrix":
-        """
-        Return a named chromaticity response-matrix tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the chromaticity response-matrix tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'ChromaticityResponseMatrix'
-            The chromaticity response-matrix tool registered under ``name``.
-        """
-        return self._get("ChromaticityResponseMatrix tool", name, self._TOOLS)
-
-    # ---- Tune ---------------------------------------------------------
-
-    def get_tune_tuning(self, name: str) -> "Tune":
-        """
-        Return a named tune correction tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the tune correction tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'Tune'
-            The tune correction tool registered under ``name``.
-        """
-        return self._get("Tune tuning tool", name, self._TOOLS)
-
-    def get_trm_tuning(self, name: str) -> "TuneResponseMatrix":
-        """
-        Return a named tune response-matrix tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the tune response-matrix tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'TuneResponseMatrix'
-            The tune response-matrix tool registered under ``name``.
-        """
-        return self._get("TuneResponseMatrix tool", name, self._TOOLS)
-
-    # ---- Orbit --------------------------------------------------------
-
-    def get_orbit_tuning(self, name: str) -> "Orbit":
-        """
-        Return a named orbit correction tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the orbit correction tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'Orbit'
-            The orbit correction tool registered under ``name``.
-        """
-        return self._get("Orbit tuning tool", name, self._TOOLS)
-
-    def get_orm_tuning(self, name: str) -> "OrbitResponseMatrix":
-        """
-        Return a named orbit response-matrix tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the orbit response-matrix tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'OrbitResponseMatrix'
-            The orbit response-matrix tool registered under ``name``.
-        """
-        return self._get("OrbitResponseMatrix tool", name, self._TOOLS)
-
-    # ---- BBA --------------------------------------------------------
-
-    def get_bba(self, name: str) -> "BBA":
-        """
-        Return a named beam-based alignment tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the beam-based alignment tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'BBA'
-            The beam-based alignment tool registered under ``name``.
-        """
-        return self._get("BBA tool", name, self._TOOLS)
-
-    # ---- Dispersive orbit --------------------------------------------
-
-    def get_dispersion_tuning(self, name: str) -> "Dispersion":
-        """
-        Return a named dispersion tuning tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the dispersion tuning tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'Dispersion'
-            The dispersion tuning tool registered under ``name``.
-        """
-        return self._get("Dispersion tool", name, self._TOOLS)
 
     def _get_array(self, name: str):
         """
@@ -864,7 +647,7 @@ class ElementHolder(metaclass=ABCMeta):
             Energy in eV
         """
         # Needed by energy dependant element (i.e. magnet coil current calculation)
-        for m in self.get_all_elements():
+        for m in self._ALL.values():
             m.set_energy(E)
 
     def _set_mcf(self, alphac: float):
@@ -877,7 +660,7 @@ class ElementHolder(metaclass=ABCMeta):
             Moment compaction factor
         """
         # Needed by some off energy dependant element (i.e. chromaticty tools)
-        for m in self.get_all_elements():
+        for m in self._ALL.values():
             m.set_mcf(alphac)
 
     def _set_harmonic(self, h: int):
@@ -889,5 +672,5 @@ class ElementHolder(metaclass=ABCMeta):
         h : int
             Harmonic number
         """
-        for m in self.get_all_elements():
+        for m in self._ALL.values():
             m.set_harmonic(h)

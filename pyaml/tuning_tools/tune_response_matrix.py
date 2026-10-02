@@ -154,7 +154,7 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
     def tune_monitor(self) -> "BetatronTuneMonitor":
         """Return the betatron tune monitor used for the measurement."""
         self.check_peer()
-        return self.peer.get_betatron_tune_monitor(self.betatron_tune_name)
+        return self.peer.diagnostic.get(self.betatron_tune_name)
 
     def measure(
         self,

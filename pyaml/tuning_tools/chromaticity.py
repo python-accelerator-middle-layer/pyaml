@@ -135,7 +135,7 @@ class Chromaticity(TuningTool, DynamicValidation):
     def chromaticity_monitor(self) -> "ChromaticityMonitor":
         """Return the chromaticity monitor used for readback."""
         self.check_peer()
-        return self.peer.get_chromaticity_monitor(self._chromaticity_monitor_name)
+        return self.peer.tool.get(self._chromaticity_monitor_name)
 
     @property
     def sextupoles(self) -> "MagnetArray":

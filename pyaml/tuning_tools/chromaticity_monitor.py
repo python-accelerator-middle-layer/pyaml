@@ -201,7 +201,7 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
     def tune_monitor(self) -> "BetatronTuneMonitor":
         """Return the betatron tune monitor used for measurements."""
         self.check_peer()
-        return self.peer.get_betatron_tune_monitor(self.betatron_tune_name)
+        return self.peer.diagnostic.get(self.betatron_tune_name)
 
     @property
     def rf_plant(self) -> "RFPlant":
