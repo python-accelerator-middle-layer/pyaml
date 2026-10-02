@@ -1,7 +1,5 @@
 """Store, resolve, and group elements shared by runtime backends."""
 
-import fnmatch
-import re
 from abc import ABCMeta, abstractmethod
 from typing import TYPE_CHECKING, overload
 
@@ -13,14 +11,13 @@ from ...magnet.magnet import Magnet
 from ...magnet.serialized_magnet import SerializedMagnets
 from ...rf.rf_plant import RFPlant
 from ...rf.rf_transmitter import RFTransmitter
-from ...tuning_tools.chromaticity_monitor import ChromaticityMonitor
 from ..abstract_aggregator import ScalarAggregator
 from ..element import Element
 from ..exception import PyAMLException
+from ..name_matching import is_wildcard, resolve_names
+from .diagnostic_holder import DiagnosticHolder
 from .rf_holder import RFHolder
 from .sub_holders import (
-    BPMHolder,
-    BPMsHolder,
     CombinedFunctionMagnetHolder,
     CombinedFunctionMagnetsHolder,
     MagnetHolder,
@@ -28,19 +25,12 @@ from .sub_holders import (
     SerializedMagnetHolder,
     SerializedMagnetsHolder,
 )
+from .tool_holder import ToolHolder
 
 if TYPE_CHECKING:
     from ...accelerator import Accelerator
     from ...configuration.unbound_element import UnboundElement
-    from ...tuning_tools.bba import BBA
-    from ...tuning_tools.chromaticity import Chromaticity
-    from ...tuning_tools.chromaticity_response_matrix import ChromaticityResponseMatrix
-    from ...tuning_tools.dispersion import Dispersion
     from ...tuning_tools.measurement_tool import MeasurementTool
-    from ...tuning_tools.orbit import Orbit
-    from ...tuning_tools.orbit_response_matrix import OrbitResponseMatrix
-    from ...tuning_tools.tune import Tune
-    from ...tuning_tools.tune_response_matrix import TuneResponseMatrix
     from ...tuning_tools.tuning_tool import TuningTool
 
 
@@ -57,18 +47,16 @@ class ElementHolder(metaclass=ABCMeta):
     ----------
     magnet, magnets
         Single magnet by name, or a named magnet array.
-    bpm, bpms
-        Single BPM by name, or a named BPM array.
     combined_function_magnet, combined_function_magnets
         Single combined-function magnet by name, or a named array.
     serialized_magnet, serialized_magnets
         Single serialized magnet group by name, or a named array.
     rf
         RF plant and transmitters of this mode.
-    tune, chromaticity, orbit, dispersion
-        Tuning tools attached to this mode, looked up by name.
-    trm, crm, orm
-        Response-matrix measurement tools, looked up by name.
+    diagnostic
+        Diagnostics of this mode, with typed default-name access.
+    tool
+        Tuning and measurement tools of this mode, with typed default-name access.
 
     Methods
     -------
@@ -88,36 +76,12 @@ class ElementHolder(metaclass=ABCMeta):
         Create and register a generic element array.
     add_element(element)
         Add an element to the global element store.
-    get_element(name)
-        Return a named element from the global store.
-    get_elements(name)
-        Return a named generic element array.
-    get_all_elements()
-        Return all registered elements in insertion order.
-    get_betatron_tune_monitor(name)
-        Return a named betatron tune monitor.
+    get(name=None)
+        Return a named element array, or every registered element when no name is given.
     add_betatron_tune_monitor(tune_monitor)
         Add a betatron tune monitor to the diagnostics store.
     add_tool(tool)
         Add a tuning or measurement tool to the tool store.
-    get_chromaticity_monitor(name)
-        Return a named chromaticity monitor.
-    get_chromaticity_tuning(name)
-        Return a named chromaticity tuning tool.
-    get_crm_tuning(name)
-        Return a named chromaticity response-matrix tool.
-    get_tune_tuning(name)
-        Return a named tune correction tool.
-    get_trm_tuning(name)
-        Return a named tune response-matrix tool.
-    get_orbit_tuning(name)
-        Return a named orbit correction tool.
-    get_orm_tuning(name)
-        Return a named orbit response-matrix tool.
-    get_bba(name)
-        Return a named beam-based alignment tool.
-    get_dispersion_tuning(name)
-        Return a named dispersion tuning tool.
     """
 
     def __init__(self):
@@ -156,9 +120,9 @@ class ElementHolder(metaclass=ABCMeta):
         self._serialized_magnets_holder = SerializedMagnetsHolder(self)
         self._combined_function_magnet_holder = CombinedFunctionMagnetHolder(self)
         self._combined_function_magnets_holder = CombinedFunctionMagnetsHolder(self)
-        self._bpm_holder = BPMHolder(self)
-        self._bpms_holder = BPMsHolder(self)
         self._rf_holder = RFHolder(self)
+        self._diagnostic_holder = DiagnosticHolder(self)
+        self._tool_holder = ToolHolder(self)
 
     @property
     def peer(self) -> "Accelerator":
@@ -198,23 +162,23 @@ class ElementHolder(metaclass=ABCMeta):
         return self._combined_function_magnets_holder
 
     @property
-    def bpm(self) -> BPMHolder:
-        """Return the bpm."""
-        return self._bpm_holder
-
-    @property
-    def bpms(self) -> BPMsHolder:
-        """Return the bpms."""
-        return self._bpms_holder
-
-    @property
     def rf(self) -> RFHolder:
         """Return the rf."""
         return self._rf_holder
 
+    @property
+    def diagnostic(self) -> DiagnosticHolder:
+        """Return the diagnostic."""
+        return self._diagnostic_holder
+
+    @property
+    def tool(self) -> ToolHolder:
+        """Return the tool."""
+        return self._tool_holder
+
     def post_init(self):
         """Run post-initialization hooks for every stored element."""
-        for e in self.get_all_elements():
+        for e in self._ALL.values():
             e.post_init()
 
     def fill_device(self, elements: list[Element]):
@@ -308,29 +272,34 @@ class ElementHolder(metaclass=ABCMeta):
 
     # Elements
 
-    def find_elements(self, filter: str) -> list[str]:
+    def find_elements(self, filter: str | list[str] | tuple[str, ...]) -> list[str]:
         """
-        Find element names matching a literal, wildcard, or regular expression.
+        Find element names matching one or several literal, wildcard, or regex patterns.
 
         Parameters
         ----------
-        filter : str
-            Pattern to match. Prefix with ``re:`` for a regular expression.
+        filter : str, list[str] or tuple[str, ...]
+            Pattern, or patterns, to match. A pattern is a literal name, an
+            fnmatch wildcard (``*``, ``?`` or ``[`` anywhere in the string),
+            or a regular expression prefixed with ``re:``. Prefix any of
+            those with ``~`` to exclude its matches instead, as in the
+            ``elements:`` selector list of a YAML array declaration, e.g.
+            ``["QD2*", "QF1*", "~QF1E-C05"]``. A lone ``~pattern`` (or a list
+            made only of ``~`` entries) means "every element except those".
 
         Returns
         -------
         list[str]
             Matching element names.
-        """
-        if filter.startswith("re:"):
-            pattern = re.compile(rf"{filter[3:]}")
-            elements = [k for k in self._ALL.keys() if pattern.fullmatch(k)]
-        elif "*" in filter or "?" in filter:
-            elements = [k for k in self._ALL.keys() if fnmatch.fnmatch(k, filter)]
-        else:
-            elements = [filter]
 
-        return elements
+        Raises
+        ------
+        PyAMLException
+            If a literal pattern (or a ``~``-prefixed literal) matches no
+            element, or a ``re:`` pattern is not a valid regular expression.
+        """
+        matched = set(resolve_names(self._ALL.keys(), filter, what="Element"))
+        return [n for n in self._ALL if n in matched]
 
     def _fill_array(
         self,
@@ -340,7 +309,6 @@ class ElementHolder(metaclass=ABCMeta):
         constructor,
         ARR: dict,
     ):
-        # Handle wildcard, regexp and exclusion pattern
         """
         Resolve selectors and store a constructed element array.
 
@@ -358,16 +326,14 @@ class ElementHolder(metaclass=ABCMeta):
             Destination array store.
         """
         all_names: list[str] = []
-        excluded_names: list[str] = []
+        excluded_names: set[str] = set()
         for name in element_names:
             if name.startswith("~"):
-                names = self.find_elements(name[1:])
-                excluded_names.extend(names)
+                excluded_names.update(self.find_elements(name[1:]))
             else:
-                names = self.find_elements(name)
-                all_names.extend(names)
+                all_names.extend(self.find_elements(name))
 
-        [all_names.remove(name) for name in excluded_names]
+        all_names = [n for n in all_names if n not in excluded_names]
 
         a = []
         for n in all_names:
@@ -376,7 +342,7 @@ class ElementHolder(metaclass=ABCMeta):
             except Exception as err:
                 raise PyAMLException(f"{constructor.__name__} {array_name} : {err} @index {len(a)}") from None
             if m in a:
-                raise PyAMLException(f"{constructor.__name__} {array_name} : duplicate name {name} @index {len(a)}") from None
+                raise PyAMLException(f"{constructor.__name__} {array_name} : duplicate name {n} @index {len(a)}") from None
             a.append(m)
         ARR[array_name] = constructor(array_name, a)
 
@@ -419,13 +385,27 @@ class ElementHolder(metaclass=ABCMeta):
         return array[name]
 
     # Generic elements
-    def get(self) -> ElementArray:
-        """Return all registered elements in insertion order.
+    def get(self, name: str | None = None) -> ElementArray:
+        """Return a named element array, or every registered element when no name is given.
+
+        Parameters
+        ----------
+        name : str, optional
+            Name of the element array to look up, as declared in the configuration.
+            When omitted, every registered element is returned instead.
 
         Returns
         -------
         ElementArray
-            New unnamed container sharing the registered element references.
+            The element array registered under ``name``, regardless of its concrete
+            family (magnet, BPM, combined-function magnet, serialized-magnet, or
+            generic element array), or a new unnamed container of every registered
+            element, in insertion order, when ``name`` is omitted.
+
+        Raises
+        ------
+        PyAMLException
+            If ``name`` is given and no array is registered under it.
 
         Notes
         -----
@@ -437,8 +417,11 @@ class ElementHolder(metaclass=ABCMeta):
         --------
         >>> elements = sr.live.get()
         >>> names = elements.names()
+        >>> cell08 = sr.live.get("CELL08")
         """
-        return ElementArray("", list(self._ALL.values()))
+        if name is None:
+            return ElementArray("", list(self._ALL.values()))
+        return self._get_array(name)
 
     @overload
     def __getitem__(self, key: int) -> Element: ...
@@ -447,32 +430,46 @@ class ElementHolder(metaclass=ABCMeta):
     def __getitem__(self, key: slice) -> ElementArray: ...
 
     @overload
-    def __getitem__(self, key: str) -> Element | ElementArray | None: ...
+    def __getitem__(self, key: str) -> Element: ...
 
-    def __getitem__(self, key: int | slice | str) -> Element | ElementArray | None:
+    @overload
+    def __getitem__(self, key: list[str] | tuple[str, ...]) -> ElementArray: ...
+
+    def __getitem__(self, key: int | slice | str | list[str] | tuple[str, ...]) -> Element | ElementArray:
         """Retrieve an element or select a collection.
 
         Parameters
         ----------
-        key : int, slice or str
-            Index in registration order, slice, exact name, or name pattern.
-            Strings containing ``*``, ``?`` or ``[`` use fnmatch matching.
-            Other strings are exact registry keys. Colons are literal.
+        key : int, slice, str, list[str] or tuple[str, ...]
+            Index in registration order, slice, exact name, name pattern, or
+            a list/tuple of patterns. Strings containing ``*``, ``?`` or
+            ``[`` use fnmatch matching; a ``re:`` prefix uses a regular
+            expression instead. Any other string is an exact registry key.
+            Colons are literal. A list or tuple resolves each entry
+            independently and unions the results. Prefix any pattern with
+            ``~`` to exclude its matches instead, as in a YAML array's
+            ``elements:`` list; a lone ``~pattern`` means every element
+            except those matches.
 
         Returns
         -------
-        Element or ElementArray or None
-            An index returns an element. An exact name returns its element
-            or None. Patterns and slices return the most specific compatible
-            array, or an empty ElementArray when nothing matches.
+        Element or ElementArray
+            An index or an exact literal name returns its element. Patterns,
+            lists/tuples of patterns, and slices return the most specific
+            compatible array, or an empty ElementArray when nothing matches.
             The full slice ``[:]`` returns a generic ElementArray, like get().
 
         Raises
         ------
+        PyAMLException
+            If an exact literal name, or a literal entry within a list or
+            tuple, does not match any registered element, or if a ``re:``
+            pattern is not a valid regular expression.
         IndexError
             If the index is out of bounds.
         TypeError
-            If the key is neither an integer, a slice, nor a string.
+            If the key is neither an integer, a slice, a string, nor a
+            list/tuple of strings.
         ValueError
             If a slice has a zero step.
 
@@ -480,25 +477,35 @@ class ElementHolder(metaclass=ABCMeta):
         -----
         Indices follow insertion order, not necessarily lattice order.
         Collections share element references but do not modify the registry.
-        Field filters and regular expressions are not interpreted here.
+        Field filters are not interpreted here.
 
         Examples
         --------
         >>> bpm = sr.live["BPM01"]
-        >>> missing = sr.live["UNKNOWN"]  # None
+        >>> missing = sr.live["UNKNOWN"]  # raises PyAMLException
         >>> bpms = sr.live["BPM*"]
         >>> bpms = sr.live["BPM0[123]"]  # BPM01, BPM02 or BPM03
         >>> bpms = sr.live["BPM0[1-3]"]  # Same selection using a range
         >>> quads = sr.live["Q[FD]*"]  # Names starting with QF or QD
         >>> bpms = sr.live["BPM0[!3]"]  # One character after BPM0, except 3
+        >>> bpms = sr.live["re:^BPM0[12]$"]  # Regular expression
+        >>> mixed = sr.live[["BPM01", "QF1*"]]  # Union of several patterns
+        >>> all_but_one = sr.live["~BPM01"]  # Every element except BPM01
+        >>> most_quads = sr.live[["QF1*", "~QF1A-C01"]]  # QF1* minus one name
         >>> first = sr.live[0]
         >>> subset = sr.live[1:10]
         >>> all_elements = sr.live[:]
         """
         if isinstance(key, str):
-            if any(marker in key for marker in "*?["):
-                return self.get()._select_names(key)
-            return self._ALL.get(key)
+            if key.startswith("re:") or key.startswith("~") or is_wildcard(key):
+                matched = set(resolve_names(self._ALL.keys(), key))
+                return self.get()._typed_array([v for n, v in self._ALL.items() if n in matched])
+            if key not in self._ALL:
+                raise PyAMLException(f"Element {key} not defined")
+            return self._ALL[key]
+        if isinstance(key, (list, tuple)):
+            matched = set(resolve_names(self._ALL.keys(), key))
+            return self.get()._typed_array([v for n, v in self._ALL.items() if n in matched])
         if isinstance(key, int):
             return list(self._ALL.values())[key]
         if isinstance(key, slice):
@@ -506,7 +513,7 @@ class ElementHolder(metaclass=ABCMeta):
             if key == slice(None):
                 return elements
             return elements._typed_array(list(elements)[key])
-        raise TypeError("ElementHolder keys must be integers, slices or strings")
+        raise TypeError("ElementHolder keys must be integers, slices, strings, or lists/tuples of strings")
 
     def fill_element_array(self, arrayName: str, elementNames: list[str]):
         """
@@ -522,7 +529,7 @@ class ElementHolder(metaclass=ABCMeta):
         self._fill_array(
             arrayName,
             elementNames,
-            self.get_element,
+            self._get_element,
             ElementArray,
             self._ELEMENT_ARRAYS,
         )
@@ -538,59 +545,13 @@ class ElementHolder(metaclass=ABCMeta):
         """
         self._ALL[element.get_name()] = element
 
-    def get_element(self, name: str) -> Element:
+    def _get_element(self, name: str) -> Element:
         """
-        Return a named element from the global store.
-
-        Parameters
-        ----------
-        name : str
-            Name of the element to look up, as declared in the configuration.
-
-        Returns
-        -------
-        Element
-            The element registered under ``name``.
+        Generic single-element resolver used internally to build element arrays.
         """
         return self._get("Element", name, self._ALL)
 
-    def get_elements(self, name: str) -> ElementArray:
-        """
-        Return a named generic element array.
-
-        Parameters
-        ----------
-        name : str
-            Name of the element array to look up, as declared in the configuration.
-
-        Returns
-        -------
-        ElementArray
-            The element array registered under ``name``.
-        """
-        return self._get("Element array", name, self._ELEMENT_ARRAYS)
-
-    def get_all_elements(self) -> list[Element]:
-        """Return all registered elements in insertion order."""
-        return [value for key, value in self._ALL.items()]
-
     # Tune monitor
-
-    def get_betatron_tune_monitor(self, name: str) -> BetatronTuneMonitor:
-        """
-        Return a named betatron tune monitor.
-
-        Parameters
-        ----------
-        name : str
-            Name of the betatron tune monitor to look up, as declared in the configuration.
-
-        Returns
-        -------
-        BetatronTuneMonitor
-            The betatron tune monitor registered under ``name``.
-        """
-        return self._get("Diagnostic", name, self._DIAG)
 
     def add_betatron_tune_monitor(self, tune_monitor: Element):
         """
@@ -615,196 +576,6 @@ class ElementHolder(metaclass=ABCMeta):
             Tuning or measurement tool to register, keyed by its own name.
         """
         self._add(self._TOOLS, tool)
-
-    # ---- Chromaticity -------------------------------------------------
-
-    def get_chromaticity_monitor(self, name: str) -> ChromaticityMonitor:
-        """
-        Return a named chromaticity monitor.
-
-        Parameters
-        ----------
-        name : str
-            Name of the chromaticity monitor to look up, as declared in the configuration.
-
-        Returns
-        -------
-        ChromaticityMonitor
-            The chromaticity monitor registered under ``name``.
-        """
-        obj = self._get("Chromaticity monitor", name, self._TOOLS)
-        return obj
-
-    def get_chromaticity_tuning(self, name: str) -> "Chromaticity":
-        """
-        Return a named chromaticity tuning tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the chromaticity tuning tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'Chromaticity'
-            The chromaticity tuning tool registered under ``name``.
-        """
-        return self._get("Chromaticity tool", name, self._TOOLS)
-
-    def get_crm_tuning(self, name: str) -> "ChromaticityResponseMatrix":
-        """
-        Return a named chromaticity response-matrix tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the chromaticity response-matrix tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'ChromaticityResponseMatrix'
-            The chromaticity response-matrix tool registered under ``name``.
-        """
-        return self._get("ChromaticityResponseMatrix tool", name, self._TOOLS)
-
-    @property
-    def chromaticity(self) -> "Chromaticity":
-        """Return the chromaticity."""
-        return self.get_chromaticity_tuning("DEFAULT_CHROMATICITY_CORRECTION")
-
-    @property
-    def crm(self) -> "ChromaticityResponseMatrix":
-        """Return the crm."""
-        return self.get_crm_tuning("DEFAULT_CHROMATICITY_RESPONSE_MATRIX")
-
-    # ---- Tune ---------------------------------------------------------
-
-    def get_tune_tuning(self, name: str) -> "Tune":
-        """
-        Return a named tune correction tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the tune correction tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'Tune'
-            The tune correction tool registered under ``name``.
-        """
-        return self._get("Tune tuning tool", name, self._TOOLS)
-
-    @property
-    def tune(self) -> "Tune":
-        """Return the tune."""
-        return self.get_tune_tuning("DEFAULT_TUNE_CORRECTION")
-
-    def get_trm_tuning(self, name: str) -> "TuneResponseMatrix":
-        """
-        Return a named tune response-matrix tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the tune response-matrix tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'TuneResponseMatrix'
-            The tune response-matrix tool registered under ``name``.
-        """
-        return self._get("TuneResponseMatrix tool", name, self._TOOLS)
-
-    @property
-    def trm(self) -> "TuneResponseMatrix":
-        """Return the default tune response-matrix tool."""
-        return self.get_trm_tuning("DEFAULT_TUNE_RESPONSE_MATRIX")
-
-    # ---- Orbit --------------------------------------------------------
-
-    def get_orbit_tuning(self, name: str) -> "Orbit":
-        """
-        Return a named orbit correction tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the orbit correction tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'Orbit'
-            The orbit correction tool registered under ``name``.
-        """
-        return self._get("Orbit tuning tool", name, self._TOOLS)
-
-    @property
-    def orbit(self) -> "Orbit":
-        """Return the orbit."""
-        return self.get_orbit_tuning("DEFAULT_ORBIT_CORRECTION")
-
-    def get_orm_tuning(self, name: str) -> "OrbitResponseMatrix":
-        """
-        Return a named orbit response-matrix tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the orbit response-matrix tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'OrbitResponseMatrix'
-            The orbit response-matrix tool registered under ``name``.
-        """
-        return self._get("OrbitResponseMatrix tool", name, self._TOOLS)
-
-    @property
-    def orm(self) -> "OrbitResponseMatrix":
-        """Return the default orbit response-matrix tool."""
-        return self.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
-
-    # ---- BBA --------------------------------------------------------
-
-    def get_bba(self, name: str) -> "BBA":
-        """
-        Return a named beam-based alignment tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the beam-based alignment tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'BBA'
-            The beam-based alignment tool registered under ``name``.
-        """
-        return self._get("BBA tool", name, self._TOOLS)
-
-    # ---- Dispersive orbit --------------------------------------------
-
-    def get_dispersion_tuning(self, name: str) -> "Dispersion":
-        """
-        Return a named dispersion tuning tool.
-
-        Parameters
-        ----------
-        name : str
-            Name of the dispersion tuning tool to look up, as declared in the configuration.
-
-        Returns
-        -------
-        'Dispersion'
-            The dispersion tuning tool registered under ``name``.
-        """
-        return self._get("Dispersion tool", name, self._TOOLS)
-
-    @property
-    def dispersion(self) -> "Dispersion":
-        """Return the dispersion."""
-        return self.get_dispersion_tuning("DEFAULT_DISPERSION")
 
     def _get_array(self, name: str):
         """
@@ -876,7 +647,7 @@ class ElementHolder(metaclass=ABCMeta):
             Energy in eV
         """
         # Needed by energy dependant element (i.e. magnet coil current calculation)
-        for m in self.get_all_elements():
+        for m in self._ALL.values():
             m.set_energy(E)
 
     def _set_mcf(self, alphac: float):
@@ -889,7 +660,7 @@ class ElementHolder(metaclass=ABCMeta):
             Moment compaction factor
         """
         # Needed by some off energy dependant element (i.e. chromaticty tools)
-        for m in self.get_all_elements():
+        for m in self._ALL.values():
             m.set_mcf(alphac)
 
     def _set_harmonic(self, h: int):
@@ -901,5 +672,5 @@ class ElementHolder(metaclass=ABCMeta):
         h : int
             Harmonic number
         """
-        for m in self.get_all_elements():
+        for m in self._ALL.values():
             m.set_harmonic(h)

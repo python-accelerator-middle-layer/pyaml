@@ -153,7 +153,7 @@ class Tune(TuningTool, DynamicValidation):
     def tune_monitor(self) -> "BetatronTuneMonitor":
         """Return the betatron tune monitor used by the correction."""
         self.check_peer()
-        return self.peer.get_betatron_tune_monitor(self.betatron_tune_name)
+        return self.peer.diagnostic.get(self.betatron_tune_name)
 
     @property
     def quadrupoles(self) -> "MagnetArray":

@@ -141,7 +141,7 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
     def bpms(self) -> "BPMArray":
         """Return the BPM array used for orbit readback."""
         self.check_peer()
-        return self.peer.bpms.get(self.bpm_array_name)
+        return self.peer.diagnostic.bpms.get(self.bpm_array_name)
 
     @property
     def hcorrectors(self) -> "MagnetArray":
@@ -173,10 +173,10 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
             sr = Accelerator.load("MyAccelerator.yaml")
             acc = sr.design
 
-            if acc.orm.measure():
-                acc.orm.save("ideal_orm.json")
-                acc.orm.save("ideal_orm.yaml", with_type="yaml")
-                acc.orm.save("ideal_orm.npz", with_type="npz")
+            if acc.tool.orm.measure():
+                acc.tool.orm.save("ideal_orm.json")
+                acc.tool.orm.save("ideal_orm.yaml", with_type="yaml")
+                acc.tool.orm.save("ideal_orm.npz", with_type="npz")
 
         Parameters
         ----------

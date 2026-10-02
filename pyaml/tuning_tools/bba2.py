@@ -244,13 +244,13 @@ class BBA2(MeasurementTool, DynamicValidation):
     def bpms(self) -> "BPMArray":
         """Return the BPM array used for the measurement."""
         self.check_peer()
-        return self.peer.bpms.get(self.bpm_array_name)
+        return self.peer.diagnostic.bpms.get(self.bpm_array_name)
 
     @property
     def bpm(self) -> "BPM":
         """Return the reference BPM used for the alignment."""
         self.check_peer()
-        return self.peer.bpm.get(self.bpm_name)
+        return self.peer.diagnostic.bpm.get(self.bpm_name)
 
     @property
     def hcorrector(self) -> "Magnet":
@@ -274,7 +274,7 @@ class BBA2(MeasurementTool, DynamicValidation):
     def tune_correction(self) -> "Tune":
         """Return the tune-correction tool used during alignment."""
         self.check_peer()
-        return self.peer.get_tune_tuning(self.tune_correction_name)
+        return self.peer.tool.get(self.tune_correction_name)
 
     @staticmethod
     def _x_intercept(x, k, n):
@@ -359,9 +359,9 @@ class BBA2(MeasurementTool, DynamicValidation):
         quad = design.magnet.get(quadname)
         sth = design.magnet.get(steererhname)
         stv = design.magnet.get(steerervname)
-        orbit = design.bpms.get(bpmname).positions
-        tune_design = design.get_tune_tuning(tunename)
-        tune_live = self._peer.get_tune_tuning(tunename)
+        orbit = design.diagnostic.bpms.get(bpmname).positions
+        tune_design = design.tool.get(tunename)
+        tune_live = self._peer.tool.get(tunename)
 
         # Get tune from live and adjust the model to improve quad response phase
         tune0 = tune_design.readback()
@@ -585,7 +585,7 @@ class BBA2(MeasurementTool, DynamicValidation):
 
             sr = Accelerator.load("tests/config/EBSOrbit.yaml")
             SR = sr.live
-            bba = SR.get_bba("BBA2-BPM_C04-04")
+            bba = SR.tool.get("BBA2-BPM_C04-04")
 
             # Add a misalignement
             SR.get_bpm("BPM_C04-04").offset.set([200e-6,-150e-6])
