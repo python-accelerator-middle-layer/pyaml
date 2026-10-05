@@ -10,7 +10,8 @@ from abc import ABCMeta, abstractmethod
 
 from pydantic import BaseModel
 
-from ..bpm.bpm import BPM
+from pyaml.diagnostics.bpm import BPM
+
 from ..common.abstract import RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.exception import PyAMLException

@@ -23,8 +23,9 @@ from ..validation import DynamicValidation, register_schema
 from .measurement_tool import MeasurementTool
 
 if TYPE_CHECKING:
+    from pyaml.diagnostics.bpm import BPM
+
     from ..arrays.bpm_array import BPMArray
-    from ..bpm.bpm import BPM
     from ..magnet.magnet import Magnet
 
 logger = logging.getLogger(__name__)

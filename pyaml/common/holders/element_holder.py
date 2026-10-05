@@ -3,8 +3,9 @@
 from abc import ABCMeta, abstractmethod
 from typing import TYPE_CHECKING, overload
 
+from pyaml.diagnostics.bpm import BPM
+
 from ...arrays.element_array import ElementArray
-from ...bpm.bpm import BPM
 from ...diagnostics.tune_monitor import BetatronTuneMonitor
 from ...magnet.cfm_magnet import CombinedFunctionMagnet
 from ...magnet.magnet import Magnet

@@ -10,7 +10,8 @@ from typing import TYPE_CHECKING
 
 import at
 
-from ..bpm.bpm import BPM
+from pyaml.diagnostics.bpm import BPM
+
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element, __pyaml_repr__
 from ..common.exception import PyAMLException

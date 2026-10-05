@@ -13,22 +13,22 @@ controls:
     catalog: catalogs/sr_catalogs.yaml
 data_folder: /data/store
 devices:
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_C01-01
   x_pos: srdiag/bpm/c01-01/SA_HPosition
   y_pos: srdiag/bpm/c01-01/SA_VPosition
   x_offset: srdiag/bpm/c01-01/HOffset
   y_offset: srdiag/bpm/c01-01/VOffset
   tilt: srdiag/bpm/c01-01/Tilt_Angle
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_C01-02
   x_pos: srdiag/bpm/c01-02/SA_HPosition
   y_pos: srdiag/bpm/c01-02/SA_VPosition
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_C01-03
   x_pos: srdiag/bpm/c01-03/SA_HPosition
   y_pos: srdiag/bpm/c01-03/SA_VPosition
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_C01-04
   x_pos: srdiag/bpm/c01-04/SA_HPosition
   y_pos: srdiag/bpm/c01-04/SA_VPosition
