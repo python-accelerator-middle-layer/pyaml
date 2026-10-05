@@ -29,7 +29,6 @@ logger = logging.getLogger(__name__)
 
 LOCATION_KEY = "__location__"
 FIELD_LOCATIONS_KEY = "__fieldlocations__"
-ACCEPTED_SUFFIXES = (".yaml", ".yml", ".json")
 RESOLVER_PATTERN = re.compile(r"\$\{([^{}]+)\}")
 
 
@@ -323,11 +322,6 @@ def _load(filename: str, context: LoadContext) -> Union[dict, list]:
         return loader.load()
 
 
-def _is_supported_file(value: Any) -> bool:
-    """Return True if the value looks like a supported configuration file name."""
-    return isinstance(value, str) and value.endswith(ACCEPTED_SUFFIXES)
-
-
 class ConfigLoader(ABC):
     """
     Base class for parsers that expand nested configuration references.
@@ -424,9 +418,6 @@ class ConfigLoader(ABC):
 
         value = RESOLVER_PATTERN.sub(replace, value)
 
-        if _is_supported_file(value):
-            return RESOLVERS["include"](value, self.context)
-
         return value
 
     def _resolve_resolver_expression(self, expr: str) -> Any:
@@ -487,31 +478,24 @@ class ConfigLoader(ABC):
         """
         Recursively expand the elements of a list.
 
-        Plain string values that refer to supported configuration files are
-        treated as list includes. If the referenced file loads to a list, its
-        elements are spliced into the current list. Otherwise, the loaded
-        object is appended as a single element.
-
-        All other items are expanded recursively using :meth:`expand`.
-
-        Args:
-            items: The list to expand.
-
-        Returns:
-            The expanded list.
+        Lists returned by an explicit include resolver are spliced into the
+        current list. Other nested lists are preserved.
         """
         expanded: list[Any] = []
 
         for item in items:
-            if isinstance(item, str) and _is_supported_file(item):
-                loaded = RESOLVERS["include"](item, self.context)
-                if isinstance(loaded, list):
-                    expanded.extend(loaded)
-                else:
-                    expanded.append(loaded)
-                continue
+            is_include = (
+                isinstance(item, str)
+                and (match := RESOLVER_PATTERN.fullmatch(item)) is not None
+                and match.group(1).strip().startswith("include:")
+            )
 
-            expanded.append(self.expand(item))
+            value = self.expand(item)
+
+            if is_include and isinstance(value, list):
+                expanded.extend(value)
+            else:
+                expanded.append(value)
 
         return expanded
 

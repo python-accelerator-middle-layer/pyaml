@@ -10,7 +10,7 @@ controls:
   - type: tango.pyaml.controlsystem
     tango_host: ebs-simu-3:10000
     name: live
-    catalog: catalogs/sr_catalogs.yaml
+    catalog: ${include:catalogs/sr_catalogs.yaml}
 data_folder: /data/store
 arrays:
   - type: pyaml.arrays.magnet
@@ -24,6 +24,6 @@ arrays:
       - SH1A-C01-V
       - SH1A-C02-V
 devices:
-  - sr/quadrupoles/QF1AC01.yaml
-  - sr/correctors/SH1AC01-range.yaml
-  - sr/correctors/SH1AC02.yaml
+  - ${include:sr/quadrupoles/QF1AC01.yaml}
+  - ${include:sr/correctors/SH1AC01-range.yaml}
+  - ${include:sr/correctors/SH1AC02.yaml}

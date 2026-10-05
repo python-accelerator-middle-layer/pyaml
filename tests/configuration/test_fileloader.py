@@ -9,7 +9,6 @@ from pyaml.configuration.fileloader import (
     ROOT,
     LoadContext,
     RootFolder,
-    _is_supported_file,
     load,
 )
 
@@ -52,16 +51,6 @@ def test_rootfolder_set_updates_root(tmp_path):
     assert root.get() == new_root.resolve()
     assert before == (tmp_path / "config.yaml").resolve()
     assert after == (new_root / "config.yaml").resolve()
-
-
-def test_is_supported_file():
-    assert _is_supported_file("config.yaml")
-    assert _is_supported_file("config.yml")
-    assert _is_supported_file("config.json")
-
-    assert not _is_supported_file("config.txt")
-    assert not _is_supported_file(1)
-    assert not _is_supported_file(None)
 
 
 def test_load_context_adds_and_removes_paths(tmp_path):
@@ -113,7 +102,7 @@ def test_load_nested_yaml(tmp_path):
 
     (tmp_path / "child.yaml").write_text("answer: 42\n")
 
-    (tmp_path / "parent.yaml").write_text("child: child.yaml\n")
+    (tmp_path / "parent.yaml").write_text("child: ${include:child.yaml}\n")
 
     result = load("parent.yaml")
 
@@ -125,7 +114,7 @@ def test_load_nested_json(tmp_path):
 
     (tmp_path / "child.json").write_text(json.dumps({"answer": 42}))
 
-    (tmp_path / "parent.json").write_text(json.dumps({"child": "child.json"}))
+    (tmp_path / "parent.json").write_text(json.dumps({"child": "${include:child.json}"}))
 
     result = load("parent.json")
 
@@ -227,7 +216,7 @@ def test_load_list_include_extends_list(tmp_path):
         """
     values:
     - start
-    - items.yaml
+    - ${include:items.yaml}
     - end
     """.strip()
     )
@@ -285,8 +274,8 @@ def test_load_invalid_json_raises_pyaml_exception(tmp_path):
 def test_load_circular_include_raises_pyaml_exception(tmp_path):
     ROOT.set(tmp_path)
 
-    (tmp_path / "a.yaml").write_text("b: b.yaml\n")
-    (tmp_path / "b.yaml").write_text("a: a.yaml\n")
+    (tmp_path / "a.yaml").write_text("b: ${include:b.yaml}\n")
+    (tmp_path / "b.yaml").write_text("a: ${include:a.yaml}\n")
 
     with pytest.raises(PyAMLException, match="Circular file inclusion"):
         load("a.yaml")
