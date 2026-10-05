@@ -189,7 +189,7 @@ def resolver(name: str):
 
     Args:
         name: Prefix used to invoke the resolver (for example ``"env"``
-            or ``"file"``).
+            or ``"include"``).
 
     Returns:
         A decorator that registers the decorated function in the global
@@ -266,10 +266,10 @@ def resolve_path(value: str, _context: LoadContext | None = None) -> str:
     return str(ROOT.expand_path(value))
 
 
-@resolver("file")
-def resolve_file(value: str, context: LoadContext | None = None) -> Any:
+@resolver("include")
+def resolve_include(value: str, context: LoadContext | None = None) -> Any:
     """
-    Load and return the contents of a configuration file.
+    Load and include the contents of a configuration file.
 
     Parameters
     ----------
@@ -289,7 +289,7 @@ def resolve_file(value: str, context: LoadContext | None = None) -> Any:
         If no loading context is provided.
     """
     if context is None:
-        raise RuntimeError("File resolver requires LoadContext")
+        raise RuntimeError("Include resolver requires LoadContext")
     return _load(value, context)
 
 
@@ -375,7 +375,7 @@ class ConfigLoader(ABC):
         Expand resolver expressions and file references in a string.
 
         If the entire string is a resolver expression (for example
-        ``"${env:HOME}"`` or ``"${file:config.yaml}"``), the resolved value is
+        ``"${env:HOME}"`` or ``"${include:config.yaml}"``), the resolved value is
         returned directly and may be of any type.
 
         Resolver expressions embedded inside a larger string are interpolated
@@ -425,7 +425,7 @@ class ConfigLoader(ABC):
         value = RESOLVER_PATTERN.sub(replace, value)
 
         if _is_supported_file(value):
-            return RESOLVERS["file"](value, self.context)
+            return RESOLVERS["include"](value, self.context)
 
         return value
 
@@ -434,7 +434,7 @@ class ConfigLoader(ABC):
         Resolve a single resolver expression.
 
         The expression must have the form ``"<resolver>:<payload>"``, for
-        example ``"env:HOME"`` or ``"file:config.yaml"``. The resolver is
+        example ``"env:HOME"`` or ``"include:config.yaml"``. The resolver is
         looked up in the global resolver registry and invoked with the
         supplied payload.
 
@@ -504,7 +504,7 @@ class ConfigLoader(ABC):
 
         for item in items:
             if isinstance(item, str) and _is_supported_file(item):
-                loaded = RESOLVERS["file"](item, self.context)
+                loaded = RESOLVERS["include"](item, self.context)
                 if isinstance(loaded, list):
                     expanded.extend(loaded)
                 else:
