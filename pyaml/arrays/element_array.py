@@ -10,7 +10,8 @@ from typing import TYPE_CHECKING, Sequence
 
 import numpy as np
 
-from ..bpm.bpm import BPM
+from pyaml.diagnostics.bpm import BPM
+
 from ..common.element import Element, __pyaml_repr__
 from ..common.exception import PyAMLException
 from ..common.name_matching import resolve_names

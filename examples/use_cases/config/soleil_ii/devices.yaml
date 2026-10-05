@@ -1,4 +1,4 @@
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_001
   x_pos: AN01-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN01-SD/DG-EPOS/BPM.02/y_pos
@@ -54,7 +54,7 @@
     physics:
     - AN01-AR/EM-OCT/OH.02/strength
     - AN01-AR/EM-COR/OH.02-CQLN.02/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_002
   x_pos: AN01-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN01-AR/DG-EPOS/BPM.03/y_pos
@@ -108,7 +108,7 @@
     physics:
     - AN01-AR/EM-SX/SCF.02/strength
     - AN01-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_003
   x_pos: AN01-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN01-AR/DG-EPOS/BPM.04/y_pos
@@ -168,7 +168,7 @@
     physics:
     - AN01-AR/EM-SX/SCF.05/strength
     - AN01-AR/EM-COR/SCF.05-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_004
   x_pos: AN01-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN01-AR/DG-EPOS/BPM.05/y_pos
@@ -228,7 +228,7 @@
     physics:
     - AN01-AR/EM-SX/SCF.08/strength
     - AN01-AR/EM-COR/SCF.08-CDLH.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_005
   x_pos: AN01-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN01-AR/DG-EPOS/BPM.06/y_pos
@@ -288,7 +288,7 @@
     - AN01-AR/EM-OCT/OC.04/strength
     - AN01-AR/EM-COR/OC.04-CQLN.13/strength
     - AN01-AR/EM-COR/OC.04-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_006
   x_pos: AN01-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN01-AR/DG-EPOS/BPM.07/y_pos
@@ -348,7 +348,7 @@
     - AN01-AR/EM-OCT/OC.05/strength
     - AN01-AR/EM-COR/OC.05-CQLN.16/strength
     - AN01-AR/EM-COR/OC.05-CQLT.06/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_007
   x_pos: AN01-AR/DG-EPOS/BPM.08/x_pos
   y_pos: AN01-AR/DG-EPOS/BPM.08/y_pos
@@ -420,7 +420,7 @@
     physics:
     - AN01-AR/EM-SX/SCD.18/strength
     - AN01-AR/EM-COR/SCD.18-CDLV.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_008
   x_pos: AN01-AR/DG-EPOS/BPM.09/x_pos
   y_pos: AN01-AR/DG-EPOS/BPM.09/y_pos
@@ -462,7 +462,7 @@
     physics:
     - AN01-AR/EM-OCT/OH.03/strength
     - AN01-AR/EM-COR/OH.03-CQLN.21/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_009
   x_pos: AN01-AR/DG-EPOS/BPM.10/x_pos
   y_pos: AN01-AR/DG-EPOS/BPM.10/y_pos
@@ -494,11 +494,11 @@
     - AN01-AR/EM-OCT/OH.04/strength
     - AN01-AR/EM-COR/OH.04-CQLN.22/strength
     - AN01-AR/EM-COR/OH.04-CQLT.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_010
   x_pos: AN02-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN02-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_011
   x_pos: AN02-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN02-SD/DG-EPOS/BPM.02/y_pos
@@ -530,7 +530,7 @@
     - AN02-AR/EM-SX/SHF.01/strength
     - AN02-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN02-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_012
   x_pos: AN02-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN02-AR/DG-EPOS/BPM.03/y_pos
@@ -604,7 +604,7 @@
     physics:
     - AN02-AR/EM-SX/SCF.02/strength
     - AN02-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_013
   x_pos: AN02-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN02-AR/DG-EPOS/BPM.04/y_pos
@@ -664,7 +664,7 @@
     physics:
     - AN02-AR/EM-SX/SCF.05/strength
     - AN02-AR/EM-COR/SCF.05-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_014
   x_pos: AN02-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN02-AR/DG-EPOS/BPM.05/y_pos
@@ -736,7 +736,7 @@
     physics:
     - AN02-AR/EM-SX/SCD.09/strength
     - AN02-AR/EM-COR/SCD.09-CDLV.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_015
   x_pos: AN02-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN02-AR/DG-EPOS/BPM.06/y_pos
@@ -772,7 +772,7 @@
     type: pyaml.magnet.identity_model
     unit: 1/m
     physics: AN02-AR/EM-COR/CQLN.12/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_016
   x_pos: AN02-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN02-AR/DG-EPOS/BPM.07/y_pos
@@ -804,11 +804,11 @@
     - AN02-AR/EM-OCT/OH.03/strength
     - AN02-AR/EM-COR/OH.03-CQLN.13/strength
     - AN02-AR/EM-COR/OH.03-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_017
   x_pos: AN03-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN03-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_018
   x_pos: AN03-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN03-SD/DG-EPOS/BPM.02/y_pos
@@ -840,7 +840,7 @@
     - AN03-AR/EM-SX/SHF.01/strength
     - AN03-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN03-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_019
   x_pos: AN03-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN03-AR/DG-EPOS/BPM.03/y_pos
@@ -908,7 +908,7 @@
     physics:
     - AN03-AR/EM-SX/SCF.02/strength
     - AN03-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_020
   x_pos: AN03-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN03-AR/DG-EPOS/BPM.04/y_pos
@@ -968,7 +968,7 @@
     physics:
     - AN03-AR/EM-SX/SCF.05/strength
     - AN03-AR/EM-COR/SCF.05-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_021
   x_pos: AN03-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN03-AR/DG-EPOS/BPM.05/y_pos
@@ -1028,7 +1028,7 @@
     physics:
     - AN03-AR/EM-SX/SCF.08/strength
     - AN03-AR/EM-COR/SCF.08-CDLH.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_022
   x_pos: AN03-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN03-AR/DG-EPOS/BPM.06/y_pos
@@ -1088,7 +1088,7 @@
     - AN03-AR/EM-OCT/OC.04/strength
     - AN03-AR/EM-COR/OC.04-CQLN.13/strength
     - AN03-AR/EM-COR/OC.04-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_023
   x_pos: AN03-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN03-AR/DG-EPOS/BPM.07/y_pos
@@ -1148,7 +1148,7 @@
     - AN03-AR/EM-OCT/OC.05/strength
     - AN03-AR/EM-COR/OC.05-CQLN.16/strength
     - AN03-AR/EM-COR/OC.05-CQLT.06/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_024
   x_pos: AN03-AR/DG-EPOS/BPM.08/x_pos
   y_pos: AN03-AR/DG-EPOS/BPM.08/y_pos
@@ -1220,7 +1220,7 @@
     physics:
     - AN03-AR/EM-SX/SCD.18/strength
     - AN03-AR/EM-COR/SCD.18-CDLV.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_025
   x_pos: AN03-AR/DG-EPOS/BPM.09/x_pos
   y_pos: AN03-AR/DG-EPOS/BPM.09/y_pos
@@ -1256,7 +1256,7 @@
     type: pyaml.magnet.identity_model
     unit: 1/m
     physics: AN03-AR/EM-COR/CQLN.21/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_026
   x_pos: AN03-AR/DG-EPOS/BPM.10/x_pos
   y_pos: AN03-AR/DG-EPOS/BPM.10/y_pos
@@ -1288,11 +1288,11 @@
     - AN03-AR/EM-OCT/OH.02/strength
     - AN03-AR/EM-COR/OH.02-CQLN.22/strength
     - AN03-AR/EM-COR/OH.02-CQLT.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_027
   x_pos: AN04-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN04-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_028
   x_pos: AN04-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN04-SD/DG-EPOS/BPM.02/y_pos
@@ -1324,7 +1324,7 @@
     - AN04-AR/EM-SX/SHF.01/strength
     - AN04-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN04-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_029
   x_pos: AN04-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN04-AR/DG-EPOS/BPM.03/y_pos
@@ -1392,7 +1392,7 @@
     physics:
     - AN04-AR/EM-SX/SCF.02/strength
     - AN04-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_030
   x_pos: AN04-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN04-AR/DG-EPOS/BPM.04/y_pos
@@ -1452,7 +1452,7 @@
     - AN04-AR/EM-OCT/OC.02/strength
     - AN04-AR/EM-COR/OC.02-CQLN.07/strength
     - AN04-AR/EM-COR/OC.02-CQLT.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_031
   x_pos: AN04-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN04-AR/DG-EPOS/BPM.05/y_pos
@@ -1524,7 +1524,7 @@
     physics:
     - AN04-AR/EM-SX/SCD.09/strength
     - AN04-AR/EM-COR/SCD.09-CDLV.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_032
   x_pos: AN04-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN04-AR/DG-EPOS/BPM.06/y_pos
@@ -1566,7 +1566,7 @@
     physics:
     - AN04-AR/EM-OCT/OH.02/strength
     - AN04-AR/EM-COR/OH.02-CQLN.12/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_033
   x_pos: AN04-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN04-AR/DG-EPOS/BPM.07/y_pos
@@ -1598,11 +1598,11 @@
     - AN04-AR/EM-OCT/OH.03/strength
     - AN04-AR/EM-COR/OH.03-CQLN.13/strength
     - AN04-AR/EM-COR/OH.03-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_034
   x_pos: AN05-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN05-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_035
   x_pos: AN05-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN05-SD/DG-EPOS/BPM.02/y_pos
@@ -1634,7 +1634,7 @@
     - AN05-AR/EM-SX/SHF.01/strength
     - AN05-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN05-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_036
   x_pos: AN05-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN05-AR/DG-EPOS/BPM.03/y_pos
@@ -1708,7 +1708,7 @@
     physics:
     - AN05-AR/EM-SX/SCF.02/strength
     - AN05-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_037
   x_pos: AN05-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN05-AR/DG-EPOS/BPM.04/y_pos
@@ -1768,7 +1768,7 @@
     physics:
     - AN05-AR/EM-SX/SCF.05/strength
     - AN05-AR/EM-COR/SCF.05-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_038
   x_pos: AN05-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN05-AR/DG-EPOS/BPM.05/y_pos
@@ -1828,7 +1828,7 @@
     physics:
     - AN05-AR/EM-SX/SCF.08/strength
     - AN05-AR/EM-COR/SCF.08-CDLH.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_039
   x_pos: AN05-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN05-AR/DG-EPOS/BPM.06/y_pos
@@ -1888,7 +1888,7 @@
     - AN05-AR/EM-OCT/OC.04/strength
     - AN05-AR/EM-COR/OC.04-CQLN.13/strength
     - AN05-AR/EM-COR/OC.04-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_040
   x_pos: AN05-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN05-AR/DG-EPOS/BPM.07/y_pos
@@ -1948,7 +1948,7 @@
     - AN05-AR/EM-OCT/OC.05/strength
     - AN05-AR/EM-COR/OC.05-CQLN.16/strength
     - AN05-AR/EM-COR/OC.05-CQLT.06/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_041
   x_pos: AN05-AR/DG-EPOS/BPM.08/x_pos
   y_pos: AN05-AR/DG-EPOS/BPM.08/y_pos
@@ -2020,7 +2020,7 @@
     physics:
     - AN05-AR/EM-SX/SCD.18/strength
     - AN05-AR/EM-COR/SCD.18-CDLV.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_042
   x_pos: AN05-AR/DG-EPOS/BPM.09/x_pos
   y_pos: AN05-AR/DG-EPOS/BPM.09/y_pos
@@ -2042,7 +2042,7 @@
     physics:
     - AN05-AR/EM-SX/SHD.04/strength
     - AN05-AR/EM-COR/SHD.04-CDLV.09/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_043
   x_pos: AN05-AR/DG-EPOS/BPM.10/x_pos
   y_pos: AN05-AR/DG-EPOS/BPM.10/y_pos
@@ -2098,11 +2098,11 @@
     - AN05-AR/EM-OCT/OH.04/strength
     - AN05-AR/EM-COR/OH.04-CQLN.22/strength
     - AN05-AR/EM-COR/OH.04-CQLT.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_044
   x_pos: AN06-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN06-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_045
   x_pos: AN06-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN06-SD/DG-EPOS/BPM.02/y_pos
@@ -2158,11 +2158,11 @@
     physics:
     - AN06-SD/EM-OCT/OH.02/strength
     - AN06-SD/EM-COR/OH.02-CQLN.02/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_046
   x_pos: AN06-SD/DG-EPOS/BPM.03/x_pos
   y_pos: AN06-SD/DG-EPOS/BPM.03/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_047
   x_pos: AN06-SD/DG-EPOS/BPM.04/x_pos
   y_pos: AN06-SD/DG-EPOS/BPM.04/y_pos
@@ -2218,7 +2218,7 @@
     physics:
     - AN06-AR/EM-SX/SHD.02/strength
     - AN06-AR/EM-COR/SHD.02-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_048
   x_pos: AN06-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN06-AR/DG-EPOS/BPM.05/y_pos
@@ -2272,7 +2272,7 @@
     physics:
     - AN06-AR/EM-SX/SCF.02/strength
     - AN06-AR/EM-COR/SCF.02-CDLH.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_049
   x_pos: AN06-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN06-AR/DG-EPOS/BPM.06/y_pos
@@ -2332,7 +2332,7 @@
     physics:
     - AN06-AR/EM-SX/SCF.05/strength
     - AN06-AR/EM-COR/SCF.05-CDLH.06/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_050
   x_pos: AN06-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN06-AR/DG-EPOS/BPM.07/y_pos
@@ -2392,7 +2392,7 @@
     physics:
     - AN06-AR/EM-SX/SCF.08/strength
     - AN06-AR/EM-COR/SCF.08-CDLH.07/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_051
   x_pos: AN06-AR/DG-EPOS/BPM.08/x_pos
   y_pos: AN06-AR/DG-EPOS/BPM.08/y_pos
@@ -2452,7 +2452,7 @@
     - AN06-AR/EM-OCT/OC.04/strength
     - AN06-AR/EM-COR/OC.04-CQLN.13/strength
     - AN06-AR/EM-COR/OC.04-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_052
   x_pos: AN06-AR/DG-EPOS/BPM.09/x_pos
   y_pos: AN06-AR/DG-EPOS/BPM.09/y_pos
@@ -2512,7 +2512,7 @@
     - AN06-AR/EM-OCT/OC.05/strength
     - AN06-AR/EM-COR/OC.05-CQLN.16/strength
     - AN06-AR/EM-COR/OC.05-CQLT.06/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_053
   x_pos: AN06-AR/DG-EPOS/BPM.10/x_pos
   y_pos: AN06-AR/DG-EPOS/BPM.10/y_pos
@@ -2584,7 +2584,7 @@
     physics:
     - AN06-AR/EM-SX/SCD.18/strength
     - AN06-AR/EM-COR/SCD.18-CDLV.10/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_054
   x_pos: AN06-AR/DG-EPOS/BPM.11/x_pos
   y_pos: AN06-AR/DG-EPOS/BPM.11/y_pos
@@ -2626,7 +2626,7 @@
     physics:
     - AN06-AR/EM-OCT/OH.03/strength
     - AN06-AR/EM-COR/OH.03-CQLN.21/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_055
   x_pos: AN06-AR/DG-EPOS/BPM.12/x_pos
   y_pos: AN06-AR/DG-EPOS/BPM.12/y_pos
@@ -2658,11 +2658,11 @@
     - AN06-AR/EM-OCT/OH.04/strength
     - AN06-AR/EM-COR/OH.04-CQLN.22/strength
     - AN06-AR/EM-COR/OH.04-CQLT.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_056
   x_pos: AN07-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN07-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_057
   x_pos: AN07-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN07-SD/DG-EPOS/BPM.02/y_pos
@@ -2694,7 +2694,7 @@
     - AN07-AR/EM-SX/SHF.01/strength
     - AN07-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN07-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_058
   x_pos: AN07-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN07-AR/DG-EPOS/BPM.03/y_pos
@@ -2768,7 +2768,7 @@
     physics:
     - AN07-AR/EM-SX/SCF.02/strength
     - AN07-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_059
   x_pos: AN07-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN07-AR/DG-EPOS/BPM.04/y_pos
@@ -2828,7 +2828,7 @@
     physics:
     - AN07-AR/EM-SX/SCF.05/strength
     - AN07-AR/EM-COR/SCF.05-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_060
   x_pos: AN07-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN07-AR/DG-EPOS/BPM.05/y_pos
@@ -2900,7 +2900,7 @@
     physics:
     - AN07-AR/EM-SX/SCD.09/strength
     - AN07-AR/EM-COR/SCD.09-CDLV.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_061
   x_pos: AN07-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN07-AR/DG-EPOS/BPM.06/y_pos
@@ -2936,7 +2936,7 @@
     type: pyaml.magnet.identity_model
     unit: 1/m
     physics: AN07-AR/EM-COR/CQLN.12/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_062
   x_pos: AN07-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN07-AR/DG-EPOS/BPM.07/y_pos
@@ -2968,11 +2968,11 @@
     - AN07-AR/EM-OCT/OH.03/strength
     - AN07-AR/EM-COR/OH.03-CQLN.13/strength
     - AN07-AR/EM-COR/OH.03-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_063
   x_pos: AN08-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN08-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_064
   x_pos: AN08-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN08-SD/DG-EPOS/BPM.02/y_pos
@@ -3004,7 +3004,7 @@
     - AN08-AR/EM-SX/SHF.01/strength
     - AN08-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN08-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_065
   x_pos: AN08-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN08-AR/DG-EPOS/BPM.03/y_pos
@@ -3072,7 +3072,7 @@
     physics:
     - AN08-AR/EM-SX/SCF.02/strength
     - AN08-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_066
   x_pos: AN08-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN08-AR/DG-EPOS/BPM.04/y_pos
@@ -3132,7 +3132,7 @@
     physics:
     - AN08-AR/EM-SX/SCF.05/strength
     - AN08-AR/EM-COR/SCF.05-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_067
   x_pos: AN08-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN08-AR/DG-EPOS/BPM.05/y_pos
@@ -3192,7 +3192,7 @@
     physics:
     - AN08-AR/EM-SX/SCF.08/strength
     - AN08-AR/EM-COR/SCF.08-CDLH.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_068
   x_pos: AN08-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN08-AR/DG-EPOS/BPM.06/y_pos
@@ -3252,7 +3252,7 @@
     - AN08-AR/EM-OCT/OC.04/strength
     - AN08-AR/EM-COR/OC.04-CQLN.13/strength
     - AN08-AR/EM-COR/OC.04-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_069
   x_pos: AN08-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN08-AR/DG-EPOS/BPM.07/y_pos
@@ -3312,7 +3312,7 @@
     - AN08-AR/EM-OCT/OC.05/strength
     - AN08-AR/EM-COR/OC.05-CQLN.16/strength
     - AN08-AR/EM-COR/OC.05-CQLT.06/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_070
   x_pos: AN08-AR/DG-EPOS/BPM.08/x_pos
   y_pos: AN08-AR/DG-EPOS/BPM.08/y_pos
@@ -3384,7 +3384,7 @@
     physics:
     - AN08-AR/EM-SX/SCD.18/strength
     - AN08-AR/EM-COR/SCD.18-CDLV.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_071
   x_pos: AN08-AR/DG-EPOS/BPM.09/x_pos
   y_pos: AN08-AR/DG-EPOS/BPM.09/y_pos
@@ -3420,7 +3420,7 @@
     type: pyaml.magnet.identity_model
     unit: 1/m
     physics: AN08-AR/EM-COR/CQLN.21/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_072
   x_pos: AN08-AR/DG-EPOS/BPM.10/x_pos
   y_pos: AN08-AR/DG-EPOS/BPM.10/y_pos
@@ -3452,11 +3452,11 @@
     - AN08-AR/EM-OCT/OH.02/strength
     - AN08-AR/EM-COR/OH.02-CQLN.22/strength
     - AN08-AR/EM-COR/OH.02-CQLT.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_073
   x_pos: AN09-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN09-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_074
   x_pos: AN09-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN09-SD/DG-EPOS/BPM.02/y_pos
@@ -3488,7 +3488,7 @@
     - AN09-AR/EM-SX/SHF.01/strength
     - AN09-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN09-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_075
   x_pos: AN09-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN09-AR/DG-EPOS/BPM.03/y_pos
@@ -3556,7 +3556,7 @@
     physics:
     - AN09-AR/EM-SX/SCF.02/strength
     - AN09-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_076
   x_pos: AN09-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN09-AR/DG-EPOS/BPM.04/y_pos
@@ -3616,7 +3616,7 @@
     - AN09-AR/EM-OCT/OC.02/strength
     - AN09-AR/EM-COR/OC.02-CQLN.07/strength
     - AN09-AR/EM-COR/OC.02-CQLT.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_077
   x_pos: AN09-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN09-AR/DG-EPOS/BPM.05/y_pos
@@ -3688,7 +3688,7 @@
     physics:
     - AN09-AR/EM-SX/SCD.09/strength
     - AN09-AR/EM-COR/SCD.09-CDLV.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_078
   x_pos: AN09-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN09-AR/DG-EPOS/BPM.06/y_pos
@@ -3730,7 +3730,7 @@
     physics:
     - AN09-AR/EM-OCT/OH.02/strength
     - AN09-AR/EM-COR/OH.02-CQLN.12/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_079
   x_pos: AN09-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN09-AR/DG-EPOS/BPM.07/y_pos
@@ -3762,11 +3762,11 @@
     - AN09-AR/EM-OCT/OH.03/strength
     - AN09-AR/EM-COR/OH.03-CQLN.13/strength
     - AN09-AR/EM-COR/OH.03-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_080
   x_pos: AN10-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN10-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_081
   x_pos: AN10-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN10-SD/DG-EPOS/BPM.02/y_pos
@@ -3798,7 +3798,7 @@
     - AN10-AR/EM-SX/SHF.01/strength
     - AN10-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN10-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_082
   x_pos: AN10-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN10-AR/DG-EPOS/BPM.03/y_pos
@@ -3872,7 +3872,7 @@
     physics:
     - AN10-AR/EM-SX/SCF.02/strength
     - AN10-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_083
   x_pos: AN10-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN10-AR/DG-EPOS/BPM.04/y_pos
@@ -3932,7 +3932,7 @@
     physics:
     - AN10-AR/EM-SX/SCF.05/strength
     - AN10-AR/EM-COR/SCF.05-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_084
   x_pos: AN10-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN10-AR/DG-EPOS/BPM.05/y_pos
@@ -3992,7 +3992,7 @@
     physics:
     - AN10-AR/EM-SX/SCF.08/strength
     - AN10-AR/EM-COR/SCF.08-CDLH.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_085
   x_pos: AN10-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN10-AR/DG-EPOS/BPM.06/y_pos
@@ -4052,7 +4052,7 @@
     - AN10-AR/EM-OCT/OC.04/strength
     - AN10-AR/EM-COR/OC.04-CQLN.13/strength
     - AN10-AR/EM-COR/OC.04-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_086
   x_pos: AN10-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN10-AR/DG-EPOS/BPM.07/y_pos
@@ -4112,7 +4112,7 @@
     - AN10-AR/EM-OCT/OC.05/strength
     - AN10-AR/EM-COR/OC.05-CQLN.16/strength
     - AN10-AR/EM-COR/OC.05-CQLT.06/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_087
   x_pos: AN10-AR/DG-EPOS/BPM.08/x_pos
   y_pos: AN10-AR/DG-EPOS/BPM.08/y_pos
@@ -4184,7 +4184,7 @@
     physics:
     - AN10-AR/EM-SX/SCD.18/strength
     - AN10-AR/EM-COR/SCD.18-CDLV.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_088
   x_pos: AN10-AR/DG-EPOS/BPM.09/x_pos
   y_pos: AN10-AR/DG-EPOS/BPM.09/y_pos
@@ -4206,7 +4206,7 @@
     physics:
     - AN10-AR/EM-SX/SHD.04/strength
     - AN10-AR/EM-COR/SHD.04-CDLV.09/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_089
   x_pos: AN10-AR/DG-EPOS/BPM.10/x_pos
   y_pos: AN10-AR/DG-EPOS/BPM.10/y_pos
@@ -4262,11 +4262,11 @@
     - AN10-AR/EM-SX/SHF.06/strength
     - AN10-AR/EM-COR/SHF.06-CDLH.10/strength
     - AN10-AR/EM-COR/SHF.06-CDLV.10/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_090
   x_pos: AN11-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN11-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_091
   x_pos: AN11-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN11-SD/DG-EPOS/BPM.02/y_pos
@@ -4322,7 +4322,7 @@
     physics:
     - AN11-AR/EM-OCT/OH.02/strength
     - AN11-AR/EM-COR/OH.02-CQLN.02/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_092
   x_pos: AN11-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN11-AR/DG-EPOS/BPM.03/y_pos
@@ -4376,7 +4376,7 @@
     physics:
     - AN11-AR/EM-SX/SCF.02/strength
     - AN11-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_093
   x_pos: AN11-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN11-AR/DG-EPOS/BPM.04/y_pos
@@ -4436,7 +4436,7 @@
     physics:
     - AN11-AR/EM-SX/SCF.05/strength
     - AN11-AR/EM-COR/SCF.05-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_094
   x_pos: AN11-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN11-AR/DG-EPOS/BPM.05/y_pos
@@ -4496,7 +4496,7 @@
     physics:
     - AN11-AR/EM-SX/SCF.08/strength
     - AN11-AR/EM-COR/SCF.08-CDLH.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_095
   x_pos: AN11-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN11-AR/DG-EPOS/BPM.06/y_pos
@@ -4556,7 +4556,7 @@
     - AN11-AR/EM-OCT/OC.04/strength
     - AN11-AR/EM-COR/OC.04-CQLN.13/strength
     - AN11-AR/EM-COR/OC.04-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_096
   x_pos: AN11-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN11-AR/DG-EPOS/BPM.07/y_pos
@@ -4616,7 +4616,7 @@
     - AN11-AR/EM-OCT/OC.05/strength
     - AN11-AR/EM-COR/OC.05-CQLN.16/strength
     - AN11-AR/EM-COR/OC.05-CQLT.06/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_097
   x_pos: AN11-AR/DG-EPOS/BPM.08/x_pos
   y_pos: AN11-AR/DG-EPOS/BPM.08/y_pos
@@ -4688,7 +4688,7 @@
     physics:
     - AN11-AR/EM-SX/SCD.18/strength
     - AN11-AR/EM-COR/SCD.18-CDLV.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_098
   x_pos: AN11-AR/DG-EPOS/BPM.09/x_pos
   y_pos: AN11-AR/DG-EPOS/BPM.09/y_pos
@@ -4730,7 +4730,7 @@
     physics:
     - AN11-AR/EM-OCT/OH.03/strength
     - AN11-AR/EM-COR/OH.03-CQLN.21/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_099
   x_pos: AN11-AR/DG-EPOS/BPM.10/x_pos
   y_pos: AN11-AR/DG-EPOS/BPM.10/y_pos
@@ -4762,11 +4762,11 @@
     - AN11-AR/EM-OCT/OH.04/strength
     - AN11-AR/EM-COR/OH.04-CQLN.22/strength
     - AN11-AR/EM-COR/OH.04-CQLT.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_100
   x_pos: AN12-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN12-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_101
   x_pos: AN12-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN12-SD/DG-EPOS/BPM.02/y_pos
@@ -4798,7 +4798,7 @@
     - AN12-AR/EM-SX/SHF.01/strength
     - AN12-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN12-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_102
   x_pos: AN12-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN12-AR/DG-EPOS/BPM.03/y_pos
@@ -4872,7 +4872,7 @@
     physics:
     - AN12-AR/EM-SX/SCF.02/strength
     - AN12-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_103
   x_pos: AN12-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN12-AR/DG-EPOS/BPM.04/y_pos
@@ -4932,7 +4932,7 @@
     physics:
     - AN12-AR/EM-SX/SCF.05/strength
     - AN12-AR/EM-COR/SCF.05-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_104
   x_pos: AN12-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN12-AR/DG-EPOS/BPM.05/y_pos
@@ -5004,7 +5004,7 @@
     physics:
     - AN12-AR/EM-SX/SCD.09/strength
     - AN12-AR/EM-COR/SCD.09-CDLV.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_105
   x_pos: AN12-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN12-AR/DG-EPOS/BPM.06/y_pos
@@ -5040,7 +5040,7 @@
     type: pyaml.magnet.identity_model
     unit: 1/m
     physics: AN12-AR/EM-COR/CQLN.12/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_106
   x_pos: AN12-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN12-AR/DG-EPOS/BPM.07/y_pos
@@ -5072,11 +5072,11 @@
     - AN12-AR/EM-OCT/OH.03/strength
     - AN12-AR/EM-COR/OH.03-CQLN.13/strength
     - AN12-AR/EM-COR/OH.03-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_107
   x_pos: AN13-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN13-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_108
   x_pos: AN13-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN13-SD/DG-EPOS/BPM.02/y_pos
@@ -5108,7 +5108,7 @@
     - AN13-AR/EM-SX/SHF.01/strength
     - AN13-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN13-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_109
   x_pos: AN13-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN13-AR/DG-EPOS/BPM.03/y_pos
@@ -5176,7 +5176,7 @@
     physics:
     - AN13-AR/EM-SX/SCF.02/strength
     - AN13-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_110
   x_pos: AN13-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN13-AR/DG-EPOS/BPM.04/y_pos
@@ -5236,7 +5236,7 @@
     physics:
     - AN13-AR/EM-SX/SCF.05/strength
     - AN13-AR/EM-COR/SCF.05-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_111
   x_pos: AN13-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN13-AR/DG-EPOS/BPM.05/y_pos
@@ -5296,7 +5296,7 @@
     physics:
     - AN13-AR/EM-SX/SCF.08/strength
     - AN13-AR/EM-COR/SCF.08-CDLH.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_112
   x_pos: AN13-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN13-AR/DG-EPOS/BPM.06/y_pos
@@ -5356,7 +5356,7 @@
     - AN13-AR/EM-OCT/OC.04/strength
     - AN13-AR/EM-COR/OC.04-CQLN.13/strength
     - AN13-AR/EM-COR/OC.04-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_113
   x_pos: AN13-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN13-AR/DG-EPOS/BPM.07/y_pos
@@ -5416,7 +5416,7 @@
     - AN13-AR/EM-OCT/OC.05/strength
     - AN13-AR/EM-COR/OC.05-CQLN.16/strength
     - AN13-AR/EM-COR/OC.05-CQLT.06/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_114
   x_pos: AN13-AR/DG-EPOS/BPM.08/x_pos
   y_pos: AN13-AR/DG-EPOS/BPM.08/y_pos
@@ -5488,7 +5488,7 @@
     physics:
     - AN13-AR/EM-SX/SCD.18/strength
     - AN13-AR/EM-COR/SCD.18-CDLV.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_115
   x_pos: AN13-AR/DG-EPOS/BPM.09/x_pos
   y_pos: AN13-AR/DG-EPOS/BPM.09/y_pos
@@ -5524,7 +5524,7 @@
     type: pyaml.magnet.identity_model
     unit: 1/m
     physics: AN13-AR/EM-COR/CQLN.21/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_116
   x_pos: AN13-AR/DG-EPOS/BPM.10/x_pos
   y_pos: AN13-AR/DG-EPOS/BPM.10/y_pos
@@ -5556,11 +5556,11 @@
     - AN13-AR/EM-OCT/OH.02/strength
     - AN13-AR/EM-COR/OH.02-CQLN.22/strength
     - AN13-AR/EM-COR/OH.02-CQLT.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_117
   x_pos: AN14-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN14-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_118
   x_pos: AN14-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN14-SD/DG-EPOS/BPM.02/y_pos
@@ -5592,7 +5592,7 @@
     - AN14-AR/EM-SX/SHF.01/strength
     - AN14-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN14-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_119
   x_pos: AN14-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN14-AR/DG-EPOS/BPM.03/y_pos
@@ -5660,7 +5660,7 @@
     physics:
     - AN14-AR/EM-SX/SCF.02/strength
     - AN14-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_120
   x_pos: AN14-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN14-AR/DG-EPOS/BPM.04/y_pos
@@ -5720,7 +5720,7 @@
     - AN14-AR/EM-OCT/OC.02/strength
     - AN14-AR/EM-COR/OC.02-CQLN.07/strength
     - AN14-AR/EM-COR/OC.02-CQLT.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_121
   x_pos: AN14-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN14-AR/DG-EPOS/BPM.05/y_pos
@@ -5792,7 +5792,7 @@
     physics:
     - AN14-AR/EM-SX/SCD.09/strength
     - AN14-AR/EM-COR/SCD.09-CDLV.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_122
   x_pos: AN14-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN14-AR/DG-EPOS/BPM.06/y_pos
@@ -5834,7 +5834,7 @@
     physics:
     - AN14-AR/EM-OCT/OH.02/strength
     - AN14-AR/EM-COR/OH.02-CQLN.12/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_123
   x_pos: AN14-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN14-AR/DG-EPOS/BPM.07/y_pos
@@ -5866,11 +5866,11 @@
     - AN14-AR/EM-OCT/OH.03/strength
     - AN14-AR/EM-COR/OH.03-CQLN.13/strength
     - AN14-AR/EM-COR/OH.03-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_124
   x_pos: AN15-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN15-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_125
   x_pos: AN15-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN15-SD/DG-EPOS/BPM.02/y_pos
@@ -5902,7 +5902,7 @@
     - AN15-AR/EM-SX/SHF.01/strength
     - AN15-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN15-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_126
   x_pos: AN15-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN15-AR/DG-EPOS/BPM.03/y_pos
@@ -5976,7 +5976,7 @@
     physics:
     - AN15-AR/EM-SX/SCF.02/strength
     - AN15-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_127
   x_pos: AN15-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN15-AR/DG-EPOS/BPM.04/y_pos
@@ -6036,7 +6036,7 @@
     physics:
     - AN15-AR/EM-SX/SCF.05/strength
     - AN15-AR/EM-COR/SCF.05-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_128
   x_pos: AN15-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN15-AR/DG-EPOS/BPM.05/y_pos
@@ -6096,7 +6096,7 @@
     physics:
     - AN15-AR/EM-SX/SCF.08/strength
     - AN15-AR/EM-COR/SCF.08-CDLH.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_129
   x_pos: AN15-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN15-AR/DG-EPOS/BPM.06/y_pos
@@ -6156,7 +6156,7 @@
     - AN15-AR/EM-OCT/OC.04/strength
     - AN15-AR/EM-COR/OC.04-CQLN.13/strength
     - AN15-AR/EM-COR/OC.04-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_130
   x_pos: AN15-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN15-AR/DG-EPOS/BPM.07/y_pos
@@ -6216,7 +6216,7 @@
     - AN15-AR/EM-OCT/OC.05/strength
     - AN15-AR/EM-COR/OC.05-CQLN.16/strength
     - AN15-AR/EM-COR/OC.05-CQLT.06/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_131
   x_pos: AN15-AR/DG-EPOS/BPM.08/x_pos
   y_pos: AN15-AR/DG-EPOS/BPM.08/y_pos
@@ -6288,7 +6288,7 @@
     physics:
     - AN15-AR/EM-SX/SCD.18/strength
     - AN15-AR/EM-COR/SCD.18-CDLV.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_132
   x_pos: AN15-AR/DG-EPOS/BPM.09/x_pos
   y_pos: AN15-AR/DG-EPOS/BPM.09/y_pos
@@ -6310,7 +6310,7 @@
     physics:
     - AN15-AR/EM-SX/SHD.04/strength
     - AN15-AR/EM-COR/SHD.04-CDLV.09/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_133
   x_pos: AN15-AR/DG-EPOS/BPM.10/x_pos
   y_pos: AN15-AR/DG-EPOS/BPM.10/y_pos
@@ -6364,11 +6364,11 @@
     physics:
     - AN15-AR/EM-OCT/OH.04/strength
     - AN15-AR/EM-COR/OH.04-CQLN.22/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_134
   x_pos: AN16-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN16-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_135
   x_pos: AN16-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN16-SD/DG-EPOS/BPM.02/y_pos
@@ -6424,11 +6424,11 @@
     physics:
     - AN16-SD/EM-OCT/OH.02/strength
     - AN16-SD/EM-COR/OH.02-CQLN.02/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_136
   x_pos: AN16-SD/DG-EPOS/BPM.03/x_pos
   y_pos: AN16-SD/DG-EPOS/BPM.03/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_137
   x_pos: AN16-SD/DG-EPOS/BPM.04/x_pos
   y_pos: AN16-SD/DG-EPOS/BPM.04/y_pos
@@ -6482,7 +6482,7 @@
     physics:
     - AN16-AR/EM-SX/SHD.02/strength
     - AN16-AR/EM-COR/SHD.02-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_138
   x_pos: AN16-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN16-AR/DG-EPOS/BPM.05/y_pos
@@ -6536,7 +6536,7 @@
     physics:
     - AN16-AR/EM-SX/SCF.02/strength
     - AN16-AR/EM-COR/SCF.02-CDLH.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_139
   x_pos: AN16-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN16-AR/DG-EPOS/BPM.06/y_pos
@@ -6596,7 +6596,7 @@
     physics:
     - AN16-AR/EM-SX/SCF.05/strength
     - AN16-AR/EM-COR/SCF.05-CDLH.06/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_140
   x_pos: AN16-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN16-AR/DG-EPOS/BPM.07/y_pos
@@ -6656,7 +6656,7 @@
     physics:
     - AN16-AR/EM-SX/SCF.08/strength
     - AN16-AR/EM-COR/SCF.08-CDLH.07/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_141
   x_pos: AN16-AR/DG-EPOS/BPM.08/x_pos
   y_pos: AN16-AR/DG-EPOS/BPM.08/y_pos
@@ -6716,7 +6716,7 @@
     - AN16-AR/EM-OCT/OC.04/strength
     - AN16-AR/EM-COR/OC.04-CQLN.13/strength
     - AN16-AR/EM-COR/OC.04-CQLT.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_142
   x_pos: AN16-AR/DG-EPOS/BPM.09/x_pos
   y_pos: AN16-AR/DG-EPOS/BPM.09/y_pos
@@ -6776,7 +6776,7 @@
     - AN16-AR/EM-OCT/OC.05/strength
     - AN16-AR/EM-COR/OC.05-CQLN.16/strength
     - AN16-AR/EM-COR/OC.05-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_143
   x_pos: AN16-AR/DG-EPOS/BPM.10/x_pos
   y_pos: AN16-AR/DG-EPOS/BPM.10/y_pos
@@ -6848,7 +6848,7 @@
     physics:
     - AN16-AR/EM-SX/SCD.18/strength
     - AN16-AR/EM-COR/SCD.18-CDLV.10/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_144
   x_pos: AN16-AR/DG-EPOS/BPM.11/x_pos
   y_pos: AN16-AR/DG-EPOS/BPM.11/y_pos
@@ -6890,7 +6890,7 @@
     physics:
     - AN16-AR/EM-OCT/OH.03/strength
     - AN16-AR/EM-COR/OH.03-CQLN.21/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_145
   x_pos: AN16-AR/DG-EPOS/BPM.12/x_pos
   y_pos: AN16-AR/DG-EPOS/BPM.12/y_pos
@@ -6922,11 +6922,11 @@
     - AN16-AR/EM-OCT/OH.04/strength
     - AN16-AR/EM-COR/OH.04-CQLN.22/strength
     - AN16-AR/EM-COR/OH.04-CQLT.07/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_146
   x_pos: AN17-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN17-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_147
   x_pos: AN17-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN17-SD/DG-EPOS/BPM.02/y_pos
@@ -6958,7 +6958,7 @@
     - AN17-AR/EM-SX/SHF.01/strength
     - AN17-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN17-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_148
   x_pos: AN17-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN17-AR/DG-EPOS/BPM.03/y_pos
@@ -7032,7 +7032,7 @@
     physics:
     - AN17-AR/EM-SX/SCF.02/strength
     - AN17-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_149
   x_pos: AN17-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN17-AR/DG-EPOS/BPM.04/y_pos
@@ -7092,7 +7092,7 @@
     physics:
     - AN17-AR/EM-SX/SCF.05/strength
     - AN17-AR/EM-COR/SCF.05-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_150
   x_pos: AN17-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN17-AR/DG-EPOS/BPM.05/y_pos
@@ -7164,7 +7164,7 @@
     physics:
     - AN17-AR/EM-SX/SCD.09/strength
     - AN17-AR/EM-COR/SCD.09-CDLV.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_151
   x_pos: AN17-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN17-AR/DG-EPOS/BPM.06/y_pos
@@ -7200,7 +7200,7 @@
     type: pyaml.magnet.identity_model
     unit: 1/m
     physics: AN17-AR/EM-COR/CQLN.12/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_152
   x_pos: AN17-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN17-AR/DG-EPOS/BPM.07/y_pos
@@ -7232,11 +7232,11 @@
     - AN17-AR/EM-OCT/OH.03/strength
     - AN17-AR/EM-COR/OH.03-CQLN.13/strength
     - AN17-AR/EM-COR/OH.03-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_153
   x_pos: AN18-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN18-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_154
   x_pos: AN18-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN18-SD/DG-EPOS/BPM.02/y_pos
@@ -7268,7 +7268,7 @@
     - AN18-AR/EM-SX/SHF.01/strength
     - AN18-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN18-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_155
   x_pos: AN18-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN18-AR/DG-EPOS/BPM.03/y_pos
@@ -7336,7 +7336,7 @@
     physics:
     - AN18-AR/EM-SX/SCF.02/strength
     - AN18-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_156
   x_pos: AN18-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN18-AR/DG-EPOS/BPM.04/y_pos
@@ -7396,7 +7396,7 @@
     physics:
     - AN18-AR/EM-SX/SCF.05/strength
     - AN18-AR/EM-COR/SCF.05-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_157
   x_pos: AN18-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN18-AR/DG-EPOS/BPM.05/y_pos
@@ -7456,7 +7456,7 @@
     physics:
     - AN18-AR/EM-SX/SCF.08/strength
     - AN18-AR/EM-COR/SCF.08-CDLH.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_158
   x_pos: AN18-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN18-AR/DG-EPOS/BPM.06/y_pos
@@ -7516,7 +7516,7 @@
     - AN18-AR/EM-OCT/OC.04/strength
     - AN18-AR/EM-COR/OC.04-CQLN.13/strength
     - AN18-AR/EM-COR/OC.04-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_159
   x_pos: AN18-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN18-AR/DG-EPOS/BPM.07/y_pos
@@ -7576,7 +7576,7 @@
     - AN18-AR/EM-OCT/OC.05/strength
     - AN18-AR/EM-COR/OC.05-CQLN.16/strength
     - AN18-AR/EM-COR/OC.05-CQLT.06/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_160
   x_pos: AN18-AR/DG-EPOS/BPM.08/x_pos
   y_pos: AN18-AR/DG-EPOS/BPM.08/y_pos
@@ -7648,7 +7648,7 @@
     physics:
     - AN18-AR/EM-SX/SCD.18/strength
     - AN18-AR/EM-COR/SCD.18-CDLV.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_161
   x_pos: AN18-AR/DG-EPOS/BPM.09/x_pos
   y_pos: AN18-AR/DG-EPOS/BPM.09/y_pos
@@ -7684,7 +7684,7 @@
     type: pyaml.magnet.identity_model
     unit: 1/m
     physics: AN18-AR/EM-COR/CQLN.21/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_162
   x_pos: AN18-AR/DG-EPOS/BPM.10/x_pos
   y_pos: AN18-AR/DG-EPOS/BPM.10/y_pos
@@ -7716,11 +7716,11 @@
     - AN18-AR/EM-OCT/OH.02/strength
     - AN18-AR/EM-COR/OH.02-CQLN.22/strength
     - AN18-AR/EM-COR/OH.02-CQLT.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_163
   x_pos: AN19-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN19-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_164
   x_pos: AN19-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN19-SD/DG-EPOS/BPM.02/y_pos
@@ -7752,7 +7752,7 @@
     - AN19-AR/EM-SX/SHF.01/strength
     - AN19-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN19-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_165
   x_pos: AN19-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN19-AR/DG-EPOS/BPM.03/y_pos
@@ -7820,7 +7820,7 @@
     physics:
     - AN19-AR/EM-SX/SCF.02/strength
     - AN19-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_166
   x_pos: AN19-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN19-AR/DG-EPOS/BPM.04/y_pos
@@ -7880,7 +7880,7 @@
     - AN19-AR/EM-OCT/OC.02/strength
     - AN19-AR/EM-COR/OC.02-CQLN.07/strength
     - AN19-AR/EM-COR/OC.02-CQLT.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_167
   x_pos: AN19-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN19-AR/DG-EPOS/BPM.05/y_pos
@@ -7952,7 +7952,7 @@
     physics:
     - AN19-AR/EM-SX/SCD.09/strength
     - AN19-AR/EM-COR/SCD.09-CDLV.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_168
   x_pos: AN19-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN19-AR/DG-EPOS/BPM.06/y_pos
@@ -7994,7 +7994,7 @@
     physics:
     - AN19-AR/EM-OCT/OH.02/strength
     - AN19-AR/EM-COR/OH.02-CQLN.12/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_169
   x_pos: AN19-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN19-AR/DG-EPOS/BPM.07/y_pos
@@ -8026,11 +8026,11 @@
     - AN19-AR/EM-OCT/OH.03/strength
     - AN19-AR/EM-COR/OH.03-CQLN.13/strength
     - AN19-AR/EM-COR/OH.03-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_170
   x_pos: AN20-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN20-SD/DG-EPOS/BPM.01/y_pos
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_171
   x_pos: AN20-SD/DG-EPOS/BPM.02/x_pos
   y_pos: AN20-SD/DG-EPOS/BPM.02/y_pos
@@ -8062,7 +8062,7 @@
     - AN20-AR/EM-SX/SHF.01/strength
     - AN20-AR/EM-COR/SHF.01-CDLH.01/strength
     - AN20-AR/EM-COR/SHF.01-CDLV.01/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_172
   x_pos: AN20-AR/DG-EPOS/BPM.03/x_pos
   y_pos: AN20-AR/DG-EPOS/BPM.03/y_pos
@@ -8136,7 +8136,7 @@
     physics:
     - AN20-AR/EM-SX/SCF.02/strength
     - AN20-AR/EM-COR/SCF.02-CDLH.03/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_173
   x_pos: AN20-AR/DG-EPOS/BPM.04/x_pos
   y_pos: AN20-AR/DG-EPOS/BPM.04/y_pos
@@ -8196,7 +8196,7 @@
     physics:
     - AN20-AR/EM-SX/SCF.05/strength
     - AN20-AR/EM-COR/SCF.05-CDLH.04/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_174
   x_pos: AN20-AR/DG-EPOS/BPM.05/x_pos
   y_pos: AN20-AR/DG-EPOS/BPM.05/y_pos
@@ -8256,7 +8256,7 @@
     physics:
     - AN20-AR/EM-SX/SCF.08/strength
     - AN20-AR/EM-COR/SCF.08-CDLH.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_175
   x_pos: AN20-AR/DG-EPOS/BPM.06/x_pos
   y_pos: AN20-AR/DG-EPOS/BPM.06/y_pos
@@ -8316,7 +8316,7 @@
     - AN20-AR/EM-OCT/OC.04/strength
     - AN20-AR/EM-COR/OC.04-CQLN.13/strength
     - AN20-AR/EM-COR/OC.04-CQLT.05/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_176
   x_pos: AN20-AR/DG-EPOS/BPM.07/x_pos
   y_pos: AN20-AR/DG-EPOS/BPM.07/y_pos
@@ -8376,7 +8376,7 @@
     - AN20-AR/EM-OCT/OC.05/strength
     - AN20-AR/EM-COR/OC.05-CQLN.16/strength
     - AN20-AR/EM-COR/OC.05-CQLT.06/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_177
   x_pos: AN20-AR/DG-EPOS/BPM.08/x_pos
   y_pos: AN20-AR/DG-EPOS/BPM.08/y_pos
@@ -8448,7 +8448,7 @@
     physics:
     - AN20-AR/EM-SX/SCD.18/strength
     - AN20-AR/EM-COR/SCD.18-CDLV.08/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_178
   x_pos: AN20-AR/DG-EPOS/BPM.09/x_pos
   y_pos: AN20-AR/DG-EPOS/BPM.09/y_pos
@@ -8470,7 +8470,7 @@
     physics:
     - AN20-AR/EM-SX/SHD.04/strength
     - AN20-AR/EM-COR/SHD.04-CDLV.09/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_179
   x_pos: AN20-AR/DG-EPOS/BPM.10/x_pos
   y_pos: AN20-AR/DG-EPOS/BPM.10/y_pos
@@ -8526,7 +8526,7 @@
     - AN20-AR/EM-SX/SHF.06/strength
     - AN20-AR/EM-COR/SHF.06-CDLH.10/strength
     - AN20-AR/EM-COR/SHF.06-CDLV.10/strength
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_180
   x_pos: AN01-SD/DG-EPOS/BPM.01/x_pos
   y_pos: AN01-SD/DG-EPOS/BPM.01/y_pos

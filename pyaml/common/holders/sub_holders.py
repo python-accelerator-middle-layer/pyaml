@@ -2,11 +2,12 @@
 
 from typing import TYPE_CHECKING
 
+from pyaml.diagnostics.bpm import BPM
+
 from ...arrays.bpm_array import BPMArray
 from ...arrays.cfm_magnet_array import CombinedFunctionMagnetArray
 from ...arrays.magnet_array import MagnetArray
 from ...arrays.serialized_magnet_array import SerializedMagnetsArray
-from ...bpm.bpm import BPM
 from ...magnet.cfm_magnet import CombinedFunctionMagnet
 from ...magnet.magnet import Magnet
 from ...magnet.serialized_magnet import SerializedMagnets

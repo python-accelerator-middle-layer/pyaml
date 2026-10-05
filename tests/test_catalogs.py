@@ -50,7 +50,7 @@ def test_inline_catalog_is_supported(install_test_package):
             ],
             "devices": [
                 {
-                    "type": "pyaml.bpm.bpm",
+                    "type": "pyaml.diagnostics.bpm.bpm",
                     "name": "BPM_C02-01",
                     "x_pos": "BPM_C02-01/x",
                     "y_pos": "BPM_C02-01/y",
@@ -103,7 +103,7 @@ def test_unresolved_catalog_key_raises_runtime_error(install_test_package):
                 ],
                 "devices": [
                     {
-                        "type": "pyaml.bpm.bpm",
+                        "type": "pyaml.diagnostics.bpm.bpm",
                         "name": "BPM_C03-01",
                         "x_pos": "BPM_C03-01/x",
                         "y_pos": "BPM_C03-01/y",
@@ -175,7 +175,7 @@ def test_indexed_catalog_entry_extracts_scalar_from_vector_attribute(install_tes
             ],
             "devices": [
                 {
-                    "type": "pyaml.bpm.bpm",
+                    "type": "pyaml.diagnostics.bpm.bpm",
                     "name": "BPM_TEST",
                     "x_pos": "bpm/SA_HPosition",
                     "y_pos": "bpm/SA_VPosition",
