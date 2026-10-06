@@ -430,7 +430,10 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         devs : list[DeviceAccess]
             Hardware devices associated with the magnet model.
         """
-        strengthIndex = magnet.strength.index() if isinstance(magnet.strength, abstract.RWMapper) else 0
+        # Magnets of a serialized group share the serialized model (one power supply for N strengths):
+        # the power-supply current is computed by the model from the N strengths (mean of the implied currents).
+        is_indexed = isinstance(magnet.strength, (abstract.RWMapper, RWSerializedStrengthScalar))
+        strengthIndex = magnet.strength.index() if is_indexed else 0
         if magnet.model not in self.__models:
             index = len(self.__models)
             self.__models.append(magnet.model)
@@ -709,6 +712,42 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
             Magnetic rigidity in tesla metres.
         """
         self.__model.set_magnet_rigidity(brho)
+
+
+class RWSerializedStrengthScalar(RWStrengthScalar):
+    """
+    Expose the strength of one magnet of a serialized group.
+
+    All magnets of a serialized group share one power supply. This accessor
+    converts with the magnet's own sub-model and remembers the magnet position
+    in the group so that aggregators can map it to the right strength of the
+    serialized model.
+
+    Parameters
+    ----------
+    model : MagnetModel
+        Sub-model of the magnet, used for strength conversion and units.
+    dev : DeviceAccess
+        Power-supply device shared by the serialized group.
+    idx : int
+        Zero-based position of the magnet in the serialized group.
+
+    Methods
+    -------
+    index()
+        Return the position of the magnet in the serialized group.
+    """
+
+    def __init__(self, model: MagnetModel, dev: DeviceAccess, idx: int):
+        """
+        Initialize the RWSerializedStrengthScalar.
+        """
+        super().__init__(model, dev)
+        self.__idx = idx
+
+    def index(self) -> int:
+        """Return the position of the magnet in the serialized group."""
+        return self.__idx
 
 
 # ------------------------------------------------------------------------------
