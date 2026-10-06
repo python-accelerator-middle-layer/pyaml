@@ -14,8 +14,8 @@ controls:
 - type: tango.pyaml.controlsystem
   name: live
   tango_host: localhost:11000
-  catalog: catalogs.yaml
-arrays: arrays.yaml
+  catalog: ${include:catalogs.yaml}
+arrays: ${include:arrays.yaml}
 devices:
-- devices.yaml
-- tuning_tools.yaml
+- ${include:devices.yaml}
+- ${include:tuning_tools.yaml}

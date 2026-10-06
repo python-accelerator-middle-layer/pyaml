@@ -10,7 +10,7 @@ controls:
   - type: tango.pyaml.controlsystem
     tango_host: ebs-simu-3:10000
     name: live
-    catalog: catalogs/sr_catalogs.yaml
+    catalog: ${include:catalogs/sr_catalogs.yaml}
 data_folder: /data/store
 devices:
 - type: pyaml.bpm.bpm
@@ -42,4 +42,4 @@ devices:
     - [B0, SH1A-C01-H]
     - [A0, SH1A-C01-V]
     - [A1, SH1A-C01-SQ]
-  model: sr/magnet_models/SH1AC01.yaml
+  model: ${include:sr/magnet_models/SH1AC01.yaml}

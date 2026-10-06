@@ -19,7 +19,7 @@ arrays:
       - SH1A-C01-V
       - SH1A-C02-V
 devices:
-  - ../config/bad_conf_cycles.yml # Cycle here
-  - sr/quadrupoles/QF1AC01.yaml
-  - sr/correctors/SH1AC01.yaml
-  - sr/correctors/SH1AC02.yaml
+  - ${include:../config/bad_conf_cycles.yml} # Cycle here
+  - ${include:sr/quadrupoles/QF1AC01.yaml}
+  - ${include:sr/correctors/SH1AC01.yaml}
+  - ${include:sr/correctors/SH1AC02.yaml}

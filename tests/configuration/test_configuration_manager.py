@@ -222,7 +222,7 @@ machine: remote_ring
 energy: 3000000000.0
 data_folder: remote-data
 description: Loaded over HTTP
-simulators: fragments/simulators.json
+simulators: ${include:fragments/simulators.json}
 devices: []
 """,
         "/configs/fragments/simulators.json": """

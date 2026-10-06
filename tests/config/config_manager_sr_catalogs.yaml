@@ -1,2 +1,2 @@
 catalogs:
-  - catalogs/sr_catalogs.yaml
+  - ${include:catalogs/sr_catalogs.yaml}

@@ -73,7 +73,7 @@ machine: remote_ring
 energy: 3000000000.0
 data_folder: remote-data
 description: Remote accelerator
-simulators: fragments/simulators.json
+simulators: ${include:fragments/simulators.json}
 devices: []
 """,
         "/config/fragments/simulators.json": f"""
