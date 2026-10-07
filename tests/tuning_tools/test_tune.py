@@ -14,7 +14,7 @@ def test_tune():
     sr.design.get_lattice().disable_6d()
 
     quadForTuneDesign = sr.design.magnets.get("QForTune")
-    tune_monitor = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
+    tune_monitor = sr.design.diagnostic.get("BETATRON_TUNE")
     # Build tune response matrix
     tune = tune_monitor.tune.get()
     print(tune)

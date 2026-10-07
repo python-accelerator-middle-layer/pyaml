@@ -21,15 +21,15 @@ arrays:
       - BPM_C04-06
       - BPM_C04-06 # duplicate name in array
 devices:
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_C04-04
   x_pos: srdiag/bpm/c04-04/SA_HPosition
   y_pos: srdiag/bpm/c04-04/SA_VPosition
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_C04-05
   x_pos: srdiag/bpm/c04-05/SA_HPosition
   y_pos: srdiag/bpm/c04-05/SA_VPosition
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_C04-06
   x_pos: srdiag/bpm/c04-06/SA_HPosition
   y_pos: srdiag/bpm/c04-06/SA_VPosition

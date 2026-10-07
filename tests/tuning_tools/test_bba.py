@@ -9,16 +9,16 @@ def test_bba():
     SR = sr.design
 
     # Add a misalignement
-    SR.bpm.get("BPM_C04-04").offset.set([20e-6, -15e-6])
+    SR.diagnostic.bpm.get("BPM_C04-04").offset.set([20e-6, -15e-6])
 
     # BBA (standard bow tie, model independant)
-    bba = SR.get_bba("BBA-BPM_C04-04")
+    bba = SR.tool.get("BBA-BPM_C04-04")
     bba.measure()
     assert np.abs(bba.h_offset() - 20e-6) < 1e-6
     assert np.abs(bba.v_offset() + 15e-6) < 1e-6
 
     # BBA (model dependant method)
-    bba = SR.get_bba("BBA2-BPM_C04-04")
+    bba = SR.tool.get("BBA2-BPM_C04-04")
     bba.minicycle_sleep_time = 0
     bba.measure()
     assert np.abs(bba.h_offset() - 20e-6) < 1e-6

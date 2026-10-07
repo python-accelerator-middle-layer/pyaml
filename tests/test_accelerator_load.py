@@ -9,18 +9,18 @@ from pyaml.control.controlsystem import ControlSystemAdapter
 
 def test_peer():
     sr = Accelerator.load("tests/config/tune_monitor.yaml")
-    tm = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
+    tm = sr.design.diagnostic.get("BETATRON_TUNE")
     assert isinstance(tm.peer.peer, Accelerator)
     assert isinstance(tm.peer, ElementHolder)
-    tm = sr.live.get_betatron_tune_monitor("BETATRON_TUNE")
+    tm = sr.live.diagnostic.get("BETATRON_TUNE")
     assert isinstance(tm.peer.peer, Accelerator)
     assert isinstance(tm.peer, ElementHolder)
 
 
 def test_repr_is_informative_and_bounded():
     sr = Accelerator.load("tests/config/EBSOrbit.yaml")
-    bpm = sr.design.bpm.get("BPM_C04-04")
-    bpms = sr.design.bpms.get("BPM")
+    bpm = sr.design.diagnostic.bpm.get("BPM_C04-04")
+    bpms = sr.design.diagnostic.bpms.get("BPM")
 
     assert repr(bpm) == (
         "BPM(name='BPM_C04-04', lattice_names='BPM_C04-04', "
@@ -46,7 +46,7 @@ def test_repr_options_limit_sequences():
         set_repr_options(max_items=1)
         sr = Accelerator.load("tests/config/EBSOrbit.yaml")
 
-        bpms = sr.design.bpms.get("BPM")
+        bpms = sr.design.diagnostic.bpms.get("BPM")
         assert f"... +{len(bpms) - 1} more ..." in repr(bpms)
     finally:
         set_repr_options(
@@ -160,5 +160,5 @@ def test_config_dict():
     assert sr.live.dconfig()["prefix"] == "VA:"
     assert sr.live.dconfig()["info"]["param1"] == "Param1 value"
     assert sr.live.dconfig()["info"]["param2"] == 12345.0
-    assert isinstance(sr.live.get_element("MY_ELEMENT"), MyElement)
-    assert sr.live.get_element("MY_ELEMENT")._cfg.device_h == "TUNEZR:rdH"
+    assert isinstance(sr.live["MY_ELEMENT"], MyElement)
+    assert sr.live["MY_ELEMENT"]._cfg.device_h == "TUNEZR:rdH"

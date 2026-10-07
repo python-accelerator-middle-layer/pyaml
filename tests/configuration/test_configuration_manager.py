@@ -189,7 +189,7 @@ def test_configuration_manager_accumulates_multiple_device_fragments(
     assert manager.has("devices", "BETATRON_TUNE")
     assert manager.get("devices", "QF1A-C01")["class_path"] == "pyaml.magnet.quadrupole.Quadrupole"
     assert manager.get("devices", "SH1A-C01")["class_path"] == "pyaml.magnet.cfm_magnet.CombinedFunctionMagnet"
-    assert manager.get("devices", "BPM_C04-01")["class_path"] == "pyaml.bpm.bpm.BPM"
+    assert manager.get("devices", "BPM_C04-01")["class_path"] == "pyaml.diagnostics.bpm.bpm.BPM"
     assert manager.get("devices", "BETATRON_TUNE")["class_path"] == "pyaml.diagnostics.tune_monitor.BetatronTuneMonitor"
 
 
@@ -273,7 +273,7 @@ def test_configuration_manager_repr_is_yellow_pages_like(
     assert "live (tango.pyaml.controlsystem.TangoControlSystem) source=config_manager_sr_base.yaml" in output
     assert "design (pyaml.lattice.simulator.Simulator) source=config_manager_sr_base.yaml" in output
     assert "HCORR (pyaml.arrays.magnet.Magnet) patterns=1 source=config_manager_sr_arrays.yaml" in output
-    assert "BPM_C04-01 (pyaml.bpm.bpm.BPM) source=config_manager_sr_devices.yaml" in output
+    assert "BPM_C04-01 (pyaml.diagnostics.bpm.bpm.BPM) source=config_manager_sr_devices.yaml" in output
     assert "    ." in output
 
 

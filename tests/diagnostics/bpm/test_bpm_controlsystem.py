@@ -11,7 +11,7 @@ from pyaml.accelerator import Accelerator
 )
 def test_controlsystem_bpm_tilt(install_test_package):
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
-    bpm = sr.live.bpm.get("BPM_C01-01")
+    bpm = sr.live.diagnostic.bpm.get("BPM_C01-01")
     print(bpm.tilt.get())
 
     assert bpm.tilt.get() == 0
@@ -26,7 +26,7 @@ def test_controlsystem_bpm_tilt(install_test_package):
 )
 def test_controlsystem_bpm_offset(install_test_package):
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
-    bpm = sr.live.bpm.get("BPM_C01-01")
+    bpm = sr.live.diagnostic.bpm.get("BPM_C01-01")
 
     assert bpm.offset.get()[0] == 0
     assert bpm.offset.get()[1] == 0
@@ -43,8 +43,8 @@ def test_controlsystem_bpm_offset(install_test_package):
 )
 def test_controlsystem_bpm_position(install_test_package):
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
-    bpm = sr.live.bpm.get("BPM_C01-01")
-    bpm_simple = sr.live.bpm.get("BPM_C01-02")
+    bpm = sr.live.diagnostic.bpm.get("BPM_C01-01")
+    bpm_simple = sr.live.diagnostic.bpm.get("BPM_C01-02")
 
     assert np.allclose(bpm.positions.get(), np.array([0.0, 0.0]))
     assert np.allclose(bpm_simple.positions.get(), np.array([0.0, 0.0]))
@@ -91,7 +91,7 @@ def test_controlsystem_bpm_position_indexed(install_test_package):
     set_attribute("srdiag/bpm/c01-04/Position", [0.0, 1.0], unit="mm")
 
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
-    bpm = sr.live.bpm.get("BPM_C01-04")
+    bpm = sr.live.diagnostic.bpm.get("BPM_C01-04")
 
     assert np.allclose(bpm.positions.get(), np.array([0.0, 1.0]))
 
@@ -123,9 +123,9 @@ def _single_plane_bpm_config() -> dict:
         ],
         "arrays": [{"type": "pyaml.arrays.bpm", "name": "BPM", "elements": ["BPM_1", "BPM_2", "XBPM"]}],
         "devices": [
-            {"type": "pyaml.bpm.bpm", "name": "BPM_1", "x_pos": "c01-01/H", "y_pos": "c01-01/V"},
-            {"type": "pyaml.bpm.bpm", "name": "BPM_2", "x_pos": "c01-02/H", "y_pos": "c01-02/V"},
-            {"type": "pyaml.bpm.bpm", "name": "XBPM", "y_pos": "xbpm/V"},
+            {"type": "pyaml.diagnostics.bpm.bpm", "name": "BPM_1", "x_pos": "c01-01/H", "y_pos": "c01-01/V"},
+            {"type": "pyaml.diagnostics.bpm.bpm", "name": "BPM_2", "x_pos": "c01-02/H", "y_pos": "c01-02/V"},
+            {"type": "pyaml.diagnostics.bpm.bpm", "name": "XBPM", "y_pos": "xbpm/V"},
         ],
     }
 
@@ -140,7 +140,7 @@ def test_controlsystem_bpm_single_plane(install_test_package):
 
     set_attribute("sr/bpm/xbpm/V", 0.3, unit="mm")
     sr = Accelerator.from_dict(_single_plane_bpm_config())
-    xbpm = sr.live.bpm.get("XBPM")
+    xbpm = sr.live.diagnostic.bpm.get("XBPM")
 
     pos = xbpm.positions.get()
     assert np.isnan(pos[0])
@@ -159,7 +159,7 @@ def test_controlsystem_bpm_array_with_single_plane_bpm(install_test_package):
     for name, value in [("c01-01/H", 0.1), ("c01-01/V", -0.1), ("c01-02/H", 0.2), ("c01-02/V", -0.2), ("xbpm/V", 0.3)]:
         set_attribute(f"sr/bpm/{name}", value, unit="mm")
     sr = Accelerator.from_dict(_single_plane_bpm_config())
-    bpms = sr.live.bpms.get("BPM")
+    bpms = sr.live.diagnostic.bpms.get("BPM")
 
     pos = bpms.positions.get()
     assert pos.shape == (3, 2)
@@ -192,7 +192,7 @@ def test_controlsystem_bpm_array_without_horizontal_plane(install_test_package):
     config = _single_plane_bpm_config()
     config["arrays"][0]["elements"] = ["XBPM"]
     sr = Accelerator.from_dict(config)
-    bpms = sr.live.bpms.get("BPM")
+    bpms = sr.live.diagnostic.bpms.get("BPM")
 
     assert np.isnan(bpms.h.get()).all()
     assert np.allclose(bpms.v.get(), [0.3])

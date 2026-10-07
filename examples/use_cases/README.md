@@ -89,8 +89,8 @@ In `design` mode all wait times can be set to `0.0`. In `live` mode use `wait_ti
 | `BPM` | Beam position monitors |
 | `BETATRON_TUNE` | Betatron tune monitor |
 | `CHROMATICITY_MONITOR` | Chromaticity monitor |
-| `DEFAULT_TUNE_CORRECTION` | Tune correction tool → `SR.tune` |
-| `DEFAULT_TUNE_RESPONSE_MATRIX` | Tune response matrix tool → `SR.trm` |
-| `DEFAULT_ORBIT_CORRECTION` | Orbit correction tool → `SR.orbit` |
-| `DEFAULT_ORBIT_RESPONSE_MATRIX` | Orbit response matrix tool → `SR.orm` |
-| `DEFAULT_DISPERSION` | Dispersion measurement tool → `SR.dispersion` |
+| `DEFAULT_TUNE_CORRECTION` | Tune correction tool → `SR.tool.tune` |
+| `DEFAULT_TUNE_RESPONSE_MATRIX` | Tune response matrix tool → `SR.tool.trm` |
+| `DEFAULT_ORBIT_CORRECTION` | Orbit correction tool → `SR.tool.orbit` |
+| `DEFAULT_ORBIT_RESPONSE_MATRIX` | Orbit response matrix tool → `SR.tool.orm` |
+| `DEFAULT_DISPERSION` | Dispersion measurement tool → `SR.tool.dispersion` |

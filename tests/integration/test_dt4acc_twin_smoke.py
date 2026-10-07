@@ -3,7 +3,6 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-import yaml
 from pyaml_test_lattice import configurations, lattices
 
 from pyaml.accelerator import Accelerator
@@ -37,21 +36,16 @@ def _readback_value(device_access):
 def _load_fragment(config_key: str) -> dict:
     """Load one pyaml-test-lattice merged config fragment as a plain dict.
 
-    Bypasses pyaml's own YAML loader (which auto-loads any bare
-    ``*.yaml``/``*.json`` string value as a nested file relative to the
-    parent file's directory) since the lattice file ships under a different
+    The ``lattice`` reference is overridden since it lives in a different
     package subtree (``data/lattice``) than the config fragment
-    (``data/configuration``). The ``lattice`` and ``catalog`` references are
-    resolved explicitly instead.
+    (``data/configuration``).
     """
     config_path = Path(configurations[config_key])
-    fragment = yaml.safe_load(config_path.read_text())
+    manager = ConfigurationManager()
+    manager.add(config_path)
+    fragment = manager.to_dict()
 
     fragment["simulators"][0]["lattice"] = str(Path(lattices[FODO_LATTICE_KEY]))
-
-    catalog_name = fragment["controls"][0]["catalog"]
-    catalog_path = config_path.parent / catalog_name
-    fragment["controls"][0]["catalog"] = yaml.safe_load(catalog_path.read_text())
 
     return fragment
 
@@ -134,9 +128,9 @@ def deactivated_test_orbit_correction(config_key: str):
     try:
         accelerator = _build_accelerator(config_key)
         control_mode = accelerator.live
-        bpms = control_mode.bpms.get("bpms")
-        orbit_response_matrix = control_mode.get_orm_tuning("DEFAULT_ORBIT_RESPONSE_MATRIX")
-        orbit_correction = control_mode.get_orbit_tuning("DEFAULT_ORBIT_CORRECTION")
+        bpms = control_mode.diagnostic.bpms.get("bpms")
+        orbit_response_matrix = control_mode.tool.get("DEFAULT_ORBIT_RESPONSE_MATRIX")
+        orbit_correction = control_mode.tool.get("DEFAULT_ORBIT_CORRECTION")
         orbit_response_matrix.measure()
         ormdata = orbit_response_matrix.get()
         orbit_response_matrix.save("orm.json")
@@ -179,7 +173,7 @@ def deactivated_test_chromaticity_measurement(config_key: str):
 
         accelerator = _build_accelerator(config_key)
         control_mode = accelerator.live
-        chromaticity_measurement = control_mode.get_chromaticity_monitor("DEFAULT_CHROMATICITY_MEASUREMENT")
+        chromaticity_measurement = control_mode.tool.get("DEFAULT_CHROMATICITY_MEASUREMENT")
 
         def chroma_callback(action: int, cb_data: dict):
             if action == Action.MEASURE:

@@ -6,7 +6,8 @@ This module provides bpm array functionality for the PyAML accelerator middle la
 
 import numpy as np
 
-from ..bpm.bpm import BPM
+from pyaml.diagnostics.bpm import BPM
+
 from ..common.abstract import ReadFloatArray
 from ..control.deviceaccesslist import DeviceAccessList
 from .element_array import ElementArray
@@ -24,7 +25,7 @@ class RWBPMPosition(ReadFloatArray):
     ----------
     name : str
         Name of the position accessor
-    bpms : list[pyaml.bpm.bpm.BPM]
+    bpms : list[pyaml.diagnostics.bpm.bpm.BPM]
         List of BPM objects to access
 
     Methods
@@ -98,7 +99,7 @@ class RWBPMSinglePosition(ReadFloatArray):
     ----------
     name : str
         Name of the position accessor
-    bpms : list[pyaml.bpm.bpm.BPM]
+    bpms : list[pyaml.diagnostics.bpm.bpm.BPM]
         List of BPM objects to access
     idx : int
         Index for the position axis (0 for horizontal, 1 for vertical)
@@ -170,7 +171,7 @@ class BPMArray(ElementArray):
     ----------
     arrayName : str
         Array name
-    bpms : list[pyaml.bpm.bpm.BPM]
+    bpms : list[pyaml.diagnostics.bpm.bpm.BPM]
         BPM list, all elements must be attached to the same instance of
         either a (:py:class:`~pyaml.lattice.simulator.Simulator`
         or a :py:class:`~pyaml.control.controlsystem.ControlSystem`).

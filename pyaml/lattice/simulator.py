@@ -10,7 +10,8 @@ from typing import TYPE_CHECKING
 
 import at
 
-from ..bpm.bpm import BPM
+from pyaml.diagnostics.bpm import BPM
+
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element, __pyaml_repr__
 from ..common.exception import PyAMLException
@@ -291,7 +292,9 @@ class Simulator(ElementHolder, DynamicValidation):
         if len(bpm_elt.Offset) != 2:
             raise PyAMLException(f"BPM {bpm.get_name()} offset must be a 2-element array.")
         update_bpm_transform_matrix(bpm_elt)
-        self.bpm.add(bpm.attach(self, RBpmArray(bpm_elt, self.ring), RWBpmOffsetArray(bpm_elt), RWBpmTiltScalar(bpm_elt)))
+        self.diagnostic.bpm.add(
+            bpm.attach(self, RBpmArray(bpm_elt, self.ring), RWBpmOffsetArray(bpm_elt), RWBpmTiltScalar(bpm_elt))
+        )
 
     def _fill_rf_plant(self, rf_plant: RFPlant) -> None:
         if rf_plant.transmitters:

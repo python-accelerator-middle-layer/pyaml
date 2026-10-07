@@ -212,7 +212,7 @@ class Orbit(TuningTool, DynamicValidation):
     def bpms(self) -> BPMArray:
         """Return the BPM array used for orbit readback."""
         self.check_peer()
-        return self.peer.bpms.get(self.bpm_array_name)
+        return self.peer.diagnostic.bpms.get(self.bpm_array_name)
 
     @property
     def hcorrectors(self) -> MagnetArray:
