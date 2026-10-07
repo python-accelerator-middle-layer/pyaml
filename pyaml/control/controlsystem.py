@@ -19,6 +19,7 @@ from ..common.holders.element_holder import ElementHolder
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
     CSScalarAggregator,
+    CSSparseScalarAggregator,
     CSStrengthScalarAggregator,
     RBetatronTuneArray,
     RBpmArray,
@@ -29,6 +30,7 @@ from ..control.abstract_impl import (
     RWRFFrequencyScalar,
     RWRFPhaseScalar,
     RWRFVoltageScalar,
+    RWSerializedStrengthScalar,
     RWStrengthArray,
     RWStrengthScalar,
 )
@@ -198,12 +200,14 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         -------
         list[ScalarAggregator | None]
             Aggregators for combined, horizontal, and vertical positions.
+            A plane without device (e.g. the horizontal plane of a
+            vertical-only XBPM) reads NaN, the other devices are still read
+            in one grouped call.
         """
-        agg = self._create_scalar_aggregator()
-        aggh = self._create_scalar_aggregator()
-        aggv = self._create_scalar_aggregator()
-        if agg is None or aggh is None or aggv is None:
+        aggs = [self.get_aggregator() for _ in range(3)]
+        if any(a is None for a in aggs):
             return [None, None, None]
+        agg, aggh, aggv = (CSSparseScalarAggregator(a) for a in aggs)
         for b in bpms:
             devs = self.get_devices_access(b.get_pos_devices())
             agg.add_devices(devs)
@@ -227,16 +231,14 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             self.magnet.add(virtual_magnet)
 
     def _fill_serialized_magnets(self, magnets: SerializedMagnets) -> None:
-        devices = self.get_devices_access(magnets.model.get_device_names())
+        # All magnets of the group share the same power supply
+        device = self.get_device_access(magnets.model.get_device_names()[0])
         currents = []
         strengths = []
         for index in range(magnets.get_nb_magnets()):
-            currents.append(
-                RWHardwareScalar(magnets.model.get_sub_model(index), devices[index]) if magnets.model.has_hardware() else None
-            )
-            strengths.append(
-                RWStrengthScalar(magnets.model.get_sub_model(index), devices[index]) if magnets.model.has_physics() else None
-            )
+            sub_model = magnets.model.get_sub_model(index)
+            currents.append(RWHardwareScalar(sub_model, device) if magnets.model.has_hardware() else None)
+            strengths.append(RWSerializedStrengthScalar(sub_model, device, index) if magnets.model.has_physics() else None)
         attached_magnets = magnets.attach(self, strengths, currents)
         self.serialized_magnet.add(attached_magnets[0])
         for magnet in attached_magnets[1:]:
