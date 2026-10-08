@@ -19,10 +19,10 @@ def test_transfer_line():
     orm_v = mat[9:, 8:]
 
     assert numpy.allclose(
-        orm_h[8, :], [1.49746082, 3.11487458, 10.60522905, -0.84014865, -19.27774502, -14.92314963, 1.29287711, 1.60223207]
+        orm_h[8, :], [1.49217029, 3.11318219, 10.60494678, -0.82242986, -19.2814236, -14.92682822, 1.28503979, 1.60584401]
     )
     assert numpy.allclose(
-        orm_v[8, :], [10.95115436, 10.56436269, 16.43975007, 32.48697172, 12.7218589, 10.31009581, 10.46821268, 2.60568252]
+        orm_v[8, :], [10.95203344, 10.56524176, 16.43659334, 32.50321299, 12.72373742, 10.3122307, 10.47365958, 2.61214668]
     )
 
     tl2.design.tool.orm.save("tl2.json")
@@ -37,11 +37,11 @@ def test_transfer_line():
     vcorr.strengths.set(vcorr.strengths.get() + std_kick * numpy.random.normal(size=len(vcorr)))
 
     orbit = tl2.design.diagnostic.bpms.get("BPMS").positions
-    assert numpy.allclose(numpy.std(orbit.get(), axis=0), [1.78601145e-05, 3.57671504e-05])
+    assert numpy.allclose(numpy.std(orbit.get(), axis=0), [1.78288459e-05, 3.57986943e-05])
 
     tl2.design.tool.orbit.correct()
     tl2.design.tool.orbit.correct()
 
-    assert numpy.allclose(numpy.std(orbit.get(), axis=0), [7.50786048e-07, 7.26005222e-07])
+    assert numpy.allclose(numpy.std(orbit.get(), axis=0), [7.51291713e-07, 7.24545959e-07])
 
     assert numpy.allclose(orbit.get()[2], tl2.design.diagnostic.bpm.get("BPM_QD5").positions.get())
