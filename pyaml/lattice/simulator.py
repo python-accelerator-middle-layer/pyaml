@@ -48,6 +48,7 @@ from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
 from ..validation import DynamicValidation, register_schema
 from .lattice_elements_linker import LatticeElementsLinker
+from .twiss_in import TwissIn
 
 if TYPE_CHECKING:
     from ..configuration.unbound_element import UnboundElement
@@ -79,6 +80,8 @@ class Simulator(ElementHolder, DynamicValidation):
     mat_key : str, optional
         Variable name of the lattice when loading a MATLAB ``.mat``
         lattice file.
+    twiss_in : TwissIn, optional
+        Describe input beam parameters of a tranfer line, when not specified the lattice is considered as a ring
     linker : LatticeElementsLinker, optional
         Custom linker used to associate PyAML elements with PyAT
         lattice elements. If omitted, elements are matched by name.
@@ -123,6 +126,7 @@ class Simulator(ElementHolder, DynamicValidation):
         name: str,
         lattice: str,
         mat_key: str | None = None,
+        twiss_in: TwissIn | None = None,
         linker: LatticeElementsLinker | None = None,
         description: str | None = None,
     ):
@@ -135,6 +139,11 @@ class Simulator(ElementHolder, DynamicValidation):
         self._lattice = lattice
         self._mat_key = mat_key
         self.description = description
+        self.twiss_in = twiss_in
+        if twiss_in is None:
+            self._at_twiss_in = None
+        else:
+            self._at_twiss_in = self.twiss_in._to_at()
 
         path: Path = ROOT.get() / self._lattice
 
@@ -226,9 +235,9 @@ class Simulator(ElementHolder, DynamicValidation):
         list[ScalarAggregator]
             Aggregators for combined, horizontal, and vertical BPM positions.
         """
-        agg = BPMScalarAggregator(self.get_lattice())
-        aggh = BPMHScalarAggregator(self.get_lattice())
-        aggv = BPMVScalarAggregator(self.get_lattice())
+        agg = BPMScalarAggregator(self.get_lattice(), self._at_twiss_in)
+        aggh = BPMHScalarAggregator(self.get_lattice(), self._at_twiss_in)
+        aggv = BPMVScalarAggregator(self.get_lattice(), self._at_twiss_in)
         for b in bpms:
             e = self.get_at_elems(b)[0]
             agg.add_elem(e)
@@ -293,7 +302,9 @@ class Simulator(ElementHolder, DynamicValidation):
             raise PyAMLException(f"BPM {bpm.get_name()} offset must be a 2-element array.")
         update_bpm_transform_matrix(bpm_elt)
         self.diagnostic.bpm.add(
-            bpm.attach(self, RBpmArray(bpm_elt, self.ring), RWBpmOffsetArray(bpm_elt), RWBpmTiltScalar(bpm_elt))
+            bpm.attach(
+                self, RBpmArray(bpm_elt, self.ring, self._at_twiss_in), RWBpmOffsetArray(bpm_elt), RWBpmTiltScalar(bpm_elt)
+            )
         )
 
     def _fill_rf_plant(self, rf_plant: RFPlant) -> None:
