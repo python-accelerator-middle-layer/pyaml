@@ -4,7 +4,7 @@ machine: tl2
 energy: 6e9
 
 simulators:
-  - type: pyaml.lattice.simulator
+  - class: pyaml.lattice.simulator.Simulator
     lattice: tl2.mat
     name: design
     twiss_in:

@@ -30,9 +30,9 @@ class TwissIn(DynamicValidation):
     def __init__(
         self,
         alpha: list[float],
-        beta: list[float] = None,
-        position: list[float] = None,
-        dispersion: list[float] = None,
+        beta: list[float] | None = None,
+        position: list[float] | None = None,
+        dispersion: list[float] | None = None,
     ):
         """
         Create TwissIn object
