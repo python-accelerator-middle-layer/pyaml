@@ -1,0 +1,215 @@
+type: pyaml.accelerator
+facility: ESRF
+machine: tl2
+energy: 6e9
+
+simulators:
+  - type: pyaml.lattice.simulator
+    lattice: tl2.mat
+    name: design
+    twiss_in:
+      class: pyaml.lattice.twiss_in.TwissIn
+      alpha: [-1.71,  1.47]
+      beta: [5.9 , 5.65]
+      dispersion: [-0.145, -0.092, 0, 0]
+
+data_folder: /data/store
+
+arrays:
+
+  - type: pyaml.arrays.magnet
+    name: HCORR
+    elements:
+      - CH*
+  - type: pyaml.arrays.magnet
+    name: VCORR
+    elements:
+      - CV*
+  - type: pyaml.arrays.bpm
+    name: BPMS
+    elements:
+      - BPM*
+
+devices:
+
+  - class: pyaml.tuning_tools.orbit.Orbit
+    bpm_array_name: BPMS
+    hcorr_array_name: HCORR
+    vcorr_array_name: VCORR
+    name: DEFAULT_ORBIT_CORRECTION
+    singular_values: 5
+    response_matrix: ideal_tl2_orm.json
+
+  - class: pyaml.tuning_tools.orbit_response_matrix.OrbitResponseMatrix
+    bpm_array_name: BPMS
+    hcorr_array_name: HCORR
+    vcorr_array_name: VCORR
+    corrector_delta: 1e-6
+    name: DEFAULT_ORBIT_RESPONSE_MATRIX
+
+  - class: pyaml.diagnostics.bpm.bpm.BPM
+    name: BPM_CV1
+    x_pos: tl2/d-bpm/cv1/X_Position
+    y_pos: tl2/d-bpm/cv1/Z_Position
+  - class: pyaml.diagnostics.bpm.bpm.BPM
+    name: BPM_CH3
+    x_pos: tl2/d-bpm/d2/X_Position
+    y_pos: tl2/d-bpm/d2/Z_Position
+  - class: pyaml.diagnostics.bpm.bpm.BPM
+    name: BPM_QD5
+    x_pos: tl2/d-bpm/q5/X_Position
+    y_pos: tl2/d-bpm/q5/Z_Position
+  - class: pyaml.diagnostics.bpm.bpm.BPM
+    name: BPM_QF6
+    x_pos: tl2/d-bpm/q6/X_Position
+    y_pos: tl2/d-bpm/q6/Z_Position
+  - class: pyaml.diagnostics.bpm.bpm.BPM
+    name: BPM_SX
+    x_pos: tl2/d-bpm/sx/X_Position
+    y_pos: tl2/d-bpm/sx/Z_Position
+  - class: pyaml.diagnostics.bpm.bpm.BPM
+    name: BPM_QD8
+    x_pos: tl2/d-bpm/q8/X_Position
+    y_pos: tl2/d-bpm/q8/Z_Position
+  - class: pyaml.diagnostics.bpm.bpm.BPM
+    name: BPM_QD12
+    x_pos: tl2/d-bpm/q12/X_Position
+    y_pos: tl2/d-bpm/q12/Z_Position
+  - class: pyaml.diagnostics.bpm.bpm.BPM
+    name: BPM_QF14
+    x_pos: tl2/d-bpm/q14/X_Position
+    y_pos: tl2/d-bpm/q14/Z_Position
+  - class: pyaml.diagnostics.bpm.bpm.BPM
+    name: BPM_S1PM
+    x_pos: tl2/d-bpm/s1pm/X_Position
+    y_pos: tl2/d-bpm/s1pm/Z_Position
+
+  - class: pyaml.magnet.hcorrector.HCorrector
+    name: CH1
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/ch1/Current
+  - class: pyaml.magnet.hcorrector.HCorrector
+    name: CH2
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/ch2/Current
+  - class: pyaml.magnet.hcorrector.HCorrector
+    name: CH3
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/ch3/Current
+  - class: pyaml.magnet.hcorrector.HCorrector
+    name: CH4
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/ch4/Current
+  - class: pyaml.magnet.hcorrector.HCorrector
+    name: CH5
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/ch5/Current
+  - class: pyaml.magnet.hcorrector.HCorrector
+    name: CH6
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/ch6/Current
+  - class: pyaml.magnet.hcorrector.HCorrector
+    name: CH7
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/ch7/Current
+  - class: pyaml.magnet.hcorrector.HCorrector
+    name: CH8
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/ch8/Current
+
+  - class: pyaml.magnet.vcorrector.VCorrector
+    name: CV0
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/cv0/Current
+  - class: pyaml.magnet.vcorrector.VCorrector
+    name: CV1
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/cv1/Current
+  - class: pyaml.magnet.vcorrector.VCorrector
+    name: CV3
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/cv3/Current
+  - class: pyaml.magnet.vcorrector.VCorrector
+    name: CV4
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/cv4/Current
+  - class: pyaml.magnet.vcorrector.VCorrector
+    name: CV5
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/cv5/Current
+  - class: pyaml.magnet.vcorrector.VCorrector
+    name: CV6
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/cv6/Current
+  - class: pyaml.magnet.vcorrector.VCorrector
+    name: CV7
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/cv7/Current
+  - class: pyaml.magnet.vcorrector.VCorrector
+    name: CV8
+    model:
+      class: pyaml.magnet.linear_model.LinearMagnetModel
+      calibration_factor: 161e-6
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: tl2/ps-c1/cv8/Current

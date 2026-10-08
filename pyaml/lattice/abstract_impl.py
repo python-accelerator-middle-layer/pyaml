@@ -708,13 +708,14 @@ class BPMScalarAggregator(ScalarAggregator):
         Return the value unit.
     """
 
-    def __init__(self, ring: at.Lattice):
+    def __init__(self, ring: at.Lattice, twiss_in: dict):
         """
         Initialize the BPMScalarAggregator.
         """
         self._lattice = ring
         self._refpts = []
         self._matrices = []
+        self._twiss_in = twiss_in
 
     def add_elem(self, elem: at.Element):
         """
@@ -764,9 +765,15 @@ class BPMScalarAggregator(ScalarAggregator):
 
     def _transform(self) -> np.array:
         """Transform the configured value for the lattice interface."""
-        _, orbit = at.find_orbit(self._lattice, refpts=self._refpts)
+        if self._twiss_in is None:
+            _, orbit = at.find_orbit(self._lattice, refpts=self._refpts)
+            pts = orbit[:, [0, 2]]  # Extract x,y
+        else:
+            _, _, elemdata = at.get_optics(self._lattice, refpts=self._refpts, twiss_in=self._twiss_in)
+            pts = [e.closed_orbit[[0, 2]] for e in elemdata]
+
         ones = np.ones(len(self._refpts))
-        pts = orbit[:, [0, 2]]  # Extract x,y
+        # Transfom BPM coordinates (offset and tilt)
         # Batch matrices multiplication (homogeneous coordinates)
         return np.matmul(self._matrices, np.column_stack([pts, ones])[:, :, None]).squeeze(-1)
 
@@ -856,19 +863,25 @@ class RBpmArray(abstract.ReadFloatArray):
         Return the value unit.
     """
 
-    def __init__(self, element: at.Element, lattice: at.Lattice):
+    def __init__(self, element: at.Element, lattice: at.Lattice, twiss_in: dict):
         """
         Initialize the RBpmArray.
         """
         self._element = element
         self._lattice = lattice
+        self._twiss_in = twiss_in
 
     # Gets the value
     def get(self) -> np.array:
         """Return the current value."""
         index = self._lattice.index(self._element)
-        _, orbit = at.find_orbit(self._lattice, refpts=index)
-        pts = orbit[0, [0, 2]]
+        if self._twiss_in is None:
+            _, orbit = at.find_orbit(self._lattice, refpts=index)
+            pts = orbit[0, [0, 2]]
+        else:
+            _, _, elemdata = at.get_optics(self._lattice, refpts=index, twiss_in=self._twiss_in)
+            pts = elemdata[0].closed_orbit[[0, 2]]
+        # Transfom BPM coordinates (offset and tilt)
         return np.dot(self._element._transform, np.hstack([pts, 1]))  # Use homogeneous coordinates
 
     # Gets the unit of the value
