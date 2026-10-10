@@ -38,18 +38,22 @@ def _effective_lengths(elements: list[at.Element]) -> list[float]:
 
 class _KickAngleCoefficients:
     """
-    Present the ``KickAngle`` of a ``CorrectorPass`` element as its dipole polynom coefficient.
+    Present the dipole strength of an element that carries a ``KickAngle`` as a single polynom coefficient.
 
-    ``CorrectorPass`` integrates ``KickAngle`` only and ignores ``PolynomA``/``PolynomB``, so the dipole component of
-    such an element lives in ``KickAngle``. This view exposes it at index 0 with the polynom convention
-    (``PolynomB[0] * L = -KickAngle[0]``, ``PolynomA[0] * L = KickAngle[1]``), so that the accessors address every
-    element the same way. A polynom carried by the element is kept in step with the kick; coefficients above the
-    dipole are passed through to it.
+    AT holds the dipole kick of an element in two places. ``CorrectorPass`` integrates ``KickAngle`` only and ignores
+    ``PolynomA``/``PolynomB``; the multipole pass methods integrate the polynom *and* add ``KickAngle`` to it. This
+    view exposes the total at index 0 with the polynom convention (``PolynomB[0] * L = -KickAngle[0]``,
+    ``PolynomA[0] * L = KickAngle[1]``), so that the accessors address every element the same way and read the kick
+    the beam sees.
+
+    Writing index 0 stores the value where the pass method reads it: in ``KickAngle`` for ``CorrectorPass`` (a polynom
+    carried by the element is kept in step), in the polynom otherwise, with the ``KickAngle`` component reset so that
+    it is not applied twice. Coefficients above the dipole are passed through to the polynom.
 
     Parameters
     ----------
     element : at.Element
-        Element tracked with ``CorrectorPass``.
+        Element carrying a ``KickAngle`` that its pass method applies.
     att_name : str
         Polynom the view stands for, ``"PolynomA"`` or ``"PolynomB"``.
     length : float
@@ -60,33 +64,53 @@ class _KickAngleCoefficients:
         self._element = element
         self._att_name = att_name
         self._length = length
+        self._kick_only = element.PassMethod == "CorrectorPass"
         self._plane, self._kick_sign = (0, -1.0) if att_name == "PolynomB" else (1, 1.0)
+
+    def _kick_coefficient(self) -> float:
+        if self._length == 0.0:
+            return 0.0
+        return self._kick_sign * self._element.KickAngle[self._plane] / self._length
 
     def __getitem__(self, index: int) -> float:
         if index != 0:
             return getattr(self._element, self._att_name)[index]
-        if self._length == 0.0:
-            return 0.0
-        return self._kick_sign * self._element.KickAngle[self._plane] / self._length
+        if self._kick_only:
+            return self._kick_coefficient()
+        return getattr(self._element, self._att_name)[0] + self._kick_coefficient()
 
     def __setitem__(self, index: int, value: float):
         polynom = getattr(self._element, self._att_name, None)
         if index != 0:
             polynom[index] = value
-            return
-        self._element.KickAngle[self._plane] = self._kick_sign * value * self._length
-        if polynom is not None:
+        elif self._kick_only:
+            self._element.KickAngle[self._plane] = self._kick_sign * value * self._length
+            if polynom is not None:
+                polynom[0] = value
+        else:
             polynom[0] = value
+            self._element.KickAngle[self._plane] = 0.0
+
+
+def _applies_kick_angle(element: at.Element) -> bool:
+    """
+    Return True when the pass method of ``element`` applies its ``KickAngle``.
+
+    That is ``CorrectorPass`` and the multipole integrators (``StrMPole*``, ``BndMPole*``, ``ThinMPolePass``,
+    ``ExactMultipole*``). Other pass methods ignore the attribute.
+    """
+    pass_method = element.PassMethod
+    return pass_method == "CorrectorPass" or "MPole" in pass_method or "Multipole" in pass_method
 
 
 def _coefficients(element: at.Element, att_name: str, length: float):
     """
     Return the indexable coefficients that hold the strength of ``element`` for the polynom ``att_name``.
 
-    This is the polynom itself, except for an element tracked with ``CorrectorPass``, whose dipole kick is held by
-    ``KickAngle`` (see :class:`_KickAngleCoefficients`).
+    This is the polynom itself, except for an element whose pass method applies a ``KickAngle``: its dipole strength
+    is then addressed through :class:`_KickAngleCoefficients`.
     """
-    if element.PassMethod == "CorrectorPass":
+    if element.PassMethod == "CorrectorPass" or (hasattr(element, "KickAngle") and _applies_kick_angle(element)):
         return _KickAngleCoefficients(element, att_name, length)
     return getattr(element, att_name)
 

@@ -183,3 +183,37 @@ def test_multipole_corrector_agrees_with_corrector_pass():
         RWStrengthScalar([element], HCorrector.polynom, model).set(1.0e-4)
 
     np.testing.assert_allclose(_orbit(thin), _orbit(kicker), rtol=0, atol=1.0e-12)
+
+
+@pytest.mark.parametrize(
+    "element",
+    [
+        at.ThinMultipole("COR", [0.0], [0.0], KickAngle=[1.0e-4, 0.0]),
+        at.Multipole("COR", 0.2, [0.0], [0.0], KickAngle=[1.0e-4, 0.0]),
+        at.Dipole("COR", 0.2, 0.0, KickAngle=[1.0e-4, 0.0]),
+    ],
+    ids=["thin multipole", "multipole", "dipole"],
+)
+def test_multipole_kick_angle_is_part_of_the_strength(element):
+    # The multipole pass methods add KickAngle to the polynom: the strength is the sum, and a write replaces it
+    element = element.deepcopy()
+    kicked = _orbit(element)
+    assert np.abs(kicked).max() > 1.0e-5
+    accessor = RWStrengthScalar([element], HCorrector.polynom, IdentityMagnetModel(physics="COR", unit="rad"))
+
+    assert accessor.get() == pytest.approx(1.0e-4)
+
+    accessor.set(1.0e-4)
+    assert accessor.get() == pytest.approx(1.0e-4)
+    # a thick integrator does not treat the two attributes identically to the last digit
+    np.testing.assert_allclose(_orbit(element), kicked, rtol=1.0e-6, atol=0)
+
+    accessor.set(0.0)
+    np.testing.assert_allclose(_orbit(element), 0.0, atol=1.0e-12)
+
+
+def test_kick_angle_ignored_by_the_pass_method_is_not_read():
+    element = at.Quadrupole("QUAD", 0.2, 1.0, PassMethod="QuadLinearPass", KickAngle=[1.0e-4, 0.0])
+    accessor = RWStrengthScalar([element], HCorrector.polynom, IdentityMagnetModel(physics="COR", unit="rad"))
+
+    assert accessor.get() == 0.0
