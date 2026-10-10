@@ -36,6 +36,61 @@ def _effective_lengths(elements: list[at.Element]) -> list[float]:
     return lengths
 
 
+class _KickAngleCoefficients:
+    """
+    Present the ``KickAngle`` of a ``CorrectorPass`` element as its dipole polynom coefficient.
+
+    ``CorrectorPass`` integrates ``KickAngle`` only and ignores ``PolynomA``/``PolynomB``, so the dipole component of
+    such an element lives in ``KickAngle``. This view exposes it at index 0 with the polynom convention
+    (``PolynomB[0] * L = -KickAngle[0]``, ``PolynomA[0] * L = KickAngle[1]``), so that the accessors address every
+    element the same way. A polynom carried by the element is kept in step with the kick; coefficients above the
+    dipole are passed through to it.
+
+    Parameters
+    ----------
+    element : at.Element
+        Element tracked with ``CorrectorPass``.
+    att_name : str
+        Polynom the view stands for, ``"PolynomA"`` or ``"PolynomB"``.
+    length : float
+        Length used to convert between the kick and the coefficient (see :func:`_effective_lengths`).
+    """
+
+    def __init__(self, element: at.Element, att_name: str, length: float):
+        self._element = element
+        self._att_name = att_name
+        self._length = length
+        self._plane, self._kick_sign = (0, -1.0) if att_name == "PolynomB" else (1, 1.0)
+
+    def __getitem__(self, index: int) -> float:
+        if index != 0:
+            return getattr(self._element, self._att_name)[index]
+        if self._length == 0.0:
+            return 0.0
+        return self._kick_sign * self._element.KickAngle[self._plane] / self._length
+
+    def __setitem__(self, index: int, value: float):
+        polynom = getattr(self._element, self._att_name, None)
+        if index != 0:
+            polynom[index] = value
+            return
+        self._element.KickAngle[self._plane] = self._kick_sign * value * self._length
+        if polynom is not None:
+            polynom[0] = value
+
+
+def _coefficients(element: at.Element, att_name: str, length: float):
+    """
+    Return the indexable coefficients that hold the strength of ``element`` for the polynom ``att_name``.
+
+    This is the polynom itself, except for an element tracked with ``CorrectorPass``, whose dipole kick is held by
+    ``KickAngle`` (see :class:`_KickAngleCoefficients`).
+    """
+    if element.PassMethod == "CorrectorPass":
+        return _KickAngleCoefficients(element, att_name, length)
+    return getattr(element, att_name)
+
+
 class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     """
     Provide read/write access to a simulated magnet in hardware units.
@@ -75,11 +130,11 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         """
         self._model = model
         self._elements = elements
-        self._poly = [e.__getattribute__(poly.attName) for e in elements]
         self._sign = poly.sign
         self._polyIdx = poly.index
         self._is_thin = all(e.Length == 0 for e in elements)
         self._lengths = _effective_lengths(elements)
+        self._poly = [_coefficients(e, poly.attName, L) for e, L in zip(elements, self._lengths, strict=True)]
         self._length: float = sum(self._lengths)
 
     def get_length(self) -> float:
@@ -177,10 +232,10 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         """
         self._model = model
         self._elements = elements
-        self._poly = [e.__getattribute__(poly.attName) for e in elements]
         self._sign = poly.sign
         self._polyIdx = poly.index
         self._lengths = _effective_lengths(elements)
+        self._poly = [_coefficients(e, poly.attName, L) for e, L in zip(elements, self._lengths, strict=True)]
         self._length: float = sum(self._lengths)
 
     def get_element_length(self) -> float:
@@ -211,7 +266,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         else:
             # Override strength access
             pIdx = polyidx
-            poly = [e.__getattribute__(polynom) for e in self._elements]
+            poly = [_coefficients(e, polynom, L) for e, L in zip(self._elements, self._lengths, strict=True)]
 
         s = 0
         for idx, _ in enumerate(self._elements):
@@ -239,7 +294,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         else:
             # Override strength access
             pIdx = polyidx
-            poly = [e.__getattribute__(polynom) for e in self._elements]
+            poly = [_coefficients(e, polynom, L) for e, L in zip(self._elements, self._lengths, strict=True)]
 
         for idx, _ in enumerate(self._elements):
             poly[idx][pIdx] = value / (self._length * self._sign)
@@ -538,7 +593,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         self.__model = model
         self.__length = _effective_lengths(elements[:1])[0]
         for p in poly:
-            self.__poly.append(elements[0].__getattribute__(p.attName))
+            self.__poly.append(_coefficients(elements[0], p.attName, self.__length))
             self.__polyIdx.append(p.index)
             self.__sign.append(p.sign)
 
@@ -629,7 +684,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         self.__model = model
         self.__length = _effective_lengths(elements[:1])[0]
         for p in poly:
-            self.__poly.append(elements[0].__getattribute__(p.attName))
+            self.__poly.append(_coefficients(elements[0], p.attName, self.__length))
             self.__polyIdx.append(p.index)
             self.__sign.append(p.sign)
 
