@@ -21,7 +21,7 @@ PYAMLCLASS = "LinearSerializedMagnetModel"
 
 logger = logging.getLogger(__name__)
 
-# Relative spread above which the currents requested by members of a series are considered inconsistent
+# Relative gap above which strengths requested for a series are considered unreachable with a single hardware value
 _SPREAD_RTOL = 1e-6
 
 
@@ -180,6 +180,8 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         Return the average strength of the series for a hardware value.
     compute_hardware_from_mean_strength(strength)
         Return the hardware value giving an average strength of the series.
+    compute_hardware_from_strengths(strengths)
+        Return the hardware value for a requested strength of each magnet of the series.
     shares_power_supply()
         Return True, all the magnets of the series share one power supply.
     get_strength_units()
@@ -355,37 +357,37 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         return np.array([model.compute_strengths([current])[0] for model in self.__sub_models])
 
     def compute_hardware_values_partial(
-        self, current_hardware: np.ndarray | None, strengths_by_index: dict[int, float]
+        self, current_hardware: np.ndarray, strengths_by_index: dict[int, float]
     ) -> np.ndarray:
         """
         Convert the strengths of some magnets of the series to the shared hardware value.
 
-        Each requested strength implies a hardware value through its own submodel. The power supply gets the mean of
-        the hardware values implied by the requested magnets only: the magnets that are not requested do not take part.
-        A warning is logged when the requested strengths are not consistent with a single hardware value.
+        The magnets that are not requested keep the strength given by the current hardware value. The completed
+        strengths are then converted by :meth:`compute_hardware_from_strengths`, which logs a warning when they
+        cannot all be reached with a single hardware value.
 
         Parameters
         ----------
-        current_hardware : np.array | None
-            Current hardware value of the series. Not used: the requested strengths define the hardware value.
+        current_hardware : np.array
+            Current hardware value of the series, one value per power supply.
         strengths_by_index : dict[int, float]
             Requested strengths, indexed by the position of the magnet in the series.
 
         Returns
         -------
         np.array
-            Hardware value of the power supply.
+            Hardware value of the power supply, with the shape of ``current_hardware``.
+
+        Raises
+        ------
+        PyAMLException
+            If ``current_hardware`` does not hold one value per power supply of the series.
         """
-        currents = np.array(
-            [self.__sub_models[idx].compute_hardware_values([strength])[0] for idx, strength in strengths_by_index.items()]
-        )
-        current = np.mean(currents)
-        if np.ptp(currents) > _SPREAD_RTOL * max(abs(current), 1.0):
-            logger.warning(
-                f"Inconsistent strengths requested for magnets {list(strengths_by_index.keys())} of a series on "
-                f"{self._powerconverter}: implied hardware values {currents}, the mean {current} is applied"
-            )
-        return np.array([current])
+        _check_len(current_hardware, "current_hardware", len(self.get_device_names()))
+        strengths = self.compute_strengths(current_hardware)
+        for idx, strength in strengths_by_index.items():
+            strengths[idx] = strength
+        return np.array([self.compute_hardware_from_strengths(strengths)])
 
     def compute_mean_strength(self, current: float) -> float:
         """
@@ -435,6 +437,41 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
                 f"Average strength of the series on {self._powerconverter} is not monotonic, it cannot be inverted"
             )
         return float(np.interp(strength, strengths, currents))
+
+    def compute_hardware_from_strengths(self, strengths: np.ndarray) -> float:
+        """
+        Return the hardware value for a requested strength of each magnet of the series.
+
+        The series has a single hardware value, so it solves ``sum(f_i(I)) == sum(k_i)`` for ``I``. When the requested
+        strengths cannot all be reached with one hardware value, the result is a compromise and a warning is logged.
+
+        Parameters
+        ----------
+        strengths : np.ndarray
+            Requested strength ``k_i`` of each magnet of the series, in declaration order.
+
+        Returns
+        -------
+        float
+            Hardware value of the power supply.
+
+        Raises
+        ------
+        PyAMLException
+            If the number of strengths does not match the number of magnets, or if the average strength is not
+            monotonic in the hardware value.
+        """
+        strengths = np.asarray(strengths, dtype=float)
+        _check_len(strengths, "strengths", self.__nbMagnets)
+        current = self.compute_hardware_from_mean_strength(float(np.mean(strengths)))
+        gaps = self.compute_strengths([current]) - strengths
+        if np.any(np.abs(gaps) > _SPREAD_RTOL * np.maximum(np.abs(strengths), 1.0)):
+            worst = int(np.argmax(np.abs(gaps)))
+            logger.warning(
+                f"Inconsistent strengths requested for the series on {self._powerconverter}: the hardware value "
+                f"{current} misses the requested strengths by up to {gaps[worst]:.3g} (magnet {worst})"
+            )
+        return current
 
     def shares_power_supply(self) -> bool:
         """Return True, all the magnets of the series share one power supply."""
