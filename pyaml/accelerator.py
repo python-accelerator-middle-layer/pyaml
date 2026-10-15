@@ -6,7 +6,7 @@ import warnings
 
 from .arrays.array import ArrayConfig
 from .common.element import Element, __pyaml_repr__
-from .common.exception import PyAMLConfigException
+from .common.exception import PyAMLConfigException, PyAMLException
 from .common.holders.element_holder import ElementHolder
 from .configuration import ConfigurationManager, UnsupportedConfigurationRootError
 from .configuration.factory import Factory
@@ -73,6 +73,8 @@ class Accelerator(DynamicValidation):
         Set the number of bucket.
     add_device(config, ignore_external=False)
         Dynamically add a device to this accelerator.
+    add(element)
+        Bind and register an element or tool in every mode.
     post_init()
         Method triggered after all initialisations are done
     get_description()
@@ -208,6 +210,7 @@ class Accelerator(DynamicValidation):
             Energy value to set in eV
         """
         self._set_properties("_set_energy", E)
+        self._energy = E
 
     def set_mcf(self, alphac: float):
         """
@@ -219,6 +222,7 @@ class Accelerator(DynamicValidation):
             Moment compaction factor
         """
         self._set_properties("_set_mcf", alphac)
+        self._alphac = alphac
 
     def set_harmonic_number(self, h: int):
         """
@@ -230,6 +234,78 @@ class Accelerator(DynamicValidation):
             Number of bucket
         """
         self._set_properties("_set_harmonic", h)
+        self._harmonic_number = h
+
+    def add(self, element: Element) -> None:
+        """
+        Bind and register an element or tool in every mode.
+
+        Use the same backend binding as configured devices, including any
+        backend-specific mode restrictions. Newly registered instances receive
+        the current accelerator properties and run their post-initialization
+        hooks. Existing elements are not reinitialized.
+
+        Parameters
+        ----------
+        element : Element
+            Element to add, including tuning and measurement tools, magnets,
+            BPMs, RF plants, and diagnostics.
+
+        Raises
+        ------
+        TypeError
+            If the supplied object is not an Element.
+        PyAMLException
+            If the element's name is already registered in any mode, or
+            backend binding fails.
+
+        Notes
+        -----
+        Binding normally creates a separate attached instance in each mode,
+        leaving the supplied element reusable. Access these instances through
+        their mode's holders or by name, for example ``sr.design["ALTUNE"]``.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            tune = Tune(
+                "ALTUNE",
+                quad_array_name="QCORR",
+                response_matrix="respmat.json",
+                betatron_tune_name="BETATRON_TUNE2",
+            )
+            sr.add(tune)
+            print(sr.design.tool.get("ALTUNE").tune_monitor)
+            print(sr.live.tool.get("ALTUNE").tune_monitor)
+        """
+        if not isinstance(element, Element):
+            raise TypeError(f"Accelerator.add() expects an Element, got {type(element).__name__}")
+
+        holders = (*self._simulators.values(), *self._controls.values())
+        for holder in holders:
+            if element.name in holder._ALL:
+                raise PyAMLException(f"Duplicate element {element.name} in mode {holder.name()}")
+
+        added: list[Element] = []
+        for holder in holders:
+            existing_names = set(holder._ALL)
+            holder.fill_device([element])
+            added.extend(instance for name, instance in holder._ALL.items() if name not in existing_names)
+
+        for instance in added:
+            if self._energy is not None:
+                instance.set_energy(self._energy)
+            if self._alphac is not None:
+                instance.set_mcf(self._alphac)
+            if self._harmonic_number is not None:
+                instance.set_harmonic(self._harmonic_number)
+        for instance in added:
+            instance.post_init()
+
+        if self._devices is None:
+            self._devices = []
+        self._devices.append(element)
 
     def add_device(self, config: dict, ignore_external=False):
         """
@@ -250,14 +326,7 @@ class Accelerator(DynamicValidation):
                 "Invalid device type, Element or sub classes of Element expected " + f"but got {dev.__class__.__name__}"
             )
 
-        self._devices.append(dev)
-        if self._controls is not None:
-            for c in self._controls:
-                c.fill_device([dev])
-
-        if self._simulators is not None:
-            for s in self._simulators:
-                s.fill_device([dev])
+        self.add(dev)
 
     def post_init(self):
         """
