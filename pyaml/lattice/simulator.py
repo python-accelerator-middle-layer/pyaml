@@ -271,12 +271,12 @@ class Simulator(ElementHolder, DynamicValidation):
         strengths = []
         for index, magnet in enumerate(magnets.get_magnets()):
             current = (
-                RWHardwareScalar(self.get_at_elems(magnet), magnets.polynom, magnets.model.get_sub_model(index))
+                RWHardwareScalar(self.get_at_elems(magnet), magnets.polynoms[index], magnets.model.get_sub_model(index))
                 if magnets.model.has_hardware()
                 else None
             )
             strength = (
-                RWStrengthScalar(self.get_at_elems(magnet), magnets.polynom, magnets.model.get_sub_model(index))
+                RWStrengthScalar(self.get_at_elems(magnet), magnets.polynoms[index], magnets.model.get_sub_model(index))
                 if magnets.model.has_physics()
                 else None
             )
