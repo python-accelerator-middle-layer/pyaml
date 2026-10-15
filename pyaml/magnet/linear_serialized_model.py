@@ -4,6 +4,8 @@ Linear conversion model for serialized magnets.
 This model applies linear calibration to a configurable sequence of serialized magnet elements and hardware channels.
 """
 
+import logging
+
 import numpy as np
 
 from ..common.element import __pyaml_repr__
@@ -16,6 +18,11 @@ from .model import MagnetModel
 
 # Define the main class name for this module
 PYAMLCLASS = "LinearSerializedMagnetModel"
+
+logger = logging.getLogger(__name__)
+
+# Relative spread above which the currents requested by members of a series are considered inconsistent
+_SPREAD_RTOL = 1e-6
 
 
 def _get_length(elem) -> int:
@@ -132,6 +139,11 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
     hardware values. Conversely, a hardware current is mapped back to a
     strength value for each sub-model.
 
+    The serialized magnets have a single degree of freedom, the power-supply
+    current ``I``. Magnet ``i`` has the strength ``k_i = f_i(I)``, where ``f_i``
+    is its sub-model. The family strength is the average strength
+    ``sum(f_i(I)) / N``.
+
     Parameters
     ----------
     curves : Curve or list[Curve]
@@ -162,6 +174,14 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         Convert magnet strengths to hardware values.
     compute_strengths(currents)
         Convert hardware values to magnet strengths.
+    compute_hardware_values_partial(current_hardware, strengths_by_index)
+        Convert the strengths of some magnets of the series to the shared hardware value.
+    compute_mean_strength(current)
+        Return the average strength of the series for a hardware value.
+    compute_hardware_from_mean_strength(strength)
+        Return the hardware value giving an average strength of the series.
+    shares_power_supply()
+        Return True, all the magnets of the series share one power supply.
     get_strength_units()
         Return the units of magnet strengths.
     get_hardware_units()
@@ -312,7 +332,7 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         Returns
         -------
         np.array
-            Hardware value obtained from the submodels.
+            Hardware value obtained from the submodels: the mean of the hardware values implied by each strength.
         """
         currents = [model.compute_hardware_values([s])[0] for s, model in zip(strengths, self.__sub_models, strict=True)]
         return np.array([np.mean(currents)])
@@ -333,6 +353,92 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         """
         current = currents[0]
         return np.array([model.compute_strengths([current])[0] for model in self.__sub_models])
+
+    def compute_hardware_values_partial(
+        self, current_hardware: np.ndarray | None, strengths_by_index: dict[int, float]
+    ) -> np.ndarray:
+        """
+        Convert the strengths of some magnets of the series to the shared hardware value.
+
+        Each requested strength implies a hardware value through its own submodel. The power supply gets the mean of
+        the hardware values implied by the requested magnets only: the magnets that are not requested do not take part.
+        A warning is logged when the requested strengths are not consistent with a single hardware value.
+
+        Parameters
+        ----------
+        current_hardware : np.array | None
+            Current hardware value of the series. Not used: the requested strengths define the hardware value.
+        strengths_by_index : dict[int, float]
+            Requested strengths, indexed by the position of the magnet in the series.
+
+        Returns
+        -------
+        np.array
+            Hardware value of the power supply.
+        """
+        currents = np.array(
+            [self.__sub_models[idx].compute_hardware_values([strength])[0] for idx, strength in strengths_by_index.items()]
+        )
+        current = np.mean(currents)
+        if np.ptp(currents) > _SPREAD_RTOL * max(abs(current), 1.0):
+            logger.warning(
+                f"Inconsistent strengths requested for magnets {list(strengths_by_index.keys())} of a series on "
+                f"{self._powerconverter}: implied hardware values {currents}, the mean {current} is applied"
+            )
+        return np.array([current])
+
+    def compute_mean_strength(self, current: float) -> float:
+        """
+        Return the average strength of the series for a hardware value.
+
+        Parameters
+        ----------
+        current : float
+            Hardware value shared by the serialized magnets.
+
+        Returns
+        -------
+        float
+            Average strength ``sum(f_i(I)) / N``.
+        """
+        return float(np.mean(self.compute_strengths([current])))
+
+    def compute_hardware_from_mean_strength(self, strength: float) -> float:
+        """
+        Return the hardware value giving an average strength of the series.
+
+        The submodels are piecewise linear in the hardware value, so the average strength is piecewise linear on the
+        union of the curve breakpoints and is inverted exactly by interpolation.
+
+        Parameters
+        ----------
+        strength : float
+            Requested average strength of the series.
+
+        Returns
+        -------
+        float
+            Hardware value ``I`` such that ``sum(f_i(I)) / N == strength``.
+
+        Raises
+        ------
+        PyAMLException
+            If the average strength is not monotonic in the hardware value.
+        """
+        currents = np.unique(np.concatenate([curve.get_curve()[:, 0] for curve in self.__curves]))
+        strengths = np.array([self.compute_mean_strength(current) for current in currents])
+        steps = np.diff(strengths)
+        if np.all(steps <= 0):
+            currents, strengths = currents[::-1], strengths[::-1]
+        elif not np.all(steps >= 0):
+            raise PyAMLException(
+                f"Average strength of the series on {self._powerconverter} is not monotonic, it cannot be inverted"
+            )
+        return float(np.interp(strength, strengths, currents))
+
+    def shares_power_supply(self) -> bool:
+        """Return True, all the magnets of the series share one power supply."""
+        return True
 
     def get_strength_units(self) -> list[str]:
         """Return the units of magnet strengths."""

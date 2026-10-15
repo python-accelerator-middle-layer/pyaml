@@ -431,7 +431,7 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
             Hardware devices associated with the magnet model.
         """
         # Magnets of a serialized group share the serialized model (one power supply for N strengths):
-        # the power-supply current is computed by the model from the N strengths (mean of the implied currents).
+        # the power-supply current is computed by the model from the strengths of the magnets present in the array.
         is_indexed = isinstance(magnet.strength, (abstract.RWMapper, RWSerializedStrengthScalar))
         strengthIndex = magnet.strength.index() if is_indexed else 0
         if magnet.model not in self.__models:
@@ -458,10 +458,10 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         hardwareIndex = 0
         for modelIndex, model in enumerate(self.__models):
             nbDev = len(model.get_device_names())
-            mStrengths = model.compute_strengths(allHardwareValues[hardwareIndex : hardwareIndex + nbDev])
-            for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
-                mStrengths[strengthIdx] = value[valueIdx]
-            newHardwareValues[hardwareIndex : hardwareIndex + nbDev] = model.compute_hardware_values(mStrengths)
+            requested = {strengthIdx: value[valueIdx] for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]}
+            newHardwareValues[hardwareIndex : hardwareIndex + nbDev] = model.compute_hardware_values_partial(
+                allHardwareValues[hardwareIndex : hardwareIndex + nbDev], requested
+            )
             hardwareIndex += nbDev
         dev_range = self._devs.get_range()
         if not check_range(newHardwareValues, dev_range):
