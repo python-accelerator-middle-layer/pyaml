@@ -432,7 +432,7 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         """
         # Magnets of a serialized group share the serialized model (one power supply for N strengths):
         # the power-supply current is computed by the model from the strengths of the magnets present in the array,
-        # the others keeping their current strength.
+        # the others following the resulting current.
         is_indexed = isinstance(magnet.strength, (abstract.RWMapper, RWSerializedStrengthScalar))
         strengthIndex = magnet.strength.index() if is_indexed else 0
         if magnet.model not in self.__models:
