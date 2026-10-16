@@ -317,3 +317,51 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
 
         orm_data = OrbitResponseMatrixData(**orm_data_model)
         return orm_data
+
+    def _get_submatrix(self, obs_plane: str, var_plane: str) -> list[list[float]]:
+        """
+        Extract a sub-block of the orbit response matrix based on planes.
+
+        Parameters
+        ----------
+        obs_plane : str
+            Observable plane ("H" or "V").
+        var_plane : str
+            Variable plane ("H" or "V").
+
+        Returns
+        -------
+        list[list[float]]
+            The requested submatrix, or empty list if no measurement.
+        """
+        data = self.latest_measurement
+        if not data or "matrix" not in data:
+            return []
+
+        matrix = data["matrix"]
+        obs_planes = data.get("observable_planes", [])
+        var_planes = data.get("variable_planes", [])
+
+        obs_indices = [i for i, p in enumerate(obs_planes) if p == obs_plane]
+        var_indices = [j for j, p in enumerate(var_planes) if p == var_plane]
+
+        if not obs_indices or not var_indices:
+            return []
+
+        return [[matrix[i][j] for j in var_indices] for i in obs_indices]
+
+    def get_h2h_matrix(self) -> list[list[float]]:
+        """Return the horizontal-to-horizontal block of the ORM."""
+        return self._get_submatrix("H", "H")
+
+    def get_v2v_matrix(self) -> list[list[float]]:
+        """Return the vertical-to-vertical block of the ORM."""
+        return self._get_submatrix("V", "V")
+
+    def get_h2v_matrix(self) -> list[list[float]]:
+        """Return the horizontal-to-vertical block of the ORM."""
+        return self._get_submatrix("H", "V")
+
+    def get_v2h_matrix(self) -> list[list[float]]:
+        """Return the vertical-to-horizontal block of the ORM."""
+        return self._get_submatrix("V", "H")
