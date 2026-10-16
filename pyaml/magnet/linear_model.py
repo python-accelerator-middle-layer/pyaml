@@ -66,6 +66,20 @@ class LinearMagnetModel(MagnetModel, DynamicValidation):
     If a curve is provided, the model interpolates between strength and current
     values using the curve and its inverse. If no curve is provided, the model
     uses a simple linear relation with the stored scaling factor and offset.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        type: pyaml.magnet.linear_model
+        unit: 1/m
+        hardware_unit: A
+        calibration_factor: 1.0
+        calibration_offset: 0.0
+        curve:
+          type: pyaml.magnet.csvcurve
+          file: path/to/excitation_curve.csv
+        powerconverter: DEVICE/POWER_CONVERTER_CURRENT
     """
 
     def __init__(

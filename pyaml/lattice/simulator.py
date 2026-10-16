@@ -10,7 +10,8 @@ from typing import TYPE_CHECKING
 
 import at
 
-from ..bpm.bpm import BPM
+from pyaml.diagnostics.bpm import BPM
+
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element, __pyaml_repr__
 from ..common.exception import PyAMLException
@@ -47,6 +48,7 @@ from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
 from ..validation import DynamicValidation, register_schema
 from .lattice_elements_linker import LatticeElementsLinker
+from .twiss_in import TwissIn
 
 if TYPE_CHECKING:
     from ..configuration.unbound_element import UnboundElement
@@ -78,6 +80,8 @@ class Simulator(ElementHolder, DynamicValidation):
     mat_key : str, optional
         Variable name of the lattice when loading a MATLAB ``.mat``
         lattice file.
+    twiss_in : TwissIn, optional
+        Describe input beam parameters of a tranfer line, when not specified the lattice is considered as a ring
     linker : LatticeElementsLinker, optional
         Custom linker used to associate PyAML elements with PyAT
         lattice elements. If omitted, elements are matched by name.
@@ -122,6 +126,7 @@ class Simulator(ElementHolder, DynamicValidation):
         name: str,
         lattice: str,
         mat_key: str | None = None,
+        twiss_in: TwissIn | None = None,
         linker: LatticeElementsLinker | None = None,
         description: str | None = None,
     ):
@@ -134,6 +139,11 @@ class Simulator(ElementHolder, DynamicValidation):
         self._lattice = lattice
         self._mat_key = mat_key
         self.description = description
+        self.twiss_in = twiss_in
+        if twiss_in is None:
+            self._at_twiss_in = None
+        else:
+            self._at_twiss_in = self.twiss_in._to_at()
 
         path: Path = ROOT.get() / self._lattice
 
@@ -225,9 +235,9 @@ class Simulator(ElementHolder, DynamicValidation):
         list[ScalarAggregator]
             Aggregators for combined, horizontal, and vertical BPM positions.
         """
-        agg = BPMScalarAggregator(self.get_lattice())
-        aggh = BPMHScalarAggregator(self.get_lattice())
-        aggv = BPMVScalarAggregator(self.get_lattice())
+        agg = BPMScalarAggregator(self.get_lattice(), self._at_twiss_in)
+        aggh = BPMHScalarAggregator(self.get_lattice(), self._at_twiss_in)
+        aggv = BPMVScalarAggregator(self.get_lattice(), self._at_twiss_in)
         for b in bpms:
             e = self.get_at_elems(b)[0]
             agg.add_elem(e)
@@ -291,7 +301,11 @@ class Simulator(ElementHolder, DynamicValidation):
         if len(bpm_elt.Offset) != 2:
             raise PyAMLException(f"BPM {bpm.get_name()} offset must be a 2-element array.")
         update_bpm_transform_matrix(bpm_elt)
-        self.bpm.add(bpm.attach(self, RBpmArray(bpm_elt, self.ring), RWBpmOffsetArray(bpm_elt), RWBpmTiltScalar(bpm_elt)))
+        self.diagnostic.bpm.add(
+            bpm.attach(
+                self, RBpmArray(bpm_elt, self.ring, self._at_twiss_in), RWBpmOffsetArray(bpm_elt), RWBpmTiltScalar(bpm_elt)
+            )
+        )
 
     def _fill_rf_plant(self, rf_plant: RFPlant) -> None:
         if rf_plant.transmitters:
@@ -387,6 +401,12 @@ class Simulator(ElementHolder, DynamicValidation):
         """
         Resolve a PyAML element to matching PyAT lattice elements.
 
+        The ``lattice_names`` selector of the element is honoured with or without a
+        linker. With a linker, the names of the selector are resolved through
+        ``linker.get_identifier_for_name`` (e.g. the configured attribute for
+        ``pyaml.lattice.attribute_linker``) instead of ``FamName``; without a
+        selector the linker uses the element name.
+
         Parameters
         ----------
         element : Element
@@ -398,11 +418,28 @@ class Simulator(ElementHolder, DynamicValidation):
             Matching Accelerator Toolbox lattice elements.
         """
         if self._linker:
-            identifier = self._linker.get_element_identifier(element)
-            element_list = self._linker.get_at_elements(identifier)
-            if not element_list:
-                raise PyAMLException(f"{identifier} not found in lattice:{self._lattice}")
-            return element_list
+            if element.get_lattice_names() is None:
+                # By name
+                return self._linker.get_at_elements(self._linker.get_element_identifier(element))
+            # By list
+            nameList = self.get_names(element)
+            if nameList is not None:
+                identifiers = [self._linker.get_identifier_for_name(name) for name in nameList]
+                return self._linker.get_at_elements(identifiers)
+            # By name or indices
+            name, indices = self.get_indices(element)
+            if name is None:
+                # Direct indexing in the ring
+                return [self.ring[idx] for idx in indices]
+            elts = self._linker.get_at_elements(self._linker.get_identifier_for_name(name))
+            if indices is None:
+                return elts
+            try:
+                return [elts[idx] for idx in indices]
+            except IndexError as err:
+                strErr = f"{element.get_name()}: Invalid lattice_names index "
+                strErr += f"for {element.get_lattice_names()}, {len(elts)} element(s) found for {name}"
+                raise PyAMLException(strErr) from err
         else:
             # By list
             nameList = self.get_names(element)

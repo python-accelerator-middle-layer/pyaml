@@ -232,7 +232,9 @@ class ElementConfigModel(BaseModel):
         - [name]@idx[,idx] : Element indices in the subset formed by name.
         - [name]#start_idx..end_idx : Element range in the subset formed by name.
         In the above syntax, if the name is not specficied, the whole set
-        of lattice element is used for indexing.
+        of lattice element is used for indexing. ``name`` refers to the
+        ``FamName`` of the lattice elements, or to the attribute configured
+        in the simulator linker when one is used.
     """
 
     model_config = ConfigDict(arbitrary_types_allowed=True, extra="forbid")
@@ -260,7 +262,9 @@ class Element:
         | ``[name]#start_idx..end_idx`` : Lattice element range in the subset formed by name.
 
         In the above syntax, if the name is not specficied, the whole set
-        of lattice element is used for indexing.
+        of lattice element is used for indexing. ``name`` refers to the
+        ``FamName`` of the lattice elements, or to the attribute configured
+        in the simulator linker when one is used.
 
     description : str or None, optional
         Human-readable element description.

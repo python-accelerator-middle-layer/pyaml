@@ -94,6 +94,19 @@ class Orbit(TuningTool, DynamicValidation):
         Return the configured RF-frequency correction weight.
     post_init()
         Bind orbit corrector and RF handles after attachment.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.tuning_tools.orbit
+          name: ORBIT_CORRECTION
+          bpm_array_name: BPM
+          hcorr_array_name: HORIZONTAL_CORRECTORS
+          vcorr_array_name: VERTICAL_CORRECTORS
+          rf_plant_name: RF
+          singular_values: 16
+          response_matrix: path/to/orbit_response.json
     """
 
     def __init__(
@@ -199,7 +212,7 @@ class Orbit(TuningTool, DynamicValidation):
     def bpms(self) -> BPMArray:
         """Return the BPM array used for orbit readback."""
         self.check_peer()
-        return self.peer.bpms.get(self.bpm_array_name)
+        return self.peer.diagnostic.bpms.get(self.bpm_array_name)
 
     @property
     def hcorrectors(self) -> MagnetArray:

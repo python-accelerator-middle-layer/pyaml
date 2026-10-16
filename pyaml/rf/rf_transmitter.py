@@ -55,6 +55,21 @@ class RFTransmitter(Element, DynamicValidation):
     -------
     attach(peer, voltage, phase)
         Return a copy with voltage and phase handles attached.
+
+    Configuration
+    -------------
+    RF transmitters are normally nested under an
+    :class:`~pyaml.rf.rf_plant.RFPlant`.
+
+    .. code-block:: yaml
+
+        - type: pyaml.rf.rf_transmitter
+          name: RF_TRANSMITTER
+          cavities: [CAVITY_1, CAVITY_2]
+          voltage: DEVICE/RF_VOLTAGE
+          phase: DEVICE/RF_PHASE
+          harmonic: 1
+          distribution: 1
     """
 
     def __init__(

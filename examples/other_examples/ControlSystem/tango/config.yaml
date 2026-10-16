@@ -8,7 +8,7 @@ controls:
     name: live
 data_folder: /data/store
 devices:
-- type: pyaml.bpm.bpm
+- type: pyaml.diagnostics.bpm.bpm
   name: BPM_C01-01
   x_pos: srdiag/bpm/c01-01/SA_HPosition
   y_pos: srdiag/bpm/c01-01/SA_VPosition

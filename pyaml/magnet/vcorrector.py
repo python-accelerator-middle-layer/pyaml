@@ -43,6 +43,18 @@ class VCorrector(Magnet, DynamicValidation):
     -------
     attach(peer, strength, hardware)
         Return an attached copy with a bound vertical-angle handle.
+
+    Configuration
+    -------------
+    The model can be defined inline or in a separate file. See
+    :mod:`pyaml.magnet.model` and its subclasses for model configuration.
+
+    .. code-block:: yaml
+
+        - type: pyaml.magnet.vcorrector
+          name: VERTICAL_CORRECTOR_NAME
+          lattice_names: LATTICE_CORRECTOR_NAME
+          model: path/to/magnet_model.yaml
     """
 
     polynom = PolynomInfo("PolynomA", 0)

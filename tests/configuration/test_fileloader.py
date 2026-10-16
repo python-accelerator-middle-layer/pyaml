@@ -9,7 +9,6 @@ from pyaml.configuration.fileloader import (
     ROOT,
     LoadContext,
     RootFolder,
-    _is_supported_file,
     load,
 )
 
@@ -52,16 +51,6 @@ def test_rootfolder_set_updates_root(tmp_path):
     assert root.get() == new_root.resolve()
     assert before == (tmp_path / "config.yaml").resolve()
     assert after == (new_root / "config.yaml").resolve()
-
-
-def test_is_supported_file():
-    assert _is_supported_file("config.yaml")
-    assert _is_supported_file("config.yml")
-    assert _is_supported_file("config.json")
-
-    assert not _is_supported_file("config.txt")
-    assert not _is_supported_file(1)
-    assert not _is_supported_file(None)
 
 
 def test_load_context_adds_and_removes_paths(tmp_path):
@@ -113,7 +102,7 @@ def test_load_nested_yaml(tmp_path):
 
     (tmp_path / "child.yaml").write_text("answer: 42\n")
 
-    (tmp_path / "parent.yaml").write_text("child: child.yaml\n")
+    (tmp_path / "parent.yaml").write_text("child: ${include:child.yaml}\n")
 
     result = load("parent.yaml")
 
@@ -125,19 +114,19 @@ def test_load_nested_json(tmp_path):
 
     (tmp_path / "child.json").write_text(json.dumps({"answer": 42}))
 
-    (tmp_path / "parent.json").write_text(json.dumps({"child": "child.json"}))
+    (tmp_path / "parent.json").write_text(json.dumps({"child": "${include:child.json}"}))
 
     result = load("parent.json")
 
     assert result["child"]["answer"] == 42
 
 
-def test_load_file_resolver_loads_nested_file(tmp_path):
+def test_load_include_resolver_loads_nested_file(tmp_path):
     ROOT.set(tmp_path)
 
     (tmp_path / "subdir").mkdir()
     (tmp_path / "subdir" / "child.yaml").write_text("answer: 42\n")
-    (tmp_path / "parent.yaml").write_text('target: "${file:subdir/child.yaml}"\n')
+    (tmp_path / "parent.yaml").write_text('target: "${include:subdir/child.yaml}"\n')
 
     result = load("parent.yaml")
 
@@ -199,11 +188,11 @@ def test_load_path_resolver_resolves_without_loading_file(tmp_path):
     assert result["target"] == str((tmp_path / "subdir" / "missing.json").resolve())
 
 
-def test_load_interpolated_file_resolver_inside_string_raises(tmp_path):
+def test_load_interpolated_include_resolver_inside_string_raises(tmp_path):
     ROOT.set(tmp_path)
 
     (tmp_path / "child.yaml").write_text("answer: 42\n")
-    (tmp_path / "config.yaml").write_text('value: "prefix-${file:child.yaml}-suffix"\n')
+    (tmp_path / "config.yaml").write_text('value: "prefix-${include:child.yaml}-suffix"\n')
 
     with pytest.raises(PyAMLException, match="cannot be interpolated into a string"):
         load("config.yaml")
@@ -227,7 +216,7 @@ def test_load_list_include_extends_list(tmp_path):
         """
     values:
     - start
-    - items.yaml
+    - ${include:items.yaml}
     - end
     """.strip()
     )
@@ -285,8 +274,8 @@ def test_load_invalid_json_raises_pyaml_exception(tmp_path):
 def test_load_circular_include_raises_pyaml_exception(tmp_path):
     ROOT.set(tmp_path)
 
-    (tmp_path / "a.yaml").write_text("b: b.yaml\n")
-    (tmp_path / "b.yaml").write_text("a: a.yaml\n")
+    (tmp_path / "a.yaml").write_text("b: ${include:b.yaml}\n")
+    (tmp_path / "b.yaml").write_text("a: ${include:a.yaml}\n")
 
     with pytest.raises(PyAMLException, match="Circular file inclusion"):
         load("a.yaml")

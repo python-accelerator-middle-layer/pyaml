@@ -23,8 +23,9 @@ from ..validation import DynamicValidation, register_schema
 from .measurement_tool import MeasurementTool
 
 if TYPE_CHECKING:
+    from pyaml.diagnostics.bpm import BPM
+
     from ..arrays.bpm_array import BPMArray
-    from ..bpm.bpm import BPM
     from ..magnet.magnet import Magnet
 
 logger = logging.getLogger(__name__)
@@ -106,6 +107,22 @@ class BBA(MeasurementTool, DynamicValidation):
         Vertical corrector used for the alignment.
     quadrupole : Magnet
         Quadrupole being aligned.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.tuning_tools.bba
+          name: BBA
+          bpm_array_name: BPM
+          bpm_name: BPM_NAME
+          hcorr_name: HORIZONTAL_CORRECTOR_NAME
+          vcorr_name: VERTICAL_CORRECTOR_NAME
+          quad_name: QUADRUPOLE_NAME
+          hcorr_delta: 1e-5
+          vcorr_delta: 1e-5
+          hquad_delta: 5e-3
+          vquad_delta: 5e-3
     """
 
     def __init__(
@@ -147,13 +164,13 @@ class BBA(MeasurementTool, DynamicValidation):
     def bpms(self) -> "BPMArray":
         """Return the BPM array used for the measurement."""
         self.check_peer()
-        return self.peer.bpms.get(self.bpm_array_name)
+        return self.peer.diagnostic.bpms.get(self.bpm_array_name)
 
     @property
     def bpm(self) -> "BPM":
         """Return the reference BPM used for the alignment."""
         self.check_peer()
-        return self.peer.bpm.get(self.bpm_name)
+        return self.peer.diagnostic.bpm.get(self.bpm_name)
 
     @property
     def hcorrector(self) -> "Magnet":
@@ -190,7 +207,7 @@ class BBA(MeasurementTool, DynamicValidation):
 
             sr = Accelerator.load("tests/config/EBSOrbit.yaml")
             SR = sr.design
-            bba = SR.get_bba("BBA-BPM_C04-04")
+            bba = SR.tool.get("BBA-BPM_C04-04")
 
             # Add a misalignement
             SR.get_bpm("BPM_C04-04").offset.set([20e-6,-15e-6])

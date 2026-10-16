@@ -86,6 +86,16 @@ class Tune(TuningTool, DynamicValidation):
         Calculate quadrupole-strength changes for a tune change.
     add(dtune, wait_time=0.0)
         Apply a tune correction relative to the current setpoint.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.tuning_tools.tune
+          name: TUNE_CORRECTION
+          quad_array_name: QUADRUPOLES
+          betatron_tune_name: BETATRON_TUNE
+          response_matrix: path/to/tune_response.json
     """
 
     def __init__(
@@ -143,7 +153,7 @@ class Tune(TuningTool, DynamicValidation):
     def tune_monitor(self) -> "BetatronTuneMonitor":
         """Return the betatron tune monitor used by the correction."""
         self.check_peer()
-        return self.peer.get_betatron_tune_monitor(self.betatron_tune_name)
+        return self.peer.diagnostic.get(self.betatron_tune_name)
 
     @property
     def quadrupoles(self) -> "MagnetArray":

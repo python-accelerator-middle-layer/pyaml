@@ -140,6 +140,18 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
     fit(deltas, Q, order, orbit=None, fit_disp_order=None, do_plot=False)
         Compute chromaticity (and dispersion) from input data and update
         :py:attr:`~pyaml.tuning_tools.measurement_tool.MeasurementTool.latest_measurement`.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.tuning_tools.chromaticity_monitor
+          name: CHROMATICITY_MONITOR
+          betatron_tune_name: BETATRON_TUNE
+          rf_plant_name: RF
+          bpm_array_name: BPM
+          fit_dispersion: true
+          n_step: 5
     """
 
     def __init__(
@@ -189,7 +201,7 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
     def tune_monitor(self) -> "BetatronTuneMonitor":
         """Return the betatron tune monitor used for measurements."""
         self.check_peer()
-        return self.peer.get_betatron_tune_monitor(self.betatron_tune_name)
+        return self.peer.diagnostic.get(self.betatron_tune_name)
 
     @property
     def rf_plant(self) -> "RFPlant":
@@ -203,7 +215,7 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
         self.check_peer()
         if self.bpm_array_name is None:
             return None
-        return self.peer.bpms.get(self.bpm_array_name)
+        return self.peer.diagnostic.bpms.get(self.bpm_array_name)
 
     @property
     def chromaticity(self) -> ReadFloatArray:

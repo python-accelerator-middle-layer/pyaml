@@ -1356,495 +1356,495 @@ devices:
     unit: 1/m
     powerconverter: (VS3P1D1R:rdbk, VS3P1D1R:set)[A]
     hardware_unit: A
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ5D1R
   x_pos: ORBITCC:rdPos@0
   y_pos: ORBITCC:rdPos@1
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6D1R
   x_pos: ORBITCC:rdPos@2
   y_pos: ORBITCC:rdPos@3
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7D1R
   x_pos: ORBITCC:rdPos@4
   y_pos: ORBITCC:rdPos@5
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1T1R
   x_pos: ORBITCC:rdPos@6
   y_pos: ORBITCC:rdPos@7
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2T1R
   x_pos: ORBITCC:rdPos@8
   y_pos: ORBITCC:rdPos@9
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3T1R
   x_pos: ORBITCC:rdPos@10
   y_pos: ORBITCC:rdPos@11
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4T1R
   x_pos: ORBITCC:rdPos@12
   y_pos: ORBITCC:rdPos@13
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ41T1R
   x_pos: ORBITCC:rdPos@14
   y_pos: ORBITCC:rdPos@15
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ5T1R
   x_pos: ORBITCC:rdPos@16
   y_pos: ORBITCC:rdPos@17
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6T1R
   x_pos: ORBITCC:rdPos@18
   y_pos: ORBITCC:rdPos@19
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7T1R
   x_pos: ORBITCC:rdPos@20
   y_pos: ORBITCC:rdPos@21
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1D2R
   x_pos: ORBITCC:rdPos@22
   y_pos: ORBITCC:rdPos@23
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2D2R
   x_pos: ORBITCC:rdPos@24
   y_pos: ORBITCC:rdPos@25
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3D2R
   x_pos: ORBITCC:rdPos@26
   y_pos: ORBITCC:rdPos@27
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4D2R
   x_pos: ORBITCC:rdPos@28
   y_pos: ORBITCC:rdPos@29
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ5D2R
   x_pos: ORBITCC:rdPos@30
   y_pos: ORBITCC:rdPos@31
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6D2R
   x_pos: ORBITCC:rdPos@32
   y_pos: ORBITCC:rdPos@33
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7D2R
   x_pos: ORBITCC:rdPos@34
   y_pos: ORBITCC:rdPos@35
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1T2R
   x_pos: ORBITCC:rdPos@36
   y_pos: ORBITCC:rdPos@37
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2T2R
   x_pos: ORBITCC:rdPos@38
   y_pos: ORBITCC:rdPos@39
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3T2R
   x_pos: ORBITCC:rdPos@40
   y_pos: ORBITCC:rdPos@41
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4T2R
   x_pos: ORBITCC:rdPos@42
   y_pos: ORBITCC:rdPos@43
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ41T2R
   x_pos: ORBITCC:rdPos@44
   y_pos: ORBITCC:rdPos@45
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ42T2R
   x_pos: ORBITCC:rdPos@46
   y_pos: ORBITCC:rdPos@47
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ43T2R
   x_pos: ORBITCC:rdPos@48
   y_pos: ORBITCC:rdPos@49
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ5T2R
   x_pos: ORBITCC:rdPos@50
   y_pos: ORBITCC:rdPos@51
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6T2R
   x_pos: ORBITCC:rdPos@52
   y_pos: ORBITCC:rdPos@53
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7T2R
   x_pos: ORBITCC:rdPos@54
   y_pos: ORBITCC:rdPos@55
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1D3R
   x_pos: ORBITCC:rdPos@56
   y_pos: ORBITCC:rdPos@57
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2D3R
   x_pos: ORBITCC:rdPos@58
   y_pos: ORBITCC:rdPos@59
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3D3R
   x_pos: ORBITCC:rdPos@60
   y_pos: ORBITCC:rdPos@61
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4D3R
   x_pos: ORBITCC:rdPos@62
   y_pos: ORBITCC:rdPos@63
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ5D3R
   x_pos: ORBITCC:rdPos@64
   y_pos: ORBITCC:rdPos@65
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6D3R
   x_pos: ORBITCC:rdPos@66
   y_pos: ORBITCC:rdPos@67
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7D3R
   x_pos: ORBITCC:rdPos@68
   y_pos: ORBITCC:rdPos@69
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1T3R
   x_pos: ORBITCC:rdPos@70
   y_pos: ORBITCC:rdPos@71
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2T3R
   x_pos: ORBITCC:rdPos@72
   y_pos: ORBITCC:rdPos@73
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3T3R
   x_pos: ORBITCC:rdPos@74
   y_pos: ORBITCC:rdPos@75
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4T3R
   x_pos: ORBITCC:rdPos@76
   y_pos: ORBITCC:rdPos@77
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ5T3R
   x_pos: ORBITCC:rdPos@78
   y_pos: ORBITCC:rdPos@79
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6T3R
   x_pos: ORBITCC:rdPos@80
   y_pos: ORBITCC:rdPos@81
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7T3R
   x_pos: ORBITCC:rdPos@82
   y_pos: ORBITCC:rdPos@83
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1D4R
   x_pos: ORBITCC:rdPos@84
   y_pos: ORBITCC:rdPos@85
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2D4R
   x_pos: ORBITCC:rdPos@86
   y_pos: ORBITCC:rdPos@87
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3D4R
   x_pos: ORBITCC:rdPos@88
   y_pos: ORBITCC:rdPos@89
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4D4R
   x_pos: ORBITCC:rdPos@90
   y_pos: ORBITCC:rdPos@91
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ5D4R
   x_pos: ORBITCC:rdPos@92
   y_pos: ORBITCC:rdPos@93
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6D4R
   x_pos: ORBITCC:rdPos@94
   y_pos: ORBITCC:rdPos@95
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7D4R
   x_pos: ORBITCC:rdPos@96
   y_pos: ORBITCC:rdPos@97
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1T4R
   x_pos: ORBITCC:rdPos@98
   y_pos: ORBITCC:rdPos@99
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2T4R
   x_pos: ORBITCC:rdPos@100
   y_pos: ORBITCC:rdPos@101
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3T4R
   x_pos: ORBITCC:rdPos@102
   y_pos: ORBITCC:rdPos@103
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4T4R
   x_pos: ORBITCC:rdPos@104
   y_pos: ORBITCC:rdPos@105
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ5T4R
   x_pos: ORBITCC:rdPos@106
   y_pos: ORBITCC:rdPos@107
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6T4R
   x_pos: ORBITCC:rdPos@108
   y_pos: ORBITCC:rdPos@109
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7T4R
   x_pos: ORBITCC:rdPos@110
   y_pos: ORBITCC:rdPos@111
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1D5R
   x_pos: ORBITCC:rdPos@112
   y_pos: ORBITCC:rdPos@113
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2D5R
   x_pos: ORBITCC:rdPos@114
   y_pos: ORBITCC:rdPos@115
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3D5R
   x_pos: ORBITCC:rdPos@116
   y_pos: ORBITCC:rdPos@117
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4D5R
   x_pos: ORBITCC:rdPos@118
   y_pos: ORBITCC:rdPos@119
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ5D5R
   x_pos: ORBITCC:rdPos@120
   y_pos: ORBITCC:rdPos@121
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6D5R
   x_pos: ORBITCC:rdPos@122
   y_pos: ORBITCC:rdPos@123
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7D5R
   x_pos: ORBITCC:rdPos@124
   y_pos: ORBITCC:rdPos@125
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1T5R
   x_pos: ORBITCC:rdPos@126
   y_pos: ORBITCC:rdPos@127
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2T5R
   x_pos: ORBITCC:rdPos@128
   y_pos: ORBITCC:rdPos@129
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3T5R
   x_pos: ORBITCC:rdPos@130
   y_pos: ORBITCC:rdPos@131
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4T5R
   x_pos: ORBITCC:rdPos@132
   y_pos: ORBITCC:rdPos@133
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ5T5R
   x_pos: ORBITCC:rdPos@134
   y_pos: ORBITCC:rdPos@135
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6T5R
   x_pos: ORBITCC:rdPos@136
   y_pos: ORBITCC:rdPos@137
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7T5R
   x_pos: ORBITCC:rdPos@138
   y_pos: ORBITCC:rdPos@139
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1D6R
   x_pos: ORBITCC:rdPos@140
   y_pos: ORBITCC:rdPos@141
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2D6R
   x_pos: ORBITCC:rdPos@142
   y_pos: ORBITCC:rdPos@143
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3D6R
   x_pos: ORBITCC:rdPos@144
   y_pos: ORBITCC:rdPos@145
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4D6R
   x_pos: ORBITCC:rdPos@146
   y_pos: ORBITCC:rdPos@147
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ41D6R
   x_pos: ORBITCC:rdPos@148
   y_pos: ORBITCC:rdPos@149
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ42D6R
   x_pos: ORBITCC:rdPos@150
   y_pos: ORBITCC:rdPos@151
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ43D6R
   x_pos: ORBITCC:rdPos@152
   y_pos: ORBITCC:rdPos@153
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ44D6R
   x_pos: ORBITCC:rdPos@154
   y_pos: ORBITCC:rdPos@155
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6D6R
   x_pos: ORBITCC:rdPos@156
   y_pos: ORBITCC:rdPos@157
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7D6R
   x_pos: ORBITCC:rdPos@158
   y_pos: ORBITCC:rdPos@159
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1T6R
   x_pos: ORBITCC:rdPos@160
   y_pos: ORBITCC:rdPos@161
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2T6R
   x_pos: ORBITCC:rdPos@162
   y_pos: ORBITCC:rdPos@163
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3T6R
   x_pos: ORBITCC:rdPos@164
   y_pos: ORBITCC:rdPos@165
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4T6R
   x_pos: ORBITCC:rdPos@166
   y_pos: ORBITCC:rdPos@167
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ41T6R
   x_pos: ORBITCC:rdPos@168
   y_pos: ORBITCC:rdPos@169
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ5T6R
   x_pos: ORBITCC:rdPos@170
   y_pos: ORBITCC:rdPos@171
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6T6R
   x_pos: ORBITCC:rdPos@172
   y_pos: ORBITCC:rdPos@173
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7T6R
   x_pos: ORBITCC:rdPos@174
   y_pos: ORBITCC:rdPos@175
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1D7R
   x_pos: ORBITCC:rdPos@176
   y_pos: ORBITCC:rdPos@177
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2D7R
   x_pos: ORBITCC:rdPos@178
   y_pos: ORBITCC:rdPos@179
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3D7R
   x_pos: ORBITCC:rdPos@180
   y_pos: ORBITCC:rdPos@181
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4D7R
   x_pos: ORBITCC:rdPos@182
   y_pos: ORBITCC:rdPos@183
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ5D7R
   x_pos: ORBITCC:rdPos@184
   y_pos: ORBITCC:rdPos@185
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6D7R
   x_pos: ORBITCC:rdPos@186
   y_pos: ORBITCC:rdPos@187
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7D7R
   x_pos: ORBITCC:rdPos@188
   y_pos: ORBITCC:rdPos@189
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1T7R
   x_pos: ORBITCC:rdPos@190
   y_pos: ORBITCC:rdPos@191
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2T7R
   x_pos: ORBITCC:rdPos@192
   y_pos: ORBITCC:rdPos@193
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3T7R
   x_pos: ORBITCC:rdPos@194
   y_pos: ORBITCC:rdPos@195
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4T7R
   x_pos: ORBITCC:rdPos@196
   y_pos: ORBITCC:rdPos@197
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ41T7R
   x_pos: ORBITCC:rdPos@198
   y_pos: ORBITCC:rdPos@199
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ5T7R
   x_pos: ORBITCC:rdPos@200
   y_pos: ORBITCC:rdPos@201
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6T7R
   x_pos: ORBITCC:rdPos@202
   y_pos: ORBITCC:rdPos@203
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7T7R
   x_pos: ORBITCC:rdPos@204
   y_pos: ORBITCC:rdPos@205
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1D8R
   x_pos: ORBITCC:rdPos@206
   y_pos: ORBITCC:rdPos@207
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2D8R
   x_pos: ORBITCC:rdPos@208
   y_pos: ORBITCC:rdPos@209
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3D8R
   x_pos: ORBITCC:rdPos@210
   y_pos: ORBITCC:rdPos@211
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4D8R
   x_pos: ORBITCC:rdPos@212
   y_pos: ORBITCC:rdPos@213
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ5D8R
   x_pos: ORBITCC:rdPos@214
   y_pos: ORBITCC:rdPos@215
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6D8R
   x_pos: ORBITCC:rdPos@216
   y_pos: ORBITCC:rdPos@217
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7D8R
   x_pos: ORBITCC:rdPos@218
   y_pos: ORBITCC:rdPos@219
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1T8R
   x_pos: ORBITCC:rdPos@220
   y_pos: ORBITCC:rdPos@221
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2T8R
   x_pos: ORBITCC:rdPos@222
   y_pos: ORBITCC:rdPos@223
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3T8R
   x_pos: ORBITCC:rdPos@224
   y_pos: ORBITCC:rdPos@225
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4T8R
   x_pos: ORBITCC:rdPos@226
   y_pos: ORBITCC:rdPos@227
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ5T8R
   x_pos: ORBITCC:rdPos@228
   y_pos: ORBITCC:rdPos@229
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ6T8R
   x_pos: ORBITCC:rdPos@230
   y_pos: ORBITCC:rdPos@231
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ7T8R
   x_pos: ORBITCC:rdPos@232
   y_pos: ORBITCC:rdPos@233
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ1D1R
   x_pos: ORBITCC:rdPos@234
   y_pos: ORBITCC:rdPos@235
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ2D1R
   x_pos: ORBITCC:rdPos@236
   y_pos: ORBITCC:rdPos@237
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ3D1R
   x_pos: ORBITCC:rdPos@238
   y_pos: ORBITCC:rdPos@239
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ4D1R
   x_pos: ORBITCC:rdPos@240
   y_pos: ORBITCC:rdPos@241
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ41D1R
   x_pos: ORBITCC:rdPos@242
   y_pos: ORBITCC:rdPos@243
-- class: pyaml.bpm.bpm.BPM
+- class: pyaml.diagnostics.bpm.bpm.BPM
   name: BPMZ42D1R
   x_pos: ORBITCC:rdPos@244
   y_pos: ORBITCC:rdPos@245

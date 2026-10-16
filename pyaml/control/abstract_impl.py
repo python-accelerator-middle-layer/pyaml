@@ -294,6 +294,89 @@ class CSScalarAggregator(ScalarAggregator):
 # ------------------------------------------------------------------------------
 
 
+class CSSparseScalarAggregator(CSScalarAggregator):
+    """
+    Scalar aggregator whose slots may have no device.
+
+    Only existing devices are added to the backend aggregator, so they are
+    still read in one grouped call. Values are scattered back to their slots
+    and missing slots read NaN.
+
+    Parameters
+    ----------
+    devs : DeviceAccessList
+        Backend aggregator holding the existing devices.
+
+    Methods
+    -------
+    add_devices(devices)
+        Add one or more slots, ``None`` for a slot without device.
+    set(value)
+        Write the values of the slots that have a device.
+    set_and_wait(value)
+        Write the values of the slots that have a device and wait.
+    get()
+        Read all slots, NaN for slots without device.
+    readback()
+        Read all slot readbacks, NaN for slots without device.
+    nb_device()
+        Return the number of slots.
+    """
+
+    def __init__(self, devs: DeviceAccessList):
+        """
+        Initialize the CSSparseScalarAggregator.
+        """
+        super().__init__(devs)
+        self._nb_slots = 0
+        self._slots: list[int] = []
+
+    def add_devices(self, devices: DeviceAccess | None | list[DeviceAccess | None]):
+        """
+        Add one or more slots, ``None`` for a slot without device.
+
+        Parameters
+        ----------
+        devices : DeviceAccess | None | list[DeviceAccess | None]
+            Control-system device or devices to manage.
+        """
+        for d in devices if isinstance(devices, list) else [devices]:
+            if d is not None:
+                self._devs.add_devices(d)
+                self._slots.append(self._nb_slots)
+            self._nb_slots += 1
+
+    def _scatter(self, values: NDArray[np.float64]) -> NDArray[np.float64]:
+        out = np.full(self._nb_slots, np.nan)
+        out[self._slots] = values
+        return out
+
+    def set(self, value: NDArray[np.float64]):
+        """Write the values of the slots that have a device."""
+        if self._slots:
+            self._devs.set(np.asarray(value)[self._slots])
+
+    def set_and_wait(self, value: NDArray[np.float64]):
+        """Write the values of the slots that have a device and wait."""
+        if self._slots:
+            self._devs.set_and_wait(np.asarray(value)[self._slots])
+
+    def get(self) -> NDArray[np.float64]:
+        """Read all slots, NaN for slots without device."""
+        return self._scatter(self._devs.get() if self._slots else [])
+
+    def readback(self) -> np.array:
+        """Read all slot readbacks, NaN for slots without device."""
+        return self._scatter(self._devs.readback() if self._slots else [])
+
+    def nb_device(self) -> int:
+        """Return the number of slots."""
+        return self._nb_slots
+
+
+# ------------------------------------------------------------------------------
+
+
 class CSStrengthScalarAggregator(CSScalarAggregator):
     """
     Aggregate magnet strengths while avoiding duplicate hardware writes.
@@ -347,7 +430,10 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         devs : list[DeviceAccess]
             Hardware devices associated with the magnet model.
         """
-        strengthIndex = magnet.strength.index() if isinstance(magnet.strength, abstract.RWMapper) else 0
+        # Magnets of a serialized group share the serialized model (one power supply for N strengths):
+        # the power-supply current is computed by the model from the N strengths (mean of the implied currents).
+        is_indexed = isinstance(magnet.strength, (abstract.RWMapper, RWSerializedStrengthScalar))
+        strengthIndex = magnet.strength.index() if is_indexed else 0
         if magnet.model not in self.__models:
             index = len(self.__models)
             self.__models.append(magnet.model)
@@ -628,6 +714,42 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         self.__model.set_magnet_rigidity(brho)
 
 
+class RWSerializedStrengthScalar(RWStrengthScalar):
+    """
+    Expose the strength of one magnet of a serialized group.
+
+    All magnets of a serialized group share one power supply. This accessor
+    converts with the magnet's own sub-model and remembers the magnet position
+    in the group so that aggregators can map it to the right strength of the
+    serialized model.
+
+    Parameters
+    ----------
+    model : MagnetModel
+        Sub-model of the magnet, used for strength conversion and units.
+    dev : DeviceAccess
+        Power-supply device shared by the serialized group.
+    idx : int
+        Zero-based position of the magnet in the serialized group.
+
+    Methods
+    -------
+    index()
+        Return the position of the magnet in the serialized group.
+    """
+
+    def __init__(self, model: MagnetModel, dev: DeviceAccess, idx: int):
+        """
+        Initialize the RWSerializedStrengthScalar.
+        """
+        super().__init__(model, dev)
+        self.__idx = idx
+
+    def index(self) -> int:
+        """Return the position of the magnet in the serialized group."""
+        return self.__idx
+
+
 # ------------------------------------------------------------------------------
 
 
@@ -801,20 +923,22 @@ class RBpmArray(abstract.ReadFloatArray):
 
     Parameters
     ----------
-    hDev : DeviceAccess
-        Device providing the horizontal BPM position.
-    vDev : DeviceAccess
-        Device providing the vertical BPM position.
+    hDev : DeviceAccess | None
+        Device providing the horizontal BPM position, ``None`` for a BPM
+        without horizontal plane.
+    vDev : DeviceAccess | None
+        Device providing the vertical BPM position, ``None`` for a BPM
+        without vertical plane.
 
     Methods
     -------
     get()
-        Return horizontal and vertical BPM positions.
+        Return horizontal and vertical BPM positions (NaN for a missing plane).
     unit()
         Return the unit reported by the BPM device.
     """
 
-    def __init__(self, hDev: DeviceAccess, vDev: DeviceAccess):
+    def __init__(self, hDev: DeviceAccess | None, vDev: DeviceAccess | None):
         """
         Initialize the RBpmArray.
         """
@@ -822,14 +946,14 @@ class RBpmArray(abstract.ReadFloatArray):
         self._vDev = vDev
 
     def get(self) -> np.array:
-        """Return horizontal and vertical BPM positions."""
-        return np.array([self._hDev.get(), self._vDev.get()])
+        """Return horizontal and vertical BPM positions (NaN for a missing plane)."""
+        return np.array([d.get() if d is not None else np.nan for d in (self._hDev, self._vDev)], dtype=float)
 
     # Gets the unit of the value Assume that x and y, offsets and positions
     # have the same unit
     def unit(self) -> str:
         """Return the unit reported by the BPM device."""
-        return self._hDev.unit()
+        return (self._hDev if self._hDev is not None else self._vDev).unit()
 
 
 # ------------------------------------------------------------------------------

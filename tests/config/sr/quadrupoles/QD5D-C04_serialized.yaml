@@ -1,6 +1,6 @@
 type: pyaml.magnet.quadrupole
 name: QD5D-C04
-model: sr/magnet_models/QF1AC01.yaml
+model: ${include:sr/magnet_models/QF1AC01.yaml}
 linked_elements:
   - QF8B-C04
   - QF8D-C04

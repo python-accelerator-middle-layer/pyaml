@@ -3,13 +3,13 @@
 import copy
 from typing import TYPE_CHECKING, Self
 
-from ..common.abstract import ReadFloatArray, ReadWriteFloatArray, ReadWriteFloatScalar
-from ..common.element import Element, __pyaml_repr__
-from ..common.exception import PyAMLException
-from ..validation import DynamicValidation, register_schema
+from pyaml.common.abstract import ReadFloatArray, ReadWriteFloatArray, ReadWriteFloatScalar
+from pyaml.common.element import Element, __pyaml_repr__
+from pyaml.common.exception import PyAMLException
+from pyaml.validation import DynamicValidation, register_schema
 
 if TYPE_CHECKING:
-    from ..common.holders.element_holder import ElementHolder
+    from pyaml.common.holders.element_holder import ElementHolder
 
 PYAMLCLASS = "BPM"
 
@@ -61,6 +61,19 @@ class BPM(Element, DynamicValidation):
         Return the configured device key used for tilt access.
     get_offset_devices()
         Return configured device keys used for offset control.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.diagnostics.bpm.bpm
+          name: BPM_NAME
+          lattice_names: LATTICE_BPM_NAME
+          x_pos: DEVICE/X_POSITION
+          y_pos: DEVICE/Y_POSITION
+          x_offset: DEVICE/X_OFFSET
+          y_offset: DEVICE/Y_OFFSET
+          tilt: DEVICE/TILT
     """
 
     def __init__(

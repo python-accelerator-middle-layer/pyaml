@@ -43,7 +43,7 @@ def test_element_array_and_mask_filters_and_is_autotyped_list_mask(
     sr.design.get_lattice().disable_6d()
 
     # "ElArray" is a mixed ElementArray in the dummy config (see existing tests)
-    elts = sr.design.get_elements("ElArray")
+    elts = sr.design.get("ElArray")
     assert isinstance(elts, ElementArray)
     assert len(elts) > 0
 
@@ -71,7 +71,7 @@ def test_element_array_and_mask_filters_and_is_autotyped_numpy_mask(
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    elts = sr.design.get_elements("ElArray")
+    elts = sr.design.get("ElArray")
     assert len(elts) > 0
 
     mask_list = [isinstance(e, Magnet) for e in elts]
@@ -97,7 +97,7 @@ def test_element_array_sub_mask_removes_true_inverse_of_and(
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    elts = sr.design.get_elements("ElArray")
+    elts = sr.design.get("ElArray")
     assert len(elts) > 0
 
     # Keep only magnets with '& mask'
@@ -134,7 +134,7 @@ def test_element_array_mask_length_mismatch_raises_for_and_and_sub(
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    elts = sr.design.get_elements("ElArray")
+    elts = sr.design.get("ElArray")
     assert len(elts) > 0
 
     bad_mask = [True] * (len(elts) - 1)
@@ -159,7 +159,7 @@ def test_mask_by_type_returns_correct_boolean_mask(
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    elts = sr.design.get_elements("ElArray")
+    elts = sr.design.get("ElArray")
     mask = elts.mask_by_type(Magnet)
 
     assert isinstance(mask, list)
@@ -182,7 +182,7 @@ def test_filter_by_type_returns_autotyped_array(install_test_package, accelerato
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    elts = sr.design.get_elements("ElArray")
+    elts = sr.design.get("ElArray")
     filtered = elts.of_type(Magnet)
 
     if len(filtered) == 0:

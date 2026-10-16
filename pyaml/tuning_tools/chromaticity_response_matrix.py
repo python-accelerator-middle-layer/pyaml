@@ -68,6 +68,16 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
         Sextupole array used for the measurement.
     chromaticity_monitor : ChromaticityMonitor
         Chromaticity monitor used for the measurement.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.tuning_tools.chromaticity_response_matrix
+          name: CHROMATICITY_RESPONSE_MATRIX
+          sextu_array_name: SEXTUPOLES
+          chromaticity_name: CHROMATICITY_MONITOR
+          sextu_delta: 1e-6
     """
 
     def __init__(
@@ -105,7 +115,7 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
     def chromaticity_monitor(self) -> "ChromaticityMonitor":
         """Return the chromaticity monitor used for the measurement."""
         self.check_peer()
-        return self.peer.get_chromaticity_monitor(self.chromaticity_name)
+        return self.peer.tool.get(self.chromaticity_name)
 
     def measure(
         self,
@@ -141,10 +151,10 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
             sr = Accelerator.load("tests/config/EBSOrbit.yaml")
             acc = sr.design
 
-            if acc.crm.measure(callback=callback):
-                acc.crm.save("ideal_crm.json")
-                acc.crm.save("ideal_crm.yaml", with_type="yaml")
-                acc.crm.save("ideal_crm.npz", with_type="npz")
+            if acc.tool.crm.measure(callback=callback):
+                acc.tool.crm.save("ideal_crm.json")
+                acc.tool.crm.save("ideal_crm.yaml", with_type="yaml")
+                acc.tool.crm.save("ideal_crm.npz", with_type="npz")
 
         Parameters
         ----------

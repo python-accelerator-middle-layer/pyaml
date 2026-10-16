@@ -13,7 +13,7 @@ def test_simulator_chromaticity_monitor():
     sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml", ignore_external=True)
     sr.design.get_lattice().enable_6d()
     chromaAT = sr.design.get_lattice().get_chrom()[:-1]
-    chromaticity_monitor = sr.design.get_chromaticity_monitor("CHROMATICITY_MONITOR")
+    chromaticity_monitor = sr.design.tool.get("CHROMATICITY_MONITOR")
     assert chromaticity_monitor.chromaticity.unit() == "1"
     assert chromaticity_monitor.dispersion.unit() == "m"
     chromaticity_monitor.measure(fit_dispersion=True, callback=callback)
@@ -43,7 +43,7 @@ def test_simulator_chromaticity_monitor():
 )
 def test_controlsystem_chromaticity_monitor(install_test_package):
     sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml")
-    chromaticity_monitor = sr.live.get_chromaticity_monitor("CHROMATICITY_MONITOR")
+    chromaticity_monitor = sr.live.tool.get("CHROMATICITY_MONITOR")
     assert chromaticity_monitor.chromaticity.get() is None
     chromaticity_monitor.measure(
         do_plot=False,

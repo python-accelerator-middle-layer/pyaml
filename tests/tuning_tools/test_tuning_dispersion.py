@@ -12,12 +12,12 @@ def test_tuning_orm():
     sr = Accelerator.load(config_path)
     element_holder = sr.design
 
-    dispersion = element_holder.dispersion
+    dispersion = element_holder.tool.dispersion
 
     dispersion.measure()
     dispersion_data = dispersion.get()
 
-    bpms = element_holder.bpms.get("BPM")
+    bpms = element_holder.diagnostic.bpms.get("BPM")
 
     assert len(dispersion_data["frequency_response_x"]) == len(bpms)
     assert len(dispersion_data["frequency_response_y"]) == len(bpms)

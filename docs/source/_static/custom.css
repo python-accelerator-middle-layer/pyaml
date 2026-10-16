@@ -5,3 +5,7 @@
 .api-generation {
     display: none;
 }
+
+.pyaml-member-summary td p {
+    margin-bottom: 0;
+}
