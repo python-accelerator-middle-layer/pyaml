@@ -67,7 +67,7 @@ class RWMagnetStrength(ReadWriteFloatArray):
         nvalue = np.ones(self.__nb) * value if isinstance(value, float) else value
         if not self.__aggregator:
             # Magnets of a series share one power supply: it is written once, from the strengths of the
-            # magnets of the series present in the array, the others keeping their current strength
+            # magnets of the series present in the array, the others following the resulting hardware value
             series: dict[int, tuple[Magnet, dict[int, float]]] = {}
             for idx, m in enumerate(self.__magnets):
                 if m.model is not None and m.model.shares_power_supply():

@@ -362,14 +362,14 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         """
         Convert the strengths of some magnets of the series to the shared hardware value.
 
-        The magnets that are not requested keep the strength given by the current hardware value. The completed
-        strengths are then converted by :meth:`compute_hardware_from_strengths`, which logs a warning when they
-        cannot all be reached with a single hardware value.
+        Only the requested magnets define the hardware value: it solves ``sum(f_i(I)) == sum(k_i)`` over them. The
+        other magnets of the series follow the resulting hardware value. A warning is logged when the requested
+        strengths cannot all be reached with one hardware value, or when they are outside the excitation curves.
 
         Parameters
         ----------
         current_hardware : np.array
-            Current hardware value of the series, one value per power supply.
+            Current hardware value of the series, one value per power supply. Only its shape is used.
         strengths_by_index : dict[int, float]
             Requested strengths, indexed by the position of the magnet in the series.
 
@@ -381,13 +381,13 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         Raises
         ------
         PyAMLException
-            If ``current_hardware`` does not hold one value per power supply of the series.
+            If ``current_hardware`` does not hold one value per power supply of the series, or if the average strength
+            of the requested magnets is not monotonic in the hardware value.
         """
         _check_len(current_hardware, "current_hardware", len(self.get_device_names()))
-        strengths = self.compute_strengths(current_hardware)
-        for idx, strength in strengths_by_index.items():
-            strengths[idx] = strength
-        return np.array([self.compute_hardware_from_strengths(strengths)])
+        indices = list(strengths_by_index.keys())
+        strengths = np.array(list(strengths_by_index.values()), dtype=float)
+        return np.array([self._compute_hardware_from_strengths(strengths, indices)])
 
     def compute_mean_strength(self, current: float) -> float:
         """
@@ -410,7 +410,8 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         Return the hardware value giving an average strength of the series.
 
         The submodels are piecewise linear in the hardware value, so the average strength is piecewise linear on the
-        union of the curve breakpoints and is inverted exactly by interpolation.
+        union of the curve breakpoints and is inverted exactly by interpolation. A strength outside the range reachable
+        by the excitation curves is clamped to the end of the curves, and a warning is logged.
 
         Parameters
         ----------
@@ -427,16 +428,7 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         PyAMLException
             If the average strength is not monotonic in the hardware value.
         """
-        currents = np.unique(np.concatenate([curve.get_curve()[:, 0] for curve in self.__curves]))
-        strengths = np.array([self.compute_mean_strength(current) for current in currents])
-        steps = np.diff(strengths)
-        if np.all(steps <= 0):
-            currents, strengths = currents[::-1], strengths[::-1]
-        elif not np.all(steps >= 0):
-            raise PyAMLException(
-                f"Average strength of the series on {self._powerconverter} is not monotonic, it cannot be inverted"
-            )
-        return float(np.interp(strength, strengths, currents))
+        return self._compute_hardware_from_mean_strength(strength, list(range(self.__nbMagnets)))[0]
 
     def compute_hardware_from_strengths(self, strengths: np.ndarray) -> float:
         """
@@ -463,15 +455,77 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         """
         strengths = np.asarray(strengths, dtype=float)
         _check_len(strengths, "strengths", self.__nbMagnets)
-        current = self.compute_hardware_from_mean_strength(float(np.mean(strengths)))
-        gaps = self.compute_strengths([current]) - strengths
-        if np.any(np.abs(gaps) > _SPREAD_RTOL * np.maximum(np.abs(strengths), 1.0)):
-            worst = int(np.argmax(np.abs(gaps)))
-            logger.warning(
-                f"Inconsistent strengths requested for the series on {self._powerconverter}: the hardware value "
-                f"{current} misses the requested strengths by up to {gaps[worst]:.3g} (magnet {worst})"
-            )
+        return self._compute_hardware_from_strengths(strengths, list(range(self.__nbMagnets)))
+
+    def _compute_hardware_from_strengths(self, strengths: np.ndarray, indices: list[int]) -> float:
+        """
+        Return the hardware value solving ``sum(f_i(I)) == sum(k_i)`` over some magnets of the series.
+
+        Parameters
+        ----------
+        strengths : np.ndarray
+            Requested strength ``k_i`` of each magnet in ``indices``.
+        indices : list[int]
+            Positions of the requested magnets in the series.
+
+        Returns
+        -------
+        float
+            Hardware value of the power supply.
+        """
+        current, clamped = self._compute_hardware_from_mean_strength(float(np.mean(strengths)), indices)
+        if not clamped:
+            reached = np.array([self.__sub_models[idx].compute_strengths([current])[0] for idx in indices])
+            gaps = reached - strengths
+            if np.any(np.abs(gaps) > _SPREAD_RTOL * np.maximum(np.abs(strengths), 1.0)):
+                worst = int(np.argmax(np.abs(gaps)))
+                logger.warning(
+                    f"Inconsistent strengths requested for the series on {self._powerconverter}: the hardware value "
+                    f"{current} misses the requested strengths by up to {gaps[worst]:.3g} (magnet {indices[worst]})"
+                )
         return current
+
+    def _compute_hardware_from_mean_strength(self, strength: float, indices: list[int]) -> tuple[float, bool]:
+        """
+        Return the hardware value giving an average strength of some magnets of the series.
+
+        Parameters
+        ----------
+        strength : float
+            Requested average strength of the magnets in ``indices``.
+        indices : list[int]
+            Positions of the magnets taken into account in the series.
+
+        Returns
+        -------
+        tuple[float, bool]
+            Hardware value, and whether it was clamped to the end of the excitation curves.
+
+        Raises
+        ------
+        PyAMLException
+            If the average strength of these magnets is not monotonic in the hardware value.
+        """
+        currents = np.unique(np.concatenate([self.__curves[idx].get_curve()[:, 0] for idx in indices]))
+        strengths = np.array(
+            [np.mean([self.__sub_models[idx].compute_strengths([current])[0] for idx in indices]) for current in currents]
+        )
+        steps = np.diff(strengths)
+        if np.all(steps <= 0):
+            currents, strengths = currents[::-1], strengths[::-1]
+        elif not np.all(steps >= 0):
+            raise PyAMLException(
+                f"Average strength of the series on {self._powerconverter} is not monotonic, it cannot be inverted"
+            )
+        tolerance = _SPREAD_RTOL * max(abs(strengths[0]), abs(strengths[-1]), 1.0)
+        clamped = bool(strength < strengths[0] - tolerance or strength > strengths[-1] + tolerance)
+        if clamped:
+            logger.warning(
+                f"Strength {strength:.6g} requested for the series on {self._powerconverter} is outside the range "
+                f"[{strengths[0]:.6g}, {strengths[-1]:.6g}] reachable by the excitation curves, the hardware value is "
+                f"clamped to the end of the curves"
+            )
+        return float(np.interp(strength, strengths, currents)), clamped
 
     def shares_power_supply(self) -> bool:
         """Return True, all the magnets of the series share one power supply."""

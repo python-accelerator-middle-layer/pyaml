@@ -1,6 +1,7 @@
 import numpy as np
 import pytest
 
+from pyaml import PyAMLException
 from pyaml.accelerator import Accelerator
 from pyaml.magnet.serialized_magnet import SerializedMagnets
 
@@ -139,9 +140,7 @@ def test_design_and_live_agree(install_test_package):
 
 @pytest.mark.parametrize("mode", MODES)
 @pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
-def test_array_with_one_magnet_of_a_series_completes_the_others_with_their_current_strength(
-    install_test_package, mode, caplog
-):
+def test_array_with_one_magnet_of_a_series_drives_the_series_with_its_own_submodel(install_test_package, mode, caplog):
     from pyaml.arrays.magnet_array import MagnetArray
 
     sr: Accelerator = Accelerator.load(CONFIG)
@@ -152,12 +151,11 @@ def test_array_with_one_magnet_of_a_series_completes_the_others_with_their_curre
     with caplog.at_level("WARNING"):
         array.strengths.set(np.array([0.5]))
 
-    # The other magnets of the series keep f_i(80), then sum(f_i(I)) == sum(k_i) is solved for I
-    completed = _sub_strengths(family, 80.0)
-    completed[1] = 0.5
-    expected = family.model.compute_hardware_from_mean_strength(np.mean(completed))
-    assert family.hardware.get() == pytest.approx(expected)
-    assert "Inconsistent strengths" in caplog.text
+    # Same as magnets[1].strength.set(0.5): I = f_1^-1(0.5), the other magnets follow as f_j(I)
+    current = family.model.get_sub_model(1).compute_hardware_values([0.5])[0]
+    assert family.hardware.get() == pytest.approx(current)
+    assert np.allclose(family.strengths.get(), _sub_strengths(family, current))
+    assert "Inconsistent strengths" not in caplog.text
 
 
 @pytest.mark.parametrize("mode", MODES)
@@ -195,7 +193,7 @@ def test_array_with_inconsistent_magnets_of_a_series(install_test_package, mode,
 
 @pytest.mark.parametrize("mode", MODES)
 @pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
-def test_array_with_part_of_a_series_completes_the_others_with_their_current_strength(install_test_package, mode):
+def test_array_with_part_of_a_series_drives_the_series_from_the_requested_magnets_only(install_test_package, mode):
     from pyaml.arrays.magnet_array import MagnetArray
 
     sr: Accelerator = Accelerator.load(CONFIG)
@@ -203,14 +201,32 @@ def test_array_with_part_of_a_series_completes_the_others_with_their_current_str
     family.hardware.set(80.0)
     magnets = family.get_magnets()
     array = MagnetArray("PART", [magnets[1], magnets[2]])
+    requested = np.array([0.78, 0.82])
 
-    array.strengths.set(np.array([0.78, 0.82]))
+    array.strengths.set(requested)
 
-    # Magnets 0 and 3 are not in the array: they keep f_i(80), then sum(f_i(I)) == sum(k_i) is solved for I
-    completed = _sub_strengths(family, 80.0)
-    completed[[1, 2]] = [0.78, 0.82]
-    expected = family.model.compute_hardware_from_mean_strength(np.mean(completed))
-    assert family.hardware.get() == pytest.approx(expected)
+    # Only magnets 1 and 2 define I: f_1(I) + f_2(I) == 0.78 + 0.82. Magnets 0 and 3 follow as f_j(I)
+    current = family.hardware.get()
+    reached = _sub_strengths(family, current)
+    assert np.mean(reached[[1, 2]]) == pytest.approx(np.mean(requested))
+    assert np.allclose(family.strengths.get(), reached)
+
+
+@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
+def test_strength_outside_the_excitation_curve_is_clamped_with_a_warning(install_test_package, mode, caplog):
+    sr: Accelerator = Accelerator.load(CONFIG)
+    family = _family(sr, mode)
+    family.hardware.set(80.0)
+    # Highest current of the QF1 excitation curve
+    curve_end = family.model.get_sub_model(0).compute_hardware_values([1e3])[0]
+
+    with caplog.at_level("WARNING"):
+        family.strengths.set(np.full(family.get_nb_magnets(), 1e3))
+
+    assert family.hardware.get() == pytest.approx(curve_end)
+    assert "outside the range" in caplog.text
+    assert "Inconsistent strengths" not in caplog.text
 
 
 @pytest.mark.parametrize("mode", MODES)
@@ -267,3 +283,44 @@ def test_family_array_set_of_get_does_not_change_the_machine(install_test_packag
             accessor.set(accessor.get())
             assert family.hardware.get() == pytest.approx(80.0)
     assert "Inconsistent strengths" not in caplog.text
+
+
+# QF1A on a power supply limited to [0, 90] A, with an array holding magnets C06 and C07 only
+RANGE_CONFIG = "tests/config/sr_serialized_magnets_range.yaml"
+
+
+@pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
+def test_power_supply_range_protects_every_write_to_a_series(install_test_package):
+    sr: Accelerator = Accelerator.load(RANGE_CONFIG)
+    family: SerializedMagnets = sr.live.serialized_magnet.get("QF1A")
+    magnets = family.get_magnets()
+    family.hardware.set(80.0)
+    # Strengths that need 100 A, outside the range of the power supply
+    too_strong = _sub_strengths(family, 100.0)
+
+    writes = [
+        lambda: sr.live.magnets.get("QF1A_PART").strengths.set(too_strong[[1, 2]]),
+        lambda: family.strengths.set(too_strong),
+        lambda: family.strength.set(np.mean(too_strong)),
+        lambda: magnets[1].strength.set(too_strong[1]),
+        lambda: family.hardware.set(100.0),
+    ]
+    for write in writes:
+        with pytest.raises(PyAMLException):
+            write()
+        # Nothing is written: the series stays at 80 A
+        assert family.hardware.get() == pytest.approx(80.0)
+
+
+@pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
+def test_array_with_part_of_a_series_within_the_power_supply_range(install_test_package):
+    sr: Accelerator = Accelerator.load(RANGE_CONFIG)
+    family: SerializedMagnets = sr.live.serialized_magnet.get("QF1A")
+    family.hardware.set(80.0)
+    within = _sub_strengths(family, 70.0)
+
+    sr.live.magnets.get("QF1A_PART").strengths.set(within[[1, 2]])
+
+    # Magnets C06 and C07 ask for 70 A, magnets C05 and C08 follow
+    assert family.hardware.get() == pytest.approx(70.0)
+    assert np.allclose(family.strengths.get(), within)
