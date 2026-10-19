@@ -64,6 +64,9 @@ class RWMagnetStrength(ReadWriteFloatArray):
         ----------
         value : np.array
             Strength for each magnet, ordered like the array. A scalar is broadcast to every magnet.
+        wait_seconds_after: float
+            number of seconds to wait after setting the strengths. 
+            see also set_and_wait for waiting based on setpoint-readback difference.
         """
         nvalue = np.ones(self.__nb) * value if isinstance(value, float) else value
         if not self.__aggregator:
