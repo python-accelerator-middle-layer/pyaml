@@ -73,7 +73,7 @@ class RWMagnetStrength(ReadWriteFloatArray):
             self.__aggregator.set(nvalue)
         
         # wait the given seconds after setting
-        if wait_seconds_after:
+        if wait_seconds_after != None:
             time.sleep(wait_seconds_after)
 
     # Sets the values and waits that the read values reach their setpoint
