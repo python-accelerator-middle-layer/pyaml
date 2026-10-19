@@ -3,7 +3,7 @@
     "facility": "ESRF",
     "machine": "sr",
     "energy": 6e9,
-    "simulators": ["../config/bad_conf_cycles.json"],
+    "simulators": ["${include:../config/bad_conf_cycles.json}"],
     "data_folder": "/data/store",
     "arrays": [
       {
@@ -21,8 +21,8 @@
       }
     ],
     "devices": [
-      "sr/quadrupoles/QF1AC01.yaml",
-      "sr/correctors/SH1AC01.yaml",
-      "sr/correctors/SH1AC02.yaml"
+      "${include:sr/quadrupoles/QF1AC01.yaml}",
+      "${include:sr/correctors/SH1AC01.yaml}",
+      "${include:sr/correctors/SH1AC02.yaml}"
     ]
 }

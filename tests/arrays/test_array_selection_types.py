@@ -2,6 +2,7 @@ import pytest
 
 from pyaml.arrays.element_array import ElementArray
 from pyaml.arrays.magnet_array import MagnetArray
+from pyaml.common.exception import PyAMLException
 
 
 @pytest.fixture
@@ -43,7 +44,7 @@ def test_magnet_holder_selection_uses_the_same_typing(design):
 
 
 def test_mixed_array_stays_generic_until_only_magnets_are_selected(design):
-    mixed = design.get_elements("ElArray")
+    mixed = design.get("ElArray")
 
     assert type(mixed[:]) is ElementArray
     assert mixed[:].names() == mixed.names()
@@ -60,3 +61,41 @@ def test_empty_selections_and_integer_indexing_keep_their_behavior(design):
     assert magnets["UNKNOWN*"] == []
     assert magnets[0] is design.magnet.get(magnets.names()[0])
     assert type(magnets - magnets) is list
+
+
+def test_literal_name_miss_raises(design):
+    magnets = design.magnets.get()
+
+    with pytest.raises(PyAMLException):
+        magnets["UNKNOWN"]
+    with pytest.raises(PyAMLException):
+        design.magnets["UNKNOWN"]
+
+
+def test_literal_name_hit_still_returns_a_single_element_array(design):
+    magnets = design.magnets.get()
+
+    selected = magnets["SH1A-C01-H"]
+    assert type(selected) is MagnetArray
+    assert selected.names() == ["SH1A-C01-H"]
+
+
+def test_bracket_only_pattern_is_a_wildcard(design):
+    magnets = design.magnets.get()
+    assert sorted(magnets["SH1A-C0[12]-H"].names()) == ["SH1A-C01-H", "SH1A-C02-H"]
+
+
+def test_regex_pattern_is_supported(design):
+    magnets = design.magnets.get()
+    assert sorted(magnets["re:^SH1A-C0[12]-H$"].names()) == ["SH1A-C01-H", "SH1A-C02-H"]
+
+
+def test_list_of_patterns_is_supported(design):
+    magnets = design.magnets.get()
+    selected = magnets[["SH1A-C01-H", "SH1A-C02-H"]]
+    assert selected.names() == ["SH1A-C01-H", "SH1A-C02-H"]
+
+
+def test_wildcard_matching_is_case_sensitive(design):
+    magnets = design.magnets.get()
+    assert magnets["sh1a*"] == []

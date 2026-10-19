@@ -109,7 +109,23 @@ class PyAtAttributeElementsLinker(LatticeElementsLinker, DynamicValidation):
         LinkerIdentifier
             The identifier for linking the element
         """
-        return PyAtAttributeIdentifier(self.linker_config_model.attribute_name, element.get_name())
+        return self.get_identifier_for_name(element.get_name())
+
+    def get_identifier_for_name(self, name: str) -> LinkerIdentifier:
+        """
+        Get the identifier for a name used in an element ``lattice_names`` selector.
+
+        Parameters
+        ----------
+        name : str
+            Expected value of the configured attribute.
+
+        Returns
+        -------
+        LinkerIdentifier
+            The identifier matching the lattice elements whose attribute equals ``name``
+        """
+        return PyAtAttributeIdentifier(self.linker_config_model.attribute_name, name)
 
     def _test_at_element(self, identifier: PyAtAttributeIdentifier, element: at.Element) -> bool:
         """

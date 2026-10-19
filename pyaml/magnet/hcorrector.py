@@ -44,6 +44,18 @@ class HCorrector(Magnet, DynamicValidation):
     -------
     attach(peer, strength, hardware)
         Return an attached copy with a bound horizontal-angle handle.
+
+    Configuration
+    -------------
+    The model can be defined inline or in a separate file. See
+    :mod:`pyaml.magnet.model` and its subclasses for model configuration.
+
+    .. code-block:: yaml
+
+        - type: pyaml.magnet.hcorrector
+          name: HORIZONTAL_CORRECTOR_NAME
+          lattice_names: LATTICE_CORRECTOR_NAME
+          model: path/to/magnet_model.yaml
     """
 
     polynom = PolynomInfo("PolynomB", 0, HORIZONTAL_KICK_SIGN)

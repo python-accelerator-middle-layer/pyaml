@@ -221,6 +221,21 @@ class SerializedMagnets(Element, DynamicValidation):
     The serialized group stores a virtual magnet for each underlying element. When
     attached, each virtual magnet is bound to the same peer and the group exposes
     aggregate strength and hardware accessors.
+
+    Configuration
+    -------------
+    The model can be defined inline or in a separate file. See
+    :mod:`pyaml.magnet.model` and its subclasses for model configuration.
+
+    .. code-block:: yaml
+
+        - type: pyaml.magnet.serialized_magnet
+          name: SERIALIZED_QUADRUPOLES
+          function: B1
+          elements:
+            - QUADRUPOLE_1
+            - QUADRUPOLE_2
+          model: path/to/serialized_magnet_model.yaml
     """
 
     def __init__(

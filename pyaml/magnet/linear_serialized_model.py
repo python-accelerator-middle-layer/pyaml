@@ -177,6 +177,20 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
     -----
     The number of magnets is inferred from the longest list among the supplied
     configuration values. Scalars are expanded to match that length.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        type: pyaml.magnet.linear_serialized_model
+        unit: 1/m
+        hardware_unit: A
+        calibration_factors: 1.0
+        calibration_offsets: 0.0
+        curves:
+          type: pyaml.magnet.csvcurve
+          file: path/to/excitation_curve.csv
+        powerconverter: DEVICE/POWER_CONVERTER_CURRENT
     """
 
     def __init__(

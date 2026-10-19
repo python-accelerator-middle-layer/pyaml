@@ -70,6 +70,8 @@ class LatticeElementsLinker(ABC):
         Set the lattice for element linking.
     get_element_identifier(element)
         Get the identifier for linking an element.
+    get_identifier_for_name(name)
+        Get the identifier for a name given in an element ``lattice_names`` selector.
     get_at_elements(element_id)
         Return a list of PyAT elements matching the given identifiers.
     get_at_element(element_id)
@@ -129,6 +131,31 @@ class LatticeElementsLinker(ABC):
             The identifier for the element
         """
         pass
+
+    def get_identifier_for_name(self, name: str) -> LinkerIdentifier:
+        """
+        Get the identifier for a name used in an element ``lattice_names`` selector.
+
+        Called when a PyAML element selects its lattice elements explicitly
+        (``lattice_names: list(a,b)``, ``a@0,1`` or ``a#0..2``): each ``name`` of the
+        selector is resolved through the linker instead of the element name.
+
+        Parameters
+        ----------
+        name : str
+            Name given in the ``lattice_names`` selector.
+
+        Returns
+        -------
+        LinkerIdentifier
+            The identifier matching the lattice element(s) designated by ``name``.
+
+        Raises
+        ------
+        NotImplementedError
+            If the linker does not support ``lattice_names`` selectors.
+        """
+        raise NotImplementedError(f"{self.__class__.__name__} does not support 'lattice_names' selectors")
 
     def _iter_matches(self, identifier: LinkerIdentifier) -> Iterable[at.Element]:
         """

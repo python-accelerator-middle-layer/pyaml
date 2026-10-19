@@ -70,6 +70,19 @@ class SplineMagnetModel(MagnetModel, DynamicValidation):
     -----
     The magnet rigidity ``brho`` must be set with :meth:`set_magnet_rigidity`
     before using the conversion methods.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        type: pyaml.magnet.spline_model
+        unit: 1/m
+        hardware_unit: A
+        alpha: 0.0
+        curve:
+          type: pyaml.magnet.csvcurve
+          file: path/to/excitation_curve.csv
+        powerconverter: DEVICE/POWER_CONVERTER_CURRENT
     """
 
     def __init__(

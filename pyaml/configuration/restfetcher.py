@@ -18,12 +18,12 @@ import yaml
 from yaml import CLoader
 
 from ..common.exception import PyAMLConfigException
-from .fileloader import ACCEPTED_SUFFIXES, SafeLineLoader
+from .fileloader import SafeLineLoader
 
 REMOTE_BASE_URL_KEY = "__baseurl__"
 SourceRoot = Path | str | None
 _REMOTE_SCHEMES = {"http", "https"}
-
+INCLUDE_PREFIX = "${include:"
 FILE_PREFIX = "${path:"
 
 
@@ -285,9 +285,10 @@ def _expand_remote_dict(
     """
     values.setdefault(REMOTE_BASE_URL_KEY, base_url)
     for key, value in list(values.items()):
-        if _is_config_reference(value):
+        if _is_include(value):
+            reference = _include_reference(value)
             values[key] = _load_remote_document(
-                _resolve_remote_config_reference(value, base_url),
+                _resolve_remote_config_reference(reference, base_url),
                 include_locations=include_locations,
                 stack=stack,
             )
@@ -324,9 +325,10 @@ def _expand_remote_list(values: list[Any], base_url: str, stack: list[str], *, i
     index = 0
     while index < len(values):
         value = values[index]
-        if _is_config_reference(value):
+        if _is_include(value):
+            reference = _include_reference(value)
             expanded = _load_remote_document(
-                _resolve_remote_config_reference(value, base_url),
+                _resolve_remote_config_reference(reference, base_url),
                 include_locations=include_locations,
                 stack=stack,
             )
@@ -348,29 +350,14 @@ def _expand_remote_list(values: list[Any], base_url: str, stack: list[str], *, i
     return values
 
 
-def _is_config_reference(value: Any) -> bool:
-    """
-    Return whether a value names a supported configuration document.
+def _is_include(value: Any) -> bool:
+    """Return whether a value is an explicit include expression."""
+    return isinstance(value, str) and value.startswith(INCLUDE_PREFIX) and value.endswith("}")
 
-    Parameters
-    ----------
-    value : Any
-        Value to inspect.
 
-    Returns
-    -------
-    bool
-        ``True`` for a YAML, JSON, or supported remote document reference.
-    """
-    if not isinstance(value, str):
-        return False
-
-    if value.startswith(FILE_PREFIX):
-        return False
-
-    parsed = urlparse(value)
-    path = parsed.path if parsed.scheme in _REMOTE_SCHEMES else value
-    return any(path.endswith(suffix) for suffix in ACCEPTED_SUFFIXES)
+def _include_reference(value: str) -> str:
+    """Return the reference contained in an include expression."""
+    return value[len(INCLUDE_PREFIX) : -1].strip()
 
 
 def _resolve_remote_config_reference(reference: str, base_url: str) -> str:

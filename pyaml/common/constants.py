@@ -20,15 +20,17 @@ class Action(Enum):
     Attributes
     ----------
     APPLY : int
-        Callback triggered immediately after an actuator excitation.
+        Callback triggered after an actuator excitation completes (including the waiting time).
     RESTORE : int
         Callback triggered immediately after restoring the actuator.
     MEASURE : int
         Callback triggered immediately after taking a measurement.
+    INIT : int
+        Triggered once before the measurement starts
     """
 
     APPLY = 0
-    "Triggered immediately after actuator excitation."
+    "Triggered after an actuator excitation completes (including the waiting time)."
     RESTORE = 1
     "Triggered immediately after restoring the actuator to its initial value."
     MEASURE = 2

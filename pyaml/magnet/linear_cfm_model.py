@@ -101,6 +101,23 @@ class LinearCFMagnetModel(MagnetModel, DynamicValidation):
         Set the magnetic rigidity used for conversion.
     has_hardware()
         Return whether the model provides hardware values.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        type: pyaml.magnet.linear_cfm_model
+        multipoles: [B0, A0]
+        units: [rad, rad]
+        hardware_units: [A, A]
+        curves:
+          - type: pyaml.magnet.csvcurve
+            file: path/to/horizontal_excitation_curve.csv
+          - type: pyaml.magnet.csvcurve
+            file: path/to/vertical_excitation_curve.csv
+        powerconverters:
+          - DEVICE/HORIZONTAL_POWER_CONVERTER_CURRENT
+          - DEVICE/VERTICAL_POWER_CONVERTER_CURRENT
     """
 
     def __init__(

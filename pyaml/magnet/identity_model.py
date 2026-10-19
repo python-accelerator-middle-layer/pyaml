@@ -64,6 +64,14 @@ class IdentityMagnetModel(MagnetModel, DynamicValidation):
     -----
     The model does not perform any numerical conversion: strengths are returned
     as hardware values and hardware values are returned as strengths.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        type: pyaml.magnet.identity_model
+        unit: 1/m
+        physics: DEVICE/MAGNET_STRENGTH
     """
 
     def __init__(

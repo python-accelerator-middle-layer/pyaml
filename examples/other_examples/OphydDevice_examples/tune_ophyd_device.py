@@ -179,6 +179,6 @@ asyncio.set_event_loop(evloop)
 
 # Main code
 sr = Accelerator.from_dict(acc_config)
-tm1 = sr.live.get_betatron_tune_monitor("MY_TUNE_MONITOR")
+tm1 = sr.live.diagnostic.get("MY_TUNE_MONITOR")
 print(tm1.tune.get())
 print(tm1.frequency.get())

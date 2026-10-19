@@ -11,7 +11,7 @@ def test_simulator_tune_monitor(
         ignore_external=True,
     )
     sr.design.get_lattice().disable_6d()
-    tune_monitor = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
+    tune_monitor = sr.design.diagnostic.get("BETATRON_TUNE")
     assert tune_monitor.tune.get()[0] == sr.design.get_lattice().get_tune()[0]
     assert tune_monitor.tune.get()[1] == sr.design.get_lattice().get_tune()[1]
     assert np.abs(tune_monitor.frequency.get()[0] - 56834.22592393) < 1e-6
@@ -31,6 +31,6 @@ def test_controlsystem_tune_monitor(
     sr = accelerator_from_fragments(
         *tune_monitor_configuration_fragments,
     )
-    tune_monitor = sr.live.get_betatron_tune_monitor("BETATRON_TUNE")
+    tune_monitor = sr.live.diagnostic.get("BETATRON_TUNE")
     assert tune_monitor.tune.get()[0] == 0.0
     assert tune_monitor.tune.get()[1] == 0.0

@@ -182,7 +182,7 @@ class MeasurementTool(Element, metaclass=ABCMeta):
                 return True
 
             # Measure a tune response matrix using the above callback
-            sr.design.trm.measure(callback=callback)
+            sr.design.tool.trm.measure(callback=callback)
 
         Parameters
         ----------

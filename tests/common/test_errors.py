@@ -43,24 +43,24 @@ def test_tune(install_test_package):
     assert "Magnet QF1A-C05XX not defined" in str(exc.value)
 
     with pytest.raises(PyAMLException) as exc:
-        m2 = sr.design.bpm.get("QF1A-C05XX")
+        m2 = sr.design.diagnostic.bpm.get("QF1A-C05XX")
     assert "BPM QF1A-C05XX not defined" in str(exc.value)
 
 
 def test_duplicate_error_reports_source_line_and_column_across_files(tmp_path):
     devices_a = tmp_path / "devices_a.yaml"
     devices_a.write_text(
-        "- type: pyaml.bpm.bpm\n  name: BPM_DUPLICATE\n",
+        "- type: pyaml.diagnostics.bpm.bpm\n  name: BPM_DUPLICATE\n",
         encoding="utf-8",
     )
     devices_b = tmp_path / "devices_b.yaml"
     devices_b.write_text(
-        "- type: pyaml.bpm.bpm\n  name: BPM_UNIQUE\n- type: pyaml.bpm.bpm\n  name: BPM_DUPLICATE\n",
+        "- type: pyaml.diagnostics.bpm.bpm\n  name: BPM_UNIQUE\n- type: pyaml.diagnostics.bpm.bpm\n  name: BPM_DUPLICATE\n",
         encoding="utf-8",
     )
     root = tmp_path / "root.yaml"
     root.write_text(
-        "type: pyaml.accelerator\ndevices:\n  - devices_a.yaml\n  - devices_b.yaml\n",
+        "type: pyaml.accelerator\ndevices:\n  - ${include:devices_a.yaml}\n  - ${include:devices_b.yaml}\n",
         encoding="utf-8",
     )
 
@@ -76,7 +76,7 @@ def test_duplicate_error_reports_source_line_and_column_across_files(tmp_path):
 def test_malformed_local_included_yaml_reports_source_line_and_column(tmp_path):
     broken_devices = tmp_path / "broken_devices.yaml"
     broken_devices.write_text(
-        "- type: pyaml.bpm.bpm\n  name: BPM_BROKEN\n  model:\n    type: [oops\n",
+        "- type: pyaml.diagnostics.bpm.bpm\n  name: BPM_BROKEN\n  model:\n    type: [oops\n",
         encoding="utf-8",
     )
     root = tmp_path / "root.yaml"
@@ -86,7 +86,7 @@ def test_malformed_local_included_yaml_reports_source_line_and_column(tmp_path):
         "machine: sr\n"
         "energy: 6e9\n"
         "data_folder: /data/store\n"
-        "devices: broken_devices.yaml\n",
+        "devices: ${include:broken_devices.yaml}\n",
         encoding="utf-8",
     )
 
@@ -101,7 +101,7 @@ def test_malformed_local_included_yaml_reports_source_line_and_column(tmp_path):
 def test_truncated_local_included_json_reports_source_and_position(tmp_path):
     broken_devices = tmp_path / "broken_devices.json"
     broken_devices.write_text(
-        '{"type": "pyaml.bpm.bpm", "name": "BPM_BROKEN", "model": ',
+        '{"type": "pyaml.diagnostics.bpm.bpm", "name": "BPM_BROKEN", "model": ',
         encoding="utf-8",
     )
     root = tmp_path / "root.yaml"
@@ -111,7 +111,7 @@ def test_truncated_local_included_json_reports_source_and_position(tmp_path):
         "machine: sr\n"
         "energy: 6e9\n"
         "data_folder: /data/store\n"
-        "devices: broken_devices.json\n",
+        "devices: ${include:broken_devices.json}\n",
         encoding="utf-8",
     )
 
@@ -131,9 +131,11 @@ def test_malformed_remote_included_yaml_reports_source_line_and_column(http_conf
             "machine: sr\n"
             "energy: 6000000000.0\n"
             "data_folder: /data/store\n"
-            "devices: fragments/broken_devices.yaml\n"
+            "devices: ${include:fragments/broken_devices.yaml}\n"
         ),
-        "/configs/fragments/broken_devices.yaml": ("- type: pyaml.bpm.bpm\n  name: BPM_BROKEN\n  model:\n    type: [oops\n"),
+        "/configs/fragments/broken_devices.yaml": (
+            "- type: pyaml.diagnostics.bpm.bpm\n  name: BPM_BROKEN\n  model:\n    type: [oops\n"
+        ),
     }
 
     with http_config_server(routes) as base_url:
@@ -153,10 +155,10 @@ def test_truncated_remote_included_json_reports_source_and_position(http_config_
             "machine: sr\n"
             "energy: 6000000000.0\n"
             "data_folder: /data/store\n"
-            "devices: fragments/broken_devices.json\n"
+            "devices: ${include:fragments/broken_devices.json}\n"
         ),
         "/configs/fragments/broken_devices.json": (
-            '{"type": "pyaml.bpm.bpm", "name": "BPM_BROKEN", "model": ',
+            '{"type": "pyaml.diagnostics.bpm.bpm", "name": "BPM_BROKEN", "model": ',
             "application/json",
             200,
         ),

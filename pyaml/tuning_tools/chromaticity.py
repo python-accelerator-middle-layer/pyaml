@@ -72,6 +72,16 @@ class Chromaticity(TuningTool, DynamicValidation):
         Calculate sextupole-strength changes for a chromaticity change.
     add(dchroma, wait_time=0.0)
         Apply a chromaticity correction relative to the current setpoint.
+
+    Configuration
+    -------------
+    .. code-block:: yaml
+
+        - type: pyaml.tuning_tools.chromaticity
+          name: CHROMATICITY_CORRECTION
+          sextu_array_name: SEXTUPOLES
+          chromaticity_monitor_name: CHROMATICITY_MONITOR
+          response_matrix: path/to/chromaticity_response.json
     """
 
     def __init__(
@@ -125,7 +135,7 @@ class Chromaticity(TuningTool, DynamicValidation):
     def chromaticity_monitor(self) -> "ChromaticityMonitor":
         """Return the chromaticity monitor used for readback."""
         self.check_peer()
-        return self.peer.get_chromaticity_monitor(self._chromaticity_monitor_name)
+        return self.peer.tool.get(self._chromaticity_monitor_name)
 
     @property
     def sextupoles(self) -> "MagnetArray":

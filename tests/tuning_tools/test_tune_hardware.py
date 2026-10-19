@@ -12,7 +12,7 @@ def test_tune():
 
     # Build tune response matrix (hardware units)
 
-    tune_monitor = sr.design.get_betatron_tune_monitor("BETATRON_TUNE")
+    tune_monitor = sr.design.diagnostic.get("BETATRON_TUNE")
     tune = tune_monitor.tune.get()
     print(tune)
     tunemat = np.zeros((len(quadForTuneDesign), 2))

@@ -38,6 +38,18 @@ class Sextupole(Magnet, DynamicValidation):
     See Also
     --------
     Magnet : Base class listing the strength and hardware accessors.
+
+    Configuration
+    -------------
+    The model can be defined inline or in a separate file. See
+    :mod:`pyaml.magnet.model` and its subclasses for model configuration.
+
+    .. code-block:: yaml
+
+        - type: pyaml.magnet.sextupole
+          name: SEXTUPOLE_NAME
+          lattice_names: LATTICE_SEXTUPOLE_NAME
+          model: path/to/magnet_model.yaml
     """
 
     polynom = PolynomInfo("PolynomB", 2)
