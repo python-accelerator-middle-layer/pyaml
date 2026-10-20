@@ -143,12 +143,12 @@ def test_included_files_and_nested_templates_share_registry(template_config_root
                     "parameters": ["name"],
                     "config": {
                         "device": "${template:device,{name}}",
-                        "model": "{name}.json",
+                        "model": "${include:{name}.json}",
                         "host": "${env:PYAML_TEST_HOST}",
                     },
                 }
             ],
-            "definitions": "definitions.yaml",
+            "definitions": "${include:definitions.yaml}",
             "result": "${template:wrapper,Q1}",
         },
     )
