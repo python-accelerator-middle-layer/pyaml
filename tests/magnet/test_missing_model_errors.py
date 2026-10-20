@@ -4,12 +4,11 @@ from pyaml import PyAMLException
 from pyaml.magnet.hcorrector import HCorrector
 
 
-@pytest.mark.parametrize(
-    ("accessor", "unit"),
-    [("strength", "physics"), ("hardware", "hardware")],
-)
-def test_missing_model_error_names_magnet_without_repr_recursion(accessor, unit):
+def test_missing_model_errors_name_magnet_without_formatting_it():
     magnet = HCorrector("CH1").attach(object(), strength=None, hardware=None)
 
-    with pytest.raises(PyAMLException, match=f"CH1 has no model that supports {unit} units"):
-        getattr(magnet, accessor)
+    with pytest.raises(PyAMLException, match="CH1 has no model that supports physics units"):
+        magnet.strength
+
+    with pytest.raises(PyAMLException, match="CH1 has no model that supports hardware units"):
+        magnet.hardware
