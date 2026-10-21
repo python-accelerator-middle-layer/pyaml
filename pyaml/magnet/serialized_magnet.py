@@ -118,7 +118,9 @@ class ReadWriteSerializedStrength(ReadWriteSerializedHardware):
     Read/write access to the average strength of a serialized-magnet family.
 
     Magnet ``i`` of the series has the strength ``k_i = f_i(I)``. The family
-    strength is the average strength ``sum(f_i(I)) / N``.
+    strength is the average strength ``sum(p_i * f_i(I)) / N``, each strength being
+    taken with the polarity of the first magnet (``p_i = -1`` for a magnet wired in
+    reverse, ``+1`` otherwise).
 
     A single strength value for the whole family is only defined when every magnet has the same function: for a
     series mixing functions (e.g. quadrupoles and sextupoles), use the strength of each magnet instead.
@@ -227,7 +229,17 @@ class ReadWriteSerializedHardwareArray(abstract.ReadWriteFloatArray):
         ----------
         value : np.ndarray
             Requested hardware value of each magnet, in declaration order.
+
+        Raises
+        ------
+        PyAMLException
+            If ``value`` is not a 1-D sequence holding one value per magnet. A single value for the whole series is
+            written with ``family.hardware``.
         """
+        if np.ndim(value) != 1 or len(value) != len(self._hardwares):
+            raise PyAMLException(
+                f"One hardware value per magnet is expected ({len(self._hardwares)} values), got {np.shape(value)}"
+            )
         self._hardwares[0].set(float(np.mean(value)))
 
     def set_and_wait(self, value: np.ndarray):
@@ -256,9 +268,10 @@ class ReadWriteSerializedStrengthArray(abstract.ReadWriteFloatArray):
     Read/write access to the strength of each magnet of a serialized-magnet family.
 
     Magnet ``i`` of the series has the strength ``k_i = f_i(I)``. Writing the strengths ``k_i`` sets the hardware
-    value ``I`` solving ``sum(f_i(I)) == sum(k_i)``, which is exact when the requested strengths are reachable with
-    one hardware value. Each strength is expressed in the unit of its own magnet, so this works for a series mixing
-    magnet functions.
+    value ``I`` solving ``sum((f_i(I) - k_i) / span_i) == 0``, ``span_i`` being the signed strength range of the
+    excitation curve of magnet ``i``. It is exact when the requested strengths are reachable with one hardware value,
+    and every magnet weighs the same whatever its unit or polarity, so this works for a series mixing magnet functions
+    or polarities.
 
     Parameters
     ----------
@@ -402,12 +415,16 @@ class SerializedMagnets(Element, DynamicValidation):
     Accessor               ``get()``                       ``set(x)``
     ====================== =============================== ==================================================
     ``family.hardware``    ``I``                           write ``I = x``
-    ``family.strength``    average ``sum(f_i(I)) / N``     solve ``sum(f_i(I)) / N = x`` for ``I``, write it
+    ``family.strength``    ``sum(p_i * f_i(I)) / N``       solve ``sum(p_i * f_i(I)) / N = x`` for ``I``, write it
     ``family.hardwares``   ``[I, ..., I]``                 write ``I = mean(x)``
-    ``family.strengths``   ``[f_1(I), ..., f_N(I)]``       solve ``sum(f_i(I)) = sum(x_i)`` for ``I``, write it
+    ``family.strengths``   ``[f_1(I), ..., f_N(I)]``       solve ``sum((f_i(I) - x_i) / span_i) = 0``, write it
     ``magnet[i].hardware`` ``I``                           write ``I = x``, all the magnets follow
     ``magnet[i].strength`` ``k_i = f_i(I)``                write ``I = f_i^-1(x)``, the others follow
     ====================== =============================== ==================================================
+
+    ``p_i`` is ``-1`` for a magnet wired in reverse compared to the first magnet, ``+1`` otherwise. ``span_i`` is the
+    signed strength range of the excitation curve of magnet ``i``, so every magnet weighs the same whatever its unit or
+    polarity (see :meth:`LinearSerializedMagnetModel.compute_hardware_from_strengths`).
 
     ``family.strength`` raises a ``PyAMLException`` for a series mixing magnet functions: a single strength value
     cannot be both, say, a quadrupole and a sextupole strength.

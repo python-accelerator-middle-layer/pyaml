@@ -297,6 +297,8 @@ def test_mixed_function_series_strengths_warn_for_an_inconsistent_request(caplog
     with caplog.at_level("WARNING"):
         family.strengths.set(requested)
 
-    # One power supply: the series gets the hardware value solving sum(f_i(I)) == sum(k_i)
-    assert family.hardware.get() == pytest.approx(family.model.compute_hardware_from_mean_strength(np.mean(requested)))
+    # One power supply: the series gets the hardware value solving sum((f_i(I) - k_i) / span_i) == 0. Both magnets
+    # of this family share the same curve and calibration, so their spans are equal and the obtained strengths
+    # average to the requested ones
+    assert np.mean(family.strengths.get()) == pytest.approx(np.mean(requested))
     assert "Inconsistent strengths" in caplog.text
