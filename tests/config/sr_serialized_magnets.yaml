@@ -38,6 +38,22 @@ devices:
         file: sr/magnet_models/serialized_strength.csv
       powerconverter: srmag/ps-corr-sh1/c01-a-ch1/current
   - type: pyaml.magnet.serialized_magnet
+    name: mixedFunctionSeries
+    function: [B1, B2]
+    elements:
+      - QF6D-C01
+      - SD1A-C01
+    model:
+      type: pyaml.magnet.linear_serialized_model
+      calibration_factors: 1.0
+      calibration_offsets: 0.0
+      unit: m-1
+      hardware_unit: A
+      curves:
+        type: pyaml.magnet.csvcurve
+        file: sr/magnet_models/serialized_strength.csv
+      powerconverter: srmag/ps-mixed-series/current
+  - type: pyaml.magnet.serialized_magnet
     name: QF1A
     function: B1
     elements:
