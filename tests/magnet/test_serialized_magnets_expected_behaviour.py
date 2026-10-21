@@ -259,3 +259,147 @@ def test_family_hardwares_need_one_value_per_magnet(wrong_value):
     # Step 3: with one value per magnet it works (a single value is written with family.hardware).
     family.hardwares.set([75.0] * family.get_nb_magnets())
     assert family.hardware.get() == pytest.approx(75.0)
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Review of the normalized residual (PR #485): expected behaviours that the current code does not have yet.
+# These tests fail on purpose, to illustrate the cases to discuss.
+# ---------------------------------------------------------------------------------------------------------------------
+
+# The LINEAR curve tabulated up to 200 A instead of 100 A: same magnet, same slope, longer table.
+LINEAR_UP_TO_200 = np.array([[0.0, 0.0], [200.0, 2.0]])
+# The LINEAR curve with one more point at 300 A, on the same straight line: nothing changes below 100 A.
+LINEAR_EXTENDED = np.array([[0.0, 0.0], [100.0, 1.0], [300.0, 3.0]])
+
+TANGO_DUMMY = [{"name": "tango-pyaml", "path": "tests/dummy_cs/tango-pyaml"}]
+
+
+def plateau_series_fragment(calibrations: list[float]) -> dict:
+    """Return a configuration fragment adding a series of two PLATEAU magnets, and an array holding them."""
+    return {
+        "arrays": [{"type": "pyaml.arrays.magnet", "name": "PLATEAU_MAGNETS", "elements": ["QF4A-C10", "QF4B-C10"]}],
+        "devices": [
+            {
+                "type": "pyaml.magnet.serialized_magnet",
+                "name": "plateauSeries",
+                "function": "B1",
+                "elements": ["QF4A-C10", "QF4B-C10"],
+                "model": {
+                    "type": "pyaml.magnet.linear_serialized_model",
+                    "calibration_factors": calibrations,
+                    "calibration_offsets": 0.0,
+                    "unit": "m-1",
+                    "hardware_unit": "A",
+                    "powerconverter": "srmag/ps-plateau/series/current",
+                    "curves": {"type": "pyaml.magnet.inline_curve", "mat": PLATEAU.tolist()},
+                },
+            }
+        ],
+    }
+
+
+def load_with_plateau_series(accelerator_from_fragments, calibrations: list[float]) -> Accelerator:
+    """Load the live test configuration plus a series of two PLATEAU magnets on one power supply."""
+    return accelerator_from_fragments("tests/config/sr_serialized_magnets_cs.yaml", plateau_series_fragment(calibrations))
+
+
+# Point 1: the weight of a magnet must not depend on how far its curve is tabulated
+
+
+@pytest.mark.parametrize(
+    "other_curve",
+    [
+        pytest.param(LINEAR_UP_TO_200, id="same line tabulated up to 200 A"),
+        pytest.param(LINEAR_EXTENDED, id="same line with one more point at 300 A"),
+    ],
+)
+def test_the_compromise_does_not_depend_on_how_far_a_curve_is_tabulated(other_curve):
+    # Step 1: two magnets with the same slope (1.0 at 100 A).
+    #   In the reference series, both curves stop at 100 A.
+    #   In the other series, the second curve is the same straight line, only tabulated further.
+    reference = make_series([LINEAR, LINEAR], calibrations=[1.0, 1.0])
+    other = make_series([LINEAR, other_curve], calibrations=[1.0, 1.0])
+
+    # Step 2: an inconsistent request: magnet 0 alone would need 40 A, magnet 1 alone 60 A.
+    requested = np.array([0.4, 0.6])
+
+    # Step 3: the power-supply current computed from these strengths, for both series.
+    reference_current = reference.compute_hardware_from_strengths(requested)
+    other_current = other.compute_hardware_from_strengths(requested)
+
+    # Expected: the same current (50 A). The two magnets are physically identical, so the end of a table, which
+    # anybody can extend when a curve is measured again, must not change the compromise.
+    assert reference_current == pytest.approx(50.0)
+    assert other_current == pytest.approx(reference_current)
+
+
+# Point 2: on a plateau, writing back the strengths that were read must not move the power supply
+
+
+@pytest.mark.parametrize("current", [85.0, 100.0])
+def test_writing_back_the_strengths_read_on_a_plateau_keeps_the_current(current):
+    # Step 1: two PLATEAU magnets: from 80 A to 110 A the strength stays at 0.8.
+    series = make_series([PLATEAU, PLATEAU], calibrations=[1.0, 1.0])
+
+    # Step 2: the power supply is at `current`, on the plateau. Read the strengths and write them back, as an array
+    #   holding both magnets does.
+    requested = series.compute_strengths([current])
+    new_current = series.compute_hardware_values_partial(np.array([current]), {0: requested[0], 1: requested[1]})[0]
+
+    # Expected: the current does not move. Every current of the plateau gives the requested strengths, and the
+    # present one is among them: there is no reason to move the power supply (today it goes to 95 A).
+    assert new_current == pytest.approx(current)
+
+
+def test_writing_back_the_strength_of_one_magnet_read_on_a_plateau_keeps_the_current():
+    # Step 1: the same two PLATEAU magnets, the power supply at 85 A.
+    series = make_series([PLATEAU, PLATEAU], calibrations=[1.0, 1.0])
+    current = 85.0
+
+    # Step 2: an array holding only magnet 0 writes back the strength it read.
+    requested = series.compute_strengths([current])[0]
+    new_current = series.compute_hardware_values_partial(np.array([current]), {0: requested})[0]
+
+    # Expected: the current does not move (today it goes to 95 A, the middle of the plateau).
+    assert new_current == pytest.approx(current)
+
+
+@pytest.mark.parametrize("accessor", ["family.strengths", "family.strength", "magnet.strength", "array.strengths"])
+@pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
+def test_every_accessor_keeps_the_current_when_writing_back_on_a_plateau(
+    install_test_package, accelerator_from_fragments, accessor
+):
+    # Step 1: in live, a series of two PLATEAU magnets on one power supply, set at 85 A (on the plateau).
+    sr = load_with_plateau_series(accelerator_from_fragments, calibrations=[1.0, 1.0])
+    family = sr.live.serialized_magnet.get("plateauSeries")
+    family.hardware.set(85.0)
+
+    # Step 2: read a strength and write it back, through one accessor.
+    if accessor == "family.strengths":
+        family.strengths.set(family.strengths.get())
+    elif accessor == "family.strength":
+        family.strength.set(family.strength.get())
+    elif accessor == "magnet.strength":
+        magnet = sr.live.magnet.get("QF4A-C10")
+        magnet.strength.set(magnet.strength.get())
+    else:
+        array = sr.live.magnets.get("PLATEAU_MAGNETS")
+        array.strengths.set(array.strengths.get())
+
+    # Expected: the power supply stays at 85 A whatever the accessor. Today it goes to 95 A or 110 A depending on
+    # the accessor, so the same request does not give the same current.
+    assert family.hardware.get() == pytest.approx(85.0)
+
+
+# Point 3: the family strength of a series mixing polarities
+
+
+def test_family_strength_does_not_depend_on_the_order_of_the_magnets():
+    # Step 1: the same two LINEAR magnets, one of them wired in reverse, declared in both orders.
+    declared_one_way = make_series([LINEAR, LINEAR], calibrations=[1.0, -1.0])
+    declared_the_other_way = make_series([LINEAR, LINEAR], calibrations=[-1.0, 1.0])
+
+    # Step 2: read the family strength at 40 A.
+    # Expected: the same value. Swapping two lines of the configuration changes nothing in the machine, so it must
+    # not change the sign of the family strength (today +0.4 one way, -0.4 the other way).
+    assert declared_one_way.compute_mean_strength(40.0) == pytest.approx(declared_the_other_way.compute_mean_strength(40.0))
