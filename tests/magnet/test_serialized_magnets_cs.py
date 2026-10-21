@@ -13,6 +13,20 @@ def _sub_strengths(family: SerializedMagnets, current: float) -> np.ndarray:
     return np.array([family.model.get_sub_model(i).compute_strengths([current])[0] for i in range(family.get_nb_magnets())])
 
 
+# Current range of the excitation curve sr/magnet_models/QF1_strength.csv
+QF1_CURRENT_RANGE = (0.0, 110.0)
+
+
+def _normalized_residual(family: SerializedMagnets, current: float, requested, indices) -> float:
+    """Return sum((f_i(I) - k_i) / span_i) over the requested magnets, span_i being the strength range of their curve."""
+    total = 0.0
+    for idx, strength in zip(indices, requested, strict=True):
+        model = family.model.get_sub_model(idx)
+        span = model.compute_strengths([QF1_CURRENT_RANGE[1]])[0] - model.compute_strengths([QF1_CURRENT_RANGE[0]])[0]
+        total += (model.compute_strengths([current])[0] - strength) / span
+    return total
+
+
 @pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
 def test_serialized_magnets_attach_to_control_system(install_test_package):
     sr: Accelerator = Accelerator.load(CONFIG)
@@ -184,9 +198,8 @@ def test_array_with_inconsistent_magnets_of_a_series(install_test_package, mode,
     strengths[:4] = requested
     with caplog.at_level("WARNING"):
         array.strengths.set(strengths)
-    # Every magnet of QF1A is in the array: the power supply gets the I solving sum(f_i(I)) / N == mean(k_i)
-    expected = qf1a.model.compute_hardware_from_mean_strength(np.mean(requested))
-    assert qf1a.hardware.get() == pytest.approx(expected)
+    # Every magnet of QF1A is in the array: the power supply gets the I solving sum((f_i(I) - k_i) / span_i) == 0
+    assert _normalized_residual(qf1a, qf1a.hardware.get(), requested, range(4)) == pytest.approx(0.0, abs=1e-9)
     assert qd2a.hardware.get() == pytest.approx(20.0)
     assert "Inconsistent strengths" in caplog.text
 
@@ -205,11 +218,10 @@ def test_array_with_part_of_a_series_drives_the_series_from_the_requested_magnet
 
     array.strengths.set(requested)
 
-    # Only magnets 1 and 2 define I: f_1(I) + f_2(I) == 0.78 + 0.82. Magnets 0 and 3 follow as f_j(I)
+    # Only magnets 1 and 2 define I: sum((f_i(I) - k_i) / span_i) == 0 over them. Magnets 0 and 3 follow as f_j(I)
     current = family.hardware.get()
-    reached = _sub_strengths(family, current)
-    assert np.mean(reached[[1, 2]]) == pytest.approx(np.mean(requested))
-    assert np.allclose(family.strengths.get(), reached)
+    assert _normalized_residual(family, current, requested, [1, 2]) == pytest.approx(0.0, abs=1e-9)
+    assert np.allclose(family.strengths.get(), _sub_strengths(family, current))
 
 
 @pytest.mark.parametrize("mode", MODES)
@@ -244,7 +256,7 @@ def test_family_strengths_and_hardwares_read_every_magnet(install_test_package, 
 
 @pytest.mark.parametrize("mode", MODES)
 @pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
-def test_family_strengths_set_solves_the_average_strength(install_test_package, mode, caplog):
+def test_family_strengths_set_balances_the_normalized_errors(install_test_package, mode, caplog):
     sr: Accelerator = Accelerator.load(CONFIG)
     family = _family(sr, mode)
     family.hardware.set(80.0)
@@ -253,9 +265,9 @@ def test_family_strengths_set_solves_the_average_strength(install_test_package, 
     with caplog.at_level("WARNING"):
         family.strengths.set(requested)
 
-    # One power supply: the series gets the I solving sum(f_i(I)) / N == mean(k_i)
-    assert family.hardware.get() == pytest.approx(family.model.compute_hardware_from_mean_strength(np.mean(requested)))
-    assert family.strength.get() == pytest.approx(np.mean(requested))
+    # One power supply: the series gets the I solving sum((f_i(I) - k_i) / span_i) == 0
+    current = family.hardware.get()
+    assert _normalized_residual(family, current, requested, range(4)) == pytest.approx(0.0, abs=1e-9)
     # QF1A has a different calibration factor per magnet: these strengths cannot all be reached with one current
     assert "Inconsistent strengths" in caplog.text
 
