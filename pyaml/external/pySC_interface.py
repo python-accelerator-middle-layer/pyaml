@@ -6,12 +6,13 @@ operations expected by pySC while using PyAML element-holder accessors.
 """
 
 import time
-from typing import TYPE_CHECKING, Optional, Tuple
+from typing import TYPE_CHECKING, Callable, Optional, Tuple
 
 import numpy as np
 
 if TYPE_CHECKING:
     from ..common.holders.element_holder import ElementHolder
+from ..common.constants import Action
 from ..common.exception import PyAMLException
 
 
@@ -44,12 +45,14 @@ class pySCInterface:
 
     set_wait_time: float = 0
     read_wait_time: float = 0
+    orbits_to_average: int = 1
 
     def __init__(
         self,
         element_holder: "ElementHolder",
         bpm_array_name: str,
         rf_plant_name: Optional[str] = None,
+        callback: Optional[Callable] = None,
     ):
         """
         Initialize a pySC adapter from a PyAML element holder.
@@ -64,11 +67,23 @@ class pySCInterface:
         else:
             self.rf_plant = None
 
+        self._callback = callback
+
     def get_orbit(self) -> Tuple[np.array, np.array]:
         """Return horizontal and vertical orbit readings from the BPM array."""
+        self.send_callback(Action.BEFORE_MEASURE, {})
         time.sleep(self.read_wait_time)
         positions = self.bpm_array.positions.get()
-        return positions[:, 0], positions[:, 1]
+        x = positions[:, 0]
+        y = positions[:, 1]
+
+        for _ in range(1, self.orbits_to_average):
+            self.send_callback(Action.BEFORE_BPM_READING, {})
+            time.sleep(self.read_wait_time)
+            positions = self.bpm_array.positions.get()
+            x += positions[:, 0] / self.orbits_to_average
+            y += positions[:, 1] / self.orbits_to_average
+        return x, y
 
     def get(self, name: str) -> float:
         """
@@ -133,3 +148,49 @@ class pySCInterface:
         self.rf_plant.frequency.set(value)
         time.sleep(self.set_wait_time)
         return
+
+    # TODO: this function is copied from MeasurementTool class, to be generalized?
+    def send_callback(self, action: Action, cb_data: dict, raiseException: bool = True):
+        """
+        Notify the caller about measurement progress.
+
+        If the registered callback returns ``False``, the scan is aborted by
+        raising ``KeyboardInterrupt`` when ``raiseException`` is ``True``.
+        The measurement tool adds its mode and source to ``cb_data`` before
+        invoking the callback.
+        Callback example:
+
+        .. code-block:: python
+
+            def callback(action: Action, data: dict):
+                print(f"{action}, data:{data}")
+                return True
+
+            # Measure a tune response matrix using the above callback
+            sr.design.tool.trm.measure(callback=callback)
+
+        Parameters
+        ----------
+        action : Action
+          Measurement lifecycle event.
+
+        cb_data : dict
+          Mutable event data passed to the callback.
+        raiseException : bool, optional
+          Whether a callback rejection should raise ``KeyboardInterrupt``.
+
+        Returns
+        -------
+        bool
+            Callback result, or ``True`` when no callback is registered.
+        """
+        ok = True
+        if self._callback is not None:
+            # Add source and peer
+            cb_data["mode"] = f"{self.attached_to()}"
+            cb_data["source"] = self
+            ok = self._callback(action, cb_data)
+        if not ok and raiseException:
+            # Abort, same as ctrl+C
+            raise KeyboardInterrupt
+        return ok

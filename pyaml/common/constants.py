@@ -37,3 +37,5 @@ class Action(Enum):
     "Triggered immediately after taking a measurement."
     INIT = 3
     "Triggered once before the measurement starts"
+    BEFORE_BPM_READING = 4
+    "Triggered immediately before taking a measurement."

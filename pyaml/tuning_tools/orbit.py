@@ -8,7 +8,7 @@ and applies horizontal, vertical, and optional RF corrections.
 import logging
 from dataclasses import asdict
 from pathlib import Path
-from typing import Literal, Optional, Union
+from typing import Callable, Literal, Optional, Union
 
 import numpy as np
 from pySC import ResponseMatrix as pySC_ResponseMatrix
@@ -260,6 +260,8 @@ class Orbit(TuningTool, DynamicValidation):
         reference: Optional[np.ndarray] = None,
         rf: bool = False,
         virtual_target: Optional[float] = None,
+        orbits_to_average: int = 1,
+        callback: Optional[Callable] = None,
     ):
         """
         Perform orbit correction using the configured response matrix and corrector
@@ -307,6 +309,8 @@ class Orbit(TuningTool, DynamicValidation):
         interface = pySCInterface(
             element_holder=self.peer,
             bpm_array_name=self.bpm_array_name,
+            callback=callback,
+            orbits_to_average=orbits_to_average,
         )
 
         if singular_values_h is not None:
