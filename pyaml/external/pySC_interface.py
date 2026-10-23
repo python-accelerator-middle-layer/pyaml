@@ -58,6 +58,9 @@ class pySCInterface:
         """
         Initialize a pySC adapter from a PyAML element holder.
         """
+        if not isinstance(orbits_to_average, (int, np.integer)) or orbits_to_average < 1:
+            raise ValueError("orbits_to_average must be a positive integer.")
+
         self.element_holder = element_holder
 
         self.bpm_array = element_holder.diagnostic.bpms.get(bpm_array_name)
