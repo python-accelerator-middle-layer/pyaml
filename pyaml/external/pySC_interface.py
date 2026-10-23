@@ -53,6 +53,7 @@ class pySCInterface:
         bpm_array_name: str,
         rf_plant_name: Optional[str] = None,
         callback: Optional[Callable] = None,
+        orbits_to_average: int = 1,
     ):
         """
         Initialize a pySC adapter from a PyAML element holder.
@@ -68,6 +69,7 @@ class pySCInterface:
             self.rf_plant = None
 
         self._callback = callback
+        self.orbits_to_average = orbits_to_average
 
     def get_orbit(self) -> Tuple[np.array, np.array]:
         """Return horizontal and vertical orbit readings from the BPM array."""
