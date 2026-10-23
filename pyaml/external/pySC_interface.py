@@ -80,8 +80,8 @@ class pySCInterface:
         self.send_callback(Action.BEFORE_BPM_READING, {})
         time.sleep(self.read_wait_time)
         positions = self.bpm_array.positions.get()
-        x = positions[:, 0]
-        y = positions[:, 1]
+        x = positions[:, 0] / self.orbits_to_average
+        y = positions[:, 1] / self.orbits_to_average
 
         for _ in range(1, self.orbits_to_average):
             self.send_callback(Action.BEFORE_BPM_READING, {})
