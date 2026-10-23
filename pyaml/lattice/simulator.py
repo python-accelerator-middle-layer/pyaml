@@ -16,6 +16,7 @@ from ..common.abstract_aggregator import ScalarAggregator
 from ..common.element import Element, __pyaml_repr__
 from ..common.exception import PyAMLException
 from ..common.holders.element_holder import ElementHolder
+from ..common.switch_element import SwitchElement
 from ..configuration import ROOT
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..lattice.abstract_impl import (
@@ -37,6 +38,7 @@ from ..lattice.abstract_impl import (
     RWSerializedStrength,
     RWStrengthArray,
     RWStrengthScalar,
+    SimulatedBinaryState,
     update_bpm_transform_matrix,
 )
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
@@ -337,6 +339,9 @@ class Simulator(ElementHolder, DynamicValidation):
 
     def _fill_tool(self, tool: TuningTool | MeasurementTool) -> None:
         self.add_tool(tool.attach(self))
+
+    def _fill_switch_element(self, element: SwitchElement) -> None:
+        self._add(self._ALL, element.attach(self, SimulatedBinaryState()))
 
     def _fill_unbound_element(self, element: "UnboundElement") -> None:
         pass

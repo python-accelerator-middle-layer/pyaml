@@ -16,8 +16,10 @@ from ..common.abstract import RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.exception import PyAMLException
 from ..common.holders.element_holder import ElementHolder
+from ..common.switch_element import SwitchElement
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
+    CSBinaryState,
     CSScalarAggregator,
     CSSparseScalarAggregator,
     CSStrengthScalarAggregator,
@@ -275,6 +277,12 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
     def _fill_tool(self, tool: TuningTool | MeasurementTool) -> None:
         self.add_tool(tool.attach(self))
+
+    def _fill_switch_element(self, element: SwitchElement) -> None:
+        device = self.get_device_access(element.device)
+        if device is None:
+            raise PyAMLException(f"{element.name}: switch channel {element.device!r} is unavailable")
+        self._add(self._ALL, element.attach(self, CSBinaryState(device)))
 
     def _fill_unbound_element(self, element: UnboundElement) -> None:
         if self.name() not in element._control_modes:

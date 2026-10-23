@@ -17,12 +17,42 @@ from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
 from ..control.deviceaccess import DeviceAccess
 from ..control.deviceaccesslist import DeviceAccessList
+from ..control.readback_value import Quality, Value
 from ..magnet.magnet import Magnet
 from ..magnet.model import MagnetModel
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
 
 # ------------------------------------------------------------------------------
+
+
+class CSBinaryState(abstract.BinaryState):
+    """
+    Expose one control-system boolean channel with strict readback validation.
+
+    Parameters
+    ----------
+    device : DeviceAccess
+        Writable boolean channel. Its backend owns waiting and timeout behavior.
+    """
+
+    def __init__(self, device: DeviceAccess):
+        self._device = device
+
+    def set_and_wait(self, value: bool) -> None:
+        """Delegate the confirmed write to the backend without fallback or polling."""
+        self._device.set_and_wait(value)
+
+    def readback(self) -> bool:
+        """Return actual boolean readback, rejecting non-VALID quality and non-booleans."""
+        result = self._device.readback()
+        if isinstance(result, Value):
+            if result.quality is not Quality.VALID:
+                raise PyAMLException(f"{self._device.name()}: expected VALID boolean readback, got quality {result.quality}")
+            result = result.value
+        if not isinstance(result, (bool, np.bool_)):
+            raise PyAMLException(f"{self._device.name()}: expected boolean readback, got {type(result).__name__}")
+        return bool(result)
 
 
 def check_range(values: Any, dev_range: Any) -> bool:

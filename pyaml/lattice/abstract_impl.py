@@ -21,6 +21,21 @@ from .polynom_info import PolynomInfo
 # ------------------------------------------------------------------------------
 
 
+class SimulatedBinaryState(abstract.BinaryState):
+    """Maintain an initially disabled boolean state independent of the lattice."""
+
+    def __init__(self):
+        self._enabled = False
+
+    def set_and_wait(self, value: bool) -> None:
+        """Set the simulated state immediately."""
+        self._enabled = value
+
+    def readback(self) -> bool:
+        """Return the simulated boolean state."""
+        return self._enabled
+
+
 def _effective_lengths(elements: list[at.Element]) -> list[float]:
     """
     Return the lengths used to convert between integrated strengths and polynom coefficients.
