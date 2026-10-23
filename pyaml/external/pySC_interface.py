@@ -71,7 +71,7 @@ class pySCInterface:
 
     def get_orbit(self) -> Tuple[np.array, np.array]:
         """Return horizontal and vertical orbit readings from the BPM array."""
-        self.send_callback(Action.BEFORE_MEASURE, {})
+        self.send_callback(Action.BEFORE_BPM_READING, {})
         time.sleep(self.read_wait_time)
         positions = self.bpm_array.positions.get()
         x = positions[:, 0]
