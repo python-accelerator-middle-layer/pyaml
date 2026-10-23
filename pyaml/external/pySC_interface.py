@@ -28,6 +28,17 @@ class pySCInterface:
         Name of the BPM array used for orbit readback.
     rf_plant_name : Optional[str]
         Optional RF plant name, required for RF-related pySC operations.
+    callback : Callable, optional
+        Called as ``callback(action, data)`` with ``Action.BEFORE_BPM_READING``
+        before each BPM acquisition.  Return ``True`` to continue;
+        a false value raises ``KeyboardInterrupt``.
+    orbits_to_average : int, default 1
+        Positive number of BPM acquisitions to average per ``get_orbit()`` call.
+
+    Raises
+    ------
+    ValueError
+        If ``orbits_to_average`` is not a positive integer.
 
     Methods
     -------
@@ -83,7 +94,11 @@ class pySCInterface:
         return "None" if self.peer is None else f"{self.peer.__class__.__name__}:{self.peer.name()}"
 
     def get_orbit(self) -> Tuple[np.array, np.array]:
-        """Return horizontal and vertical orbit readings from the BPM array."""
+        """Return mean horizontal and vertical orbits over ``orbits_to_average`` reads.
+
+        Invoke ``Action.BEFORE_BPM_READING`` before each acquisition and its
+        ``read_wait_time`` delay, including each sample used in the average.
+        """
         self.send_callback(Action.BEFORE_BPM_READING, {})
         time.sleep(self.read_wait_time)
         positions = self.bpm_array.positions.get()
@@ -179,8 +194,8 @@ class pySCInterface:
                 print(f"{action}, data:{data}")
                 return True
 
-            # Measure a tune response matrix using the above callback
-            sr.design.tool.trm.measure(callback=callback)
+            # Correct the orbit using the above callback
+            sr.design.tool.orbit.correct(callback=callback)
 
         Parameters
         ----------

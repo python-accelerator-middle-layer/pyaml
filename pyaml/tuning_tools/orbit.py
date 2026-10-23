@@ -301,6 +301,21 @@ class Orbit(TuningTool, DynamicValidation):
         virtual_target : float, optional
             Target sum of horizontal corrector changes, in radians. Defaults to
             the configured value.
+        orbits_to_average : int, default 1
+            Positive number of BPM acquisitions to average for each orbit read
+            used to calculate the correction.
+        callback : Callable, optional
+            Called as ``callback(action, data)`` with ``Action.BEFORE_BPM_READING``
+            before each BPM acquisition, including each sample in an average.
+            Return ``True`` to continue; a false value raises ``KeyboardInterrupt``
+            and aborts correction before applying trims.
+
+        Raises
+        ------
+        ValueError
+            If ``orbits_to_average`` is not a positive integer.
+        KeyboardInterrupt
+            If the callback requests an abort.
         """
 
         if self._pySC_response_matrix is None:
