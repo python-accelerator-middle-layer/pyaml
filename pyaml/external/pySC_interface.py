@@ -75,6 +75,10 @@ class pySCInterface:
     def peer(self) -> "ElementHolder":
         return self.element_holder
 
+    def attached_to(self) -> str:
+        """Return the peer type and name, or ``"None"`` when unattached."""
+        return "None" if self.peer is None else f"{self.peer.__class__.__name__}:{self.peer.name()}"
+
     def get_orbit(self) -> Tuple[np.array, np.array]:
         """Return horizontal and vertical orbit readings from the BPM array."""
         self.send_callback(Action.BEFORE_BPM_READING, {})
@@ -193,8 +197,7 @@ class pySCInterface:
         ok = True
         if self._callback is not None:
             # Add source and peer
-            # cb_data["mode"] = f"{self.attached_to()}"
-            cb_data["mode"] = ""
+            cb_data["mode"] = self.attached_to()
             cb_data["source"] = self
             ok = self._callback(action, cb_data)
         if not ok and raiseException:
