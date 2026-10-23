@@ -58,8 +58,14 @@ class Accelerator(DynamicValidation):
     ----------
     live
         Control system named ``live``, if one is configured.
+    virtual
+        Control system named ``virtual`` for the twin, if one is configured.
     design
         Simulator named ``design``, if one is configured.
+    model
+        Simulator named ``model``, if one is configured.
+    errors
+        Simulator named ``errors``, if one is configured.
     yellow_pages
         Discovery service over the arrays, tools and diagnostics of every mode.
 
@@ -91,9 +97,11 @@ class Accelerator(DynamicValidation):
     Notes
     -----
     Control systems and simulators are registered by name and are exposed as
-    attributes of the accelerator instance. The control system named ``"live"``
-    and the simulator named ``"design"`` are additionally available through the
-    :attr:`live` and :attr:`design` properties.
+    attributes of the accelerator instance. The control systems named ``"live"``
+    and ``"virtual"`` and the simulators named ``"design"``, ``"model"`` and
+    ``"errors"`` are available through explicitly declared properties. These
+    properties return ``None`` when the corresponding mode is not configured.
+    The ``model`` and ``design`` modes are independent; neither aliases the other.
     """
 
     __pyaml_repr_exclude__ = ("description", "yellow_pages")
@@ -127,8 +135,11 @@ class Accelerator(DynamicValidation):
         self._arrays = arrays
         self._devices = devices
 
-        self.__design = None
-        self.__live = None
+        self.__design: Simulator | None = None
+        self.__model: Simulator | None = None
+        self.__live: ControlSystem | None = None
+        self.__errors: Simulator | None = None
+        self.__virtual: ControlSystem | None = None
 
         self._controls: dict[str, ElementHolder] = {}
         self._simulators: dict[str, ElementHolder] = {}
@@ -137,6 +148,8 @@ class Accelerator(DynamicValidation):
             for c in controls:
                 if c.name() == "live":
                     self.__live = c
+                elif c.name() == "virtual":
+                    self.__virtual = c
                 else:
                     # Add as dynamic attribute
                     setattr(self, c.name(), c)
@@ -148,6 +161,10 @@ class Accelerator(DynamicValidation):
             for s in simulators:
                 if s.name() == "design":
                     self.__design = s
+                elif s.name() == "model":
+                    self.__model = s
+                elif s.name() == "errors":
+                    self.__errors = s
                 else:
                     # Add as dynamic attribute
                     setattr(self, s.name(), s)
@@ -277,28 +294,64 @@ class Accelerator(DynamicValidation):
         return self.description
 
     @property
-    def live(self) -> ControlSystem:
+    def live(self) -> ControlSystem | None:
         """
         Get the live control system.
 
         Returns
         -------
-        ControlSystem
-            The live control system instance
+        ControlSystem | None
+            The live control system instance, or None if not configured.
         """
         return self.__live
 
     @property
-    def design(self) -> Simulator:
+    def virtual(self) -> ControlSystem | None:
+        """
+        Get the virtual control system for the twin.
+
+        Returns
+        -------
+        ControlSystem | None
+            The virtual control system instance, or None if not configured.
+        """
+        return self.__virtual
+
+    @property
+    def design(self) -> Simulator | None:
         """
         Get the design simulator.
 
         Returns
         -------
-        Simulator
-            The design simulator instance
+        Simulator | None
+            The design simulator instance, or None if not configured.
         """
         return self.__design
+
+    @property
+    def model(self) -> Simulator | None:
+        """
+        Get the model simulator.
+
+        Returns
+        -------
+        Simulator | None
+            The model simulator instance, or None if not configured.
+        """
+        return self.__model
+
+    @property
+    def errors(self) -> Simulator | None:
+        """
+        Get the errors simulator.
+
+        Returns
+        -------
+        Simulator | None
+            The errors simulator instance, or None if not configured.
+        """
+        return self.__errors
 
     @property
     def yellow_pages(self) -> YellowPages:
