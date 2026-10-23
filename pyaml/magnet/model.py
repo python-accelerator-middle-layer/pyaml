@@ -34,6 +34,10 @@ class MagnetModel(metaclass=ABCMeta):
         Tells if the model allows to work in hardware unit.
     has_physics()
         Tells if the model allows to work in physics unit.
+    shares_power_supply()
+        Tells if all the strengths of the model are driven by one power supply.
+    compute_hardware_values_partial(current_hardware, strengths_by_index)
+        Compute hardware value(s) when only some strengths are requested.
     """
 
     @abstractmethod
@@ -130,3 +134,41 @@ class MagnetModel(metaclass=ABCMeta):
             True if the model supports physics unit
         """
         return True
+
+    def shares_power_supply(self) -> bool:
+        """
+        Tells if all the strengths of the model are driven by one power supply.
+
+        Returns
+        ----------
+        bool
+            True if the model has a single degree of freedom shared by all its strengths (serialized magnets)
+        """
+        return False
+
+    def compute_hardware_values_partial(
+        self,
+        current_hardware: npt.NDArray[np.float64] | None,
+        strengths_by_index: dict[int, float],
+    ) -> npt.NDArray[np.float64]:
+        """
+        Compute hardware value(s) when only some strengths of the model are requested.
+
+        The strengths that are not requested keep the value computed from the current hardware values.
+
+        Parameters
+        ----------
+        current_hardware : npt.NDArray[np.float64] | None
+            Current hardware values of the model.
+        strengths_by_index : dict[int, float]
+            Requested strengths, indexed by their position in the model.
+
+        Returns
+        -------
+        npt.NDArray[np.float64]
+            Array of hardware values (i.e. currents or voltages).
+        """
+        strengths = self.compute_strengths(current_hardware)
+        for idx, value in strengths_by_index.items():
+            strengths[idx] = value
+        return self.compute_hardware_values(strengths)

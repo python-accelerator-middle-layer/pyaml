@@ -74,8 +74,8 @@ def test_magnet_modification(sr_file):
     print()
     print("Reading strengths from serialized magnets")
 
-    for ii in range(len(sm.strength.elements)):
-        print(element_names[ii], sm.strength.elements[ii].get())
+    for ii, magnet in enumerate(sm.get_magnets()):
+        print(element_names[ii], magnet.strength.get())
 
     print()
     strength0 = sm.strength.get()
@@ -96,8 +96,8 @@ def test_magnet_modification(sr_file):
     print()
     print("Reading strengths from serialized magnets")
 
-    for ii in range(len(sm.strength.elements)):
-        print(element_names[ii], sm.strength.elements[ii].get())
+    for ii, magnet in enumerate(sm.get_magnets()):
+        print(element_names[ii], magnet.strength.get())
 
 
 @pytest.mark.parametrize(
@@ -194,10 +194,11 @@ def test_strength_computation(sr_file):
     sr: Accelerator = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
     sm: SerializedMagnets = sr.design.serialized_magnet.get("QF1A")
     assert sm.get_nb_magnets() == 31
-    sm.strength.set(24.0)
-    assert abs(sm.strength.get() - 24.0) < 1e-3
+    sm.strength.set(0.8)
+    assert abs(sm.strength.get() - 0.8) < 1e-6
 
     magnets_strengths = [m.strength.get() for m in sm.get_magnets()]
     magnets_from_lattice_strengths = get_strengths_from_lattice(sr, sm)
-    assert abs(sum(magnets_from_lattice_strengths) - 24.0) < 1e-3
+    # The family strength is the average strength of the magnets
+    assert abs(np.mean(magnets_from_lattice_strengths) - 0.8) < 1e-6
     assert magnets_strengths == magnets_from_lattice_strengths

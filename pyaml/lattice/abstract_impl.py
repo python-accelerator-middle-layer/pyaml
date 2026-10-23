@@ -277,7 +277,10 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
 class RWSerializedHardware(abstract.ReadWriteFloatScalar):
     """
-    RWSerializedHardware configuration or runtime object.
+    Hardware value of one magnet of a serialized group.
+
+    All the magnets of the group share one power supply: writing the hardware
+    value of one magnet writes it to every magnet of the group.
 
     Parameters
     ----------
@@ -288,18 +291,18 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
 
     Methods
     -------
-    get_element_length()
-        Return the total length of the represented element.
-    get_total_length()
-        Return the total length of the represented elements.
+    index()
+        Return the position of the magnet in the serialized group.
     get()
         Return the current value.
     set(value)
-        Set the current value.
+        Set the current value of the whole serialized group.
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
         Return the value unit.
+    get_model()
+        Return the submodel of the magnet.
     set_magnet_rigidity(brho)
         Set the magnetic rigidity used for conversion.
     """
@@ -310,17 +313,10 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
         """
         self.__elements = elements
         self.__element_index = element_index
-        self.__total_length = 0
-        for e in elements:
-            self.__total_length += e.get_length()
 
-    def get_element_length(self) -> float:
-        """Return the total length of the represented element."""
-        return self.__elements[self.__element_index].get_length()
-
-    def get_total_length(self) -> float:
-        """Return the total length of the represented elements."""
-        return self.__total_length
+    def index(self) -> int:
+        """Return the position of the magnet in the serialized group."""
+        return self.__element_index
 
     # Gets the value
     def get(self) -> float:
@@ -330,7 +326,7 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
     # Sets the value
     def set(self, value: float):
         """
-        Set the current value.
+        Set the current value of the whole serialized group.
 
         Parameters
         ----------
@@ -361,6 +357,10 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
         """Return the value unit."""
         return self.__elements[self.__element_index].unit()
 
+    def get_model(self) -> MagnetModel:
+        """Return the submodel of the magnet."""
+        return self.__elements[self.__element_index].get_model()
+
     def set_magnet_rigidity(self, brho: np.double):
         """
         Set the magnetic rigidity used for conversion.
@@ -375,7 +375,11 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
 
 class RWSerializedStrength(abstract.ReadWriteFloatScalar):
     """
-    RWSerializedStrength configuration or runtime object.
+    Strength of one magnet of a serialized group.
+
+    All the magnets of the group share one power supply. Writing the strength
+    ``x`` of magnet ``i`` sets the shared hardware value to ``I = f_i^-1(x)``,
+    using the submodel of the magnet, and the other magnets follow as ``f_j(I)``.
 
     Parameters
     ----------
@@ -388,10 +392,8 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
 
     Methods
     -------
-    get_element_length()
-        Return the total length of the represented element.
-    get_total_length()
-        Return the total length of the represented elements.
+    index()
+        Return the position of the magnet in the serialized group.
     get()
         Return the current value.
     set(value)
@@ -414,33 +416,17 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         Initialize the RWSerializedStrength.
         """
         self.__element = elements_strength[element_index]
-        self.__elements_strength = elements_strength
         self.__elements_hardware = elements_hardware
         self.__element_index = element_index
-        # The strength is shared between the serialized magnets in proportion to their (effective) length: thick
-        # magnets share by length, thin magnets share equally. Mixing both has no meaningful share rule.
-        thin_flags = [e.is_thin() for e in elements_hardware]
-        if any(thin_flags) and not all(thin_flags):
-            raise PyAMLException(
-                "Serialized magnets must be either all thin (zero length) or all thick; "
-                f"got {sum(thin_flags)} thin out of {len(thin_flags)} magnets"
-            )
-        self.__total_length = 0
-        for e in self.__elements_hardware:
-            self.__total_length += e.get_length()
 
-    def get_element_length(self) -> float:
-        """Return the total length of the represented element."""
-        return self.__element.get_element_length()
-
-    def get_total_length(self) -> float:
-        """Return the total length of the represented elements."""
-        return self.__total_length
+    def index(self) -> int:
+        """Return the position of the magnet in the serialized group."""
+        return self.__element_index
 
     # Gets the value
     def get(self) -> float:
         """Return the current value."""
-        return self.__elements_strength[self.__element_index].get()
+        return self.__element.get()
 
     # Sets the value
     def set(self, value: float):
@@ -452,19 +438,9 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         value : float
             Strength to apply to the magnet, converted to the shared hardware setpoint.
         """
-        elements_values = [value * e.get_length() / self.get_total_length() for e in self.__elements_hardware]
-        self.__element.set(elements_values[self.__element_index])
-
-        # compute the local hardware value
-        hardware_value = self.__elements_hardware[self.__element_index].get()
-
-        # compute the total hardware value
-        total_hardware = hardware_value * self.get_total_length() / self.get_element_length()
-
-        # dispatch this value
-        for index, element in enumerate(self.__elements_hardware):
-            if index != self.__element_index:
-                element.set(total_hardware * element.get_length() / self.get_total_length())
+        model = self.__elements_hardware[self.__element_index].get_model()
+        hardware_value = model.compute_hardware_values([value])[0]
+        [element.set(hardware_value) for element in self.__elements_hardware]
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
