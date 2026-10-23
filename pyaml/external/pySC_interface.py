@@ -71,6 +71,10 @@ class pySCInterface:
         self._callback = callback
         self.orbits_to_average = orbits_to_average
 
+    @property
+    def peer(self) -> "ElementHolder":
+        return self.element_holder
+
     def get_orbit(self) -> Tuple[np.array, np.array]:
         """Return horizontal and vertical orbit readings from the BPM array."""
         self.send_callback(Action.BEFORE_BPM_READING, {})
