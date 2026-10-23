@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Callable, Optional, Tuple
 import numpy as np
 
 if TYPE_CHECKING:
+    from ..common.element import Element
     from ..common.holders.element_holder import ElementHolder
 from ..common.constants import Action
 from ..common.exception import PyAMLException
@@ -34,6 +35,9 @@ class pySCInterface:
         a false value raises ``KeyboardInterrupt``.
     orbits_to_average : int, default 1
         Positive number of BPM acquisitions to average per ``get_orbit()`` call.
+    tool : Element, optional
+        Owning tool passed as callback data ``source``. Defaults to this interface
+        when used without an owning tool.
 
     Raises
     ------
@@ -65,6 +69,7 @@ class pySCInterface:
         rf_plant_name: Optional[str] = None,
         callback: Optional[Callable] = None,
         orbits_to_average: int = 1,
+        tool: Optional["Element"] = None,
     ):
         """
         Initialize a pySC adapter from a PyAML element holder.
@@ -83,6 +88,10 @@ class pySCInterface:
             self.rf_plant = None
 
         self._callback = callback
+        if tool is None:
+            self.tool = self
+        else:
+            self.tool = tool
         self.orbits_to_average = orbits_to_average
 
     @property
@@ -184,8 +193,8 @@ class pySCInterface:
 
         If the registered callback returns ``False``, the scan is aborted by
         raising ``KeyboardInterrupt`` when ``raiseException`` is ``True``.
-        The measurement tool adds its mode and source to ``cb_data`` before
-        invoking the callback.
+        Callback data contains the attached ``mode`` and the owning tool as
+        ``source`` (or this interface when no tool was provided).
         Callback example:
 
         .. code-block:: python
@@ -215,8 +224,8 @@ class pySCInterface:
         ok = True
         if self._callback is not None:
             # Add source and peer
-            cb_data["mode"] = self.attached_to()
-            cb_data["source"] = self
+            cb_data["mode"] = self.tool.attached_to()
+            cb_data["source"] = self.tool
             ok = self._callback(action, cb_data)
         if not ok and raiseException:
             # Abort, same as ctrl+C

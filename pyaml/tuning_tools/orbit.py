@@ -307,6 +307,7 @@ class Orbit(TuningTool, DynamicValidation):
         callback : Callable, optional
             Called as ``callback(action, data)`` with ``Action.BEFORE_BPM_READING``
             before each BPM acquisition, including each sample in an average.
+            Data includes the attached ``mode`` and this tool as ``source``.
             Return ``True`` to continue; a false value raises ``KeyboardInterrupt``
             and aborts correction before applying trims.
 
@@ -325,6 +326,7 @@ class Orbit(TuningTool, DynamicValidation):
             element_holder=self.peer,
             bpm_array_name=self.bpm_array_name,
             callback=callback,
+            tool=self,
             orbits_to_average=orbits_to_average,
         )
 
