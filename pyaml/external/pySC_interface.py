@@ -189,7 +189,8 @@ class pySCInterface:
         ok = True
         if self._callback is not None:
             # Add source and peer
-            cb_data["mode"] = f"{self.attached_to()}"
+            # cb_data["mode"] = f"{self.attached_to()}"
+            cb_data["mode"] = ""
             cb_data["source"] = self
             ok = self._callback(action, cb_data)
         if not ok and raiseException:
