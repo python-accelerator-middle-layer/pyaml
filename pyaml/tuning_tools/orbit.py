@@ -8,7 +8,7 @@ and applies horizontal, vertical, and optional RF corrections.
 import logging
 from dataclasses import asdict
 from pathlib import Path
-from typing import Literal, Optional, Union
+from typing import Callable, Literal, Optional, Union
 
 import numpy as np
 from pySC import ResponseMatrix as pySC_ResponseMatrix
@@ -260,6 +260,8 @@ class Orbit(TuningTool, DynamicValidation):
         reference: Optional[np.ndarray] = None,
         rf: bool = False,
         virtual_target: Optional[float] = None,
+        orbits_to_average: int = 1,
+        callback: Optional[Callable] = None,
     ):
         """
         Perform orbit correction using the configured response matrix and corrector
@@ -299,6 +301,22 @@ class Orbit(TuningTool, DynamicValidation):
         virtual_target : float, optional
             Target sum of horizontal corrector changes, in radians. Defaults to
             the configured value.
+        orbits_to_average : int, default 1
+            Positive number of BPM acquisitions to average for each orbit read
+            used to calculate the correction.
+        callback : Callable, optional
+            Called as ``callback(action, data)`` with ``Action.BEFORE_BPM_READING``
+            before each BPM acquisition, including each sample in an average.
+            Data includes the attached ``mode`` and this tool as ``source``.
+            Return ``True`` to continue; a false value raises ``KeyboardInterrupt``
+            and aborts correction before applying trims.
+
+        Raises
+        ------
+        ValueError
+            If ``orbits_to_average`` is not a positive integer.
+        KeyboardInterrupt
+            If the callback requests an abort.
         """
 
         if self._pySC_response_matrix is None:
@@ -307,6 +325,9 @@ class Orbit(TuningTool, DynamicValidation):
         interface = pySCInterface(
             element_holder=self.peer,
             bpm_array_name=self.bpm_array_name,
+            callback=callback,
+            tool=self,
+            orbits_to_average=orbits_to_average,
         )
 
         if singular_values_h is not None:
