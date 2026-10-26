@@ -59,7 +59,7 @@ class Accelerator(DynamicValidation):
     live
         Control system named ``live``, if one is configured.
     virtual
-        Control system named ``virtual`` for the twin, if one is configured.
+        Control system named ``virtual`` for the virtual accelerator (digital twin), if one is configured.
     design
         Simulator named ``design``, if one is configured.
     model
