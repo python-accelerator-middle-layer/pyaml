@@ -2,6 +2,8 @@ import numpy as np
 import pytest
 
 from pyaml.accelerator import Accelerator
+from pyaml.common.exception import PyAMLException
+from pyaml.diagnostics.bpm.bpm import BPM
 
 
 def test_simulator_bpm_tilt():
@@ -67,3 +69,13 @@ def test_simulator_bpm_position_with_bad_corrector_strength():
     for bpm in [bpm1, bpm_simple, bpm3]:
         assert bpm.positions.get()[0] != 0.0
         assert bpm.positions.get()[1] != 0.0
+
+
+def test_unattached_bpm_errors_name_bpm_without_formatting_it():
+    bpm = BPM(name="BPM1")
+
+    for accessor in ("positions", "offset", "tilt"):
+        with pytest.raises(PyAMLException, match=f"BPM1 has no attached {accessor}"):
+            getattr(bpm, accessor)
+
+    assert "BPM1" in repr(bpm)

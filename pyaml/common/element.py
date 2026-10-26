@@ -62,11 +62,13 @@ def _class_exclusions(obj) -> set[str]:
     return exclusions
 
 
-def _properties(obj) -> dict[str, Any]:
+def _properties(obj, exclusions: set[str] = frozenset()) -> dict[str, Any]:
+    # Excluded properties are skipped before evaluation: a getter that raises
+    # with str(self) in its message would otherwise re-enter the repr.
     values: dict[str, Any] = {}
     for cls in reversed(type(obj).__mro__):
         for name, descriptor in vars(cls).items():
-            if name.startswith("_") or not isinstance(descriptor, property):
+            if name.startswith("_") or name in exclusions or not isinstance(descriptor, property):
                 continue
             try:
                 values[name] = getattr(obj, name)
@@ -75,7 +77,7 @@ def _properties(obj) -> dict[str, Any]:
     return values
 
 
-def _fields(obj) -> dict[str, Any]:
+def _fields(obj, exclusions: set[str] = frozenset()) -> dict[str, Any]:
     custom_fields = getattr(obj, "_pyaml_repr_fields", None)
     if custom_fields is not None:
         try:
@@ -83,7 +85,7 @@ def _fields(obj) -> dict[str, Any]:
         except Exception as error:
             return {"value": _unavailable(error)}
 
-    values = _properties(obj)
+    values = _properties(obj, exclusions)
     for name, value in vars(obj).items():
         if not name.startswith("_"):
             values.setdefault(name, value)
@@ -158,10 +160,10 @@ def _format_object(obj, depth: int, active: set[int], extra_exclusions: set[str]
 
     active.add(id(obj))
     try:
-        values = _fields(obj)
         exclusions = _class_exclusions(obj)
         if extra_exclusions:
             exclusions.update(extra_exclusions)
+        values = _fields(obj, exclusions)
         parts = []
         for name, value in values.items():
             if name.startswith("_") or name in exclusions or callable(value):
