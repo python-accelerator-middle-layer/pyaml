@@ -25,3 +25,18 @@ def test_bba():
     assert np.abs(bba.v_offset() + 15e-6) < 1e-6
     assert np.abs(bba.h_offset_error() - 3.425616879733572e-07) < 1e-10
     assert np.abs(bba.v_offset_error() - 2.593196843945284e-07) < 1e-10
+
+
+@pytest.mark.parametrize("bipolar", [False, True])
+def test_bba_bipolar(bipolar):
+    sr = Accelerator.load("tests/config/EBSOrbit.yaml")
+    SR = sr.design
+    SR.diagnostic.bpm.get("BPM_C04-04").offset.set([20e-6, -15e-6])
+
+    bba = SR.tool.get("BBA-BPM_C04-04")
+    assert bba.bipolar is False
+    k1 = bba.quadrupole.strength.get()
+    bba.measure(bipolar=bipolar)
+    assert np.abs(bba.h_offset() - 20e-6) < 1e-6
+    assert np.abs(bba.v_offset() + 15e-6) < 1e-6
+    assert bba.quadrupole.strength.get() == pytest.approx(k1)
