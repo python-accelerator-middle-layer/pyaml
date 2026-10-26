@@ -118,9 +118,10 @@ class ReadWriteSerializedStrength(ReadWriteSerializedHardware):
     Read/write access to the average strength of a serialized-magnet family.
 
     Magnet ``i`` of the series has the strength ``k_i = f_i(I)``. The family
-    strength is the average strength ``sum(p_i * f_i(I)) / N``, each strength being
-    taken with the polarity of the first magnet (``p_i = -1`` for a magnet wired in
-    reverse, ``+1`` otherwise).
+    strength is the average strength ``sum(p_i * f_i(I)) / N``, ``p_i`` being the
+    polarity of magnet ``i`` declared in the model (``-1`` for a magnet wired in
+    reverse, ``+1`` otherwise). On a plateau, the present hardware value is kept
+    when it already gives the requested strength.
 
     A single strength value for the whole family is only defined when every magnet has the same function: for a
     series mixing functions (e.g. quadrupoles and sextupoles), use the strength of each magnet instead.
@@ -171,7 +172,7 @@ class ReadWriteSerializedStrength(ReadWriteSerializedHardware):
             Average strength of the series.
         """
         self._check_homogeneous()
-        self._hardwares[0].set(self._model.compute_hardware_from_mean_strength(value))
+        self._hardwares[0].set(self._model.compute_hardware_from_mean_strength(value, self._hardwares[0].get()))
 
     def unit(self) -> str:
         """Return the physical strength unit."""
@@ -268,10 +269,11 @@ class ReadWriteSerializedStrengthArray(abstract.ReadWriteFloatArray):
     Read/write access to the strength of each magnet of a serialized-magnet family.
 
     Magnet ``i`` of the series has the strength ``k_i = f_i(I)``. Writing the strengths ``k_i`` sets the hardware
-    value ``I`` solving ``sum((f_i(I) - k_i) / span_i) == 0``, ``span_i`` being the signed strength range of the
-    excitation curve of magnet ``i``. It is exact when the requested strengths are reachable with one hardware value,
-    and every magnet weighs the same whatever its unit or polarity, so this works for a series mixing magnet functions
-    or polarities.
+    value ``I`` solving ``sum((f_i(I) - k_i) / span_i) == 0``, ``span_i`` being the signed strength range of magnet
+    ``i`` on the current range shared by all the excitation curves. It is exact when the requested strengths are
+    reachable with one hardware value, and every magnet weighs the same whatever its unit or polarity, so this works for
+    a series mixing magnet functions or polarities. On a plateau, the present hardware value is kept when it already
+    gives the requested strengths.
 
     Parameters
     ----------
@@ -320,7 +322,7 @@ class ReadWriteSerializedStrengthArray(abstract.ReadWriteFloatArray):
         value : np.ndarray
             Requested strength of each magnet, in declaration order.
         """
-        self._hardwares[0].set(self._model.compute_hardware_from_strengths(value))
+        self._hardwares[0].set(self._model.compute_hardware_from_strengths(value, self._hardwares[0].get()))
 
     def set_and_wait(self, value: np.ndarray):
         """
@@ -419,12 +421,15 @@ class SerializedMagnets(Element, DynamicValidation):
     ``family.hardwares``   ``[I, ..., I]``                 write ``I = mean(x)``
     ``family.strengths``   ``[f_1(I), ..., f_N(I)]``       solve ``sum((f_i(I) - x_i) / span_i) = 0``, write it
     ``magnet[i].hardware`` ``I``                           write ``I = x``, all the magnets follow
-    ``magnet[i].strength`` ``k_i = f_i(I)``                write ``I = f_i^-1(x)``, the others follow
+    ``magnet[i].strength`` ``k_i = f_i(I)``                solve ``f_i(I) = x``, write it, the others follow
     ====================== =============================== ==================================================
 
-    ``p_i`` is ``-1`` for a magnet wired in reverse compared to the first magnet, ``+1`` otherwise. ``span_i`` is the
-    signed strength range of the excitation curve of magnet ``i``, so every magnet weighs the same whatever its unit or
-    polarity (see :meth:`LinearSerializedMagnetModel.compute_hardware_from_strengths`).
+    ``p_i`` is the polarity of magnet ``i`` declared in the model, ``-1`` for a magnet wired in reverse and ``+1``
+    otherwise. ``span_i`` is the signed strength range of magnet ``i`` on the current range shared by all the excitation
+    curves, so every magnet weighs the same whatever its unit or polarity (see
+    :meth:`LinearSerializedMagnetModel.compute_hardware_from_strengths`). Every strength accessor solves with the model
+    of the series: on a plateau, where several hardware values give the requested strengths, the present hardware value
+    is kept when it is one of them, so writing back the strengths that were read does not move the power supply.
 
     ``family.strength`` raises a ``PyAMLException`` for a series mixing magnet functions: a single strength value
     cannot be both, say, a quadrupole and a sextupole strength.
