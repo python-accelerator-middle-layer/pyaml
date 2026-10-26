@@ -118,7 +118,13 @@ class ReadWriteSerializedStrength(ReadWriteSerializedHardware):
     Read/write access to the average strength of a serialized-magnet family.
 
     Magnet ``i`` of the series has the strength ``k_i = f_i(I)``. The family
-    strength is the average strength ``sum(f_i(I)) / N``.
+    strength is the average strength ``sum(p_i * f_i(I)) / N``, ``p_i`` being the
+    polarity of magnet ``i`` declared in the model (``-1`` for a magnet wired in
+    reverse, ``+1`` otherwise). On a plateau, the present hardware value is kept
+    when it already gives the requested strength.
+
+    A single strength value for the whole family is only defined when every magnet has the same function: for a
+    series mixing functions (e.g. quadrupoles and sextupoles), use the strength of each magnet instead.
 
     Parameters
     ----------
@@ -126,6 +132,8 @@ class ReadWriteSerializedStrength(ReadWriteSerializedHardware):
         Per-magnet hardware accessors. Writing one of them moves the whole series.
     model : MagnetModel
         Serialized magnet model converting between average strength and hardware value.
+    homogeneous : bool, optional
+        Whether every magnet of the series has the same function. Default is ``True``.
 
     Methods
     -------
@@ -135,10 +143,23 @@ class ReadWriteSerializedStrength(ReadWriteSerializedHardware):
         Set the hardware value giving the requested average strength.
     unit()
         Return the physical strength unit.
+
+    Raises
+    ------
+    PyAMLException
+        On ``get()`` or ``set()`` when the series mixes magnet functions.
     """
+
+    def __init__(self, hardwares: list[abstract.ReadWriteFloatScalar], model: MagnetModel, homogeneous: bool = True):
+        """
+        Initialize a family strength accessor for serialized magnets.
+        """
+        super().__init__(hardwares, model)
+        self._homogeneous = homogeneous
 
     def get(self) -> float:
         """Return the average strength of the series."""
+        self._check_homogeneous()
         return self._model.compute_mean_strength(self._hardwares[0].get())
 
     def set(self, value: float):
@@ -150,11 +171,178 @@ class ReadWriteSerializedStrength(ReadWriteSerializedHardware):
         value : float
             Average strength of the series.
         """
-        self._hardwares[0].set(self._model.compute_hardware_from_mean_strength(value))
+        self._check_homogeneous()
+        self._hardwares[0].set(self._model.compute_hardware_from_mean_strength(value, self._hardwares[0].get()))
 
     def unit(self) -> str:
         """Return the physical strength unit."""
         return self._model.get_strength_units()[0]
+
+    def _check_homogeneous(self):
+        if not self._homogeneous:
+            raise PyAMLException(
+                "A single strength is not defined for a serialized family mixing magnet functions, "
+                "use the strength of each magnet (family.strengths or magnet.strength)"
+            )
+
+
+class ReadWriteSerializedHardwareArray(abstract.ReadWriteFloatArray):
+    """
+    Read/write access to the hardware value of each magnet of a serialized-magnet family.
+
+    Every magnet of the series reads the hardware value ``I`` of the shared power supply.
+
+    Parameters
+    ----------
+    hardwares : list[abstract.ReadWriteFloatScalar]
+        Per-magnet hardware accessors. Writing one of them moves the whole series.
+    model : MagnetModel
+        Serialized magnet model used for units.
+
+    Methods
+    -------
+    get()
+        Return the hardware value of each magnet.
+    set(value)
+        Set the shared hardware value to the average of the requested values.
+    set_and_wait(value)
+        Set the hardware values and wait for convergence.
+    unit()
+        Return the hardware-value units.
+    """
+
+    def __init__(self, hardwares: list[abstract.ReadWriteFloatScalar], model: MagnetModel):
+        """
+        Initialize a per-magnet hardware accessor for serialized magnets.
+        """
+        self._hardwares = hardwares
+        self._model = model
+
+    def get(self) -> np.ndarray:
+        """Return the hardware value of each magnet."""
+        return np.array([hardware.get() for hardware in self._hardwares])
+
+    def set(self, value: np.ndarray):
+        """
+        Set the shared hardware value to the average of the requested values.
+
+        Parameters
+        ----------
+        value : np.ndarray
+            Requested hardware value of each magnet, in declaration order.
+
+        Raises
+        ------
+        PyAMLException
+            If ``value`` is not a 1-D sequence holding one value per magnet. A single value for the whole series is
+            written with ``family.hardware``.
+        """
+        if np.ndim(value) != 1 or len(value) != len(self._hardwares):
+            raise PyAMLException(
+                f"One hardware value per magnet is expected ({len(self._hardwares)} values), got {np.shape(value)}"
+            )
+        self._hardwares[0].set(float(np.mean(value)))
+
+    def set_and_wait(self, value: np.ndarray):
+        """
+        Set the hardware values and wait for convergence.
+
+        Parameters
+        ----------
+        value : np.ndarray
+            Requested hardware value of each magnet, in declaration order.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
+        raise NotImplementedError("Not implemented yet.")
+
+    def unit(self) -> list[str]:
+        """Return the hardware-value units."""
+        return self._model.get_hardware_units()
+
+
+class ReadWriteSerializedStrengthArray(abstract.ReadWriteFloatArray):
+    """
+    Read/write access to the strength of each magnet of a serialized-magnet family.
+
+    Magnet ``i`` of the series has the strength ``k_i = f_i(I)``. Writing the strengths ``k_i`` sets the hardware
+    value ``I`` solving ``sum((f_i(I) - k_i) / span_i) == 0``, ``span_i`` being the signed strength range of magnet
+    ``i`` on the current range shared by all the excitation curves. It is exact when the requested strengths are
+    reachable with one hardware value, and every magnet weighs the same whatever its unit or polarity, so this works for
+    a series mixing magnet functions or polarities. On a plateau, the present hardware value is kept when it already
+    gives the requested strengths.
+
+    Parameters
+    ----------
+    strengths : list[abstract.ReadWriteFloatScalar]
+        Per-magnet strength accessors.
+    hardwares : list[abstract.ReadWriteFloatScalar]
+        Per-magnet hardware accessors. Writing one of them moves the whole series.
+    model : MagnetModel
+        Serialized magnet model converting between strengths and hardware value.
+
+    Methods
+    -------
+    get()
+        Return the strength of each magnet.
+    set(value)
+        Set the hardware value giving the requested strengths.
+    set_and_wait(value)
+        Set the strengths and wait for convergence.
+    unit()
+        Return the physical strength units.
+    """
+
+    def __init__(
+        self,
+        strengths: list[abstract.ReadWriteFloatScalar],
+        hardwares: list[abstract.ReadWriteFloatScalar],
+        model: MagnetModel,
+    ):
+        """
+        Initialize a per-magnet strength accessor for serialized magnets.
+        """
+        self._strengths = strengths
+        self._hardwares = hardwares
+        self._model = model
+
+    def get(self) -> np.ndarray:
+        """Return the strength of each magnet."""
+        return np.array([strength.get() for strength in self._strengths])
+
+    def set(self, value: np.ndarray):
+        """
+        Set the hardware value giving the requested strengths.
+
+        Parameters
+        ----------
+        value : np.ndarray
+            Requested strength of each magnet, in declaration order.
+        """
+        self._hardwares[0].set(self._model.compute_hardware_from_strengths(value, self._hardwares[0].get()))
+
+    def set_and_wait(self, value: np.ndarray):
+        """
+        Set the strengths and wait for convergence.
+
+        Parameters
+        ----------
+        value : np.ndarray
+            Requested strength of each magnet, in declaration order.
+
+        Raises
+        ------
+        NotImplementedError
+            Waiting for readback convergence is not implemented for this accessor.
+        """
+        raise NotImplementedError("Not implemented yet.")
+
+    def unit(self) -> list[str]:
+        """Return the physical strength units."""
+        return self._model.get_strength_units()
 
 
 @register_schema
@@ -171,8 +359,9 @@ class SerializedMagnets(Element, DynamicValidation):
     ----------
     name : str
         Name of the serialized magnet group.
-    function : str
-        Magnet function identifier used to select the concrete virtual magnet type.
+    function : list[str] | str
+        Magnet function identifier selecting the concrete virtual magnet type. A single value applies to every
+        element, a list gives one function per element for a series mixing magnet functions.
     elements : list[str] | str
         Names of the individual magnets in the group.
     model : MagnetModel | None, optional
@@ -185,9 +374,14 @@ class SerializedMagnets(Element, DynamicValidation):
     Attributes
     ----------
     strength
-        Average strength of the magnets of the series, in physics unit
+        Average strength of the magnets of the series, in physics unit. Only defined when every magnet has the same
+        function.
     hardware
         Hardware value of the power supply shared by the series
+    strengths
+        Strength of each magnet of the series, in physics unit
+    hardwares
+        Hardware value of each magnet of the series
 
     Methods
     -------
@@ -195,6 +389,8 @@ class SerializedMagnets(Element, DynamicValidation):
         Return the number of magnets in the serialized group.
     get_magnets()
         Return the group's virtual single-function magnets.
+    is_homogeneous()
+        Return True when every magnet of the series has the same function.
     attach(peer, strengths, hardwares)
         Attach the group and its virtual magnets to a runtime peer.
     set_energy(energy)
@@ -221,10 +417,22 @@ class SerializedMagnets(Element, DynamicValidation):
     Accessor               ``get()``                       ``set(x)``
     ====================== =============================== ==================================================
     ``family.hardware``    ``I``                           write ``I = x``
-    ``family.strength``    average ``sum(f_i(I)) / N``     solve ``sum(f_i(I)) / N = x`` for ``I``, write it
+    ``family.strength``    ``sum(p_i * f_i(I)) / N``       solve ``sum(p_i * f_i(I)) / N = x`` for ``I``, write it
+    ``family.hardwares``   ``[I, ..., I]``                 write ``I = mean(x)``
+    ``family.strengths``   ``[f_1(I), ..., f_N(I)]``       solve ``sum((f_i(I) - x_i) / span_i) = 0``, write it
     ``magnet[i].hardware`` ``I``                           write ``I = x``, all the magnets follow
-    ``magnet[i].strength`` ``k_i = f_i(I)``                write ``I = f_i^-1(x)``, the others follow
+    ``magnet[i].strength`` ``k_i = f_i(I)``                solve ``f_i(I) = x``, write it, the others follow
     ====================== =============================== ==================================================
+
+    ``p_i`` is the polarity of magnet ``i`` declared in the model, ``-1`` for a magnet wired in reverse and ``+1``
+    otherwise. ``span_i`` is the signed strength range of magnet ``i`` on the current range shared by all the excitation
+    curves, so every magnet weighs the same whatever its unit or polarity (see
+    :meth:`LinearSerializedMagnetModel.compute_hardware_from_strengths`). Every strength accessor solves with the model
+    of the series: on a plateau, where several hardware values give the requested strengths, the present hardware value
+    is kept when it is one of them, so writing back the strengths that were read does not move the power supply.
+
+    ``family.strength`` raises a ``PyAMLException`` for a series mixing magnet functions: a single strength value
+    cannot be both, say, a quadrupole and a sextupole strength.
 
     Configuration
     -------------
@@ -245,7 +453,7 @@ class SerializedMagnets(Element, DynamicValidation):
     def __init__(
         self,
         name: str,
-        function: str,
+        function: list[str] | str,
         elements: list[str] | str,
         model: MagnetModel | None = None,
         description: str | None = None,
@@ -256,25 +464,32 @@ class SerializedMagnets(Element, DynamicValidation):
         """
         super().__init__(name, None, description)
 
-        self.function = function
         self.model = model
 
-        self.polynom = None
+        self.polynoms = None
         self.__strengths = None
         self.__hardwares = None
+        self.__strengths_array = None
+        self.__hardwares_array = None
         self.__virtuals: list[Magnet] = []
         self.__elements = elements if isinstance(elements, list) else [elements]
+        self.functions: list[str] = function if isinstance(function, list) else [function] * len(self.__elements)
+        if len(self.functions) != len(self.__elements):
+            raise PyAMLException(
+                f"{name}: function must be a single value or one value per element "
+                f"({len(self.__elements)} elements, {len(self.functions)} functions)"
+            )
         if peer is None:
             # Configuration part
+            for func in self.functions:
+                if func not in function_map:
+                    raise PyAMLException(func + " not implemented for serialized magnet")
             # The submodels are built once here: the attached copies share them with the per-magnet accessors
             self.model.set_number_of_magnets(len(self.__elements))
-            self.polynom = function_map[self.function].polynom
-            if self.function not in function_map:
-                raise PyAMLException(self.function + " not implemented for serialized magnet")
-            for element in self.__elements:
-                # Check mapping validity
+            self.polynoms = [function_map[func].polynom for func in self.functions]
+            for element, func in zip(self.__elements, self.functions, strict=True):
                 # Create the virtual magnet for the corresponding magnet
-                vm = self.__create_virtual_magnet(element)
+                vm = self.__create_virtual_magnet(element, func)
                 self.__virtuals.append(vm)
                 # Register the virtual element in the factory to have a coherent factory and improve error reporting
                 ELEMENT_REGISTRY.register(vm)
@@ -285,17 +500,19 @@ class SerializedMagnets(Element, DynamicValidation):
     def _fill_device(self, holder: "ElementHolder") -> None:
         holder._fill_serialized_magnets(self)
 
-    def __create_virtual_magnet(self, name: str) -> Magnet:
+    def __create_virtual_magnet(self, name: str, function: str) -> Magnet:
         """
         Create a virtual magnet for one serialized element.
 
-        The configured function mapping selects the concrete magnet class, and
+        The function of the element selects the concrete magnet class, and
         the serialized group's model is shared with the new virtual magnet.
 
         Parameters
         ----------
         name : str
             Name assigned to the virtual magnet.
+        function : str
+            Function of the element, selecting the virtual magnet class.
 
         Returns
         -------
@@ -303,9 +520,13 @@ class SerializedMagnets(Element, DynamicValidation):
             Newly created virtual magnet linked to the serialized group.
         """
         args = {"name": name, "model": self.model}
-        virtual: Magnet = function_map[self.function](**args)
+        virtual: Magnet = function_map[function](**args)
         virtual.set_model_name(self.get_name())
         return virtual
+
+    def is_homogeneous(self) -> bool:
+        """Return True when every magnet of the series has the same function."""
+        return len(set(self.functions)) == 1
 
     def get_nb_magnets(self) -> int:
         """Return the number of magnets in the serialized group."""
@@ -339,11 +560,13 @@ class SerializedMagnets(Element, DynamicValidation):
             Virtual magnets of the group, each bound to ``peer``.
         """
         l = []
-        n_ser_mag = SerializedMagnets(self._name, self.function, self.__elements, self.model, self.description, peer)
+        n_ser_mag = SerializedMagnets(self._name, self.functions, self.__elements, self.model, self.description, peer)
         if self.model.has_hardware():
             n_ser_mag.__hardwares = ReadWriteSerializedHardware(hardwares, self.model)
+            n_ser_mag.__hardwares_array = ReadWriteSerializedHardwareArray(hardwares, self.model)
             if self.model.has_physics():
-                n_ser_mag.__strengths = ReadWriteSerializedStrength(hardwares, self.model)
+                n_ser_mag.__strengths = ReadWriteSerializedStrength(hardwares, self.model, self.is_homogeneous())
+                n_ser_mag.__strengths_array = ReadWriteSerializedStrengthArray(strengths, hardwares, self.model)
         l.append(n_ser_mag)
         # Construct a single magnet for each magnet.
         sub_magnets: list[Magnet] = []
@@ -374,6 +597,26 @@ class SerializedMagnets(Element, DynamicValidation):
         if self.__hardwares is None:
             raise PyAMLException(f"{str(self)} has no model that supports hardware units")
         return self.__hardwares
+
+    @property
+    def strengths(self) -> abstract.ReadWriteFloatArray:
+        """
+        Strength of each magnet of the series, in physics unit
+        """
+        self.check_peer()
+        if self.__strengths_array is None:
+            raise PyAMLException(f"{str(self)} has no model that supports physics units")
+        return self.__strengths_array
+
+    @property
+    def hardwares(self) -> abstract.ReadWriteFloatArray:
+        """
+        Hardware value of each magnet of the series, all equal to the shared power-supply value
+        """
+        self.check_peer()
+        if self.__hardwares_array is None:
+            raise PyAMLException(f"{str(self)} has no model that supports hardware units")
+        return self.__hardwares_array
 
     def set_energy(self, energy: float):
         """

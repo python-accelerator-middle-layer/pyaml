@@ -96,7 +96,7 @@ class LinearMagnetModel(MagnetModel, DynamicValidation):
         Initialize the LinearMagnetModel.
         """
         if curve:
-            self.__curve = curve.get_curve()
+            self.__curve = curve.get_curve().copy()
             self.__curve[:, 1] = self.__curve[:, 1] * calibration_factor * crosstalk + calibration_offset
             self.__rcurve = Curve.inverse(self.__curve)
         else:

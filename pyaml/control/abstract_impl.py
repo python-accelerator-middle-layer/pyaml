@@ -431,7 +431,8 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
             Hardware devices associated with the magnet model.
         """
         # Magnets of a serialized group share the serialized model (one power supply for N strengths):
-        # the power-supply current is computed by the model from the strengths of the magnets present in the array.
+        # the power-supply current is computed by the model from the strengths of the magnets present in the array,
+        # the others following the resulting current.
         is_indexed = isinstance(magnet.strength, (abstract.RWMapper, RWSerializedStrengthScalar))
         strengthIndex = magnet.strength.index() if is_indexed else 0
         if magnet.model not in self.__models:
@@ -719,35 +720,65 @@ class RWSerializedStrengthScalar(RWStrengthScalar):
     Expose the strength of one magnet of a serialized group.
 
     All magnets of a serialized group share one power supply. This accessor
-    converts with the magnet's own sub-model and remembers the magnet position
-    in the group so that aggregators can map it to the right strength of the
-    serialized model.
+    reads with the magnet's own sub-model, writes through the model of the
+    series, and remembers the magnet position in the group so that aggregators
+    can map it to the right strength of the serialized model.
 
     Parameters
     ----------
     model : MagnetModel
-        Sub-model of the magnet, used for strength conversion and units.
+        Sub-model of the magnet, used for strength reading and units.
     dev : DeviceAccess
         Power-supply device shared by the serialized group.
     idx : int
         Zero-based position of the magnet in the serialized group.
+    series_model : MagnetModel
+        Model of the series, used to convert the strength of the magnet to the shared hardware value.
 
     Methods
     -------
     index()
         Return the position of the magnet in the serialized group.
+    set(value)
+        Set the shared hardware value giving the requested strength of the magnet.
     """
 
-    def __init__(self, model: MagnetModel, dev: DeviceAccess, idx: int):
+    def __init__(self, model: MagnetModel, dev: DeviceAccess, idx: int, series_model: MagnetModel):
         """
         Initialize the RWSerializedStrengthScalar.
         """
         super().__init__(model, dev)
+        self.__dev = dev
         self.__idx = idx
+        self.__series_model = series_model
 
     def index(self) -> int:
         """Return the position of the magnet in the serialized group."""
         return self.__idx
+
+    def set(self, value: float):
+        """
+        Set the shared hardware value giving the requested strength of the magnet.
+
+        The model of the series solves for the hardware value from the present one, so that the power supply does not
+        move when it already gives the requested strength (for example on a plateau of the excitation curve).
+
+        Parameters
+        ----------
+        value : float
+            Strength of the magnet.
+
+        Raises
+        ------
+        PyAMLException
+            If the converted hardware value is outside the device's configured range.
+        """
+        current_hardware = np.array([self.__dev.get()])
+        current = self.__series_model.compute_hardware_values_partial(current_hardware, {self.__idx: value})[0]
+        dev_range = self.__dev.get_range()
+        if not check_range(current, dev_range):
+            raise PyAMLException(format_out_of_range_message(current, self.__dev))
+        self.__dev.set(current)
 
 
 # ------------------------------------------------------------------------------
