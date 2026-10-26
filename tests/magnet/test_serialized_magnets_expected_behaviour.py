@@ -11,15 +11,24 @@ What happens when we ask for strengths?
 
         sum over i of (f_i(I) - k_i) / span_i == 0
 
-    span_i is the strength range of the curve of magnet i, f_i(I_max) - f_i(I_min), with its sign.
-    Dividing by span_i makes every term dimensionless and increasing with I, so:
+    [I_min, I_max] is the current range shared by all the curves of the series: the power supply
+    drives every magnet, so this is the only range that matters. span_i is the strength range of
+    magnet i on it, f_i(I_max) - f_i(I_min), with its sign. Dividing by span_i makes every term
+    dimensionless and increasing with I, so:
       - every magnet weighs the same, whatever its unit (a sextupole does not outweigh a quadrupole),
       - a magnet wired in reverse (negative calibration) is handled like the others,
+      - extending the table of a curve does not change the result,
       - the equation always has a solution.
 
     A request is "consistent" when one single current gives all the requested strengths: the code
     must then find this current exactly. Otherwise the request is "inconsistent": the code returns a
-    compromise and logs a warning.
+    compromise and logs a warning. When several currents give the requested strengths (a plateau),
+    the present current is kept if it is one of them.
+
+What is the family strength?
+    The average of the strengths, each one taken with the polarity p_i (+1 or -1) declared for its
+    magnet: sum over i of p_i * f_i(I) / N. A magnet wired in reverse must be declared with -1, so
+    that it counts with its magnitude instead of cancelling the others.
 
 How to read and modify these tests?
     Each test builds a small series with simple curves (current in A, strength = curve value x
@@ -48,11 +57,14 @@ PLATEAU = np.array([[0.0, 0.0], [80.0, 0.8], [110.0, 0.8]])
 TWO_SLOPES = np.array([[0.0, 0.0], [50.0, 1.0], [100.0, 1.5]])
 
 
-def make_series(curves: list[np.ndarray], calibrations: list[float]) -> LinearSerializedMagnetModel:
-    """Build the model of a series: one curve and one calibration factor per magnet."""
+def make_series(
+    curves: list[np.ndarray], calibrations: list[float], polarities: list[int] | None = None
+) -> LinearSerializedMagnetModel:
+    """Build the model of a series: one curve, one calibration factor and one polarity (default +1) per magnet."""
     series = LinearSerializedMagnetModel(
         curves=[InlineCurve(mat=curve) for curve in curves],
         calibration_factors=calibrations,
+        polarities=polarities,
         calibration_offsets=0.0,
         unit="m-1",
         hardware_unit="A",
@@ -79,8 +91,8 @@ def test_opposite_polarities_with_different_saturations_reach_a_consistent_reque
     # Step 1: a series of two magnets on ONE power supply.
     #   - magnet 0 follows the LINEAR curve, calibration +1
     #   - magnet 1 follows the SATURATING curve, calibration -1: it is wired in reverse,
-    #     its strength goes down when the current goes up
-    series = make_series([LINEAR, SATURATING], calibrations=[1.0, -1.0])
+    #     its strength goes down when the current goes up, so it is declared with polarity -1
+    series = make_series([LINEAR, SATURATING], calibrations=[1.0, -1.0], polarities=[1, -1])
 
     # Step 2: ask for the strengths the two magnets really have at 40 A.
     #   This request is "consistent": one single current (40 A) gives both strengths.
@@ -96,7 +108,7 @@ def test_opposite_polarities_with_different_saturations_reach_a_consistent_reque
 def test_opposite_polarities_with_identical_curves_reach_a_consistent_request():
     # Step 1: two magnets on ONE power supply, same LINEAR curve, the second one wired in reverse.
     #   At any current, their strengths are exactly opposite: k_1 = -k_0.
-    series = make_series([LINEAR, LINEAR], calibrations=[1.0, -1.0])
+    series = make_series([LINEAR, LINEAR], calibrations=[1.0, -1.0], polarities=[1, -1])
 
     # Step 2: ask for the strengths they have at 40 A: +0.4 and -0.4.
     requested = series.compute_strengths([40.0])
@@ -108,13 +120,13 @@ def test_opposite_polarities_with_identical_curves_reach_a_consistent_request():
     assert current == pytest.approx(40.0)
 
 
-def test_family_strength_of_opposite_polarities_uses_the_polarity_of_the_first_magnet():
-    # Step 1: the same two magnets, the second one wired in reverse.
-    series = make_series([LINEAR, LINEAR], calibrations=[1.0, -1.0])
+def test_family_strength_of_opposite_polarities_uses_the_declared_polarities():
+    # Step 1: the same two magnets, the second one wired in reverse and declared with polarity -1.
+    series = make_series([LINEAR, LINEAR], calibrations=[1.0, -1.0], polarities=[1, -1])
 
     # Step 2: read the family strength at 40 A.
     #   The raw strengths are +0.4 and -0.4. The family strength takes each strength with the
-    #   polarity of the first magnet, so the reversed magnet counts as +0.4, not -0.4.
+    #   declared polarity of its magnet, so the reversed magnet counts as +0.4, not -0.4.
     family_strength = series.compute_mean_strength(40.0)
 
     # Expected: 0.4 (and not 0.0, the plain average of +0.4 and -0.4).
@@ -126,11 +138,11 @@ def test_family_strength_of_opposite_polarities_uses_the_polarity_of_the_first_m
 
 
 def test_family_strength_of_opposite_polarities_with_different_saturations():
-    # Step 1: LINEAR magnet, plus a SATURATING magnet wired in reverse.
-    series = make_series([LINEAR, SATURATING], calibrations=[1.0, -1.0])
+    # Step 1: LINEAR magnet, plus a SATURATING magnet wired in reverse (polarity -1).
+    series = make_series([LINEAR, SATURATING], calibrations=[1.0, -1.0], polarities=[1, -1])
 
     # Step 2: at 40 A, the strengths are +0.40 and -0.48.
-    #   With the polarity of the first magnet, the family strength is (0.40 + 0.48) / 2 = 0.44.
+    #   With the declared polarities, the family strength is (0.40 + 0.48) / 2 = 0.44.
     assert series.compute_mean_strength(40.0) == pytest.approx(0.44)
 
     # Step 3: set this family strength back.
@@ -262,8 +274,7 @@ def test_family_hardwares_need_one_value_per_magnet(wrong_value):
 
 
 # ---------------------------------------------------------------------------------------------------------------------
-# Review of the normalized residual (PR #485): expected behaviours that the current code does not have yet.
-# These tests fail on purpose, to illustrate the cases to discuss.
+# Edge cases of the normalized residual: curve tables of different lengths, plateaus, polarities
 # ---------------------------------------------------------------------------------------------------------------------
 
 # The LINEAR curve tabulated up to 200 A instead of 100 A: same magnet, same slope, longer table.
@@ -347,7 +358,7 @@ def test_writing_back_the_strengths_read_on_a_plateau_keeps_the_current(current)
     new_current = series.compute_hardware_values_partial(np.array([current]), {0: requested[0], 1: requested[1]})[0]
 
     # Expected: the current does not move. Every current of the plateau gives the requested strengths, and the
-    # present one is among them: there is no reason to move the power supply (today it goes to 95 A).
+    # present one is among them: there is no reason to move the power supply.
     assert new_current == pytest.approx(current)
 
 
@@ -360,7 +371,7 @@ def test_writing_back_the_strength_of_one_magnet_read_on_a_plateau_keeps_the_cur
     requested = series.compute_strengths([current])[0]
     new_current = series.compute_hardware_values_partial(np.array([current]), {0: requested})[0]
 
-    # Expected: the current does not move (today it goes to 95 A, the middle of the plateau).
+    # Expected: the current does not move, the present current is one of those giving the requested strength.
     assert new_current == pytest.approx(current)
 
 
@@ -386,8 +397,7 @@ def test_every_accessor_keeps_the_current_when_writing_back_on_a_plateau(
         array = sr.live.magnets.get("PLATEAU_MAGNETS")
         array.strengths.set(array.strengths.get())
 
-    # Expected: the power supply stays at 85 A whatever the accessor. Today it goes to 95 A or 110 A depending on
-    # the accessor, so the same request does not give the same current.
+    # Expected: the power supply stays at 85 A whatever the accessor: every accessor follows the same rule.
     assert family.hardware.get() == pytest.approx(85.0)
 
 
@@ -396,10 +406,19 @@ def test_every_accessor_keeps_the_current_when_writing_back_on_a_plateau(
 
 def test_family_strength_does_not_depend_on_the_order_of_the_magnets():
     # Step 1: the same two LINEAR magnets, one of them wired in reverse, declared in both orders.
-    declared_one_way = make_series([LINEAR, LINEAR], calibrations=[1.0, -1.0])
-    declared_the_other_way = make_series([LINEAR, LINEAR], calibrations=[-1.0, 1.0])
+    #   Swapping the two magnets in the configuration swaps their calibrations and their polarities.
+    declared_one_way = make_series([LINEAR, LINEAR], calibrations=[1.0, -1.0], polarities=[1, -1])
+    declared_the_other_way = make_series([LINEAR, LINEAR], calibrations=[-1.0, 1.0], polarities=[-1, 1])
 
     # Step 2: read the family strength at 40 A.
     # Expected: the same value. Swapping two lines of the configuration changes nothing in the machine, so it must
-    # not change the sign of the family strength (today +0.4 one way, -0.4 the other way).
+    # not change the sign of the family strength.
     assert declared_one_way.compute_mean_strength(40.0) == pytest.approx(declared_the_other_way.compute_mean_strength(40.0))
+
+
+def test_a_series_mixing_polarities_must_declare_them():
+    # Step 1: two LINEAR magnets, the second one wired in reverse (calibration -1), without declaring its polarity.
+    #   By default every polarity is +1: the family strength would add +0.4 and -0.4 and give 0 at any current.
+    # Expected: an error when the series is built, asking to declare the polarity of the magnet wired in reverse.
+    with pytest.raises(PyAMLException, match="declare polarities"):
+        make_series([LINEAR, LINEAR], calibrations=[1.0, -1.0])

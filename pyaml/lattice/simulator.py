@@ -286,7 +286,9 @@ class Simulator(ElementHolder, DynamicValidation):
         linked_strengths = []
         for index in range(magnets.get_nb_magnets()):
             linked_currents.append(RWSerializedHardware(currents, index) if magnets.model.has_hardware() else None)
-            linked_strengths.append(RWSerializedStrength(strengths, currents, index) if magnets.model.has_physics() else None)
+            linked_strengths.append(
+                RWSerializedStrength(strengths, currents, index, magnets.model) if magnets.model.has_physics() else None
+            )
         attached_magnets = magnets.attach(self, linked_strengths, linked_currents)
         self.serialized_magnet.add(attached_magnets[0])
         for magnet in attached_magnets[1:]:
