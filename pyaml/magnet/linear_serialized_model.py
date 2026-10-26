@@ -77,6 +77,30 @@ def _last_zero(currents: np.ndarray, residuals: np.ndarray) -> float:
     return float(currents[j] - residuals[j] * (currents[j + 1] - currents[j]) / (residuals[j + 1] - residuals[j]))
 
 
+def _pick(low: float, high: float, current_hardware: float | None) -> float:
+    """
+    Return the hardware value chosen in the interval of solutions ``[low, high]``.
+
+    Parameters
+    ----------
+    low : float
+        Lowest hardware value of the solutions.
+    high : float
+        Highest hardware value of the solutions.
+    current_hardware : float or None
+        Present hardware value of the power supply, if known.
+
+    Returns
+    -------
+    float
+        ``current_hardware`` clipped to ``[low, high]``, so that the power supply does not move when it already gives
+        the requested strengths, or the middle of the interval when the present hardware value is not known.
+    """
+    if current_hardware is None:
+        return float((low + high) / 2.0)
+    return float(np.clip(current_hardware, low, high))
+
+
 def _get_length(elem) -> int:
     """
     Return the number of serialized entries represented by a value.
@@ -194,8 +218,13 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
     The serialized magnets have a single degree of freedom, the power-supply
     current ``I``. Magnet ``i`` has the strength ``k_i = f_i(I)``, where ``f_i``
     is its sub-model. The family strength is the average strength
-    ``sum(p_i * f_i(I)) / N``, each strength taken with the polarity of the first
-    magnet (``p_i = -1`` for a magnet wired in reverse, ``+1`` otherwise).
+    ``sum(p_i * f_i(I)) / N``, ``p_i`` being the declared polarity of magnet ``i``.
+    The polarities must make every ``p_i * f_i`` vary in the same direction with
+    ``I``: a series with magnets wired in reverse declares ``-1`` for them.
+
+    The power supply only drives the series on the current range shared by all
+    the excitation curves, ``[max_i I_min,i, min_i I_max,i]``. Hardware values
+    computed from strengths are clamped to this range.
 
     Parameters
     ----------
@@ -210,6 +239,9 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         If omitted, defaults to 0.0 for all magnets.
     crosstalk : float or list[float], optional
         Crosstalk factor for each magnet. If omitted, defaults to 1.0.
+    polarities : int or list[int], optional
+        Polarity ``p_i`` of each magnet in the family strength, ``+1`` or ``-1``.
+        If omitted, defaults to ``+1`` for all magnets.
     powerconverter : str, optional
         Name of the associated power converter or power converter group.
     unit : str, optional
@@ -231,9 +263,9 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         Convert the strengths of some magnets of the series to the shared hardware value.
     compute_mean_strength(current)
         Return the average strength of the series for a hardware value.
-    compute_hardware_from_mean_strength(strength)
+    compute_hardware_from_mean_strength(strength, current_hardware=None)
         Return the hardware value giving an average strength of the series.
-    compute_hardware_from_strengths(strengths)
+    compute_hardware_from_strengths(strengths, current_hardware=None)
         Return the hardware value for a requested strength of each magnet of the series.
     shares_power_supply()
         Return True, all the magnets of the series share one power supply.
@@ -247,6 +279,13 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         Set the magnetic rigidity used for conversion.
     get_magnet_rigidity()
         Return the configured magnetic rigidity.
+
+    Raises
+    ------
+    PyAMLException
+        When the number of magnets is set, if a polarity is not ``+1`` or ``-1``,
+        if the excitation curves share no current range, or if the polarities do
+        not make every ``p_i * f_i`` vary in the same direction.
 
     Notes
     -----
@@ -274,6 +313,7 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         calibration_factors: float | list[float] | None = None,
         calibration_offsets: float | list[float] | None = None,
         crosstalk: float | list[float] = 1.0,
+        polarities: int | list[int] | None = None,
         powerconverter: str | None = None,
         unit: str | None = None,
         hardware_unit: str | None = None,
@@ -286,17 +326,20 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         self._calibration_factors = calibration_factors
         self._calibration_offsets = calibration_offsets
         self._crosstalk = crosstalk
+        self._polarities_config = polarities
         self._powerconverter = powerconverter
         self._unit = unit
         self._hardware_unit = hardware_unit
 
         # Check config
-        self.__nbMagnets: int = _get_max_length(curves, calibration_factors, calibration_offsets, crosstalk)
+        self.__nbMagnets: int = _get_max_length(curves, calibration_factors, calibration_offsets, crosstalk, polarities)
         self.__calibration_factors = np.ones(self.__nbMagnets)
         self.__calibration_offsets = np.ones(self.__nbMagnets)
         self.__crosstalk = np.ones(self.__nbMagnets)
+        self.__polarities = np.ones(self.__nbMagnets)
         self.__curves = _to_list_of_length(curves, self.__nbMagnets)
         self.__sub_models: list[LinearMagnetModel] = []
+        self.__current_range = (np.nan, np.nan)
 
     def __initialize(self):
         """
@@ -329,10 +372,20 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
                 curve = InlineCurve(mat=self._curves.get_curve())
                 self.__curves.append(curve)
 
+        if self._polarities_config is None:
+            self.__polarities = np.ones(self.__nbMagnets)
+        else:
+            self.__polarities = np.array(_to_list_of_length(self._polarities_config, self.__nbMagnets), dtype=float)
+
         _check_len(self.__calibration_factors, "calibration_factors", self.__nbMagnets)
         _check_len(self.__calibration_offsets, "calibration_offsets", self.__nbMagnets)
         _check_len(self.__crosstalk, "crosstalk", self.__nbMagnets)
+        _check_len(self.__polarities, "polarities", self.__nbMagnets)
         _check_len(self.__curves, "curves", self.__nbMagnets)
+        if not np.all(np.isin(self.__polarities, (1.0, -1.0))):
+            raise PyAMLException(
+                f"polarities of the series on {self._powerconverter} must be +1 or -1, got {self.__polarities.tolist()}"
+            )
 
         self.__sub_models: list[LinearMagnetModel] = []
         for magnet_idx in range(self.__nbMagnets):
@@ -346,6 +399,54 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
                 hardware_unit=self._hardware_unit,
             )
             self.__sub_models.append(LinearMagnetModel(**sub_model))
+
+        self.__current_range = self.__shared_current_range()
+        self.__check_polarities()
+
+    def __shared_current_range(self) -> tuple[float, float]:
+        """
+        Return the current range shared by all the excitation curves of the series.
+
+        Raises
+        ------
+        PyAMLException
+            If the excitation curves share no current range.
+        """
+        tables = [curve.get_curve()[:, 0] for curve in self.__curves]
+        low = max(float(table.min()) for table in tables)
+        high = min(float(table.max()) for table in tables)
+        if low >= high:
+            raise PyAMLException(
+                f"The excitation curves of the series on {self._powerconverter} share no current range ([{low}, {high}])"
+            )
+        return low, high
+
+    def __check_polarities(self):
+        """
+        Check that the polarities make every ``p_i * f_i`` vary in the same direction with the hardware value.
+
+        The direction of each curve is taken from the curve itself, with its calibration, so that the check does not
+        depend on the magnetic rigidity. A curve with no strength range has no direction and is not checked.
+
+        Raises
+        ------
+        PyAMLException
+            If two magnets vary in opposite directions once multiplied by their polarity.
+        """
+        low, high = self.__current_range
+        directions = []
+        for idx, curve in enumerate(self.__curves):
+            table = curve.get_curve()
+            gain = self.__calibration_factors[idx] * self.__crosstalk[idx]
+            span = gain * (np.interp(high, table[:, 0], table[:, 1]) - np.interp(low, table[:, 0], table[:, 1]))
+            directions.append(np.sign(self.__polarities[idx] * span))
+        directions = np.array(directions)
+        if np.any(directions > 0) and np.any(directions < 0):
+            raise PyAMLException(
+                f"The magnets {np.nonzero(directions < 0)[0].tolist()} of the series on {self._powerconverter} vary in "
+                f"the opposite direction to the magnets {np.nonzero(directions > 0)[0].tolist()}: declare polarities "
+                f"-1 for the magnets wired in reverse"
+            )
 
     def set_number_of_magnets(self, nb_magnets: int):
         """
@@ -421,7 +522,8 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         Parameters
         ----------
         current_hardware : np.array
-            Current hardware value of the series, one value per power supply. Only its shape is used.
+            Present hardware value of the series, one value per power supply. It is kept when it already gives the
+            requested strengths.
         strengths_by_index : dict[int, float]
             Requested strengths, indexed by the position of the magnet in the series.
 
@@ -439,13 +541,13 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         _check_len(current_hardware, "current_hardware", len(self.get_device_names()))
         indices = list(strengths_by_index.keys())
         strengths = np.array(list(strengths_by_index.values()), dtype=float)
-        return np.array([self._compute_hardware_from_strengths(strengths, indices)])
+        return np.array([self._compute_hardware_from_strengths(strengths, indices, float(current_hardware[0]))])
 
     def compute_mean_strength(self, current: float) -> float:
         """
         Return the average strength of the series for a hardware value.
 
-        Each strength is taken with the polarity of the first magnet, so that a magnet wired in reverse counts with
+        Each strength is taken with the declared polarity of its magnet, so that a magnet wired in reverse counts with
         its magnitude instead of cancelling the others.
 
         Parameters
@@ -456,25 +558,27 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         Returns
         -------
         float
-            Average strength ``sum(p_i * f_i(I)) / N``, with ``p_i = +1`` when magnet ``i`` has the polarity of the first
-            magnet and ``-1`` otherwise.
+            Average strength ``sum(p_i * f_i(I)) / N``, ``p_i`` being the polarity of magnet ``i``.
         """
         return float(np.mean(self._polarities() * self.compute_strengths([current])))
 
-    def compute_hardware_from_mean_strength(self, strength: float) -> float:
+    def compute_hardware_from_mean_strength(self, strength: float, current_hardware: float | None = None) -> float:
         """
         Return the hardware value giving an average strength of the series.
 
-        The average strength is defined as in :meth:`compute_mean_strength`, so every term varies in the same direction
-        and the average is monotonic. The submodels are piecewise linear in the hardware value, so the average is
-        piecewise linear on the union of the curve breakpoints and is inverted exactly by interpolation. A strength
-        outside the range reachable by the excitation curves is clamped to the end of the curves, and a warning is
-        logged.
+        The average strength is defined as in :meth:`compute_mean_strength`. The polarities make every term vary in the
+        same direction, so the average is monotonic. The submodels are piecewise linear in the hardware value, so the
+        average is piecewise linear on the union of the curve breakpoints and is inverted exactly by interpolation.
+        When every hardware value of an interval gives the requested strength (a plateau), the present hardware value
+        clipped to this interval is returned. A strength outside the range reachable by the excitation curves is
+        clamped to the end of the shared current range, and a warning is logged.
 
         Parameters
         ----------
         strength : float
             Requested average strength of the series.
+        current_hardware : float, optional
+            Present hardware value of the power supply. If omitted, the middle of a plateau is returned.
 
         Returns
         -------
@@ -487,38 +591,45 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
             If the average strength is not monotonic in the hardware value.
         """
         polarities = self._polarities()
-        currents = np.unique(np.concatenate([curve.get_curve()[:, 0] for curve in self.__curves]))
+        currents = self._solve_points(range(self.__nbMagnets))
         strengths = np.array([np.mean(polarities * self.compute_strengths([current])) for current in currents])
         steps = np.diff(strengths)
-        if np.all(steps <= 0):
-            currents, strengths = currents[::-1], strengths[::-1]
-        elif not np.all(steps >= 0):
+        if np.all(steps >= 0):
+            residuals = strengths - strength
+        elif np.all(steps <= 0):
+            residuals = strength - strengths
+        else:
             raise PyAMLException(
                 f"Average strength of the series on {self._powerconverter} is not monotonic, it cannot be inverted"
             )
-        tolerance = _SPREAD_RTOL * max(abs(strengths[0]), abs(strengths[-1]), 1.0)
-        if strength < strengths[0] - tolerance or strength > strengths[-1] + tolerance:
+        scale = max(float(np.max(np.abs(strengths))), 1.0)
+        if residuals[0] > _SPREAD_RTOL * scale or residuals[-1] < -_SPREAD_RTOL * scale:
             logger.warning(
                 f"Strength {strength:.6g} requested for the series on {self._powerconverter} is outside the range "
-                f"[{strengths[0]:.6g}, {strengths[-1]:.6g}] reachable by the excitation curves, the hardware value is "
-                f"clamped to the end of the curves"
+                f"[{strengths.min():.6g}, {strengths.max():.6g}] reachable by the excitation curves, the hardware value "
+                f"is clamped to the end of the curves"
             )
-        return float(np.interp(strength, strengths, currents))
+        residuals[np.abs(residuals) < _ZERO_ATOL * scale] = 0.0
+        return _pick(_first_zero(currents, residuals), _last_zero(currents, residuals), current_hardware)
 
-    def compute_hardware_from_strengths(self, strengths: np.ndarray) -> float:
+    def compute_hardware_from_strengths(self, strengths: np.ndarray, current_hardware: float | None = None) -> float:
         """
         Return the hardware value for a requested strength of each magnet of the series.
 
         The series has a single hardware value ``I``. It solves ``sum((f_i(I) - k_i) / span_i) == 0``, where ``span_i``
-        is the signed strength range ``f_i(I_max) - f_i(I_min)`` of the excitation curve of magnet ``i``. Each term is
-        dimensionless and increasing, so every magnet weighs the same whatever its unit or its polarity, and the
-        equation always has a solution, exact for a request reachable with one hardware value. When the requested
-        strengths cannot all be reached with one hardware value, the result is a compromise and a warning is logged.
+        is the signed strength range ``f_i(I_max) - f_i(I_min)`` of magnet ``i`` on the current range ``[I_min, I_max]``
+        shared by all the excitation curves. Each term is dimensionless and increasing, so every magnet weighs the same
+        whatever its unit, its polarity or how far its curve is tabulated, and the equation always has a solution,
+        exact for a request reachable with one hardware value. When every hardware value of an interval is a solution
+        (a plateau), the present hardware value clipped to this interval is returned. When the requested strengths
+        cannot all be reached with one hardware value, the result is a compromise and a warning is logged.
 
         Parameters
         ----------
         strengths : np.ndarray
             Requested strength ``k_i`` of each magnet of the series, in declaration order.
+        current_hardware : float, optional
+            Present hardware value of the power supply. If omitted, the middle of a plateau is returned.
 
         Returns
         -------
@@ -533,9 +644,11 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         """
         strengths = np.asarray(strengths, dtype=float)
         _check_len(strengths, "strengths", self.__nbMagnets)
-        return self._compute_hardware_from_strengths(strengths, list(range(self.__nbMagnets)))
+        return self._compute_hardware_from_strengths(strengths, list(range(self.__nbMagnets)), current_hardware)
 
-    def _compute_hardware_from_strengths(self, strengths: np.ndarray, indices: list[int]) -> float:
+    def _compute_hardware_from_strengths(
+        self, strengths: np.ndarray, indices: list[int], current_hardware: float | None = None
+    ) -> float:
         """
         Return the hardware value for the requested strengths of some magnets of the series.
 
@@ -545,13 +658,15 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
             Requested strength ``k_i`` of each magnet in ``indices``.
         indices : list[int]
             Positions of the requested magnets in the series.
+        current_hardware : float, optional
+            Present hardware value of the power supply.
 
         Returns
         -------
         float
             Hardware value of the power supply.
         """
-        current, clamped = self._solve_normalized_residual(strengths, indices)
+        current, clamped = self._solve_normalized_residual(strengths, indices, current_hardware)
         if not clamped:
             reached = np.array([self.__sub_models[idx].compute_strengths([current])[0] for idx in indices])
             spans = np.array([self._strength_span(idx) for idx in indices])
@@ -565,14 +680,17 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
                 )
         return current
 
-    def _solve_normalized_residual(self, strengths: np.ndarray, indices: list[int]) -> tuple[float, bool]:
+    def _solve_normalized_residual(
+        self, strengths: np.ndarray, indices: list[int], current_hardware: float | None = None
+    ) -> tuple[float, bool]:
         """
         Solve ``g(I) = sum((f_i(I) - k_i) / span_i) == 0`` over some magnets of the series.
 
         ``g`` is piecewise linear on the union of the curve breakpoints and increasing, so its zero is found exactly by
-        interpolation. When ``g`` is zero on an interval (for example two saturated magnets), the middle of the interval
-        is returned. When the zero is outside the curves, the hardware value is clamped to the end of the curves and a
-        warning is logged.
+        interpolation. When ``g`` is zero on an interval (for example two saturated magnets), the present hardware value
+        clipped to the interval is returned, or the middle of the interval when the present hardware value is not
+        known. When the zero is outside the shared current range, the hardware value is clamped to the end of this
+        range and a warning is logged.
 
         Parameters
         ----------
@@ -580,11 +698,13 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
             Requested strength ``k_i`` of each magnet in ``indices``.
         indices : list[int]
             Positions of the requested magnets in the series.
+        current_hardware : float, optional
+            Present hardware value of the power supply.
 
         Returns
         -------
         tuple[float, bool]
-            Hardware value, and whether it was clamped to the end of the excitation curves.
+            Hardware value, and whether it was clamped to the end of the shared current range.
 
         Raises
         ------
@@ -598,7 +718,7 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
                 f"Magnets {flat} of the series on {self._powerconverter} have an excitation curve with no strength "
                 f"range, the hardware value cannot be computed from their strength"
             )
-        currents = np.unique(np.concatenate([self.__curves[idx].get_curve()[:, 0] for idx in indices]))
+        currents = self._solve_points(indices)
         residuals = np.array(
             [
                 sum(
@@ -621,18 +741,24 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
                 f"reachable by the excitation curves, the hardware value is clamped to the end of the curves ({current})"
             )
             return float(current), True
-        return float((_first_zero(currents, residuals) + _last_zero(currents, residuals)) / 2.0), False
+        return _pick(_first_zero(currents, residuals), _last_zero(currents, residuals), current_hardware), False
+
+    def _solve_points(self, indices) -> np.ndarray:
+        """Return the curve breakpoints of the magnets ``indices`` inside the shared current range, with its ends."""
+        low, high = self.__current_range
+        breakpoints = np.concatenate([self.__curves[idx].get_curve()[:, 0] for idx in indices])
+        inside = breakpoints[(breakpoints > low) & (breakpoints < high)]
+        return np.unique(np.concatenate([[low, high], inside]))
 
     def _strength_span(self, idx: int) -> float:
-        """Return the signed strength range ``f_i(I_max) - f_i(I_min)`` of the excitation curve of magnet ``idx``."""
-        currents = self.__curves[idx].get_curve()[:, 0]
+        """Return the signed strength range ``f_i(I_max) - f_i(I_min)`` of magnet ``idx`` on the shared current range."""
+        low, high = self.__current_range
         model = self.__sub_models[idx]
-        return float(model.compute_strengths([currents.max()])[0] - model.compute_strengths([currents.min()])[0])
+        return float(model.compute_strengths([high])[0] - model.compute_strengths([low])[0])
 
     def _polarities(self) -> np.ndarray:
-        """Return ``+1`` for each magnet with the polarity of the first magnet, ``-1`` otherwise."""
-        signs = np.array([1.0 if self._strength_span(idx) >= 0.0 else -1.0 for idx in range(self.__nbMagnets)])
-        return signs * signs[0]
+        """Return the declared polarity ``p_i`` of each magnet."""
+        return self.__polarities
 
     def shares_power_supply(self) -> bool:
         """Return True, all the magnets of the series share one power supply."""
