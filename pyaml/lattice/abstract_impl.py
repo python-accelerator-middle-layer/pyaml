@@ -378,8 +378,11 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
     Strength of one magnet of a serialized group.
 
     All the magnets of the group share one power supply. Writing the strength
-    ``x`` of magnet ``i`` sets the shared hardware value to ``I = f_i^-1(x)``,
-    using the submodel of the magnet, and the other magnets follow as ``f_j(I)``.
+    ``x`` of magnet ``i`` sets the shared hardware value ``I`` solving
+    ``f_i(I) = x``, and the other magnets follow as ``f_j(I)``. With the model of
+    the series, the solution starts from the present hardware value, so that the
+    power supply does not move when it already gives ``x`` (for example on a
+    plateau of the excitation curve).
 
     Parameters
     ----------
@@ -389,6 +392,9 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         Hardware accessors of the same magnets, used to apply the shared setpoint.
     element_index : int
         Index of the magnet this accessor represents within the serialized group.
+    series_model : MagnetModel, optional
+        Model of the series, used to convert the strength of the magnet to the shared hardware value. If omitted, the
+        submodel of the magnet is inverted.
 
     Methods
     -------
@@ -411,6 +417,7 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         elements_strength: list[RWStrengthScalar],
         elements_hardware: list[RWHardwareScalar],
         element_index: int,
+        series_model: MagnetModel | None = None,
     ):
         """
         Initialize the RWSerializedStrength.
@@ -418,6 +425,7 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         self.__element = elements_strength[element_index]
         self.__elements_hardware = elements_hardware
         self.__element_index = element_index
+        self.__series_model = series_model
 
     def index(self) -> int:
         """Return the position of the magnet in the serialized group."""
@@ -438,8 +446,14 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         value : float
             Strength to apply to the magnet, converted to the shared hardware setpoint.
         """
-        model = self.__elements_hardware[self.__element_index].get_model()
-        hardware_value = model.compute_hardware_values([value])[0]
+        hardware = self.__elements_hardware[self.__element_index]
+        if self.__series_model is None:
+            hardware_value = hardware.get_model().compute_hardware_values([value])[0]
+        else:
+            current_hardware = np.array([hardware.get()])
+            hardware_value = self.__series_model.compute_hardware_values_partial(
+                current_hardware, {self.__element_index: value}
+            )[0]
         [element.set(hardware_value) for element in self.__elements_hardware]
 
     # Sets the value and wait that the read value reach the setpoint
