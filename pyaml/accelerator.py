@@ -243,7 +243,9 @@ class Accelerator(DynamicValidation):
         Use the same backend binding as configured devices, including any
         backend-specific mode restrictions. Newly registered instances receive
         the current accelerator properties and run their post-initialization
-        hooks. Existing elements are not reinitialized.
+        hooks. Existing elements are not reinitialized. If binding or
+        initialization fails, all holder element stores are restored to
+        their previous state.
 
         Parameters
         ----------
@@ -257,7 +259,9 @@ class Accelerator(DynamicValidation):
             If the supplied object is not an Element.
         PyAMLException
             If the element's name is already registered in any mode, or
-            backend binding fails.
+            backend binding or initialization fails. Binding and initialization
+            errors include the element and mode names and preserve the original
+            exception as their cause.
 
         Notes
         -----
@@ -287,21 +291,45 @@ class Accelerator(DynamicValidation):
             if element.name in holder._ALL:
                 raise PyAMLException(f"Duplicate element {element.name} in mode {holder.name()}")
 
-        added: list[Element] = []
-        for holder in holders:
-            existing_names = set(holder._ALL)
-            holder.fill_device([element])
-            added.extend(instance for name, instance in holder._ALL.items() if name not in existing_names)
+        snapshots = [
+            (store, store.copy())
+            for holder in holders
+            for store in (
+                holder._ALL,
+                holder._MAGNETS,
+                holder._CFM_MAGNETS,
+                holder._SERIALIZED_MAGNETS,
+                holder._BPMS,
+                holder._RFPLANT,
+                holder._RFTRANSMITTER,
+                holder._DIAG,
+                holder._TOOLS,
+            )
+        ]
+        added: list[tuple[ElementHolder, Element]] = []
+        try:
+            for holder in holders:
+                mode_name = holder.name()
+                existing_names = set(holder._ALL)
+                holder.fill_device([element])
+                added.extend((holder, instance) for name, instance in holder._ALL.items() if name not in existing_names)
 
-        for instance in added:
-            if self._energy is not None:
-                instance.set_energy(self._energy)
-            if self._alphac is not None:
-                instance.set_mcf(self._alphac)
-            if self._harmonic_number is not None:
-                instance.set_harmonic(self._harmonic_number)
-        for instance in added:
-            instance.post_init()
+            for holder, instance in added:
+                mode_name = holder.name()
+                if self._energy is not None:
+                    instance.set_energy(self._energy)
+                if self._alphac is not None:
+                    instance.set_mcf(self._alphac)
+                if self._harmonic_number is not None:
+                    instance.set_harmonic(self._harmonic_number)
+            for holder, instance in added:
+                mode_name = holder.name()
+                instance.post_init()
+        except Exception as err:
+            for store, snapshot in snapshots:
+                store.clear()
+                store.update(snapshot)
+            raise PyAMLException(f"Failed to add element {element.name} in mode {mode_name}: {err}") from err
 
         if self._devices is None:
             self._devices = []
