@@ -1,20 +1,26 @@
 """Tests of the schema generator."""
 
+import inspect
 import json
 import re
 from collections.abc import Generator
 from pathlib import Path
 
 import pytest
-from jsonschema import validate
+from jsonschema import ValidationError, validate
 from pydantic import Field
 
+from pyaml.common.element import Element
+from pyaml.magnet.linear_model import LinearMagnetModel
+from pyaml.magnet.model import MagnetModel
+from pyaml.magnet.quadrupole import Quadrupole
 from pyaml.validation import (
     ConfigurationSchema,
     SchemaGenerator,
     SchemaRegistry,
 )
 from pyaml.validation.generator import RegistryJsonSchema
+from pyaml.validation.schema_builder import generate_class_path, generate_configuration_schema
 
 # ==========================================================
 # Dummy schemas
@@ -52,6 +58,20 @@ class ContainerSchema(ConfigurationSchema):
         default=None,
         description="Container schema used for testing.",
     )
+
+
+class UnregisteredBaseSchema(ConfigurationSchema):
+    """Base schema that is never registered."""
+
+    pass
+
+
+class UnregisteredChildSchema(UnregisteredBaseSchema):
+    c: int = 1
+
+
+class UnregisteredContainerSchema(ConfigurationSchema):
+    model: UnregisteredBaseSchema
 
 
 # ==========================================================
@@ -196,6 +216,67 @@ def test_generate_oneof_validates_parent_and_subclasses(
         "pkg.module.ChildB",
     ]:
         validate({"class": class_path}, schema)
+
+
+# ==========================================================
+# oneOf exclusivity
+# ==========================================================
+
+
+def test_generate_oneof_validates_nested_pyaml_subclass(
+    registry: SchemaRegistry,
+):
+    # Registers Quadrupole together with its bases Magnet and Element
+    generate_configuration_schema(Quadrupole)
+
+    schema = SchemaGenerator.generate(generate_class_path(Element))
+
+    # Quadrupole must match exactly one branch, not both the direct branch
+    # and the branch nested in the Magnet union.
+    validate({"class": generate_class_path(Quadrupole), "name": "Q1"}, schema)
+
+
+def test_generate_oneof_with_unregistered_base_accepts_registered_subclass(
+    registry: SchemaRegistry,
+):
+    registry.register("pkg.module.Container", UnregisteredContainerSchema)
+    registry.register("pkg.module.UnregisteredChild", UnregisteredChildSchema)
+
+    schema = SchemaGenerator.generate("pkg.module.Container")
+
+    validate(
+        {"class": "pkg.module.Container", "model": {"class": "pkg.module.UnregisteredChild"}},
+        schema,
+    )
+
+
+def test_generate_oneof_with_unregistered_base_rejects_unknown_class_path(
+    registry: SchemaRegistry,
+):
+    registry.register("pkg.module.Container", UnregisteredContainerSchema)
+    registry.register("pkg.module.UnregisteredChild", UnregisteredChildSchema)
+
+    schema = SchemaGenerator.generate("pkg.module.Container")
+
+    with pytest.raises(ValidationError):
+        validate(
+            {"class": "pkg.module.Container", "model": {"class": "anything.at.all"}},
+            schema,
+        )
+
+
+def test_generate_oneof_excludes_abstract_pyaml_base(
+    registry: SchemaRegistry,
+):
+    # Registers LinearMagnetModel together with its abstract base MagnetModel
+    generate_configuration_schema(LinearMagnetModel)
+
+    assert inspect.isabstract(MagnetModel)
+
+    schema = SchemaGenerator.generate(generate_class_path(MagnetModel))
+
+    with pytest.raises(ValidationError):
+        validate({"class": generate_class_path(MagnetModel)}, schema)
 
 
 # ==========================================================
