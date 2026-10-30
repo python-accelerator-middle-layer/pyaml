@@ -355,7 +355,7 @@ class SerializedMagnets(Element, DynamicValidation):
         """
         self.check_peer()
         if self.__strengths is None:
-            raise PyAMLException(f"{str(self)} has no model that supports physics units")
+            raise PyAMLException(f"{self.name} has no model that supports physics units")
         return self.__strengths
 
     @property
@@ -365,7 +365,7 @@ class SerializedMagnets(Element, DynamicValidation):
         """
         self.check_peer()
         if self.__hardwares is None:
-            raise PyAMLException(f"{str(self)} has no model that supports hardware units")
+            raise PyAMLException(f"{self.name} has no model that supports hardware units")
         return self.__hardwares
 
     def set_energy(self, energy: float):
