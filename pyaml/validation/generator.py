@@ -157,14 +157,14 @@ class RegistryJsonSchema(GenerateJsonSchema):
         Generate a JSON Schema for a Pydantic model.
 
         For ``ConfigurationSchema`` subclasses, the generated schema may be
-        transformed into a polymorphic schema based on the registered schema
-        registry:
+        extended based on the registered schema registry:
 
         - If the model defines a ``class`` field, all registered aliases
-        corresponding to the model are added as allowed literal values.
+          corresponding to the model are added as allowed literal values.
 
-        - If registered subclasses exist, the schema is replaced by an
-        ``anyOf`` union containing the schemas of all registered subclasses.
+        - If registered actual or virtual subclasses exist, the schema is
+          replaced by a ``oneOf`` union containing the model's own schema
+          and the schemas of all registered subclasses.
 
         Metadata fields from the original schema, such as titles and
         descriptions, are preserved in the merged schema.
@@ -177,14 +177,13 @@ class RegistryJsonSchema(GenerateJsonSchema):
         Returns
         -------
         dict[str, Any]
-            Generated JSON Schema for the model or polymorphic union schema.
+            Generated JSON Schema for the model, optionally including a
+            ``oneOf`` union with its registered subclasses.
 
         Notes
         -----
-        The generated polymorphic schema uses ``anyOf`` instead of ``oneOf``
-        because nested ``oneOf`` unions may lead to ambiguous validation in
-        downstream JSON Schema tooling when subclass schemas contain nullable
-        or overlapping branches.
+        The generated ``oneOf`` union requires an instance to validate
+        against exactly one branch.
         """
 
         base_schema = super().model_schema(schema)
@@ -229,8 +228,7 @@ class RegistryJsonSchema(GenerateJsonSchema):
         # Generate schemas of subclasses
         subschemas = [self.generate_inner(item.__pydantic_core_schema__) for item in subclasses]
 
-        # TODO: get the schemas to work when using oneOf instead
-        merged: dict[str, Any] = {"oneOf": subschemas}
+        merged: dict[str, Any] = {"oneOf": [base_schema, *subschemas]}
 
         for key in METADATA_KEYS:
             if key in base_schema and key not in merged:
