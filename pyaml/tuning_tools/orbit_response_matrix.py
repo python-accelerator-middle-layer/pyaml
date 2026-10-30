@@ -206,6 +206,8 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
         interface = pySCInterface(
             element_holder=element_holder,
             bpm_array_name=self.bpm_array_name,
+            callback=callback,
+            tool=self,
         )
         # TODO handle sleep_meas
         interface.set_wait_time = sleep_step

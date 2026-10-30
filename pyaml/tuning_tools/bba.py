@@ -258,6 +258,7 @@ class BBA(MeasurementTool, DynamicValidation):
         interface = pySCInterface(
             element_holder=element_holder,
             bpm_array_name=self.bpm_array_name,
+            tool=self,
         )
         interface.set_wait_time = sleep_step
         interface.read_wait_time = sleep_meas
