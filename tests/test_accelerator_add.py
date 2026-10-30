@@ -203,6 +203,81 @@ def test_add_rejects_duplicate_names_before_registering_any_instances(accelerato
     assert accelerator._devices == []
 
 
+@pytest.mark.parametrize("mode", ["design", "simulation", "live", "control"])
+@pytest.mark.parametrize("register_before_failure", [False, True])
+def test_add_rolls_back_binding_failure(accelerator_factory, monkeypatch, mode, register_before_failure):
+    accelerator = accelerator_factory()
+    existing = TrackingElement("EXISTING")
+    existing_tool = TuningTool("EXISTING_TOOL")
+    accelerator.add(existing)
+    accelerator.add(existing_tool)
+    holders = accelerator.modes()
+    snapshots = {name: holder._ALL.copy() for name, holder in holders.items()}
+    holder = holders[mode]
+    fill_device = holder.fill_device
+    element = BetatronTuneMonitor("NEW_TUNE")
+    error = PyAMLException("Backend binding failed") if register_before_failure else RuntimeError("Backend binding failed")
+
+    def fail_binding(elements):
+        if register_before_failure:
+            fill_device(elements)
+            fill_device([TuningTool("HELPER_TOOL")])
+        raise error
+
+    monkeypatch.setattr(holder, "fill_device", fail_binding)
+
+    with pytest.raises(
+        PyAMLException,
+        match=f"Failed to add element NEW_TUNE in mode {mode}: Backend binding failed",
+    ) as exc_info:
+        accelerator.add(element)
+
+    assert exc_info.value.__cause__ is error
+    assert accelerator._devices == [existing, existing_tool]
+    for name, holder in holders.items():
+        assert holder._ALL == snapshots[name]
+        assert holder._DIAG == {}
+        assert holder.tool.get(existing_tool.name) is snapshots[name][existing_tool.name]
+        assert list(holder._TOOLS) == [existing_tool.name]
+        assert holder[existing.name].post_init_count == 1
+
+    monkeypatch.setattr(holders[mode], "fill_device", fill_device)
+    accelerator.add(element)
+    for holder in holders.values():
+        assert holder.diagnostic.get(element.name) is holder[element.name]
+    assert accelerator.yellow_pages.availability(element.name) == set(holders)
+
+
+@pytest.mark.parametrize("method", ["set_energy", "set_mcf", "set_harmonic", "post_init"])
+def test_add_rolls_back_initialization_failure(accelerator_factory, monkeypatch, method):
+    accelerator = accelerator_factory()
+    existing = TrackingElement("EXISTING")
+    accelerator.add(existing)
+    holders = accelerator.modes()
+    snapshots = {name: holder._ALL.copy() for name, holder in holders.items()}
+    original_method = getattr(TrackingElement, method)
+    error = RuntimeError("Initialization failed")
+
+    def fail_initialization(self, *args):
+        if self.peer.name() == "live":
+            raise error
+        original_method(self, *args)
+
+    monkeypatch.setattr(TrackingElement, method, fail_initialization)
+
+    with pytest.raises(
+        PyAMLException,
+        match="Failed to add element NEW_ELEMENT in mode live: Initialization failed",
+    ) as exc_info:
+        accelerator.add(TrackingElement("NEW_ELEMENT"))
+
+    assert exc_info.value.__cause__ is error
+    assert accelerator._devices == [existing]
+    for name, holder in holders.items():
+        assert holder._ALL == snapshots[name]
+        assert holder[existing.name].post_init_count == 1
+
+
 @pytest.mark.parametrize("invalid_element", [None, {}, object()])
 def test_add_rejects_non_elements(accelerator_factory, invalid_element):
     accelerator = accelerator_factory(simulators=(), controls=())
