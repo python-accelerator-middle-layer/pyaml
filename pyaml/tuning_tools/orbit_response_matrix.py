@@ -202,10 +202,12 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
         sleep_step = sleep_between_step if sleep_between_step is not None else self.sleep_between_step
         sleep_meas = sleep_between_meas if sleep_between_meas is not None else self.sleep_between_meas
 
+        self._register_callback(callback)
         element_holder = self._peer
         interface = pySCInterface(
             element_holder=element_holder,
             bpm_array_name=self.bpm_array_name,
+            send_callback=self.send_callback,
         )
         # TODO handle sleep_meas
         interface.set_wait_time = sleep_step
@@ -229,17 +231,16 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
         err = None
         idx = 0
         try:
-            self._register_callback(callback)
             self._init_measure("pyaml.tuning_tools.orbit_response_matrix_data")
             for code, measurement in generator:
-                callback_data = {"idx": idx, "response_data": measurement.response_data}
+                self._callback_data = {"idx": idx, "response_data": measurement.response_data}
                 if code is ResponseCode.AFTER_SET:
-                    self.send_callback(Action.APPLY, callback_data)
+                    self.send_callback(Action.APPLY)
                 elif code is ResponseCode.AFTER_GET:
-                    self.send_callback(Action.MEASURE, callback_data)
+                    self.send_callback(Action.MEASURE)
                 elif code is ResponseCode.AFTER_RESTORE:
                     logger.info(f"Measured response of {measurement.last_input}.")
-                    self.send_callback(Action.RESTORE, callback_data)
+                    self.send_callback(Action.RESTORE)
                 idx += 1
         except Exception as ex:
             err = ex
@@ -248,11 +249,8 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
         finally:
             # Restore steerer strength
             # TODO
-            self.send_callback(
-                Action.RESTORE,
-                {"idx": idx},
-                raiseException=False,
-            )
+            self._callback_data = {"idx": idx}
+            self.send_callback(Action.RESTORE, raiseException=False)
 
         if err is not None:
             raise (err)

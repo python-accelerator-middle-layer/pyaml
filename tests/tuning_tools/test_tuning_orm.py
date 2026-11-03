@@ -5,6 +5,7 @@ from pathlib import Path
 import numpy as np
 
 from pyaml.accelerator import Accelerator
+from pyaml.common.constants import Action
 
 
 def test_tuning_orm():
@@ -20,11 +21,26 @@ def test_tuning_orm():
     bpms = element_holder.diagnostic.bpms.get("BPM")
     hcorr_names = element_holder.magnets.get("HCorr").names()[:4]
     vcorr_names = element_holder.magnets.get("VCorr").names()[:4]
-    orm.measure(corrector_names=hcorr_names + vcorr_names)
+
+    # for callback testing
+    actions = []
+
+    def callback(action, data):
+        actions.append(action)
+        return True
+
+    orm.measure(corrector_names=hcorr_names + vcorr_names, callback=callback)
 
     orm_data = orm.get()
     orm_shape = np.array(orm_data["matrix"]).shape
     assert orm_shape == (2 * len(bpms), 8)
+
+    # check callback actions:
+    assert Action.BEFORE_BPM_READING in actions
+    assert Action.APPLY in actions
+    assert Action.MEASURE in actions
+    assert Action.INIT in actions
+    assert Action.RESTORE in actions
 
     with tempfile.NamedTemporaryFile(mode="w", suffix=".json", prefix="orm_") as f:
         # save file

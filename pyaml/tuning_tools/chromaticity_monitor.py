@@ -378,7 +378,8 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
                 # TODO : Use set_and_wait once it is implemented !
 
                 rf.frequency.set(f0 + f)
-                self.send_callback(Action.APPLY, {"step": i, "rf": float(f0 + f)})
+                self._callback_data = {"step": i, "rf": float(f0 + f)}
+                self.send_callback(Action.APPLY)
                 sleep(sleep_between_step)
 
                 # Averaging
@@ -390,7 +391,8 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
                         orb = bpms.positions.get()
                         orbit[i] += orb
                         cb_data["orbit"] = orb
-                    self.send_callback(Action.MEASURE, cb_data)
+                    self._callback_data = cb_data
+                    self.send_callback(Action.MEASURE)
 
                     if j < n_avg_meas - 1:
                         sleep(sleep_between_meas)
@@ -406,7 +408,8 @@ class ChromaticityMonitor(MeasurementTool, DynamicValidation):
         finally:
             # Restore
             rf.frequency.set(f0)
-            self.send_callback(Action.RESTORE, {"step": i, "rf": f0}, raiseException=False)
+            self._callback_data = {"step": i, "rf": f0}
+            self.send_callback(Action.RESTORE, raiseException=False)
 
         if err is not None:
             raise (err)

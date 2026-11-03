@@ -60,6 +60,7 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         self._latest_measurement: dict = None
         self._peer: "ElementHolder" = None  # Peer: ControlSystem or Simulator
         self._callback: Callable = None
+        self._callback_data: dict = {}
 
     @staticmethod
     def get_peer_from_cb(cbdata: dict) -> "ElementHolder":
@@ -93,7 +94,8 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         self._latest_measurement = {}
         if measurement_type is not None:
             self._latest_measurement["type"] = measurement_type
-        self.send_callback(Action.INIT, {})
+        self._callback_data = {}
+        self.send_callback(Action.INIT)
 
     @abstractmethod
     def measure(self) -> bool:
@@ -165,7 +167,7 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         else:
             raise PyAMLException(f"ERROR: Unknown file type to save as: {with_type}.")
 
-    def send_callback(self, action: Action, cb_data: dict, raiseException: bool = True):
+    def send_callback(self, action: Action, raiseException: bool = True):
         """
         Notify the caller about measurement progress.
 
@@ -188,9 +190,6 @@ class MeasurementTool(Element, metaclass=ABCMeta):
         ----------
         action : Action
           Measurement lifecycle event.
-
-        cb_data : dict
-          Mutable event data passed to the callback.
         raiseException : bool, optional
           Whether a callback rejection should raise ``KeyboardInterrupt``.
 
@@ -200,6 +199,7 @@ class MeasurementTool(Element, metaclass=ABCMeta):
             Callback result, or ``True`` when no callback is registered.
         """
         ok = True
+        cb_data = self._callback_data
         if self._callback is not None:
             # Add source and peer
             cb_data["mode"] = f"{self.attached_to()}"

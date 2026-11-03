@@ -116,8 +116,8 @@ class Dispersion(MeasurementTool, DynamicValidation):
         set_waiting_time : float
             Delay in seconds after changing the RF frequency.
         callback : Optional[Callable]
-            Optional callback invoked after applying, measuring, and restoring
-            settings.
+            Optional callback invoked before each BPM reading, after applying,
+            measuring, and restoring settings.
 
         Returns
         -------
@@ -130,6 +130,7 @@ class Dispersion(MeasurementTool, DynamicValidation):
             element_holder=element_holder,
             bpm_array_name=self.bpm_array_name,
             rf_plant_name=self.rf_plant_name,
+            send_callback=callback,
         )
         interface.set_wait_time = set_waiting_time
 
@@ -146,17 +147,17 @@ class Dispersion(MeasurementTool, DynamicValidation):
             self._register_callback(callback)
             self._init_measure()
             for code, measurement in generator:
-                callback_data = {"idx": idx, "dispersion_data": measurement.dispersion_data}
+                self._callback_data = {"idx": idx, "dispersion_data": measurement.dispersion_data}
                 if code is DispersionCode.AFTER_SET:
-                    if not self.send_callback(Action.APPLY, callback_data):
+                    if not self.send_callback(Action.APPLY):
                         if aborted:
                             break
                 elif code is DispersionCode.AFTER_GET:
-                    if not self.send_callback(Action.MEASURE, callback_data):
+                    if not self.send_callback(Action.MEASURE):
                         aborted = True
                         break
                 elif code is DispersionCode.AFTER_RESTORE:
-                    if not self.send_callback(Action.RESTORE, callback_data):
+                    if not self.send_callback(Action.RESTORE):
                         aborted = True
                         break
                 idx += 1
@@ -167,12 +168,8 @@ class Dispersion(MeasurementTool, DynamicValidation):
         finally:
             # Restore RF
             # TODO
-            self.send_callback(
-                Action.RESTORE,
-                {"idx": idx},
-                raiseException=False,
-            )
-
+            self._callback_data = {"idx": idx}
+            self.send_callback(Action.RESTORE, raiseException=False)
         if err is not None:
             raise (err)
 

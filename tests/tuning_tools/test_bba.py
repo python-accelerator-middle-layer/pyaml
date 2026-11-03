@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from pyaml.accelerator import Accelerator
+from pyaml.common.constants import Action
 
 
 def test_bba():
@@ -11,11 +12,24 @@ def test_bba():
     # Add a misalignement
     SR.diagnostic.bpm.get("BPM_C04-04").offset.set([20e-6, -15e-6])
 
+    # for callback testing
+    actions = []
+
+    def callback(action, data):
+        actions.append(action)
+        return True
+
     # BBA (standard bow tie, model independant)
     bba = SR.tool.get("BBA-BPM_C04-04")
-    bba.measure()
+    bba.measure(callback=callback)
     assert np.abs(bba.h_offset() - 20e-6) < 1e-6
     assert np.abs(bba.v_offset() + 15e-6) < 1e-6
+
+    # check callback actions:
+    assert Action.BEFORE_BPM_READING in actions
+    assert Action.MEASURE in actions
+    assert Action.INIT in actions
+    assert Action.RESTORE in actions
 
     # BBA (model dependant method)
     bba = SR.tool.get("BBA2-BPM_C04-04")

@@ -515,11 +515,13 @@ class BBA2(MeasurementTool, DynamicValidation):
         if np.fabs(dk0[0]) > 0:
             _str = dk0[0] + self._initial_k0[0]
             self._h_steer.strength.set(_str)
-            self.send_callback(Action.APPLY, {"step": self._step, "magnet": self._h_steer.name, "strength": _str})
+            self._callback_data = {"step": self._step, "magnet": self._h_steer.name, "strength": _str}
+            self.send_callback(Action.APPLY)
         if np.fabs(dk0[1]) > 0:
             _str = dk0[1] + self._initial_k0[1]
             self._v_steer.strength.set(_str)
-            self.send_callback(Action.APPLY, {"step": self._step, "magnet": self._v_steer.name, "strength": _str})
+            self._callback_data = {"step": self._step, "magnet": self._v_steer.name, "strength": _str}
+            self.send_callback(Action.APPLY)
 
         time.sleep(self._sleep_step)
         orb0 = self._get_averaged_orbit()
@@ -527,7 +529,8 @@ class BBA2(MeasurementTool, DynamicValidation):
         # Set quad
         _str = self._initial_k1 + dk1 * self._quad_polarity
         self._quad.strength.set(_str)
-        self.send_callback(Action.APPLY, {"step": self._step, "magnet": self._quad.name, "strength": _str})
+        self._callback_data = {"step": self._step, "magnet": self._quad.name, "strength": _str}
+        self.send_callback(Action.APPLY)
         time.sleep(self._sleep_step)
         orbp = self._get_averaged_orbit()
 
@@ -538,7 +541,8 @@ class BBA2(MeasurementTool, DynamicValidation):
             # one more point at k1 - dk1
             _str = self._initial_k1 - dk1 * self._quad_polarity
             self._quad.strength.set(_str)
-            self.send_callback(Action.APPLY, {"step": self._step, "magnet": self._quad.name, "strength": _str})
+            self._callback_data = {"step": self._step, "magnet": self._quad.name, "strength": _str}
+            self.send_callback(Action.APPLY)
             time.sleep(self._sleep_step)
             orbm = self._get_averaged_orbit()
             # take slopes and compute corresponding delta orbit
@@ -557,7 +561,8 @@ class BBA2(MeasurementTool, DynamicValidation):
         # resotre quad
         _str = self._initial_k1
         self._quad.strength.set(_str)
-        self.send_callback(Action.APPLY, {"step": self._step, "magnet": self._quad.name, "strength": _str})
+        self._callback_data = {"step": self._step, "magnet": self._quad.name, "strength": _str}
+        self.send_callback(Action.APPLY)
 
         nanx = ~np.isnan(ios_x)
         x = orb0[self._bpmi, 0]
@@ -669,11 +674,13 @@ class BBA2(MeasurementTool, DynamicValidation):
                 logger.debug(f"Quad mini cycling {self.quad_name}")
                 _str = self._initial_k1 + dk1 * self._quad_polarity
                 self._quad.strength.set(_str)
-                self.send_callback(Action.APPLY, {"step": -1, "magnet": self._quad.name, "strength": _str})
+                self._callback_data = {"step": -1, "magnet": self._quad.name, "strength": _str}
+                self.send_callback(Action.APPLY)
                 time.sleep(self.minicycle_sleep_time)
                 _str = self._initial_k1
                 self._quad.strength.set(_str)
-                self.send_callback(Action.APPLY, {"step": -1, "magnet": self._quad.name, "strength": _str})
+                self._callback_data = {"step": -1, "magnet": self._quad.name, "strength": _str}
+                self.send_callback(Action.APPLY)
                 time.sleep(self.minicycle_sleep_time)
 
             opt_found = False
@@ -719,10 +726,12 @@ class BBA2(MeasurementTool, DynamicValidation):
                 Y.append(sty, dky, y, dataybpm)
 
                 if doH:
-                    self.send_callback(Action.MEASURE, {"step": self._step, "plane": "H", "bpm_pos": x, "ios": dataxbpm})
+                    self._callback_data = {"step": self._step, "plane": "H", "bpm_pos": x, "ios": dataxbpm}
+                    self.send_callback(Action.MEASURE)
 
                 if doV:
-                    self.send_callback(Action.MEASURE, {"step": self._step, "plane": "V", "bpm_pos": y, "ios": dataybpm})
+                    self._callback_data = {"step": self._step, "plane": "V", "bpm_pos": y, "ios": dataybpm}
+                    self.send_callback(Action.MEASURE)
 
                 self._step += 1
 
@@ -760,9 +769,9 @@ class BBA2(MeasurementTool, DynamicValidation):
             if doV:
                 self._v_steer.strength.set(self._initial_k0[1])
             self._quad.strength.set(self._initial_k1)
+            self._callback_data = {}
             self.send_callback(
                 Action.RESTORE,
-                {},
                 raiseException=False,
             )
 
