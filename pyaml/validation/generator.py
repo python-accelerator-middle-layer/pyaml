@@ -131,16 +131,17 @@ class RegistryJsonSchema(GenerateJsonSchema):
     """
     Custom Pydantic JSON Schema generator for configuration schemas.
 
-    This generator extends the default Pydantic schema generation to support
-    registry-aware polymorphism for ``ConfigurationSchema`` subclasses.
+    For ``ConfigurationSchema`` subclasses, registered aliases are added as
+    allowed literal values for the ``class`` field.
 
-    For configuration base classes with registered subclasses, the generated
-    schema is replaced by a ``oneOf`` union over all registered concrete
-    subclasses. Human-facing schema metadata such as titles and descriptions
-    are preserved from the original schema.
+    For models with registered actual or virtual subclasses, the generated
+    schema is replaced by a flat ``oneOf`` union containing the model's own
+    schema and the schemas of all registered subclasses. Each class is
+    included once, without expanding its subclass union within a branch.
 
-    In addition, all generated schema unions are normalized to use ``oneOf``
-    instead of ``anyOf`` for improved compatibility with downstream tooling.
+    Human-facing schema metadata such as titles and descriptions are
+    preserved from the original schema.
+
     Primitive unions such as ``str | None`` continue to use compact
     ``type: [...]`` representations when supported by Pydantic.
 
@@ -152,19 +153,27 @@ class RegistryJsonSchema(GenerateJsonSchema):
 
     _registry = SchemaRegistry()
 
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(*args, **kwargs)
+
+        # Cache each class's schema without its subclass union so each class
+        # can be included only once when building a flat oneOf union.
+        self._own_schema_cache: dict[type[ConfigurationSchema], dict[str, Any]] = {}
+
     def model_schema(self, schema: core_schema.ModelSchema) -> dict[str, Any]:
         """
         Generate a JSON Schema for a Pydantic model.
 
         For ``ConfigurationSchema`` subclasses, the generated schema may be
-        transformed into a polymorphic schema based on the registered schema
-        registry:
+        extended based on the registered schema registry:
 
         - If the model defines a ``class`` field, all registered aliases
-        corresponding to the model are added as allowed literal values.
+          corresponding to the model are added as allowed literal values.
 
-        - If registered subclasses exist, the schema is replaced by an
-        ``anyOf`` union containing the schemas of all registered subclasses.
+        - If registered actual or virtual subclasses exist, the schema is
+        replaced by a flat ``oneOf`` union containing the model's own schema
+        and the schemas of all registered subclasses. Each class is included
+        once, without expanding its subclass union within a branch.
 
         Metadata fields from the original schema, such as titles and
         descriptions, are preserved in the merged schema.
@@ -177,14 +186,8 @@ class RegistryJsonSchema(GenerateJsonSchema):
         Returns
         -------
         dict[str, Any]
-            Generated JSON Schema for the model or polymorphic union schema.
-
-        Notes
-        -----
-        The generated polymorphic schema uses ``anyOf`` instead of ``oneOf``
-        because nested ``oneOf`` unions may lead to ambiguous validation in
-        downstream JSON Schema tooling when subclass schemas contain nullable
-        or overlapping branches.
+            Generated JSON Schema for the model, optionally including a
+            ``oneOf`` union with its registered subclasses.
         """
 
         base_schema = super().model_schema(schema)
@@ -207,6 +210,9 @@ class RegistryJsonSchema(GenerateJsonSchema):
             properties = base_schema["properties"]
             self._add_literals_to_class_path(properties[CLASS_ALIAS], base_keys)
 
+        # Store the model's own schema before adding the union with subclasses.
+        self._own_schema_cache[model_cls] = deepcopy(base_schema)
+
         # Get subclasses in registry sorted by module name
         subclasses = sorted(
             {
@@ -226,11 +232,12 @@ class RegistryJsonSchema(GenerateJsonSchema):
         if not subclasses:
             return base_schema
 
-        # Generate schemas of subclasses
-        subschemas = [self.generate_inner(item.__pydantic_core_schema__) for item in subclasses]
+        # Generate each subclass so its own schema is available in the cache.
+        for subclass in subclasses:
+            self.generate_inner(subclass.__pydantic_core_schema__)
 
-        # TODO: get the schemas to work when using oneOf instead
-        merged: dict[str, Any] = {"oneOf": subschemas}
+        # Build a flat union using only each class's own schema.
+        merged: dict[str, Any] = {"oneOf": [deepcopy(self._own_schema_cache[item]) for item in [model_cls, *subclasses]]}
 
         for key in METADATA_KEYS:
             if key in base_schema and key not in merged:
