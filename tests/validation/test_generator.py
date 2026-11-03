@@ -58,20 +58,6 @@ class GrandchildSchema(ChildSchemaA):
     pass
 
 
-# class UnregisteredBaseSchema(ConfigurationSchema):
-#     """Base schema that is never registered."""
-
-#     pass
-
-
-# class UnregisteredChildSchema(UnregisteredBaseSchema):
-#     c: int = 1
-
-
-# class UnregisteredContainerSchema(ConfigurationSchema):
-#     model: UnregisteredBaseSchema
-
-
 # ==========================================================
 # Fixtures
 # ==========================================================
