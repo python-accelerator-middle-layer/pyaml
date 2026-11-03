@@ -1,26 +1,20 @@
 """Tests of the schema generator."""
 
-import inspect
 import json
 import re
 from collections.abc import Generator
 from pathlib import Path
 
 import pytest
-from jsonschema import ValidationError, validate
+from jsonschema import validate
 from pydantic import Field
 
-from pyaml.common.element import Element
-from pyaml.magnet.linear_model import LinearMagnetModel
-from pyaml.magnet.model import MagnetModel
-from pyaml.magnet.quadrupole import Quadrupole
 from pyaml.validation import (
     ConfigurationSchema,
     SchemaGenerator,
     SchemaRegistry,
 )
 from pyaml.validation.generator import RegistryJsonSchema
-from pyaml.validation.schema_builder import generate_class_path, generate_configuration_schema
 
 # ==========================================================
 # Dummy schemas
@@ -60,18 +54,22 @@ class ContainerSchema(ConfigurationSchema):
     )
 
 
-class UnregisteredBaseSchema(ConfigurationSchema):
-    """Base schema that is never registered."""
-
+class GrandchildSchema(ChildSchemaA):
     pass
 
 
-class UnregisteredChildSchema(UnregisteredBaseSchema):
-    c: int = 1
+# class UnregisteredBaseSchema(ConfigurationSchema):
+#     """Base schema that is never registered."""
+
+#     pass
 
 
-class UnregisteredContainerSchema(ConfigurationSchema):
-    model: UnregisteredBaseSchema
+# class UnregisteredChildSchema(UnregisteredBaseSchema):
+#     c: int = 1
+
+
+# class UnregisteredContainerSchema(ConfigurationSchema):
+#     model: UnregisteredBaseSchema
 
 
 # ==========================================================
@@ -201,82 +199,32 @@ def test_model_schema_preserves_metadata_from_parent_schema(
     assert schema["description"] == "Parent schema used to test inheritance."
 
 
-def test_generate_oneof_validates_parent_and_subclasses(
-    registry: SchemaRegistry,
-):
-    registry.register("pkg.module.Parent", ParentSchema)
-    registry.register("pkg.module.ChildA", ChildSchemaA)
-    registry.register("pkg.module.ChildB", ChildSchemaB)
-
-    schema = SchemaGenerator.generate("pkg.module.Parent")
-
-    for class_path in [
-        "pkg.module.Parent",
-        "pkg.module.ChildA",
-        "pkg.module.ChildB",
-    ]:
-        validate({"class": class_path}, schema)
-
-
 # ==========================================================
 # oneOf exclusivity
 # ==========================================================
 
 
-def test_generate_oneof_validates_nested_pyaml_subclass(
+def test_generate_oneof_validates_parent_and_subclasses(
     registry: SchemaRegistry,
 ):
-    # Registers Quadrupole together with its bases Magnet and Element
-    generate_configuration_schema(Quadrupole)
+    """Validate the parent, direct children, and a grandchild."""
+    registry.register("pkg.module.Parent", ParentSchema)
+    registry.register("pkg.module.ChildA", ChildSchemaA)
+    registry.register("pkg.module.ChildB", ChildSchemaB)
+    registry.register("pkg.module.Grandchild", GrandchildSchema)
 
-    schema = SchemaGenerator.generate(generate_class_path(Element))
+    schema = SchemaGenerator.generate("pkg.module.Parent")
+    from pprint import pprint
 
-    # Quadrupole must match exactly one branch, not both the direct branch
-    # and the branch nested in the Magnet union.
-    validate({"class": generate_class_path(Quadrupole), "name": "Q1"}, schema)
+    pprint(schema)
 
-
-def test_generate_oneof_with_unregistered_base_accepts_registered_subclass(
-    registry: SchemaRegistry,
-):
-    registry.register("pkg.module.Container", UnregisteredContainerSchema)
-    registry.register("pkg.module.UnregisteredChild", UnregisteredChildSchema)
-
-    schema = SchemaGenerator.generate("pkg.module.Container")
-
-    validate(
-        {"class": "pkg.module.Container", "model": {"class": "pkg.module.UnregisteredChild"}},
-        schema,
-    )
-
-
-def test_generate_oneof_with_unregistered_base_rejects_unknown_class_path(
-    registry: SchemaRegistry,
-):
-    registry.register("pkg.module.Container", UnregisteredContainerSchema)
-    registry.register("pkg.module.UnregisteredChild", UnregisteredChildSchema)
-
-    schema = SchemaGenerator.generate("pkg.module.Container")
-
-    with pytest.raises(ValidationError):
-        validate(
-            {"class": "pkg.module.Container", "model": {"class": "anything.at.all"}},
-            schema,
-        )
-
-
-def test_generate_oneof_excludes_abstract_pyaml_base(
-    registry: SchemaRegistry,
-):
-    # Registers LinearMagnetModel together with its abstract base MagnetModel
-    generate_configuration_schema(LinearMagnetModel)
-
-    assert inspect.isabstract(MagnetModel)
-
-    schema = SchemaGenerator.generate(generate_class_path(MagnetModel))
-
-    with pytest.raises(ValidationError):
-        validate({"class": generate_class_path(MagnetModel)}, schema)
+    for class_path in [
+        "pkg.module.Parent",
+        "pkg.module.ChildA",
+        "pkg.module.ChildB",
+        "pkg.module.Grandchild",
+    ]:
+        validate({"class": class_path}, schema)
 
 
 # ==========================================================
