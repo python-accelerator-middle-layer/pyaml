@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 
 from pyaml.accelerator import Accelerator
 from pyaml.common.constants import Action
