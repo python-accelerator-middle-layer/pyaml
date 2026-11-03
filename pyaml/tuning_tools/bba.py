@@ -254,10 +254,12 @@ class BBA(MeasurementTool, DynamicValidation):
         sleep_meas = sleep_between_meas if sleep_between_meas is not None else self.sleep_between_meas
         bipolar = bipolar if bipolar is not None else self.bipolar
 
+        self._register_callback(callback)
         element_holder = self._peer
         interface = pySCInterface(
             element_holder=element_holder,
             bpm_array_name=self.bpm_array_name,
+            send_callback=self.send_callback,
         )
         interface.set_wait_time = sleep_step
         interface.read_wait_time = sleep_meas
@@ -298,7 +300,6 @@ class BBA(MeasurementTool, DynamicValidation):
         vstep = 0
 
         try:
-            self._register_callback(callback)
             self._init_measure()
             self.latest_measurement["HData"] = None
             self.latest_measurement["VData"] = None
