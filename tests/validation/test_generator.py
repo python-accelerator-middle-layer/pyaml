@@ -54,6 +54,10 @@ class ContainerSchema(ConfigurationSchema):
     )
 
 
+class GrandchildSchema(ChildSchemaA):
+    pass
+
+
 # ==========================================================
 # Fixtures
 # ==========================================================
@@ -181,19 +185,30 @@ def test_model_schema_preserves_metadata_from_parent_schema(
     assert schema["description"] == "Parent schema used to test inheritance."
 
 
+# ==========================================================
+# oneOf exclusivity
+# ==========================================================
+
+
 def test_generate_oneof_validates_parent_and_subclasses(
     registry: SchemaRegistry,
 ):
+    """Validate the parent, direct children, and a grandchild."""
     registry.register("pkg.module.Parent", ParentSchema)
     registry.register("pkg.module.ChildA", ChildSchemaA)
     registry.register("pkg.module.ChildB", ChildSchemaB)
+    registry.register("pkg.module.Grandchild", GrandchildSchema)
 
     schema = SchemaGenerator.generate("pkg.module.Parent")
+    from pprint import pprint
+
+    pprint(schema)
 
     for class_path in [
         "pkg.module.Parent",
         "pkg.module.ChildA",
         "pkg.module.ChildB",
+        "pkg.module.Grandchild",
     ]:
         validate({"class": class_path}, schema)
 
