@@ -51,6 +51,7 @@ test = [
     "pytest>=7.4",
     "pytest-cov>=3.0",
     "pyaml-test-lattice>=0.2.0",
+    "jsonschema"
 ]
 doc = [
     "sphinx ~= 8.1",
