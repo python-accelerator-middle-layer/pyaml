@@ -86,14 +86,6 @@ class pySCInterface:
         self.send_callback = send_callback
         self.orbits_to_average = orbits_to_average
 
-    @property
-    def peer(self) -> "ElementHolder":
-        return self.element_holder
-
-    def attached_to(self) -> str:
-        """Return the peer type and name, or ``"None"`` when unattached."""
-        return "None" if self.peer is None else f"{self.peer.__class__.__name__}:{self.peer.name()}"
-
     def get_orbit(self) -> Tuple[np.array, np.array]:
         """Return mean horizontal and vertical orbits over ``orbits_to_average`` reads.
 
