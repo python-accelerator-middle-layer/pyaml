@@ -148,17 +148,17 @@ class Dispersion(MeasurementTool, DynamicValidation):
             self._register_callback(callback)
             self._init_measure()
             for code, measurement in generator:
-                callback_data = {"idx": idx, "dispersion_data": measurement.dispersion_data}
+                self._callback_data = {"idx": idx, "dispersion_data": measurement.dispersion_data}
                 if code is DispersionCode.AFTER_SET:
-                    if not self.send_callback(Action.APPLY, callback_data):
+                    if not self.send_callback(Action.APPLY):
                         if aborted:
                             break
                 elif code is DispersionCode.AFTER_GET:
-                    if not self.send_callback(Action.MEASURE, callback_data):
+                    if not self.send_callback(Action.MEASURE):
                         aborted = True
                         break
                 elif code is DispersionCode.AFTER_RESTORE:
-                    if not self.send_callback(Action.RESTORE, callback_data):
+                    if not self.send_callback(Action.RESTORE):
                         aborted = True
                         break
                 idx += 1
@@ -169,12 +169,8 @@ class Dispersion(MeasurementTool, DynamicValidation):
         finally:
             # Restore RF
             # TODO
-            self.send_callback(
-                Action.RESTORE,
-                {"idx": idx},
-                raiseException=False,
-            )
-
+            self._callback_data = {"idx": idx}
+            self.send_callback(Action.RESTORE, raiseException=False)
         if err is not None:
             raise (err)
 

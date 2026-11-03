@@ -233,14 +233,14 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
         try:
             self._init_measure("pyaml.tuning_tools.orbit_response_matrix_data")
             for code, measurement in generator:
-                callback_data = {"idx": idx, "response_data": measurement.response_data}
+                self._callback_data = {"idx": idx, "response_data": measurement.response_data}
                 if code is ResponseCode.AFTER_SET:
-                    self.send_callback(Action.APPLY, callback_data)
+                    self.send_callback(Action.APPLY)
                 elif code is ResponseCode.AFTER_GET:
-                    self.send_callback(Action.MEASURE, callback_data)
+                    self.send_callback(Action.MEASURE)
                 elif code is ResponseCode.AFTER_RESTORE:
                     logger.info(f"Measured response of {measurement.last_input}.")
-                    self.send_callback(Action.RESTORE, callback_data)
+                    self.send_callback(Action.RESTORE)
                 idx += 1
         except Exception as ex:
             err = ex
@@ -249,11 +249,8 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
         finally:
             # Restore steerer strength
             # TODO
-            self.send_callback(
-                Action.RESTORE,
-                {"idx": idx},
-                raiseException=False,
-            )
+            self._callback_data = {"idx": idx}
+            self.send_callback(Action.RESTORE, raiseException=False)
 
         if err is not None:
             raise (err)

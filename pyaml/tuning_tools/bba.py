@@ -305,28 +305,24 @@ class BBA(MeasurementTool, DynamicValidation):
             self.latest_measurement["VData"] = None
             for code, measurement_object in generator:
                 if code == BBACode.HORIZONTAL_IOS_READY:
-                    self.send_callback(
-                        Action.MEASURE,
-                        {
-                            "step": hstep,
-                            "plane": "H",
-                            "bpm_pos": measurement_object.last_bpm_pos,
-                            "ios": measurement_object.last_ios,
-                            "bba_data": measurement_object.H_data,
-                        },
-                    )
+                    self._callback_data = {
+                        "step": hstep,
+                        "plane": "H",
+                        "bpm_pos": measurement_object.last_bpm_pos,
+                        "ios": measurement_object.last_ios,
+                        "bba_data": measurement_object.H_data,
+                    }
+                    self.send_callback(Action.MEASURE)
                     hstep += 1
                 if code == BBACode.VERTICAL_IOS_READY:
-                    self.send_callback(
-                        Action.MEASURE,
-                        {
-                            "step": vstep,
-                            "plane": "V",
-                            "bpm_pos": measurement_object.last_bpm_pos,
-                            "ios": measurement_object.last_ios,
-                            "bba_data": measurement_object.V_data,
-                        },
-                    )
+                    self._callback_data = {
+                        "step": vstep,
+                        "plane": "V",
+                        "bpm_pos": measurement_object.last_bpm_pos,
+                        "ios": measurement_object.last_ios,
+                        "bba_data": measurement_object.V_data,
+                    }
+                    self.send_callback(Action.MEASURE)
                     vstep += 1
                 if code == BBACode.HORIZONTAL_DONE:
                     result = BBAAnalysis.analyze(measurement_object.H_data)
@@ -342,9 +338,9 @@ class BBA(MeasurementTool, DynamicValidation):
         finally:
             # Restore steerer/quad strength
             # TODO
+            self._callback_data = {}
             self.send_callback(
                 Action.RESTORE,
-                {},
                 raiseException=False,
             )
 
