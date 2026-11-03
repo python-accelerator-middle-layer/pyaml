@@ -2,6 +2,7 @@ import logging
 from pathlib import Path
 
 from pyaml.accelerator import Accelerator
+from pyaml.common.constants import Action
 
 
 def test_tuning_orm():
@@ -14,7 +15,22 @@ def test_tuning_orm():
 
     dispersion = element_holder.tool.dispersion
 
-    dispersion.measure()
+    # for callback testing
+    actions = []
+
+    def callback(action, data):
+        actions.append(action)
+        return True
+
+    dispersion.measure(callback=callback)
+
+    # check callback actions:
+    assert Action.BEFORE_BPM_READING in actions
+    assert Action.APPLY in actions
+    assert Action.MEASURE in actions
+    assert Action.INIT in actions
+    assert Action.RESTORE in actions
+
     dispersion_data = dispersion.get()
 
     bpms = element_holder.diagnostic.bpms.get("BPM")
