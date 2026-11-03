@@ -35,9 +35,6 @@ class pySCInterface:
         a false value raises ``KeyboardInterrupt``.
     orbits_to_average : int, default 1
         Positive number of BPM acquisitions to average per ``get_orbit()`` call.
-    tool : Element, optional
-        Owning tool passed as callback data ``source``. Defaults to this interface
-        when used without an owning tool.
 
     Raises
     ------
