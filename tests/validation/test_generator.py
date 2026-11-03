@@ -200,9 +200,6 @@ def test_generate_oneof_validates_parent_and_subclasses(
     registry.register("pkg.module.Grandchild", GrandchildSchema)
 
     schema = SchemaGenerator.generate("pkg.module.Parent")
-    from pprint import pprint
-
-    pprint(schema)
 
     for class_path in [
         "pkg.module.Parent",
