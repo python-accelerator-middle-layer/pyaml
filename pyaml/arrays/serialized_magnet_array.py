@@ -86,7 +86,7 @@ class RWMagnetStrengths(ReadWriteFloatArray):
         """Return the strength unit of every serialized group."""
         r = []
         for m in self.__magnets:
-            r.extend(m.strength.unit())
+            r.append(m.strength.unit())
         return r
 
 
@@ -162,7 +162,7 @@ class RWMagnetHardwares(ReadWriteFloatArray):
         """Return the hardware unit of every serialized group."""
         r = []
         for m in self.__magnets:
-            r.extend(m.hardware.unit())
+            r.append(m.hardware.unit())
         return r
 
 

@@ -238,7 +238,9 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         for index in range(magnets.get_nb_magnets()):
             sub_model = magnets.model.get_sub_model(index)
             currents.append(RWHardwareScalar(sub_model, device) if magnets.model.has_hardware() else None)
-            strengths.append(RWSerializedStrengthScalar(sub_model, device, index) if magnets.model.has_physics() else None)
+            strengths.append(
+                RWSerializedStrengthScalar(sub_model, device, index, magnets.model) if magnets.model.has_physics() else None
+            )
         attached_magnets = magnets.attach(self, strengths, currents)
         self.serialized_magnet.add(attached_magnets[0])
         for magnet in attached_magnets[1:]:
