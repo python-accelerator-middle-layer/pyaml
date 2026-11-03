@@ -326,7 +326,6 @@ class Orbit(TuningTool, DynamicValidation):
             element_holder=self.peer,
             bpm_array_name=self.bpm_array_name,
             send_callback=callback,
-            tool=self,
             orbits_to_average=orbits_to_average,
         )
 
