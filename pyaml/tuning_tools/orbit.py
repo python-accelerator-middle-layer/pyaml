@@ -325,7 +325,7 @@ class Orbit(TuningTool, DynamicValidation):
         interface = pySCInterface(
             element_holder=self.peer,
             bpm_array_name=self.bpm_array_name,
-            callback=callback,
+            send_callback=callback,
             tool=self,
             orbits_to_average=orbits_to_average,
         )

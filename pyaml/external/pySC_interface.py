@@ -67,9 +67,8 @@ class pySCInterface:
         element_holder: "ElementHolder",
         bpm_array_name: str,
         rf_plant_name: Optional[str] = None,
-        callback: Optional[Callable] = None,
+        send_callback: Optional[Callable] = None,
         orbits_to_average: int = 1,
-        tool: Optional["Element"] = None,
     ):
         """
         Initialize a pySC adapter from a PyAML element holder.
@@ -87,11 +86,7 @@ class pySCInterface:
         else:
             self.rf_plant = None
 
-        self._callback = callback
-        if tool is None:
-            self.tool = self
-        else:
-            self.tool = tool
+        self.send_callback = send_callback
         self.orbits_to_average = orbits_to_average
 
     @property
@@ -108,14 +103,16 @@ class pySCInterface:
         Invoke ``Action.BEFORE_BPM_READING`` before each acquisition and its
         ``read_wait_time`` delay, including each sample used in the average.
         """
-        self.send_callback(Action.BEFORE_BPM_READING, {})
+        if self.send_callback is not None:
+            self.send_callback(Action.BEFORE_BPM_READING, {})
         time.sleep(self.read_wait_time)
         positions = self.bpm_array.positions.get()
         x = positions[:, 0] / self.orbits_to_average
         y = positions[:, 1] / self.orbits_to_average
 
         for _ in range(1, self.orbits_to_average):
-            self.send_callback(Action.BEFORE_BPM_READING, {})
+            if self.send_callback is not None:
+                self.send_callback(Action.BEFORE_BPM_READING, {})
             time.sleep(self.read_wait_time)
             positions = self.bpm_array.positions.get()
             x += positions[:, 0] / self.orbits_to_average
@@ -185,49 +182,3 @@ class pySCInterface:
         self.rf_plant.frequency.set(value)
         time.sleep(self.set_wait_time)
         return
-
-    # TODO: this function is copied from MeasurementTool class, to be generalized?
-    def send_callback(self, action: Action, cb_data: dict, raiseException: bool = True):
-        """
-        Notify the caller about measurement progress.
-
-        If the registered callback returns ``False``, the scan is aborted by
-        raising ``KeyboardInterrupt`` when ``raiseException`` is ``True``.
-        Callback data contains the attached ``mode`` and the owning tool as
-        ``source`` (or this interface when no tool was provided).
-        Callback example:
-
-        .. code-block:: python
-
-            def callback(action: Action, data: dict):
-                print(f"{action}, data:{data}")
-                return True
-
-            # Correct the orbit using the above callback
-            sr.design.tool.orbit.correct(callback=callback)
-
-        Parameters
-        ----------
-        action : Action
-          Measurement lifecycle event.
-
-        cb_data : dict
-          Mutable event data passed to the callback.
-        raiseException : bool, optional
-          Whether a callback rejection should raise ``KeyboardInterrupt``.
-
-        Returns
-        -------
-        bool
-            Callback result, or ``True`` when no callback is registered.
-        """
-        ok = True
-        if self._callback is not None:
-            # Add source and peer
-            cb_data["mode"] = self.tool.attached_to()
-            cb_data["source"] = self.tool
-            ok = self._callback(action, cb_data)
-        if not ok and raiseException:
-            # Abort, same as ctrl+C
-            raise KeyboardInterrupt
-        return ok

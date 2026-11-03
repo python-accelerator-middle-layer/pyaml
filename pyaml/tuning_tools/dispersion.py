@@ -131,8 +131,7 @@ class Dispersion(MeasurementTool, DynamicValidation):
             element_holder=element_holder,
             bpm_array_name=self.bpm_array_name,
             rf_plant_name=self.rf_plant_name,
-            callback=callback,
-            tool=self,
+            send_callback=callback,
         )
         interface.set_wait_time = set_waiting_time
 
