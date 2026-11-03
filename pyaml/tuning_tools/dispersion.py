@@ -116,9 +116,8 @@ class Dispersion(MeasurementTool, DynamicValidation):
         set_waiting_time : float
             Delay in seconds after changing the RF frequency.
         callback : Optional[Callable]
-            Optional callback invoked before each BPM reading
-            (``Action.BEFORE_BPM_READING``) and after applying, measuring, and
-            restoring settings.
+            Optional callback invoked before each BPM reading, after applying,
+            measuring, and restoring settings.
 
         Returns
         -------
