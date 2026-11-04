@@ -53,6 +53,13 @@ class _Holder:
         self._arrays = dict(arrays or {})
         self._tools = dict(tools or {})
         self._diagnostics = dict(diagnostics or {})
+        self._BPM_ARRAYS = {}
+        self._MAGNET_ARRAYS = {}
+        self._CFM_MAGNET_ARRAYS = {}
+        self._SERIALIZED_MAGNETS_ARRAYS = {}
+        self._ELEMENT_ARRAYS = self._arrays
+        self._TOOLS = self._tools
+        self._DIAG = self._diagnostics
 
     # Discovery
     def _list_arrays(self) -> list[str]:

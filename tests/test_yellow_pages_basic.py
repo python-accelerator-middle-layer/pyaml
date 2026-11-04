@@ -11,8 +11,15 @@ Simulators:
     design
     .
 
-Arrays:
+Use <mode> from Controls or Simulators and <name> from the relevant group.
+
+diagnostic.bpms:
+    Access: accelerator.<mode>.diagnostic.bpms.get("<name>")
     BPM                   (pyaml.arrays.bpm_array)                size=320
+    .
+
+magnets:
+    Access: accelerator.<mode>.magnets.get("<name>")
     HCorr                 (pyaml.arrays.magnet_array)             size=288
     VCorr                 (pyaml.arrays.magnet_array)             size=288
     Skews                 (pyaml.arrays.magnet_array)             size=288
@@ -20,7 +27,8 @@ Arrays:
     QForTune              (pyaml.arrays.magnet_array)             size=124
     .
 
-Tools:
+tool:
+    Access: accelerator.<mode>.tool.get("<name>")
     BBA-BPM_C04-04 (pyaml.tuning_tools.bba)
     BBA2-BPM_C04-04 (pyaml.tuning_tools.bba2)
     CHROMATICITY_MONITOR (pyaml.tuning_tools.chromaticity_monitor)
@@ -33,7 +41,8 @@ Tools:
     DEFAULT_DISPERSION (pyaml.tuning_tools.dispersion)
     .
 
-Diagnostics:
+diagnostic:
+    Access: accelerator.<mode>.diagnostic.get("<name>")
     BETATRON_TUNE (pyaml.diagnostics.tune_monitor)
     ."""
 
