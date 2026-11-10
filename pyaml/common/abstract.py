@@ -10,10 +10,12 @@ from abc import ABCMeta, abstractmethod
 
 from numpy import array, double
 
+from .units import AcceptsQuantity
+
 # Float ----------------------------------------------------------------
 
 
-class ReadFloatScalar(metaclass=ABCMeta):
+class ReadFloatScalar(AcceptsQuantity, metaclass=ABCMeta):
     """
     Define read-only access to one floating-point value.
 
@@ -88,7 +90,7 @@ class ReadWriteFloatScalar(ReadFloatScalar):
         pass
 
 
-class ReadFloatArray(metaclass=ABCMeta):
+class ReadFloatArray(AcceptsQuantity, metaclass=ABCMeta):
     """
     Define read-only access to an array of floating-point values.
 

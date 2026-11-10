@@ -8,6 +8,7 @@ from .arrays.array import ArrayConfig
 from .common.element import Element, __pyaml_repr__
 from .common.exception import PyAMLConfigException, PyAMLException
 from .common.holders.element_holder import ElementHolder
+from .common.units import to_magnitude
 from .configuration import ConfigurationManager, UnsupportedConfigurationRootError
 from .configuration.factory import Factory
 from .control.controlsystem import ControlSystem
@@ -223,9 +224,10 @@ class Accelerator(DynamicValidation):
 
         Parameters
         ----------
-        E : float
-            Energy value to set in eV
+        E : float or pint.Quantity
+            Energy value to set in eV (a quantity is converted to eV)
         """
+        E = to_magnitude(E, "eV")
         self._set_properties("_set_energy", E)
         self._energy = E
 
