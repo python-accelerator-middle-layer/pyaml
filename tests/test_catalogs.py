@@ -186,5 +186,6 @@ def test_indexed_catalog_entry_extracts_scalar_from_vector_attribute(install_tes
 
     bpm = sr.live.diagnostic.bpm.get("BPM_TEST")
     positions = bpm.positions.get()
-    assert np.isclose(positions[0], 1.5)
-    assert np.isclose(positions[1], -0.3)
+    # Device values are in mm, PyAML returns SI (m)
+    assert np.isclose(positions[0], 1.5e-3)
+    assert np.isclose(positions[1], -0.3e-3)
