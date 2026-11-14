@@ -1,0 +1,48 @@
+type: pyaml.accelerator
+facility: ESRF
+machine: sr
+energy: 6e9
+simulators:
+  - type: pyaml.lattice.simulator
+    lattice: sr/lattices/ebs.mat
+    name: design
+controls:
+  - type: tango.pyaml.controlsystem
+    tango_host: ebs-simu-3:10000
+    name: live
+    catalog:
+      type: tango.pyaml.static_catalog
+      entries:
+        - type: tango.pyaml.static_catalog_entry
+          key: srmag/ps-qf1a/series/current
+          device:
+            type: tango.pyaml.attribute
+            attribute: srmag/ps-qf1a/series/current
+            unit: A
+            range: [0, 90]
+data_folder: /data/store
+arrays:
+  - type: pyaml.arrays.magnet
+    name: QF1A_PART
+    elements:
+      - QF1A-C06
+      - QF1A-C07
+devices:
+  - type: pyaml.magnet.serialized_magnet
+    name: QF1A
+    function: B1
+    elements:
+      - QF1A-C05
+      - QF1A-C06
+      - QF1A-C07
+      - QF1A-C08
+    model:
+      type: pyaml.magnet.linear_serialized_model
+      calibration_factors: [1.0, 1.01, 0.99, 1.02]
+      calibration_offsets: 0.0
+      unit: m-1
+      hardware_unit: A
+      curves:
+        type: pyaml.magnet.csvcurve
+        file: sr/magnet_models/QF1_strength.csv
+      powerconverter: srmag/ps-qf1a/series/current
