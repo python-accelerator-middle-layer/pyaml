@@ -15,6 +15,7 @@ from numpy.typing import NDArray
 from .. import PyAMLException
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
+from ..common.units import SI_ANGLE, SI_FREQUENCY, SI_POSITION, SI_TUNE, SI_VOLTAGE
 from ..control.deviceaccess import DeviceAccess
 from ..control.deviceaccesslist import DeviceAccessList
 from ..magnet.magnet import Magnet
@@ -403,7 +404,7 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
     readback()
         Read back magnet strengths from measured hardware values.
     unit()
-        Return the units associated with the underlying devices.
+        Return the strength unit of each registered magnet.
     """
 
     def __init__(self, peer: CSScalarAggregator):
@@ -414,6 +415,7 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         self.__models: list[MagnetModel] = []  # List of magnet model
         self.__modelToMagnet: list[list[tuple[int, int]]] = []  # strengths indexing
         self.__nbMagnet = 0  # Number of magnet strengths
+        self.__units: list[str] = []  # Strength unit of each magnet
 
     def add_magnet(self, magnet: Magnet, devs: list[DeviceAccess]):
         # Incoming magnet can be a magnet exported from
@@ -442,6 +444,7 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         else:
             index = self.__models.index(magnet.model)
             self.__modelToMagnet[index].append((self.__nbMagnet, strengthIndex))
+        self.__units.append(magnet.strength.unit())
         self.__nbMagnet += 1
 
     def set(self, value: NDArray[np.float64]):
@@ -519,9 +522,9 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
             hardwareIndex += nbDev
         return allStrength
 
-    def unit(self) -> str:
-        """Return the units associated with the underlying devices."""
-        return self._devs.unit()
+    def unit(self) -> list[str]:
+        """Return the strength unit of each registered magnet."""
+        return list(self.__units)
 
 
 # ------------------------------------------------------------------------------
@@ -935,7 +938,7 @@ class RBpmArray(abstract.ReadFloatArray):
     get()
         Return horizontal and vertical BPM positions (NaN for a missing plane).
     unit()
-        Return the unit reported by the BPM device.
+        Return the SI unit of BPM positions.
     """
 
     def __init__(self, hDev: DeviceAccess | None, vDev: DeviceAccess | None):
@@ -949,11 +952,9 @@ class RBpmArray(abstract.ReadFloatArray):
         """Return horizontal and vertical BPM positions (NaN for a missing plane)."""
         return np.array([d.get() if d is not None else np.nan for d in (self._hDev, self._vDev)], dtype=float)
 
-    # Gets the unit of the value Assume that x and y, offsets and positions
-    # have the same unit
     def unit(self) -> str:
-        """Return the unit reported by the BPM device."""
-        return (self._hDev if self._hDev is not None else self._vDev).unit()
+        """Return the SI unit of BPM positions."""
+        return SI_POSITION
 
 
 # ------------------------------------------------------------------------------
@@ -977,7 +978,7 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
     set_and_wait(value)
         Set the BPM tilt and wait for readback confirmation.
     unit()
-        Return the unit shared by the BPM devices.
+        Return the SI unit of the BPM tilt.
     """
 
     def __init__(self, dev: DeviceAccess):
@@ -997,7 +998,7 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
         Parameters
         ----------
         value : float
-            BPM tilt value in the device's configured units.
+            BPM tilt in rad.
         """
         self._dev.set(value)
 
@@ -1019,8 +1020,8 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the unit shared by the BPM devices."""
-        return self._dev.unit()
+        """Return the SI unit of the BPM tilt."""
+        return SI_ANGLE
 
 
 # ------------------------------------------------------------------------------
@@ -1046,7 +1047,7 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     set_and_wait(value)
         Set BPM offsets and wait for readback confirmation.
     unit()
-        Return the unit shared by the BPM offset devices.
+        Return the SI unit of BPM offsets.
     """
 
     def __init__(self, hDev: DeviceAccess, vDev: DeviceAccess):
@@ -1088,11 +1089,9 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
         """
         raise NotImplementedError("Not implemented yet.")
 
-    # Gets the unit of the value Assume that x and y, offsets and positions
-    # have the same unit
     def unit(self) -> str:
-        """Return the unit shared by the BPM offset devices."""
-        return self._hDev.unit()
+        """Return the SI unit of BPM offsets."""
+        return SI_POSITION
 
 
 # ------------------------------------------------------------------------------
@@ -1119,7 +1118,7 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the cavity voltage and wait for readback confirmation.
     unit()
-        Return the configured cavity-voltage unit.
+        Return the SI unit of the cavity voltage.
     """
 
     def __init__(self, transmitter: RFTransmitter, dev: DeviceAccess):
@@ -1140,7 +1139,7 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Cavity-voltage setpoint in the configured voltage unit.
+            Cavity-voltage setpoint in V.
         """
         self.__dev.set(value)
 
@@ -1161,8 +1160,8 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the configured cavity-voltage unit."""
-        return self.__transmitter._cfg.voltage.unit()
+        """Return the SI unit of the cavity voltage."""
+        return SI_VOLTAGE
 
 
 # ------------------------------------------------------------------------------
@@ -1189,7 +1188,7 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the cavity phase and wait for readback confirmation.
     unit()
-        Return the configured cavity-phase unit.
+        Return the SI unit of the cavity phase.
     """
 
     def __init__(self, transmitter: RFTransmitter, dev: DeviceAccess):
@@ -1210,7 +1209,7 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Cavity-phase setpoint in the configured phase unit.
+            Cavity-phase setpoint in rad.
         """
         self.__dev.set(value)
 
@@ -1231,8 +1230,8 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the configured cavity-phase unit."""
-        return self.__transmitter._cfg.phase.unit()
+        """Return the SI unit of the cavity phase."""
+        return SI_ANGLE
 
 
 # ------------------------------------------------------------------------------
@@ -1258,7 +1257,7 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the RF frequency and wait for readback confirmation.
     unit()
-        Return the configured RF-frequency unit.
+        Return the SI unit of the RF frequency.
     """
 
     def __init__(self, rf: RFPlant, dev: DeviceAccess):
@@ -1280,7 +1279,7 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            RF-frequency setpoint in the configured frequency unit.
+            RF-frequency setpoint in Hz.
         """
         self.__dev.set(value)
 
@@ -1301,8 +1300,8 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the configured RF-frequency unit."""
-        return self.__rf._cfg.masterclock.unit()
+        """Return the SI unit of the RF frequency."""
+        return SI_FREQUENCY
 
 
 # ------------------------------------------------------------------------------
@@ -1324,7 +1323,7 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
     get()
         Return horizontal and vertical betatron tunes.
     unit()
-        Return the configured betatron-tune unit.
+        Return the betatron-tune unit (dimensionless).
     """
 
     def __init__(self, tune_monitor, devs: list[DeviceAccess]):
@@ -1345,8 +1344,8 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
         )
 
     def unit(self) -> str:
-        """Return the configured betatron-tune unit."""
-        return self.__tune_monitor._cfg.tune_v.unit()
+        """Return the betatron-tune unit (dimensionless)."""
+        return SI_TUNE
 
 
 # ------------------------------------------------------------------------------

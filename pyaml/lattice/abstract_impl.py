@@ -13,6 +13,7 @@ from scipy.constants import speed_of_light
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.exception import PyAMLException
+from ..common.units import SI_ANGLE, SI_FREQUENCY, SI_POSITION, SI_TUNE, SI_VOLTAGE
 from ..magnet.model import MagnetModel
 from .polynom_info import PolynomInfo
 
@@ -761,7 +762,7 @@ class BPMScalarAggregator(ScalarAggregator):
 
     def unit(self) -> str:
         """Return the value unit."""
-        return "m"
+        return SI_POSITION
 
     def _transform(self) -> np.array:
         """Transform the configured value for the lattice interface."""
@@ -887,7 +888,7 @@ class RBpmArray(abstract.ReadFloatArray):
     # Gets the unit of the value
     def unit(self) -> str:
         """Return the value unit."""
-        return "m"
+        return SI_POSITION
 
 
 # ------------------------------------------------------------------------------
@@ -959,7 +960,7 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     # Gets the unit of the value
     def unit(self) -> str:
         """Return the value unit."""
-        return "m"  # Assuming all offsets are in m
+        return SI_POSITION
 
 
 # ------------------------------------------------------------------------------
@@ -1036,7 +1037,7 @@ class RWBpmTiltScalar(abstract.ReadWriteFloatScalar):
     # Gets the unit of the value
     def unit(self) -> str:
         """Return the value unit."""
-        return "rad"  # Assuming BPM tilts are in rad
+        return SI_ANGLE
 
 
 # ------------------------------------------------------------------------------
@@ -1108,7 +1109,7 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
 
     def unit(self) -> str:
         """Return the value unit."""
-        return "V"
+        return SI_VOLTAGE
 
 
 # ------------------------------------------------------------------------------
@@ -1183,7 +1184,7 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
 
     def unit(self) -> str:
         """Return the value unit."""
-        return "rad"
+        return SI_ANGLE
 
 
 # ------------------------------------------------------------------------------
@@ -1254,7 +1255,7 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
 
     def unit(self) -> str:
         """Return the value unit."""
-        return "Hz"
+        return SI_FREQUENCY
 
 
 # ------------------------------------------------------------------------------
@@ -1323,7 +1324,7 @@ class RWRFATFrequencyScalar(abstract.ReadWriteFloatScalar):
 
     def unit(self) -> str:
         """Return the value unit."""
-        return "Hz"
+        return SI_FREQUENCY
 
 
 # ------------------------------------------------------------------------------
@@ -1392,7 +1393,7 @@ class RWRFATotalVoltageScalar(abstract.ReadWriteFloatScalar):
 
     def unit(self) -> str:
         """Return the value unit."""
-        return "V"
+        return SI_VOLTAGE
 
 
 # ------------------------------------------------------------------------------
@@ -1427,7 +1428,7 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
 
     def unit(self) -> str:
         """Return the value unit."""
-        return "1"
+        return SI_TUNE
 
 
 # ------------------------------------------------------------------------------

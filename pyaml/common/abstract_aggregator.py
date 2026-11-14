@@ -9,8 +9,10 @@ from abc import ABCMeta, abstractmethod
 import numpy as np
 import numpy.typing as npt
 
+from .units import AcceptsQuantity
 
-class ScalarAggregator(metaclass=ABCMeta):
+
+class ScalarAggregator(AcceptsQuantity, metaclass=ABCMeta):
     """
     Abstract class providing access to a list of scalar variables
 

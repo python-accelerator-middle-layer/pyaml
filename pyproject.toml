@@ -30,7 +30,8 @@ dependencies = [
     "pydantic>=2.11.7",
     "accelerator-commissioning==1.5.3", #pySC
     "h5py",
-    "matplotlib"
+    "matplotlib",
+    "pint>=0.24"
 ]
 
 [project.optional-dependencies]
