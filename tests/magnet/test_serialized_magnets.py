@@ -117,7 +117,7 @@ def test_tune(sr_file):
     print(f"m.strength.get()={m.strength.get()}")
     assert len(m.get_magnets()) == m.get_nb_magnets()
 
-    quadForTuneDesign = sr.design.serialized_magnets.get("QForTune")
+    quadForTuneDesign = sr.design.magnets.get("QForTune")
     tune_monitor = sr.design.diagnostic.get("BETATRON_TUNE")
     # Build tune response matrix
     tunemat = np.zeros((len(quadForTuneDesign), 2))

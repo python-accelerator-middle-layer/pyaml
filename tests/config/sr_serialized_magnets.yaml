@@ -12,7 +12,7 @@ arrays:
     name: series
     elements:
       - mySeriesOfMagnets
-  - type: pyaml.arrays.serialized_magnet
+  - type: pyaml.arrays.magnet
     name: QForTune
     elements:
       - QD2?

@@ -11,7 +11,7 @@ from scipy.constants import speed_of_light
 
 from .. import PyAMLException
 from ..common import abstract
-from ..common.element import Element, __pyaml_repr__
+from ..common.element import __pyaml_repr__
 from ..configuration.factory import ELEMENT_REGISTRY
 from ..validation import DynamicValidation, register_schema
 from .function_mapping import function_map
@@ -141,13 +141,17 @@ class ReadWriteSerializedStrength(ReadWriteSerializedHardware):
         Return the average strength of the series.
     set(value)
         Set the hardware value giving the requested average strength.
+    strength_from_hardware(hardware)
+        Return the average strength for a hardware value, without device access.
+    hardware_from_strength(strength, current_hardware)
+        Return the hardware value giving an average strength, without device access.
     unit()
         Return the physical strength unit.
 
     Raises
     ------
     PyAMLException
-        On ``get()`` or ``set()`` when the series mixes magnet functions.
+        On every conversion when the series mixes magnet functions.
     """
 
     def __init__(self, hardwares: list[abstract.ReadWriteFloatScalar], model: MagnetModel, homogeneous: bool = True):
@@ -159,8 +163,7 @@ class ReadWriteSerializedStrength(ReadWriteSerializedHardware):
 
     def get(self) -> float:
         """Return the average strength of the series."""
-        self._check_homogeneous()
-        return self._model.compute_mean_strength(self._hardwares[0].get())
+        return self.strength_from_hardware(self._hardwares[0].get())
 
     def set(self, value: float):
         """
@@ -171,8 +174,43 @@ class ReadWriteSerializedStrength(ReadWriteSerializedHardware):
         value : float
             Average strength of the series.
         """
+        self._hardwares[0].set(self.hardware_from_strength(value, self._hardwares[0].get()))
+
+    def strength_from_hardware(self, hardware: float) -> float:
+        """
+        Return the average strength of the series for a hardware value, without reading the power supply.
+
+        Parameters
+        ----------
+        hardware : float
+            Hardware value of the power supply.
+
+        Returns
+        -------
+        float
+            Average strength of the series.
+        """
         self._check_homogeneous()
-        self._hardwares[0].set(self._model.compute_hardware_from_mean_strength(value, self._hardwares[0].get()))
+        return self._model.compute_mean_strength(hardware)
+
+    def hardware_from_strength(self, strength: float, current_hardware: float) -> float:
+        """
+        Return the hardware value giving an average strength of the series, without writing the power supply.
+
+        Parameters
+        ----------
+        strength : float
+            Requested average strength of the series.
+        current_hardware : float
+            Present hardware value of the power supply, kept on a plateau when it already gives ``strength``.
+
+        Returns
+        -------
+        float
+            Hardware value to write to the power supply.
+        """
+        self._check_homogeneous()
+        return self._model.compute_hardware_from_mean_strength(strength, current_hardware)
 
     def unit(self) -> str:
         """Return the physical strength unit."""
@@ -346,7 +384,7 @@ class ReadWriteSerializedStrengthArray(abstract.ReadWriteFloatArray):
 
 
 @register_schema
-class SerializedMagnets(Element, DynamicValidation):
+class SerializedMagnets(Magnet, DynamicValidation):
     """
     Serialized group of magnets that share the same set point.
 
@@ -354,6 +392,11 @@ class SerializedMagnets(Element, DynamicValidation):
     single logical device. The serialized magnets may be driven by one power
     supply or by several power supplies, but they share a common physics or
     hardware set point through a combined read/write interface.
+
+    The family is a :class:`~pyaml.magnet.magnet.Magnet`: ``strength`` is the average strength of the series and
+    ``hardware`` the current of its power supply, so it can be used wherever a single magnet is expected. It is
+    also a container of its magnets: ``len(family)``, ``for magnet in family``, ``family[i]``, ``family["name"]``,
+    ``family.names()`` and ``family.magnets``.
 
     Parameters
     ----------
@@ -382,6 +425,10 @@ class SerializedMagnets(Element, DynamicValidation):
         Strength of each magnet of the series, in physics unit
     hardwares
         Hardware value of each magnet of the series
+    magnets
+        :class:`~pyaml.arrays.magnet_array.MagnetArray` of the magnets of the series, named after the family
+    series_index
+        Always ``None``: the family drives its whole series, not one of its magnets
 
     Methods
     -------
@@ -389,6 +436,8 @@ class SerializedMagnets(Element, DynamicValidation):
         Return the number of magnets in the serialized group.
     get_magnets()
         Return the group's virtual single-function magnets.
+    names()
+        Return the names of the magnets of the series, in declaration order.
     is_homogeneous()
         Return True when every magnet of the series has the same function.
     attach(peer, strengths, hardwares)
@@ -434,6 +483,13 @@ class SerializedMagnets(Element, DynamicValidation):
     ``family.strength`` raises a ``PyAMLException`` for a series mixing magnet functions: a single strength value
     cannot be both, say, a quadrupole and a sextupole strength.
 
+    In a :class:`~pyaml.arrays.magnet.Magnet` array, the family name stands for one element, the family itself.
+    Its magnets are not added to the array, even when listed explicitly or matched by a wildcard: they are already
+    driven through the family.
+
+    ``attach()`` takes one accessor per magnet of the series and returns the attached family followed by its
+    attached magnets, unlike :meth:`Magnet.attach`.
+
     Configuration
     -------------
     The model can be defined inline or in a separate file. See
@@ -450,6 +506,8 @@ class SerializedMagnets(Element, DynamicValidation):
           model: path/to/serialized_magnet_model.yaml
     """
 
+    __pyaml_repr_exclude__ = ("magnets",)
+
     def __init__(
         self,
         name: str,
@@ -462,11 +520,10 @@ class SerializedMagnets(Element, DynamicValidation):
         """
         Initialize a group of magnets sharing one setpoint.
         """
-        super().__init__(name, None, description)
-
-        self.model = model
+        super().__init__(name, model, None, description)
 
         self.polynoms = None
+        self.__magnet_array = None
         self.__strengths = None
         self.__hardwares = None
         self.__strengths_array = None
@@ -535,6 +592,65 @@ class SerializedMagnets(Element, DynamicValidation):
     def get_magnets(self) -> list[Magnet]:
         """Return the group's virtual single-function magnets."""
         return self.__virtuals
+
+    def names(self) -> list[str]:
+        """Return the names of the magnets of the series, in declaration order."""
+        return list(self.__elements)
+
+    def __len__(self) -> int:
+        """Return the number of magnets of the series."""
+        return self.get_nb_magnets()
+
+    def __iter__(self):
+        """Iterate over the magnets of the series, attached to the same peer as the family."""
+        return iter(self.get_magnets())
+
+    def __getitem__(self, key: int | slice | str):
+        """
+        Return one or several magnets of the series.
+
+        Parameters
+        ----------
+        key : int | slice | str
+            Position of the magnet in the series, a slice of positions, or the name of the magnet.
+
+        Returns
+        -------
+        Magnet | MagnetArray | list[Magnet]
+            The magnet for an index or a name. For a slice, a ``MagnetArray`` when the family is attached, a list
+            of the virtual magnets otherwise.
+
+        Raises
+        ------
+        PyAMLException
+            If ``key`` is a name that is not a magnet of the series.
+        """
+        if isinstance(key, str):
+            if key not in self.__elements:
+                raise PyAMLException(f"{key} is not a magnet of the serialized family {self.get_name()}")
+            return self.get_magnets()[self.__elements.index(key)]
+        if isinstance(key, slice) and self._peer is not None:
+            return self.magnets[key]
+        return self.get_magnets()[key]
+
+    @property
+    def magnets(self):
+        """
+        :class:`~pyaml.arrays.magnet_array.MagnetArray` of the magnets of the series, named after the family
+        """
+        self.check_peer()
+        if self.__magnet_array is None:
+            from ..arrays.magnet_array import MagnetArray
+
+            self.__magnet_array = MagnetArray(self.get_name(), self.get_magnets())
+        return self.__magnet_array
+
+    @property
+    def series_index(self) -> int | None:
+        """
+        Always ``None``: the family drives its whole series, not one of its magnets
+        """
+        return None
 
     def attach(
         self,

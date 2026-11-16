@@ -7,7 +7,6 @@ from pyaml.diagnostics.bpm import BPM
 from ...arrays.bpm_array import BPMArray
 from ...arrays.cfm_magnet_array import CombinedFunctionMagnetArray
 from ...arrays.magnet_array import MagnetArray
-from ...arrays.serialized_magnet_array import SerializedMagnetsArray
 from ...magnet.cfm_magnet import CombinedFunctionMagnet
 from ...magnet.magnet import Magnet
 from ...magnet.serialized_magnet import SerializedMagnets
@@ -51,6 +50,10 @@ class MagnetsHolder(GenericArrayHolder[Magnet, MagnetArray]):
     equivalent to ``magnets.get("QuadForTune")``. Family names appear in
     ``dir(magnets)`` for interactive completion.
 
+    A serialized family name in an array stands for one magnet, the family
+    itself. Its magnets are not added to the array, and excluding one of them
+    while the family is in the array raises an error.
+
     Examples
     --------
     >>> quad_family = sr.live.magnets.get("QuadForTune")
@@ -66,10 +69,22 @@ class MagnetsHolder(GenericArrayHolder[Magnet, MagnetArray]):
             peer,
             peer._MAGNET_ARRAYS,
             peer.magnet.all,
-            peer.magnet.get,
+            self.__get_magnet,
             MagnetArray,
             "Magnet array",
+            self.__family_members,
         )
+
+    def __get_magnet(self, name: str) -> Magnet:
+        """Resolve a magnet or a serialized family by name."""
+        if name in self._peer._SERIALIZED_MAGNETS:
+            return self._peer._SERIALIZED_MAGNETS[name]
+        return self._peer.magnet.get(name)
+
+    def __family_members(self, name: str) -> list[str] | None:
+        """Return the magnet names of a serialized family, ``None`` for another element."""
+        family = self._peer._SERIALIZED_MAGNETS.get(name)
+        return None if family is None else family.names()
 
     def get_cfm(self) -> CombinedFunctionMagnetArray:
         """
@@ -153,9 +168,14 @@ class SerializedMagnetHolder(GenericElementHolder[SerializedMagnets]):
         super().__init__(peer, peer._SERIALIZED_MAGNETS, "Serialized magnet")
 
 
-class SerializedMagnetsHolder(GenericArrayHolder[SerializedMagnets, SerializedMagnetsArray]):
+class SerializedMagnetsHolder(GenericArrayHolder[SerializedMagnets, MagnetArray]):
     """
     Provide access to arrays of serialized magnet groups.
+
+    .. deprecated::
+        A serialized family is a magnet: use :class:`MagnetsHolder`
+        (``holder.magnets``), which handles family names. This holder shares
+        its arrays with it.
 
     Parameters
     ----------
@@ -176,11 +196,11 @@ class SerializedMagnetsHolder(GenericArrayHolder[SerializedMagnets, SerializedMa
         """
         super().__init__(
             peer,
-            peer._SERIALIZED_MAGNETS_ARRAYS,
+            peer._MAGNET_ARRAYS,
             peer.serialized_magnet.all,
             peer.serialized_magnet.get,
-            SerializedMagnetsArray,
-            "serialized magnet array",
+            MagnetArray,
+            "Magnet array",
         )
 
 
