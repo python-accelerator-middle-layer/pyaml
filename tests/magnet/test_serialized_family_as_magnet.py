@@ -153,6 +153,10 @@ def test_family_name_adds_the_family_as_one_magnet(install_test_package, mode):
         # A wildcard matching the family and its magnets: only the family is kept,
         # QF1E-C04 has its own power supply and is kept too
         (["QF1*"], ["QF1A", "QF1E-C04"]),
+        # The family, then a wildcard matching only its magnets
+        (["QF1A", "QF1A-C*"], ["QF1A"]),
+        # A wildcard matching only the magnets of the family, then the family
+        (["QF1A-C*", "QF1A"], ["QF1A"]),
         # The magnets of a family which is not in the array are added as usual
         (["QD2A-C05", "QF1A"], ["QD2A-C05", "QF1A"]),
     ],
