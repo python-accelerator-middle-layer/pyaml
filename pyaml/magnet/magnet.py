@@ -51,6 +51,9 @@ class Magnet(Element):
         Read/write accessor for the hardware value, in the model's hardware unit.
     model
         Magnet model performing the strength to hardware conversion.
+    series_index
+        Position of this magnet in the series driven by its power supply, ``None`` for a magnet with its own power
+        supply.
 
     Methods
     -------
@@ -103,6 +106,16 @@ class Magnet(Element):
         Returns a handle to the underlying magnet model
         """
         return self.__model
+
+    @property
+    def series_index(self) -> int | None:
+        """
+        Position of this magnet in the series driven by its power supply, ``None`` when the magnet does not share
+        its power supply with other magnets
+        """
+        if self.__model is None or not self.__model.shares_power_supply():
+            return None
+        return self.strength.index()
 
     def attach(
         self,

@@ -55,3 +55,15 @@ devices:
         type: pyaml.magnet.csvcurve
         file: sr/magnet_models/QD2_strength.csv
       powerconverter: srmag/ps-qd2a/series/current
+  - type: pyaml.magnet.quadrupole
+    name: QF1E-C04
+    model:
+      type: pyaml.magnet.linear_model
+      calibration_factor: 1.0
+      crosstalk: 1.0
+      curve:
+        type: pyaml.magnet.csvcurve
+        file: sr/magnet_models/QF1_strength.csv
+      unit: 1/m
+      hardware_unit: A
+      powerconverter: srmag/vps-qf1/c04-e/current

@@ -412,7 +412,8 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         """
         CSScalarAggregator.__init__(self, peer._devs)
         self.__models: list[MagnetModel] = []  # List of magnet model
-        self.__modelToMagnet: list[list[tuple[int, int]]] = []  # strengths indexing
+        self.__modelToMagnet: list[list[tuple[int, int | None]]] = []  # strengths indexing
+        self.__families: dict[int, Any] = {}  # model index -> strength accessor of a serialized family
         self.__nbMagnet = 0  # Number of magnet strengths
 
     def add_magnet(self, magnet: Magnet, devs: list[DeviceAccess]):
@@ -432,9 +433,12 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         """
         # Magnets of a serialized group share the serialized model (one power supply for N strengths):
         # the power-supply current is computed by the model from the strengths of the magnets present in the array,
-        # the others following the resulting current.
-        is_indexed = isinstance(magnet.strength, (abstract.RWMapper, RWSerializedStrengthScalar))
-        strengthIndex = magnet.strength.index() if is_indexed else 0
+        # the others following the resulting current. A serialized family has no series index: its value is the
+        # average strength of the series, converted by the family strength accessor.
+        if magnet.model.shares_power_supply():
+            strengthIndex = magnet.series_index
+        else:
+            strengthIndex = magnet.strength.index() if isinstance(magnet.strength, abstract.RWMapper) else 0
         if magnet.model not in self.__models:
             index = len(self.__models)
             self.__models.append(magnet.model)
@@ -443,6 +447,13 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         else:
             index = self.__models.index(magnet.model)
             self.__modelToMagnet[index].append((self.__nbMagnet, strengthIndex))
+        if strengthIndex is None:
+            self.__families[index] = magnet.strength
+        if index in self.__families and len(self.__modelToMagnet[index]) > 1:
+            raise PyAMLException(
+                f"{magnet.get_name()}: a serialized family and its magnets cannot be in the same array, "
+                "the family already drives all its magnets"
+            )
         self.__nbMagnet += 1
 
     def set(self, value: NDArray[np.float64]):
@@ -459,10 +470,17 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         hardwareIndex = 0
         for modelIndex, model in enumerate(self.__models):
             nbDev = len(model.get_device_names())
-            requested = {strengthIdx: value[valueIdx] for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]}
-            newHardwareValues[hardwareIndex : hardwareIndex + nbDev] = model.compute_hardware_values_partial(
-                allHardwareValues[hardwareIndex : hardwareIndex + nbDev], requested
-            )
+            current = allHardwareValues[hardwareIndex : hardwareIndex + nbDev]
+            if modelIndex in self.__families:
+                [(valueIdx, _)] = self.__modelToMagnet[modelIndex]
+                newHardwareValues[hardwareIndex] = self.__families[modelIndex].hardware_from_strength(
+                    value[valueIdx], current[0]
+                )
+            else:
+                requested = {strengthIdx: value[valueIdx] for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]}
+                newHardwareValues[hardwareIndex : hardwareIndex + nbDev] = model.compute_hardware_values_partial(
+                    current, requested
+                )
             hardwareIndex += nbDev
         dev_range = self._devs.get_range()
         if not check_range(newHardwareValues, dev_range):
@@ -489,14 +507,22 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
 
     def get(self) -> NDArray[np.float64]:
         """Read the current values from the underlying devices."""
-        allHardwareValues = self._devs.get()  # Read all hardware setpoints
+        return self.__strengths_from_hardware(self._devs.get())  # Read all hardware setpoints
+
+    def __strengths_from_hardware(self, allHardwareValues: NDArray[np.float64]) -> NDArray[np.float64]:
+        """Convert the hardware values of every registered device to the strength of every registered magnet."""
         allStrength = np.zeros(self.__nbMagnet)
         hardwareIndex = 0
         for modelIndex, model in enumerate(self.__models):
             nbDev = len(model.get_device_names())
-            mStrengths = model.compute_strengths(allHardwareValues[hardwareIndex : hardwareIndex + nbDev])
-            for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
-                allStrength[valueIdx] = mStrengths[strengthIdx]
+            hardware = allHardwareValues[hardwareIndex : hardwareIndex + nbDev]
+            if modelIndex in self.__families:
+                [(valueIdx, _)] = self.__modelToMagnet[modelIndex]
+                allStrength[valueIdx] = self.__families[modelIndex].strength_from_hardware(hardware[0])
+            else:
+                mStrengths = model.compute_strengths(hardware)
+                for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
+                    allStrength[valueIdx] = mStrengths[strengthIdx]
             hardwareIndex += nbDev
         return allStrength
 
@@ -509,16 +535,7 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         numpy.ndarray
             Magnet strengths corresponding to the latest device readbacks.
         """
-        allHardwareValues = self._devs.readback()  # Read all hardware readback
-        allStrength = np.zeros(self.__nbMagnet)
-        hardwareIndex = 0
-        for modelIndex, model in enumerate(self.__models):
-            nbDev = len(model.get_device_names())
-            mStrengths = model.compute_strengths(allHardwareValues[hardwareIndex : hardwareIndex + nbDev])
-            for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
-                allStrength[valueIdx] = mStrengths[strengthIdx]
-            hardwareIndex += nbDev
-        return allStrength
+        return self.__strengths_from_hardware(self._devs.readback())  # Read all hardware readback
 
     def unit(self) -> str:
         """Return the units associated with the underlying devices."""
