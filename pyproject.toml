@@ -1,13 +1,25 @@
 [project]
 name = "accelerator-middle-layer"
-description = "Python Accelerator Middle Layer"
+description = "Joint technology platform for design, commissioning and operation of particle accelerators."
 readme = "README.md"
 requires-python = ">=3.11"
 dynamic = ["version"]
-#license = {file = "LICENSE"}
-keywords = ["Accelerator", "Synchrotron", "Operation", "Tuning", "Digital Twin", "Commissioning", ]
-maintainers = [
-    {name = "Simone Maria Liuzzo", email = "simone.liuzzo@esrf.fr"}
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+keywords = [
+    "particle accelerator",
+    "accelerator physics",
+    "accelerator middle layer",
+    "accelerator control",
+    "accelerator modeling",
+    "accelerator design",
+    "accelerator operation",
+    "accelerator commissioning",
+    "beam dynamics",
+    "synchrotron",
+    "storage ring",
+    "machine tuning",
+    "digital twin",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -15,10 +27,10 @@ classifiers = [
     "Natural Language :: English",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering :: Physics",
 ]
 
@@ -69,9 +81,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/python-accelerator-middle-layer/pyaml"
-Documentation = "https://python-accelerator-middle-layer.github.io/pyaml/"
+Homepage = "https://python-accelerator-middle-layer.github.io/"
+Documentation = "https://pyaml.readthedocs.io/en/stable/"
 Repository = "https://github.com/python-accelerator-middle-layer/pyaml.git"
+Issues = "https://github.com/python-accelerator-middle-layer/pyaml/issues"
 
 [build-system]
 requires = ["hatchling", "hatch-vcs"]
