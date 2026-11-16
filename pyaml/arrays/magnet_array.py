@@ -73,11 +73,13 @@ class RWMagnetStrength(ReadWriteFloatArray):
         nvalue = np.ones(self.__nb) * value if isinstance(value, float) else value
         if not self.__aggregator:
             # Magnets of a series share one power supply: it is written once, from the strengths of the
-            # magnets of the series present in the array, the others following the resulting hardware value
+            # magnets of the series present in the array, the others following the resulting hardware value.
+            # A serialized family has no series index: its own strength accessor writes its power supply.
             series: dict[int, tuple[Magnet, dict[int, float]]] = {}
             for idx, m in enumerate(self.__magnets):
-                if m.model is not None and m.model.shares_power_supply():
-                    series.setdefault(id(m.model), (m, {}))[1][m.strength.index()] = nvalue[idx]
+                series_index = m.series_index
+                if series_index is not None:
+                    series.setdefault(id(m.model), (m, {}))[1][series_index] = nvalue[idx]
                 else:
                     m.strength.set(nvalue[idx])
             for m, requested in series.values():
