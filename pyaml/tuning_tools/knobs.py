@@ -24,8 +24,11 @@ def knobs_of(array: MagnetArray) -> MagnetArray:
     them or the family name. Individually powered magnets and the virtual magnets of a combined-function magnet are
     knobs themselves. Knobs keep the order of first appearance in the array.
 
-    The state of the machine seen by a tool is one value per knob: ``knobs.hardwares`` gives one power-supply value
-    per knob, which saves and restores the state exactly, without going through the excitation curves.
+    For a series and for an individually powered magnet, ``knobs.hardwares`` gives one power-supply value per knob,
+    which saves and restores the state exactly, without going through the excitation curves. A combined-function
+    magnet whose matrix links its multipoles to more power supplies has no power-supply value per multipole: its
+    knobs are strengths only, and its state is the vector of its power supplies (``cfm.hardwares``). Writing the
+    strength of one of its multipoles recomputes all its power supplies through the pseudo-inverse of the matrix.
 
     Parameters
     ----------

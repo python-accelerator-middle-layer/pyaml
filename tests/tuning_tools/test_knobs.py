@@ -110,6 +110,29 @@ def test_virtual_magnets_of_a_combined_function_magnet_are_knobs():
     assert knobs_of(hcorr) is hcorr
 
 
+def test_multipoles_of_a_combined_function_magnet_with_a_matrix_are_strength_knobs():
+    sr = Accelerator.load("tests/config/EBSOrbit.yaml")
+    design = sr.design
+    # SH1A-C04: 4 multipoles (H, V, SQ, S) driven by 5 power supplies through a matrix
+    cfm = design.combined_function_magnet.get("SH1A-C04")
+    array = MagnetArray("SH1A-C04_CORRECTORS", [design.magnet.get("SH1A-C04-H"), design.magnet.get("SH1A-C04-V")])
+    knobs = knobs_of(array)
+    cfm.strengths.set(np.array([1e-5, -2e-5, 1e-3, cfm.strengths.get()[3]]))
+    power_supplies = cfm.hardwares.get()
+    strengths = cfm.strengths.get()
+
+    # One knob per multipole, written through its strength
+    assert knobs is array
+    knobs.strengths.set(knobs.strengths.get())
+    np.testing.assert_allclose(cfm.hardwares.get(), power_supplies)
+    np.testing.assert_allclose(cfm.strengths.get(), strengths)
+
+    # A multipole has no power supply of its own: the state of the magnet is the vector of its power supplies
+    assert len(power_supplies) == 5
+    with pytest.raises(PyAMLException, match="has no model that supports hardware units"):
+        knobs.hardwares.get()
+
+
 def test_series_mixing_magnet_functions_cannot_be_a_knob():
     sr = Accelerator.load("tests/config/sr_serialized_magnets.yaml")
     family = sr.design.serialized_magnet.get("mixedFunctionSeries")
