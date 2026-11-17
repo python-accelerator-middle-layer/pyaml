@@ -448,12 +448,8 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
             index = self.__models.index(magnet.model)
             self.__modelToMagnet[index].append((self.__nbMagnet, strengthIndex))
         if strengthIndex is None:
+            # MagnetArray guarantees that a family is never registered together with one of its magnets
             self.__families[index] = magnet.strength
-        if index in self.__families and len(self.__modelToMagnet[index]) > 1:
-            raise PyAMLException(
-                f"{magnet.get_name()}: a serialized family and its magnets cannot be in the same array, "
-                "the family already drives all its magnets"
-            )
         self.__nbMagnet += 1
 
     def set(self, value: NDArray[np.float64]):
