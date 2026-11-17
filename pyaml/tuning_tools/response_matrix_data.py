@@ -20,6 +20,13 @@ from ..validation import DynamicValidation, register_schema
 PYAMLCLASS = "ResponseMatrixData"
 
 
+def _short(names: list[str], limit: int = 5) -> str:
+    """Return the first names of a list, with the number of the others."""
+    if len(names) <= limit:
+        return str(names)
+    return f"{names[:limit]} and {len(names) - limit} more"
+
+
 @register_schema
 @dataclass
 class ResponseMatrixData(DynamicValidation):
@@ -43,11 +50,48 @@ class ResponseMatrixData(DynamicValidation):
     -------
     load(filename)
         Load response matrix data from a configuration file.
+    check_variables(names)
+        Describe how the matrix columns differ from the given variables.
     """
 
     matrix: list[list[float]]
     observable_names: list[str]
     variable_names: list[str] | None = None
+
+    def check_variables(self, names: list[str]) -> str | None:
+        """
+        Describe how the matrix columns differ from the given variables.
+
+        With ``variable_names``, the columns must be the given variables, in the same order. Without them, only the
+        number of columns is checked.
+
+        Parameters
+        ----------
+        names : list[str]
+            Names of the variables the matrix is used with, typically the knobs of a tuning tool.
+
+        Returns
+        -------
+        str | None
+            ``None`` when the matrix matches the variables, otherwise a message describing the difference.
+        """
+        nb_columns = len(self.matrix[0]) if len(self.matrix) > 0 else 0
+        if self.variable_names is None:
+            if nb_columns != len(names):
+                return f"the response matrix has {nb_columns} columns for {len(names)} variables"
+            return None
+        if list(self.variable_names) != list(names):
+            missing = [n for n in names if n not in self.variable_names]
+            unexpected = [n for n in self.variable_names if n not in names]
+            details = []
+            if missing:
+                details.append(f"missing {_short(missing)}")
+            if unexpected:
+                details.append(f"unexpected {_short(unexpected)}")
+            if not details:
+                details.append("same variables in another order")
+            return f"the response matrix variables do not match the {len(names)} expected ones: {', '.join(details)}"
+        return None
 
     @staticmethod
     def load(filename: str) -> "ResponseMatrixData":
