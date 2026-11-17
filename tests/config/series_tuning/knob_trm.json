@@ -1,0 +1,30 @@
+{
+  "type": "pyaml.tuning_tools.response_matrix_data",
+  "matrix": [
+    [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  ],
+  "variable_names": [
+    "QF1A",
+    "QD2A-C05",
+    "QD2A-C06",
+    "QD2A-C07",
+    "QD2A-C08"
+  ],
+  "observable_names": [
+    "BETATRON_TUNE.x",
+    "BETATRON_TUNE.y"
+  ]
+}

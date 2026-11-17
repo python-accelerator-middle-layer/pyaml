@@ -1,0 +1,202 @@
+# Tune and chromaticity tools on arrays mixing a series and individually powered magnets.
+# QF1A: one power supply for 4 quadrupoles, QD2A-C05..C08: one power supply each.
+# SF2A: one power supply for 4 sextupoles, SD1A-C05..C06: one power supply each.
+type: pyaml.accelerator
+facility: ESRF
+machine: sr
+energy: 6e9
+alphac: 8.623614679299252e-05
+simulators:
+  - type: pyaml.lattice.simulator
+    lattice: sr/lattices/ebs.mat
+    name: design
+data_folder: /data/store
+arrays:
+  # The same knobs listed in three ways: all the magnets of the series, one of them, or the family name
+  - type: pyaml.arrays.magnet
+    name: QUADS_ALL_MAGNETS
+    elements: [QF1A-C05, QF1A-C06, QF1A-C07, QF1A-C08, QD2A-C*]
+  - type: pyaml.arrays.magnet
+    name: QUADS_ONE_MAGNET
+    elements: [QF1A-C06, QD2A-C*]
+  - type: pyaml.arrays.magnet
+    name: QUADS_FAMILY
+    elements: [QF1A, QD2A-C*]
+  - type: pyaml.arrays.magnet
+    name: SEXTS_ALL_MAGNETS
+    elements: [SF2A-C*, SD1A-C*]
+  - type: pyaml.arrays.magnet
+    name: SEXTS_FAMILY
+    elements: [SF2A, SD1A-C*]
+devices:
+- type: pyaml.diagnostics.tune_monitor
+  name: BETATRON_TUNE
+  tune_h: srdiag/beam-tune/main/Qh
+  tune_v: srdiag/beam-tune/main/Qv
+- type: pyaml.tuning_tools.chromaticity_monitor
+  name: CHROMATICITY_MONITOR
+  betatron_tune_name: BETATRON_TUNE
+  rf_plant_name: DEFAULT_RF_PLANT
+  n_step: 3
+- type: pyaml.rf.rf_plant
+  name: DEFAULT_RF_PLANT
+  masterclock: sy/ms/1/Frequency
+  transmitters:
+    - type: pyaml.rf.rf_transmitter
+      name: RFTRA
+      cavities: [CAV_C05_01,CAV_C05_02,CAV_C05_03,CAV_C05_04,CAV_C05_05,CAV_C07_01,CAV_C07_02,CAV_C07_03,CAV_C07_04,CAV_C07_05,CAV_C25_01,CAV_C25_02,CAV_C25_03]
+      harmonic: 1
+      distribution: 1
+      voltage: sys/ringsimulator/ebs/RfVoltage
+# Tune tools: the knob matrices are placeholders, the tests measure them
+- type: pyaml.tuning_tools.tune_response_matrix
+  name: TRM_ALL_MAGNETS
+  quad_array_name: QUADS_ALL_MAGNETS
+  betatron_tune_name: BETATRON_TUNE
+  quad_delta: 1e-4
+- type: pyaml.tuning_tools.tune_response_matrix
+  name: TRM_ONE_MAGNET
+  quad_array_name: QUADS_ONE_MAGNET
+  betatron_tune_name: BETATRON_TUNE
+  quad_delta: 1e-4
+- type: pyaml.tuning_tools.tune_response_matrix
+  name: TRM_FAMILY
+  quad_array_name: QUADS_FAMILY
+  betatron_tune_name: BETATRON_TUNE
+  quad_delta: 1e-4
+- type: pyaml.tuning_tools.tune
+  name: TUNE_ALL_MAGNETS
+  quad_array_name: QUADS_ALL_MAGNETS
+  betatron_tune_name: BETATRON_TUNE
+  response_matrix: ${path:series_tuning/knob_trm.json}
+- type: pyaml.tuning_tools.tune
+  name: TUNE_ONE_MAGNET
+  quad_array_name: QUADS_ONE_MAGNET
+  betatron_tune_name: BETATRON_TUNE
+  response_matrix: ${path:series_tuning/knob_trm.json}
+- type: pyaml.tuning_tools.tune
+  name: TUNE_FAMILY
+  quad_array_name: QUADS_FAMILY
+  betatron_tune_name: BETATRON_TUNE
+  response_matrix: ${path:series_tuning/knob_trm.json}
+# A matrix measured with one column per magnet of the series, before the series became one knob
+- type: pyaml.tuning_tools.tune
+  name: TUNE_STALE_MATRIX
+  quad_array_name: QUADS_FAMILY
+  betatron_tune_name: BETATRON_TUNE
+  response_matrix: ${path:series_tuning/stale_trm.json}
+# Chromaticity tools
+- type: pyaml.tuning_tools.chromaticity_response_matrix
+  name: CRM_ALL_MAGNETS
+  sextu_array_name: SEXTS_ALL_MAGNETS
+  chromaticity_name: CHROMATICITY_MONITOR
+  sextu_delta: 1e-1
+- type: pyaml.tuning_tools.chromaticity_response_matrix
+  name: CRM_FAMILY
+  sextu_array_name: SEXTS_FAMILY
+  chromaticity_name: CHROMATICITY_MONITOR
+  sextu_delta: 1e-1
+- type: pyaml.tuning_tools.chromaticity
+  name: CHROMA_ALL_MAGNETS
+  sextu_array_name: SEXTS_ALL_MAGNETS
+  chromaticity_monitor_name: CHROMATICITY_MONITOR
+  response_matrix: ${path:series_tuning/knob_crm.json}
+- type: pyaml.tuning_tools.chromaticity
+  name: CHROMA_FAMILY
+  sextu_array_name: SEXTS_FAMILY
+  chromaticity_monitor_name: CHROMATICITY_MONITOR
+  response_matrix: ${path:series_tuning/knob_crm.json}
+# Magnets
+- type: pyaml.magnet.serialized_magnet
+  name: QF1A
+  function: B1
+  elements: [QF1A-C05, QF1A-C06, QF1A-C07, QF1A-C08]
+  model:
+    type: pyaml.magnet.linear_serialized_model
+    calibration_factors: 1.0
+    calibration_offsets: 0.0
+    unit: m-1
+    hardware_unit: A
+    curves:
+      type: pyaml.magnet.csvcurve
+      file: sr/magnet_models/QF1_strength.csv
+    powerconverter: srmag/ps-qf1a/series/current
+- type: pyaml.magnet.quadrupole
+  name: QD2A-C05
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.0
+    crosstalk: 1.0
+    curve:
+      type: pyaml.magnet.csvcurve
+      file: sr/magnet_models/QD2_strength.csv
+    unit: 1/m
+    hardware_unit: A
+- type: pyaml.magnet.quadrupole
+  name: QD2A-C06
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.0
+    crosstalk: 1.0
+    curve:
+      type: pyaml.magnet.csvcurve
+      file: sr/magnet_models/QD2_strength.csv
+    unit: 1/m
+    hardware_unit: A
+- type: pyaml.magnet.quadrupole
+  name: QD2A-C07
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.0
+    crosstalk: 1.0
+    curve:
+      type: pyaml.magnet.csvcurve
+      file: sr/magnet_models/QD2_strength.csv
+    unit: 1/m
+    hardware_unit: A
+- type: pyaml.magnet.quadrupole
+  name: QD2A-C08
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.0
+    crosstalk: 1.0
+    curve:
+      type: pyaml.magnet.csvcurve
+      file: sr/magnet_models/QD2_strength.csv
+    unit: 1/m
+    hardware_unit: A
+- type: pyaml.magnet.serialized_magnet
+  name: SF2A
+  function: B2
+  elements: [SF2A-C05, SF2A-C06, SF2A-C07, SF2A-C08]
+  model:
+    type: pyaml.magnet.linear_serialized_model
+    calibration_factors: 1.0
+    calibration_offsets: 0.0
+    unit: m-2
+    hardware_unit: A
+    curves:
+      type: pyaml.magnet.inline_curve
+      mat: [[-1000.0, -1000.0], [1000.0, 1000.0]]
+- type: pyaml.magnet.sextupole
+  name: SD1A-C05
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.0
+    crosstalk: 1.0
+    curve:
+      type: pyaml.magnet.inline_curve
+      mat: [[-1000.0, -1000.0], [1000.0, 1000.0]]
+    unit: m-2
+    hardware_unit: A
+- type: pyaml.magnet.sextupole
+  name: SD1A-C06
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.0
+    crosstalk: 1.0
+    curve:
+      type: pyaml.magnet.inline_curve
+      mat: [[-1000.0, -1000.0], [1000.0, 1000.0]]
+    unit: m-2
+    hardware_unit: A

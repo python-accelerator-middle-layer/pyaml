@@ -15,6 +15,7 @@ import numpy as np
 
 from ..common.constants import Action
 from ..validation import DynamicValidation, register_schema
+from .knobs import knobs_of
 from .measurement_tool import MeasurementTool
 from .response_matrix_data import ResponseMatrixData
 
@@ -32,10 +33,12 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
     """
     Measure the chromaticity response matrix of a lattice.
 
-    This tool perturbs each sextupole in a sextupole array and measures the
-    resulting chromaticity variation using a chromaticity monitor. The measured
+    This tool perturbs each knob of a sextupole array and measures the
+    resulting chromaticity variation using a chromaticity monitor. A knob is
+    one power supply: an individually powered sextupole, or a series as a
+    whole, through the average strength of its serialized family. The measured
     slopes are assembled into a response matrix with chromaticity components as
-    the observables and sextupoles as the variables.
+    the observables and the knobs as the variables.
 
     Parameters
     ----------
@@ -65,7 +68,10 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
     Attributes
     ----------
     sextupoles : MagnetArray
-        Sextupole array used for the measurement.
+        Sextupole array as configured.
+    knobs : MagnetArray
+        Knobs of the sextupole array, one per power supply, varied by the
+        measurement.
     chromaticity_monitor : ChromaticityMonitor
         Chromaticity monitor used for the measurement.
 
@@ -104,12 +110,20 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
         self.n_avg_meas = n_avg_meas
         self.sleep_between_meas = sleep_between_meas
         self.aborted = False
+        self._knobs = None
 
     @property
     def sextupoles(self) -> "MagnetArray":
         """Return the sextupole array used for the measurement."""
         self.check_peer()
         return self.peer.magnets.get(self.sextu_array_name)
+
+    @property
+    def knobs(self) -> "MagnetArray":
+        """Return the knobs of the sextupole array, one per power supply, see :func:`~.knobs.knobs_of`."""
+        if self._knobs is None:
+            self._knobs = knobs_of(self.sextupoles)
+        return self._knobs
 
     @property
     def chromaticity_monitor(self) -> "ChromaticityMonitor":
@@ -182,10 +196,10 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
             .. code-block:: python
 
               source:MeasurementTool # Tool that triggered the callback
-              idx:int # The index in the element array being processed
+              idx:int # The index of the knob being processed
               step:int # The current step
               avg_step:int # The current averaging step
-              magnet:str # The magnet being excited
+              magnet:str # The knob being excited (the family name for a series)
               strength:float # Sextupole strength, typically in m^-2
               chroma:np.array # Dimensionless measured chromaticity (on Action.MEASURE)
               dchroma:np.array # Chromaticity change per sextupole-strength unit (on Action.RESTORE)
@@ -198,7 +212,7 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
         """
         # Get devices
         self.check_peer()
-        sextus = self.sextupoles
+        sextus = self.knobs
         cm = self.chromaticity_monitor
 
         self._register_callback(callback)

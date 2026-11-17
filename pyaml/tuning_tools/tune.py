@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from .. import PyAMLException
+from .knobs import knobs_of
 from .response_matrix_data import ResponseMatrixData
 from .tuning_tool import TuningTool
 
@@ -54,7 +55,7 @@ class Tune(TuningTool, DynamicValidation):
     response_matrix : str or ResponseMatrixData
         Tune response matrix or path to a file containing the response matrix.
         The matrix is expected to have one row for each tune plane and one
-        column for each quadrupole.
+        column for each knob of the quadrupole array, see :attr:`knobs`.
     betatron_tune_name : str, optional
         Name of the betatron tune monitor used to measure the horizontal and
         vertical tunes. The default is ``"BETATRON_TUNE"``.
@@ -66,7 +67,10 @@ class Tune(TuningTool, DynamicValidation):
     betatron_tune_name : str
         Name of the configured betatron tune monitor.
     quadrupoles : MagnetArray
-        Quadrupole array used by the correction.
+        Quadrupole array as configured.
+    knobs : MagnetArray
+        Knobs of the quadrupole array, one per power supply: a series is one
+        knob, its serialized family. The correction writes the knobs.
     tune_monitor : BetatronTuneMonitor
         Betatron tune monitor used by the correction.
     response_matrix : ResponseMatrixData or None
@@ -112,21 +116,21 @@ class Tune(TuningTool, DynamicValidation):
 
         self.quad_array_name = quad_array_name
         self.betatron_tune_name = betatron_tune_name
-        self._response_matrix = response_matrix
+        self._response_matrix = None
+        self._response_data: ResponseMatrixData | None = None
         self._correctionmat = None
+        self._knobs = None
 
         # If the configuration response matrix is a filename, load it
-        if type(self._response_matrix) is str:
+        if type(response_matrix) is str:
             try:
-                self._response_matrix = ResponseMatrixData.load(self._response_matrix)
+                response_matrix = ResponseMatrixData.load(response_matrix)
             except Exception as e:
                 logger.warning(f"{str(e)}")
-                self._response_matrix = None
+                response_matrix = None
 
-        # Invert matrix
-        if self._response_matrix:
-            self._response_matrix = np.array(self._response_matrix.matrix)
-            self._correctionmat = np.linalg.pinv(self._response_matrix)
+        if response_matrix:
+            self.__set_response_data(response_matrix)
 
         # TODO: Initialise first setpoint
         self._setpoint = np.array([np.nan, np.nan])
@@ -140,9 +144,28 @@ class Tune(TuningTool, DynamicValidation):
         load_path : Path
             Path to the serialized :class:`~.ResponseMatrixData` file.
         """
-        self._response_matrix = ResponseMatrixData.load(load_path)
-        self._response_matrix = np.array(self._response_matrix.matrix)
+        self.__set_response_data(ResponseMatrixData.load(load_path))
+
+    def __set_response_data(self, data: ResponseMatrixData):
+        """Keep the response matrix data, with its variable names, and invert the matrix."""
+        self._response_data = data
+        self._response_matrix = np.array(data.matrix)
         self._correctionmat = np.linalg.pinv(self._response_matrix)
+
+    def post_init(self):
+        """Warn when the loaded response matrix does not match the knobs, without preventing the loading."""
+        try:
+            self.__check_response_matrix()
+        except PyAMLException as e:
+            logger.warning(f"{e}")
+
+    def __check_response_matrix(self):
+        """Raise if the loaded response matrix does not match the knobs."""
+        if self._response_data is None:
+            return
+        difference = self._response_data.check_variables(self.knobs.names())
+        if difference is not None:
+            raise PyAMLException(f"{self.get_name()}: {difference}, measure a new tune response matrix")
 
     @property
     def response_matrix(self) -> ResponseMatrixData | None:
@@ -160,6 +183,13 @@ class Tune(TuningTool, DynamicValidation):
         """Return the quadrupole array used by the correction."""
         self.check_peer()
         return self.peer.magnets.get(self.quad_array_name)
+
+    @property
+    def knobs(self) -> "MagnetArray":
+        """Return the knobs of the quadrupole array, one per power supply, see :func:`~.knobs.knobs_of`."""
+        if self._knobs is None:
+            self._knobs = knobs_of(self.quadrupoles)
+        return self._knobs
 
     def get(self):
         """Return the requested dimensionless horizontal and vertical tune setpoint."""
@@ -204,17 +234,19 @@ class Tune(TuningTool, DynamicValidation):
         Returns
         -------
         numpy.ndarray
-            Quadrupole-strength changes calculated from the response-matrix
+            Strength change of each knob, calculated from the response-matrix
             pseudoinverse, in the configured quadrupole strength units
             (typically ``m^-1``).
 
         Raises
         ------
         PyAMLException
-            If no response matrix has been loaded.
+            If no response matrix has been loaded, or if it does not match the
+            knobs.
         """
         if self._correctionmat is None:
             raise PyAMLException("Tune.correct(): no matrix loaded or measured")
+        self.__check_response_matrix()
         return np.matmul(self._correctionmat, dtune)
 
     def add(self, dtune: np.array, wait_time: float = 0.0):
@@ -230,8 +262,8 @@ class Tune(TuningTool, DynamicValidation):
         """
         if np.shape(dtune) != (2,):
             raise PyAMLException("Tune.add(): invalid input dtune dimension, (2,) expected")
-        strengths = self.quadrupoles.strengths.get()
+        strengths = self.knobs.strengths.get()
         strengths += self.correct(dtune)
-        self.quadrupoles.strengths.set(strengths)
+        self.knobs.strengths.set(strengths)
         sleep(wait_time)
         self._setpoint += dtune

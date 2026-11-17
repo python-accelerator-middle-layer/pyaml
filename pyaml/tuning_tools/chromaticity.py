@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING
 from .. import PyAMLException
 from ..validation import DynamicValidation, register_schema
 from .chromaticity_monitor import ChromaticityMonitor
+from .knobs import knobs_of
 from .response_matrix_data import ResponseMatrixData
 from .tuning_tool import TuningTool
 
@@ -56,7 +57,10 @@ class Chromaticity(TuningTool, DynamicValidation):
     chromaticity_monitor
         Return the chromaticity monitor used for readback.
     sextupoles
-        Return the sextupole array used for correction.
+        Return the sextupole array as configured.
+    knobs
+        Return the knobs of the sextupole array, one per power supply: a series
+        is one knob, its serialized family. The correction writes the knobs.
 
     Methods
     -------
@@ -95,20 +99,20 @@ class Chromaticity(TuningTool, DynamicValidation):
         self._chromaticity_monitor_name = chromaticity_monitor_name
         self.response_matrix_file = response_matrix
         self._response_matrix = None
+        self._response_data: ResponseMatrixData | None = None
         self._correctionmat = None
+        self._knobs = None
 
         # If the configuration response matrix is a filename, load it
-        if type(self.response_matrix_file) is str:
+        if type(response_matrix) is str:
             try:
-                self._response_matrix = ResponseMatrixData.load(self.response_matrix_file)
+                response_matrix = ResponseMatrixData.load(response_matrix)
             except Exception as e:
                 logger.warning(f"{str(e)}")
-                self._response_matrix = None
+                response_matrix = None
 
-        # Invert matrix
-        if self._response_matrix:
-            self._response_matrix = np.array(self._response_matrix.matrix)
-            self._correctionmat = np.linalg.pinv(self._response_matrix)
+        if response_matrix:
+            self.__set_response_data(response_matrix)
 
         # TODO: Initialise first setpoint
         self._setpoint = np.array([np.nan, np.nan])
@@ -127,9 +131,28 @@ class Chromaticity(TuningTool, DynamicValidation):
         load_path : Path
             Path to the serialized :class:`~.ResponseMatrixData` file.
         """
-        self._response_matrix = ResponseMatrixData.load(load_path)
-        self._response_matrix = np.array(self._response_matrix.matrix)
+        self.__set_response_data(ResponseMatrixData.load(load_path))
+
+    def __set_response_data(self, data: ResponseMatrixData):
+        """Keep the response matrix data, with its variable names, and invert the matrix."""
+        self._response_data = data
+        self._response_matrix = np.array(data.matrix)
         self._correctionmat = np.linalg.pinv(self._response_matrix)
+
+    def post_init(self):
+        """Warn when the loaded response matrix does not match the knobs, without preventing the loading."""
+        try:
+            self.__check_response_matrix()
+        except PyAMLException as e:
+            logger.warning(f"{e}")
+
+    def __check_response_matrix(self):
+        """Raise if the loaded response matrix does not match the knobs."""
+        if self._response_data is None:
+            return
+        difference = self._response_data.check_variables(self.knobs.names())
+        if difference is not None:
+            raise PyAMLException(f"{self.get_name()}: {difference}, measure a new chromaticity response matrix")
 
     @property
     def chromaticity_monitor(self) -> "ChromaticityMonitor":
@@ -142,6 +165,13 @@ class Chromaticity(TuningTool, DynamicValidation):
         """Return the sextupole array used for correction."""
         self.check_peer()
         return self.peer.magnets.get(self.sextu_array_name)
+
+    @property
+    def knobs(self) -> "MagnetArray":
+        """Return the knobs of the sextupole array, one per power supply, see :func:`~.knobs.knobs_of`."""
+        if self._knobs is None:
+            self._knobs = knobs_of(self.sextupoles)
+        return self._knobs
 
     def get(self):
         """Return the requested dimensionless horizontal and vertical chromaticity."""
@@ -184,17 +214,19 @@ class Chromaticity(TuningTool, DynamicValidation):
         Returns
         -------
         numpy.ndarray
-            Sextupole-strength changes obtained from the response-matrix
+            Strength change of each knob, obtained from the response-matrix
             pseudoinverse, in the configured sextupole strength units
             (typically ``m^-2``).
 
         Raises
         ------
         PyAMLException
-            If no response matrix has been loaded or measured.
+            If no response matrix has been loaded or measured, or if it does
+            not match the knobs.
         """
         if self._correctionmat is None:
             raise PyAMLException("Chromaticity.correct(): no matrix loaded or measured")
+        self.__check_response_matrix()
         return np.matmul(self._correctionmat, dchroma)
 
     def add(self, dchroma: np.array, wait_time: float = 0.0):
@@ -208,8 +240,8 @@ class Chromaticity(TuningTool, DynamicValidation):
         wait_time : float
             Delay in seconds after changing sextupole strengths.
         """
-        strengths = self.sextupoles.strengths.get()
+        strengths = self.knobs.strengths.get()
         strengths += self.correct(dchroma)
-        self.sextupoles.strengths.set(strengths)
+        self.knobs.strengths.set(strengths)
         time.sleep(wait_time)
         self._setpoint += dchroma

@@ -15,6 +15,7 @@ import numpy as np
 
 from ..common.constants import Action
 from ..validation import DynamicValidation, register_schema
+from .knobs import knobs_of
 from .measurement_tool import MeasurementTool
 from .response_matrix_data import ResponseMatrixData
 
@@ -33,13 +34,16 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
     Measure the response of the betatron tune to quadrupole-strength changes.
 
     The tune response matrix describes the change in horizontal and vertical
-    betatron tune produced by changes in quadrupole strength. Each quadrupole
-    in the configured magnet array is varied over a range of strengths, and
-    the resulting tune values are measured and averaged.
+    betatron tune produced by changes in quadrupole strength. Each knob of the
+    configured magnet array is varied over a range of strengths, and the
+    resulting tune values are measured and averaged. A knob is one power
+    supply: an individually powered quadrupole, or a series as a whole, through
+    the average strength of its serialized family.
 
     For measurements using more than one strength step, a linear fit is used
-    to determine the tune response to each quadrupole. The resulting matrix
-    has one row for each tune plane and one column for each quadrupole.
+    to determine the tune response to each knob. The resulting matrix has one
+    row for each tune plane and one column for each knob, named after the knob
+    (the family name for a series).
 
     After a successful measurement, the result is stored in
     :attr:`MeasurementTool.latest_measurement` as a
@@ -90,7 +94,10 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
     sleep_between_meas : float
         Configured delay between averaged tune measurements.
     quadrupoles : MagnetArray
-        Quadrupole array used for the measurement.
+        Quadrupole array as configured.
+    knobs : MagnetArray
+        Knobs of the quadrupole array, one per power supply, varied by the
+        measurement.
     tune_monitor : BetatronTuneMonitor
         Betatron tune monitor used for the measurement.
 
@@ -103,11 +110,11 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
 
     Notes
     -----
-    The generated response matrix has shape ``(2, n_quadrupoles)``. The first
+    The generated response matrix has shape ``(2, n_knobs)``. The first
     row contains the horizontal tune response and the second row contains the
     vertical tune response.
 
-    Quadrupole strengths are restored after each individual scan and again when
+    Knob strengths are restored after each individual scan and again when
     the measurement exits because of an error or interruption.
 
     Configuration
@@ -143,12 +150,20 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
         self.sleep_between_step = sleep_between_step
         self.n_avg_meas = n_avg_meas
         self.sleep_between_meas = sleep_between_meas
+        self._knobs = None
 
     @property
     def quadrupoles(self) -> "MagnetArray":
         """Return the quadrupole array used for the measurement."""
         self.check_peer()
         return self.peer.magnets.get(self.quad_array_name)
+
+    @property
+    def knobs(self) -> "MagnetArray":
+        """Return the knobs of the quadrupole array, one per power supply, see :func:`~.knobs.knobs_of`."""
+        if self._knobs is None:
+            self._knobs = knobs_of(self.quadrupoles)
+        return self._knobs
 
     @property
     def tune_monitor(self) -> "BetatronTuneMonitor":
@@ -221,17 +236,17 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
             .. code-block:: python
 
               source:MeasurementTool # Tool that triggered the callback
-              idx:int # The index in the element array being processed
+              idx:int # The index of the knob being processed
               step:int # The current step
               avg_step:int # The current avg step
-              magnet:str # The magnet being excited
+              magnet:str # The knob being excited (the family name for a series)
               strength:float # Quadrupole strength, typically in m^-1
               tune:np.array # Dimensionless measured tune (on Action.MEASURE)
               dtune:np.array # Tune change per quadrupole-strength unit (on Action.RESTORE)
         """
         # Get devices
         self.check_peer()
-        quads = self.quadrupoles
+        quads = self.knobs
         tm = self.tune_monitor
 
         tunemat = np.zeros((len(quads), 2))
