@@ -347,7 +347,7 @@ devices:
   response_matrix: ${path:orm.json}
 - class: pyaml.rf.rf_plant.RFPlant
   name: RF
-  masterclock: (MCLKHX251C:freq)[KHz]
+  masterclock: (MCLKHX251C:freq)[kHz]
 - class: pyaml.magnet.hcorrector.HCorrector
   name: HS4M2D1R
   lattice_names: S4M2D1R@0
