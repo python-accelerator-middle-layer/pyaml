@@ -20,6 +20,7 @@ from ..common.exception import PyAMLException
 from ..external.pySC_interface import pySCInterface
 from ..rf.rf_plant import RFPlant
 from ..validation import DynamicValidation, register_schema
+from .knobs import knobs_of
 from .orbit_response_matrix_data import OrbitResponseMatrixData
 from .tuning_tool import TuningTool
 
@@ -66,11 +67,19 @@ class Orbit(TuningTool, DynamicValidation):
     bpms
         Return the BPM array used for orbit readback.
     hcorrectors
-        Return the horizontal corrector array used for correction.
+        Return the horizontal corrector array as configured.
     vcorrectors
-        Return the vertical corrector array used for correction.
+        Return the vertical corrector array as configured.
     correctors
         Return the combined horizontal and vertical corrector array.
+    hknobs
+        Return the knobs of the horizontal corrector array, one per power
+        supply: a series is one knob, its serialized family.
+    vknobs
+        Return the knobs of the vertical corrector array.
+    knobs
+        Return the horizontal then vertical knobs. The response matrix inputs
+        are knob names, and the correction writes the knobs.
     rf_plant
         Return the optional RF plant used for correction.
 
@@ -164,6 +173,9 @@ class Orbit(TuningTool, DynamicValidation):
         self._hcorr: MagnetArray = None
         self._vcorr: MagnetArray = None
         self._hvcorr: MagnetArray = None
+        self._hknobs: MagnetArray = None
+        self._vknobs: MagnetArray = None
+        self._knobs: MagnetArray = None
         self._rf_plant: RFPlant = None
 
     def load(self, load_path: Path):
@@ -237,6 +249,36 @@ class Orbit(TuningTool, DynamicValidation):
         if self._hvcorr is None:
             return MagnetArray("", [*self.hcorrectors, *self.vcorrectors])
         return self._hvcorr
+
+    @property
+    def hknobs(self) -> MagnetArray:
+        """Return the knobs of the horizontal corrector array, one per power supply, see :func:`~.knobs.knobs_of`."""
+        self.check_peer()
+        if self._hknobs is None:
+            return knobs_of(self.hcorrectors)
+        return self._hknobs
+
+    @property
+    def vknobs(self) -> MagnetArray:
+        """Return the knobs of the vertical corrector array, one per power supply, see :func:`~.knobs.knobs_of`."""
+        self.check_peer()
+        if self._vknobs is None:
+            return knobs_of(self.vcorrectors)
+        return self._vknobs
+
+    @property
+    def knobs(self) -> MagnetArray:
+        """Return the horizontal then vertical knobs."""
+        self.check_peer()
+        if self._knobs is None:
+            return self.__join_knobs(self.hknobs, self.vknobs)
+        return self._knobs
+
+    def __join_knobs(self, hknobs: MagnetArray, vknobs: MagnetArray) -> MagnetArray:
+        """Return the horizontal then vertical knobs, the corrector array itself when there is no series."""
+        if self._hvcorr is not None and hknobs is self._hcorr and vknobs is self._vcorr:
+            return self._hvcorr
+        return MagnetArray("", [*hknobs, *vknobs])
 
     @property
     def rf_plant(self) -> RFPlant | None:
@@ -389,17 +431,17 @@ class Orbit(TuningTool, DynamicValidation):
             for trim in trims_v:
                 trims_v[trim] *= eff_gain_v
             trims = {**trims_h, **trims_v}
-            corr_array = self.correctors
+            corr_array = self.knobs
         elif plane == "H":
             for trim in trims_h:
                 trims_h[trim] *= eff_gain_h
             trims = trims_h
-            corr_array = self.hcorrectors
+            corr_array = self.hknobs
         elif plane == "V":
             for trim in trims_v:
                 trims_v[trim] *= eff_gain_v
             trims = trims_v
-            corr_array = self.vcorrectors
+            corr_array = self.vknobs
 
         corrector_names = corr_array.names()
         corrector_to_index = {name: idx for idx, name in enumerate(corrector_names)}
@@ -538,12 +580,15 @@ class Orbit(TuningTool, DynamicValidation):
         return self._pySC_response_matrix.rf_weight
 
     def post_init(self):
-        """Bind orbit corrector and RF handles after attachment."""
+        """Bind orbit corrector, knob and RF handles after attachment."""
         self._hcorr = self.peer.magnets.get(self.hcorr_array_name)
         self._vcorr = self.peer.magnets.get(self.vcorr_array_name)
         hv_elements = []
         hv_elements.extend(self._hcorr)
         hv_elements.extend(self._vcorr)
         self._hvcorr = MagnetArray("", hv_elements)
+        self._hknobs = knobs_of(self._hcorr)
+        self._vknobs = knobs_of(self._vcorr)
+        self._knobs = self.__join_knobs(self._hknobs, self._vknobs)
         if self.rf_plant_name is not None:
             self._rf_plant = self.peer.rf.get(self.rf_plant_name)

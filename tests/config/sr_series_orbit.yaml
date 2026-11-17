@@ -1,0 +1,156 @@
+# Orbit tools with a series of horizontal correctors.
+# SH1A_SERIES: one power supply for the horizontal correctors of SH1A-C05..C08,
+# SH1A-C09, SH1A-C10: individually powered horizontal correctors, SH3E-C05..C08: individually powered vertical correctors.
+type: pyaml.accelerator
+facility: ESRF
+machine: sr
+energy: 6e9
+simulators:
+  - type: pyaml.lattice.simulator
+    lattice: sr/lattices/ebs.mat
+    name: design
+data_folder: /data/store
+arrays:
+  - type: pyaml.arrays.bpm
+    name: BPM
+    elements: [BPM_C05-*, BPM_C06-*]
+  - type: pyaml.arrays.magnet
+    name: HCORR
+    elements: [SH1A-C*]
+  - type: pyaml.arrays.magnet
+    name: VCORR
+    elements: [SH3E-C*]
+devices:
+- type: pyaml.tuning_tools.orbit_response_matrix
+  name: ORM
+  bpm_array_name: BPM
+  hcorr_array_name: HCORR
+  vcorr_array_name: VCORR
+  corrector_delta: 1e-6
+# The test measures the response matrix and loads it
+- type: pyaml.tuning_tools.orbit
+  name: ORBIT
+  bpm_array_name: BPM
+  hcorr_array_name: HCORR
+  vcorr_array_name: VCORR
+  singular_values: 7
+  response_matrix: ${path:series_tuning/orm_measured_by_the_tests.json}
+- type: pyaml.magnet.serialized_magnet
+  name: SH1A_SERIES
+  function: B0
+  elements: [SH1A-C05, SH1A-C06, SH1A-C07, SH1A-C08]
+  model:
+    type: pyaml.magnet.linear_serialized_model
+    calibration_factors: 1.0
+    calibration_offsets: 0.0
+    unit: rad
+    hardware_unit: A
+    curves:
+      type: pyaml.magnet.inline_curve
+      mat: [[-10.0, -10.0], [10.0, 10.0]]
+- type: pyaml.magnet.hcorrector
+  name: SH1A-C09
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.0
+    crosstalk: 1.0
+    curve:
+      type: pyaml.magnet.inline_curve
+      mat: [[-10.0, -10.0], [10.0, 10.0]]
+    unit: rad
+    hardware_unit: A
+- type: pyaml.magnet.hcorrector
+  name: SH1A-C10
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.0
+    crosstalk: 1.0
+    curve:
+      type: pyaml.magnet.inline_curve
+      mat: [[-10.0, -10.0], [10.0, 10.0]]
+    unit: rad
+    hardware_unit: A
+- type: pyaml.magnet.vcorrector
+  name: SH3E-C05
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.0
+    crosstalk: 1.0
+    curve:
+      type: pyaml.magnet.inline_curve
+      mat: [[-10.0, -10.0], [10.0, 10.0]]
+    unit: rad
+    hardware_unit: A
+- type: pyaml.magnet.vcorrector
+  name: SH3E-C06
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.0
+    crosstalk: 1.0
+    curve:
+      type: pyaml.magnet.inline_curve
+      mat: [[-10.0, -10.0], [10.0, 10.0]]
+    unit: rad
+    hardware_unit: A
+- type: pyaml.magnet.vcorrector
+  name: SH3E-C07
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.0
+    crosstalk: 1.0
+    curve:
+      type: pyaml.magnet.inline_curve
+      mat: [[-10.0, -10.0], [10.0, 10.0]]
+    unit: rad
+    hardware_unit: A
+- type: pyaml.magnet.vcorrector
+  name: SH3E-C08
+  model:
+    type: pyaml.magnet.linear_model
+    calibration_factor: 1.0
+    crosstalk: 1.0
+    curve:
+      type: pyaml.magnet.inline_curve
+      mat: [[-10.0, -10.0], [10.0, 10.0]]
+    unit: rad
+    hardware_unit: A
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C05-01
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C05-02
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C05-03
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C05-04
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C05-05
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C05-06
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C05-07
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C05-08
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C05-09
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C05-10
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C06-01
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C06-02
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C06-03
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C06-04
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C06-05
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C06-06
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C06-07
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C06-08
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C06-09
+- type: pyaml.diagnostics.bpm.bpm
+  name: BPM_C06-10

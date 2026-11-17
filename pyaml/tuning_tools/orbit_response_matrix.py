@@ -17,6 +17,7 @@ from pySC.apps.codes import ResponseCode
 from ..common.constants import Action
 from ..external.pySC_interface import pySCInterface
 from ..validation import DynamicValidation, register_schema
+from .knobs import knobs_of
 from .measurement_tool import MeasurementTool
 from .orbit_response_matrix_data import OrbitResponseMatrixData
 
@@ -155,6 +156,16 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
         self.check_peer()
         return self.peer.magnets.get(self.vcorr_array_name)
 
+    @property
+    def hknobs(self) -> "MagnetArray":
+        """Return the knobs of the horizontal corrector array, one per power supply, see :func:`~.knobs.knobs_of`."""
+        return knobs_of(self.hcorrectors)
+
+    @property
+    def vknobs(self) -> "MagnetArray":
+        """Return the knobs of the vertical corrector array, one per power supply, see :func:`~.knobs.knobs_of`."""
+        return knobs_of(self.vcorrectors)
+
     def measure(
         self,
         corrector_names: Optional[List[str]] = None,
@@ -214,8 +225,8 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
 
         if corrector_names is None:
             logger.info(f"Measuring correctors from the default arrays: {self.hcorr_array_name} and {self.vcorr_array_name}.")
-            hcorrector_names = self.hcorrectors.names()
-            vcorrector_names = self.vcorrectors.names()
+            hcorrector_names = self.hknobs.names()
+            vcorrector_names = self.vknobs.names()
             corrector_names = hcorrector_names + vcorrector_names
 
         generator = measure_ORM(
@@ -289,8 +300,8 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
             their associated planes.
         """
         element_holder = self._peer
-        all_hcorrector_names = self.hcorrectors.names()
-        all_vcorrector_names = self.vcorrectors.names()
+        all_hcorrector_names = self.hknobs.names()
+        all_vcorrector_names = self.vknobs.names()
         variable_planes = []
         for corr in data["input_names"]:
             if corr in all_hcorrector_names:

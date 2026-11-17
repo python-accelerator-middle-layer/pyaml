@@ -108,6 +108,13 @@ class pySCInterface:
             y += positions[:, 1] / self.orbits_to_average
         return x, y
 
+    def __get_magnet(self, name: str):
+        """Return the serialized family or the magnet with this name."""
+        for family in self.element_holder.serialized_magnet.all():
+            if family.get_name() == name:
+                return family
+        return self.element_holder.magnet.get(name=name)
+
     def get(self, name: str) -> float:
         """
         Return the current strength of a named magnet.
@@ -115,15 +122,15 @@ class pySCInterface:
         Parameters
         ----------
         name : str
-            Magnet name in the configured element holder.
+            Magnet name in the configured element holder, or the name of a
+            serialized family for the average strength of its series.
 
         Returns
         -------
         float
             Current magnet strength.
         """
-        magnet = self.element_holder.magnet.get(name=name)
-        return magnet.strength.get()
+        return self.__get_magnet(name).strength.get()
 
     def set(self, name: str, value: float) -> None:
         """
@@ -132,7 +139,8 @@ class pySCInterface:
         Parameters
         ----------
         name : str
-            Magnet name in the configured element holder.
+            Magnet name in the configured element holder, or the name of a
+            serialized family to write the power supply of its series.
         value : float
             New magnet strength.
 
@@ -141,7 +149,7 @@ class pySCInterface:
         None
             This method does not return a value.
         """
-        magnet = self.element_holder.magnet.get(name=name)
+        magnet = self.__get_magnet(name)
         magnet.strength.set(value=value)  # ideally set_and_wait but not implemented
         time.sleep(self.set_wait_time)
         return
