@@ -203,6 +203,22 @@ def test_lone_exclusion_gives_an_empty_array(install_test_package, mode):
     assert len(holder.magnets.get("ARRAY")) == 0
 
 
+@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
+def test_array_with_a_family_and_one_of_its_magnets_raises(install_test_package, mode):
+    holder = load(mode)
+    family = holder.serialized_magnet.get("QF1A")
+
+    # Built by hand: a configured array never holds both, the magnet is already driven by the family
+    with pytest.raises(PyAMLException, match="a serialized family and its magnets cannot be in the same array"):
+        MagnetArray("MIXED", [family, family[1]])
+
+    # Same thing when the array comes from a union of arrays
+    holder.magnets.add("FAMILY", ["QF1A"])
+    with pytest.raises(PyAMLException, match="a serialized family and its magnets cannot be in the same array"):
+        holder.magnets.get("FAMILY") + family.magnets
+
+
 @pytest.mark.parametrize("elements", [["QF1A-C05", "QF1A-C05"], ["QF1A", "QF1A"]])
 @pytest.mark.parametrize("mode", MODES)
 @pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
