@@ -10,6 +10,7 @@ import numpy as np
 
 from ..common.abstract import ReadWriteFloatArray
 from ..common.abstract_aggregator import ScalarAggregator
+from ..common.exception import PyAMLException
 from ..magnet.magnet import Magnet
 from .element_array import ElementArray
 
@@ -72,8 +73,19 @@ class RWMagnetStrength(ReadWriteFloatArray):
         """
         nvalue = np.ones(self.__nb) * value if isinstance(value, float) else value
         if not self.__aggregator:
+            # Magnets of a series share one power supply: it is written once, from the strengths of the
+            # magnets of the series present in the array, the others following the resulting hardware value.
+            # A serialized family has no series index: its own strength accessor writes its power supply.
+            series: dict[int, tuple[Magnet, dict[int, float]]] = {}
             for idx, m in enumerate(self.__magnets):
-                m.strength.set(nvalue[idx])
+                series_index = m.series_index
+                if series_index is not None:
+                    series.setdefault(id(m.model), (m, {}))[1][series_index] = nvalue[idx]
+                else:
+                    m.strength.set(nvalue[idx])
+            for m, requested in series.values():
+                current_hardware = np.array([m.hardware.get()])
+                m.hardware.set(m.model.compute_hardware_values_partial(current_hardware, requested)[0])
         else:
             self.__aggregator.set(nvalue)
 
@@ -248,6 +260,7 @@ class MagnetArray(ElementArray):
         Initialize the MagnetArray.
         """
         super().__init__(arrayName, magnets, use_aggregator)
+        self.__check_families(arrayName, magnets)
 
         self.__rwstrengths = RWMagnetStrength(arrayName, magnets)
         self.__rwhardwares = RWMagnetHardware(arrayName, magnets)
@@ -257,6 +270,25 @@ class MagnetArray(ElementArray):
             aggh = self.get_peer().create_magnet_hardware_aggregator(magnets)
             self.__rwstrengths.set_aggregator(aggs)
             self.__rwhardwares.set_aggregator(aggh)
+
+    @staticmethod
+    def __check_families(arrayName: str, magnets: list[Magnet]):
+        """
+        Raise if a serialized family and one of its magnets are both in the array.
+
+        A family drives every magnet of its series: a magnet of the series cannot also be driven on its own. A family
+        is a magnet with no series index whose model is shared by a series, its magnets share the same model.
+        """
+        families = {
+            id(m.model): m for m in magnets if m.model is not None and m.model.shares_power_supply() and m.series_index is None
+        }
+        for m in magnets:
+            family = families.get(id(m.model))
+            if family is not None and m is not family:
+                raise PyAMLException(
+                    f"MagnetArray {arrayName} : {m.get_name()} and {family.get_name()}: a serialized family and its "
+                    "magnets cannot be in the same array, the family already drives all its magnets"
+                )
 
     @property
     def strengths(self) -> RWMagnetStrength:

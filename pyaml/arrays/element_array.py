@@ -17,7 +17,6 @@ from ..common.exception import PyAMLException
 from ..common.name_matching import resolve_names
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
-from ..magnet.serialized_magnet import SerializedMagnets
 
 if TYPE_CHECKING:
     from ..common.holders.element_holder import ElementHolder
@@ -142,12 +141,6 @@ class ElementArray(list[Element]):
             # array type this selection was derived from.
             m = importlib.import_module("pyaml.arrays.cfm_magnet_array")
             array_class = getattr(m, "CombinedFunctionMagnetArray", None)
-            return array_class(array_name, elements, False)
-        elif issubclass(element_type, SerializedMagnets):
-            # SerializedMagnetsArray has no aggregator support, unlike the
-            # array type this selection was derived from.
-            m = importlib.import_module("pyaml.arrays.serialized_magnet_array")
-            array_class = getattr(m, "SerializedMagnetsArray", None)
             return array_class(array_name, elements, False)
         elif issubclass(element_type, Element):
             return ElementArray(array_name, elements, self.__use_aggregator)
@@ -306,8 +299,8 @@ class ElementArray(list[Element]):
             common base class of the remaining elements which can be:
             :py:class:`.BPMArray` or :py:class:`.MagnetArray` or
             :py:class:`.CombinedFunctionMagnetArray` or
-            :py:class:`.SerializedMagnetsArray` or
-            :py:class:`.ElementArray`.
+            :py:class:`.ElementArray`. A serialized family is a magnet, so
+            families give a :py:class:`.MagnetArray`.
         """
         # --- mask filtering ---
         if self.__is_bool_mask(other):
@@ -378,8 +371,8 @@ class ElementArray(list[Element]):
             common base class of the remaining elements which can be:
             :py:class:`.BPMArray` or :py:class:`.MagnetArray` or
             :py:class:`.CombinedFunctionMagnetArray` or
-            :py:class:`.SerializedMagnetsArray` or
-            :py:class:`.ElementArray`.
+            :py:class:`.ElementArray`. A serialized family is a magnet, so
+            families give a :py:class:`.MagnetArray`.
         """
         # --- mask removal ---
         if self.__is_bool_mask(other):
@@ -418,8 +411,8 @@ class ElementArray(list[Element]):
             common base class of the remaining elements which can be:
             :py:class:`.BPMArray` or :py:class:`.MagnetArray` or
             :py:class:`.CombinedFunctionMagnetArray` or
-            :py:class:`.SerializedMagnetsArray` or
-            :py:class:`.ElementArray`.
+            :py:class:`.ElementArray`. A serialized family is a magnet, so
+            families give a :py:class:`.MagnetArray`.
 
         Examples
         --------
@@ -479,8 +472,8 @@ class ElementArray(list[Element]):
             common base class of the remaining elements which can be:
             :py:class:`.BPMArray` or :py:class:`.MagnetArray` or
             :py:class:`.CombinedFunctionMagnetArray` or
-            :py:class:`.SerializedMagnetsArray` or
-            :py:class:`.ElementArray`.
+            :py:class:`.ElementArray`. A serialized family is a magnet, so
+            families give a :py:class:`.MagnetArray`.
 
         Examples
         --------
@@ -518,7 +511,8 @@ class ElementArray(list[Element]):
         -------
         list[bool]
             A list of booleans where True indicates the element is an instance
-            of the given type (including subclasses).
+            of the given type (including subclasses). A serialized family is an
+            instance of ``Magnet``.
         """
         if not isinstance(element_type, type):
             raise TypeError(f"{self.__class__.__name__}: element_type must be a type")

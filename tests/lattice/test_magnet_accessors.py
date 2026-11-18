@@ -2,7 +2,6 @@ import at
 import numpy as np
 import pytest
 
-from pyaml import PyAMLException
 from pyaml.lattice.abstract_impl import (
     RWHardwareArray,
     RWHardwareScalar,
@@ -75,8 +74,10 @@ def test_zero_length_combined_function_magnet_stores_integrated_strengths(access
     np.testing.assert_allclose(accessor.get(), [1.0e-6, -2.0e-6])
 
 
-def test_zero_length_serialized_magnets_share_strength_equally():
-    elements = [_thin_corrector("COR_A"), _thin_corrector("COR_B")]
+def test_serialized_magnets_follow_the_strength_of_one_magnet():
+    # Serialized magnets share one power supply: setting the strength of one magnet sets the shared hardware value,
+    # so every magnet with the same submodel gets the same strength (no length weighting).
+    elements = [_thin_corrector("COR_A"), at.Corrector("COR_B", 0.2, [0.0, 0.0], PolynomA=[0.0], PolynomB=[0.0])]
     model = IdentityMagnetModel(physics="COR", unit="rad")
     strengths = [RWStrengthScalar([e], HCorrector.polynom, model) for e in elements]
     currents = [RWHardwareScalar([e], HCorrector.polynom, model) for e in elements]
@@ -84,17 +85,8 @@ def test_zero_length_serialized_magnets_share_strength_equally():
 
     serialized[0].set(1.0e-6)
 
-    assert serialized[0].get() == pytest.approx(0.5e-6)
-    assert serialized[1].get() == pytest.approx(0.5e-6)
-    assert elements[0].PolynomB[0] == pytest.approx(-0.5e-6)
-    assert elements[1].PolynomB[0] == pytest.approx(-0.5e-6)
-
-
-def test_serialized_magnets_mixing_thin_and_thick_is_rejected():
-    elements = [_thin_corrector("COR_A"), at.Corrector("COR_B", 0.2, [0.0, 0.0], PolynomA=[0.0], PolynomB=[0.0])]
-    model = IdentityMagnetModel(physics="COR", unit="rad")
-    strengths = [RWStrengthScalar([e], HCorrector.polynom, model) for e in elements]
-    currents = [RWHardwareScalar([e], HCorrector.polynom, model) for e in elements]
-
-    with pytest.raises(PyAMLException, match="all thin .* or all thick"):
-        RWSerializedStrength(strengths, currents, 0)
+    assert serialized[0].get() == pytest.approx(1.0e-6)
+    assert serialized[1].get() == pytest.approx(1.0e-6)
+    assert elements[0].PolynomB[0] == pytest.approx(-1.0e-6)
+    assert elements[1].PolynomB[0] * elements[1].Length == pytest.approx(-1.0e-6)
+    assert serialized[1].index() == 1
