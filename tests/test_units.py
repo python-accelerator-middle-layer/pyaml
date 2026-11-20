@@ -392,6 +392,46 @@ def test_device_unit_error_is_not_swallowed(install_test_package):
         wrap_si(dev, "m")
 
 
+def _tune_config(rf_plant_name="RF") -> dict:
+    """``_config()`` plus a tune monitor whose devices report the betatron frequency in kHz."""
+    cfg = _config()
+    cfg["harmonic_number"] = 416
+    entries = cfg["controls"][0]["catalog"]["entries"]
+    entries += [_entry("tune/h", "kHz", read_only=True), _entry("tune/v", "kHz", read_only=True)]
+    monitor = {"type": "pyaml.diagnostics.tune_monitor", "name": "TUNE", "tune_h": "tune/h", "tune_v": "tune/v"}
+    if rf_plant_name is not None:
+        monitor.update(rf_plant_name=rf_plant_name, tune_above_half=[False, True])
+    cfg["devices"].append(monitor)
+    return cfg
+
+
+@TANGO
+def test_tune_device_in_frequency_unit(install_test_package):
+    from tango.pyaml.attribute_store import set_attribute
+
+    set_attribute("sr/test/tune/h", 180.0, unit="kHz")
+    set_attribute("sr/test/tune/v", 300.0, unit="kHz")
+    sr = Accelerator.from_dict(_tune_config())
+    rf = sr.live.rf.get("RF")
+    tune = sr.live.diagnostic.get("TUNE")
+
+    for f_rf in (352.2e6, 352.3e6):  # The revolution frequency follows the RF frequency
+        rf.frequency.set(f_rf)
+        f_rev = f_rf / 416
+        assert np.allclose(tune.tune.get(), [180e3 / f_rev, 1 - 300e3 / f_rev])  # Vertical tune above half
+    # Any betatron sideband (n ± q) f_rev gives the same tune
+    for f in (f_rev + 180e3, 2 * f_rev - 180e3):
+        set_attribute("sr/test/tune/h", f / 1e3)
+        assert tune.tune.get()[0] == pytest.approx(180e3 / f_rev)
+    set_attribute("sr/test/tune/h", 180.0)
+    assert tune.tune.unit() == "1"
+    assert tune.tune.control_system_unit() == "kHz"
+    assert tune.frequency.get()[0] == pytest.approx(180e3)
+
+    with pytest.raises(PyAMLConfigException, match="rf_plant_name"):
+        Accelerator.from_dict(_tune_config(rf_plant_name=None))
+
+
 @TANGO
 def test_incompatible_device_unit_raises_at_load(install_test_package):
     with pytest.raises(PyAMLConfigException, match="cannot be converted"):

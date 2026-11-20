@@ -16,7 +16,7 @@ from ..common.abstract import RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.exception import PyAMLConfigException, PyAMLException
 from ..common.holders.element_holder import ElementHolder
-from ..common.units import SI_ANGLE, SI_FREQUENCY, SI_POSITION, SI_TUNE, SI_VOLTAGE
+from ..common.units import SI_ANGLE, SI_FREQUENCY, SI_POSITION, SI_TUNE, SI_VOLTAGE, is_frequency_unit
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
     CSScalarAggregator,
@@ -332,8 +332,22 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         self.rf.add(rf_plant.attach(self, frequency, voltage))
 
     def _fill_betatron_tune_monitor(self, monitor: BetatronTuneMonitor) -> None:
-        devices = self.get_si_devices_access([monitor.tune_h, monitor.tune_v], SI_TUNE)
-        self.add_betatron_tune_monitor(monitor.attach(self, RBetatronTuneArray(monitor, devices)))
+        # A tune device may report the betatron frequency: it is then read in Hz
+        # and converted to a tune with the revolution frequency on every read.
+        devices, is_frequency = [], []
+        for ref in (monitor.tune_h, monitor.tune_v):
+            dev = self.get_device_access(ref)
+            in_hz = dev is not None and is_frequency_unit(dev.unit())
+            devices.append(wrap_si(dev, SI_FREQUENCY if in_hz else SI_TUNE))
+            is_frequency.append(in_hz)
+        if any(is_frequency) and monitor.rf_plant_name is None:
+            raise PyAMLConfigException(
+                f"{monitor.get_name()}: tune devices in a frequency unit need rf_plant_name to be converted to tunes"
+            )
+        tune = RBetatronTuneArray(devices, is_frequency, monitor.tune_above_half)
+        attached = monitor.attach(self, tune)
+        tune.set_revolution_frequency_source(attached.revolution_frequency)
+        self.add_betatron_tune_monitor(attached)
 
     def _fill_tool(self, tool: TuningTool | MeasurementTool) -> None:
         self.add_tool(tool.attach(self))

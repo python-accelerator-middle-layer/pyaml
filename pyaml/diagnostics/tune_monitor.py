@@ -12,6 +12,7 @@ from numpy.typing import NDArray
 
 from ..common.abstract import ReadFloatArray
 from ..common.element import Element, __pyaml_repr__
+from ..common.exception import PyAMLConfigException, PyAMLException
 from ..validation import DynamicValidation, register_schema
 from .atune_monitor import ABetatronTuneMonitor
 
@@ -28,8 +29,14 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
 
     Represents a betatron tune monitor in the accelerator lattice and
     provides access to the measured horizontal and vertical betatron
-    tunes. Optionally, the monitor can be associated with an RF plant
-    used to convert tune measurements to frequency values.
+    tunes.
+
+    The tune devices may report the fractional tune (unit ``"1"`` or no
+    unit) or the betatron frequency, in any frequency unit (``Hz``,
+    ``kHz``...). The fractional tune ``q`` is then computed from the
+    frequency ``f`` and the revolution frequency ``f_rev = f_RF / h``, read
+    on every call from the RF plant ``rf_plant_name`` and the accelerator
+    ``harmonic_number``, which are then both required.
 
     Parameters
     ----------
@@ -43,6 +50,10 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         Device catalog key for the vertical betatron tune measurement.
     rf_plant_name : str | None, optional
         Name of the associated RF plant element used by the monitor.
+    tune_above_half : list[bool] | None, optional
+        ``[horizontal, vertical]`` flags, only used for a tune device
+        reporting a frequency: ``True`` when the fractional tune of the plane
+        is above the half-integer. Defaults to ``[False, False]``.
 
     Attributes
     ----------
@@ -50,6 +61,10 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         Return the horizontal tune device catalog key.
     tune_v
         Return the vertical tune device catalog key.
+    rf_plant_name
+        Return the name of the RF plant used for tune-frequency conversion.
+    tune_above_half
+        Return the ``[horizontal, vertical]`` above-half-integer flags.
     tune
         Get the betatron tune values.
     frequency
@@ -59,6 +74,8 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
     -------
     set_harmonic(h)
         Set the harmonic number used for tune-frequency conversion.
+    revolution_frequency()
+        Return the revolution frequency from the RF frequency and harmonic number.
     attach(peer, betatron_tune)
         Attach the tune monitor to a peer with betatron tune data.
 
@@ -71,6 +88,7 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
           tune_h: DEVICE/HORIZONTAL_TUNE
           tune_v: DEVICE/VERTICAL_TUNE
           rf_plant_name: RF
+          tune_above_half: [false, false]
     """
 
     def __init__(
@@ -80,6 +98,7 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         tune_h: str | None = None,
         tune_v: str | None = None,
         rf_plant_name: str | None = None,
+        tune_above_half: list[bool] | None = None,
     ):
         """
         Initialize a betatron tune monitor.
@@ -88,6 +107,13 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         self._tune_h = tune_h
         self._tune_v = tune_v
         self._rf_plant_name = rf_plant_name
+        if tune_above_half is None:
+            tune_above_half = [False, False]
+        if len(tune_above_half) != 2:
+            raise PyAMLConfigException(
+                f"{name}: tune_above_half expects 2 values [horizontal, vertical], got {tune_above_half}"
+            )
+        self._tune_above_half = [bool(a) for a in tune_above_half]
         self.__tune = None
         self._h = None
 
@@ -103,6 +129,32 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
         """
         self._h = float(h)
 
+    def revolution_frequency(self) -> float:
+        """
+        Return the revolution frequency from the RF frequency and harmonic number.
+
+        The RF frequency is read from the RF plant ``rf_plant_name`` of the
+        mode the monitor is attached to.
+
+        Returns
+        -------
+        float
+            Revolution frequency ``f_RF / h`` in Hz.
+
+        Raises
+        ------
+        PyAMLException
+            If no RF plant or no harmonic number is defined.
+        """
+        if self._rf_plant_name is None:
+            raise PyAMLException(f"{self.get_name()}: rf_plant_name is required to compute the revolution frequency")
+        if self._h is None:
+            raise PyAMLException(
+                f"{self.get_name()}: the accelerator harmonic_number is required to compute the revolution frequency"
+            )
+        self.check_peer()
+        return self.peer.rf.get(self._rf_plant_name).frequency.get() / self._h
+
     def _fill_device(self, holder: "ElementHolder") -> None:
         holder._fill_betatron_tune_monitor(self)
 
@@ -115,6 +167,16 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
     def tune_v(self) -> str | None:
         """Return the vertical tune device catalog key."""
         return self._tune_v
+
+    @property
+    def rf_plant_name(self) -> str | None:
+        """Return the name of the RF plant used for tune-frequency conversion."""
+        return self._rf_plant_name
+
+    @property
+    def tune_above_half(self) -> list[bool]:
+        """Return the ``[horizontal, vertical]`` above-half-integer flags."""
+        return list(self._tune_above_half)
 
     @property
     def tune(self) -> ReadFloatArray:
@@ -165,13 +227,7 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
 
             def get(self) -> NDArray:
                 """Return tune frequencies in hertz."""
-                h = self.parent._h
-                rf_name = self.parent._rf_plant_name
-                if h is not None and rf_name is not None:
-                    tune = self.parent.tune.get()
-                    rf = self.parent.peer.rf.get(rf_name)
-                    freq = rf.frequency.get()
-                    return tune * freq / h
+                return self.parent.tune.get() * self.parent.revolution_frequency()
 
             def unit(self) -> str:
                 """Return the pyAML unit for this quantity, i.e. returned by get()."""

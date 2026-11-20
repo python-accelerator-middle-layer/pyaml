@@ -1385,12 +1385,19 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
     """
     Expose horizontal and vertical betatron tunes as a read-only array.
 
+    A plane whose device reports a frequency ``f`` is converted to the
+    fractional tune.
+
     Parameters
     ----------
-    tune_monitor : object
-        Tune monitor configuration supplying the tune unit.
     devs : list[DeviceAccess]
-        Devices providing horizontal and vertical tune measurements.
+        Devices providing horizontal and vertical tune measurements, in tune
+        units or in Hz.
+    is_frequency : list[bool] or None, optional
+        ``[horizontal, vertical]`` flags, ``True`` for a device read in Hz.
+    above_half : list[bool] or None, optional
+        ``[horizontal, vertical]`` flags, ``True`` when the fractional tune of
+        a plane read in Hz is above the half-integer.
 
     Methods
     -------
@@ -1400,24 +1407,41 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
         Return the pyAML unit for this quantity, i.e. returned by get().
     control_system_unit()
         Return the control-system unit for this quantity.
+    set_revolution_frequency_source(source)
+        Set the callable returning the revolution frequency in Hz.
     """
 
-    def __init__(self, tune_monitor, devs: list[DeviceAccess]):
+    def __init__(self, devs: list[DeviceAccess], is_frequency: list[bool] | None = None, above_half: list[bool] | None = None):
         """
         Initialize the RBetatronTuneArray.
         """
-        self.__tune_monitor = tune_monitor
         self.__devs = devs
+        self.__is_frequency = np.array(is_frequency if is_frequency is not None else [False, False], dtype=bool)
+        self.__above_half = np.array(above_half if above_half is not None else [False, False], dtype=bool)
+        self.__frev_source = None
+
+    def set_revolution_frequency_source(self, source):
+        """
+        Set the callable returning the revolution frequency in Hz.
+
+        Parameters
+        ----------
+        source : callable
+            Called on every ``get()`` when a plane is read in Hz.
+        """
+        self.__frev_source = source
 
     def get(self) -> NDArray:
-        # Return horizontal and vertical betatron tunes as a NumPy array
         """Return horizontal and vertical betatron tunes."""
-        return np.array(
-            [
-                self.__devs[0].get(),
-                self.__devs[1].get(),
-            ]
-        )
+        values = np.array([d.get() for d in self.__devs], dtype=float)
+        if self.__is_frequency.any():
+            if self.__frev_source is None:
+                raise PyAMLException("Tune devices read in Hz need a revolution frequency source")
+            q = np.mod(values / self.__frev_source(), 1.0)  # Sidebands (n ± q) f_rev
+            q = np.minimum(q, 1.0 - q)  # Fold into [0, 0.5]
+            q = np.where(self.__above_half, 1.0 - q, q)
+            values = np.where(self.__is_frequency, q, values)
+        return values
 
     def unit(self) -> str:
         """Return the pyAML unit for this quantity, i.e. returned by get()."""

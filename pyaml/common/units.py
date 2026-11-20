@@ -206,6 +206,29 @@ def conversion_factor(src: str | None, dst: str | None) -> float:
     return float(k)
 
 
+def is_frequency_unit(unit: str | None) -> bool:
+    """
+    Return ``True`` if ``unit`` is a frequency unit (``Hz``, ``kHz``, ``1/s``...).
+
+    Parameters
+    ----------
+    unit : str or None
+        Unit string, in any of the formats accepted by PyAML.
+
+    Returns
+    -------
+    bool
+        ``False`` for an empty, dimensionless, unknown or non-frequency unit.
+    """
+    if _is_no_unit(unit):
+        return False
+    try:
+        conversion_factor(unit, SI_FREQUENCY)
+    except PyAMLConfigException:
+        return False
+    return True
+
+
 def is_quantity(value: Any) -> bool:
     """Return ``True`` if ``value`` is a :class:`pint.Quantity`."""
     return isinstance(value, pint.Quantity)
