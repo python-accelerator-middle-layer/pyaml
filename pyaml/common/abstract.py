@@ -34,10 +34,8 @@ class ReadFloatScalar(AcceptsQuantity, metaclass=ABCMeta):
         """
         Return the current scalar value.
 
-        Implementations take no argument: every subclass also accepts
-        ``get(quantity=True)``, which returns the value as a
-        :class:`pint.Quantity` in ``unit()`` (see
-        :class:`~pyaml.common.units.AcceptsQuantity`).
+        ``get(quantity=True)`` returns a :class:`pint.Quantity` in ``unit()``
+        (see :class:`~pyaml.common.units.AcceptsQuantity`).
 
         Returns
         -------
@@ -134,10 +132,8 @@ class ReadFloatArray(AcceptsQuantity, metaclass=ABCMeta):
         """
         Return the current values as an array.
 
-        Implementations take no argument: every subclass also accepts
-        ``get(quantity=True)``, which returns the values as a
-        :class:`pint.Quantity` in ``unit()`` (see
-        :class:`~pyaml.common.units.AcceptsQuantity`).
+        ``get(quantity=True)`` returns a :class:`pint.Quantity` in ``unit()``
+        (see :class:`~pyaml.common.units.AcceptsQuantity`).
         """
         pass
 

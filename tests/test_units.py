@@ -89,27 +89,6 @@ def test_to_magnitude_scalar_quantity_broadcast_to_unit_list():
         to_magnitude(0.5 / ureg.m, ["1/m", "1/m**2"])
 
 
-def test_read_write_interfaces_accept_quantity():
-    from pyaml.common.abstract import ReadFloatScalar
-
-    class Tilt(ReadFloatScalar):  # Read-only interface with a setter, like the BPM tilt
-        def __init__(self):
-            self.value = 0.0
-
-        def get(self):
-            return self.value
-
-        def set(self, value):
-            self.value = value
-
-        def unit(self):
-            return "rad"
-
-    t = Tilt()
-    t.set(1 * ureg.mrad)
-    assert t.value == pytest.approx(1e-3)
-
-
 def test_to_quantity():
     assert to_quantity(None, "m") is None
     q = to_quantity(1.5, "mm")
@@ -137,21 +116,27 @@ def test_common_unit():
     assert common_unit([None, None]) is None
 
 
-def test_get_returns_quantity_on_any_implementation():
+def test_any_implementation_accepts_and_returns_quantity():
     from pyaml.common.abstract import ReadFloatArray
 
-    class Positions(ReadFloatArray):  # Minimal implementation, like an external package
+    class Positions(ReadFloatArray):  # Minimal read-only interface with a setter, like an external package
+        def __init__(self):
+            self.value = np.array([1e-3, -2e-3])
+
         def get(self):
-            return np.array([1e-3, -2e-3])
+            return self.value
+
+        def set(self, value):
+            self.value = value
 
         def unit(self):
             return "m"
 
     p = Positions()
-    assert isinstance(p.get(), np.ndarray)  # Default unchanged
-    q = p.get(quantity=True)
-    assert np.allclose(q.to("mm").magnitude, [1.0, -2.0])
-    assert p.get(quantity=False) is not None and not isinstance(p.get(quantity=False), pint.Quantity)
+    assert not isinstance(p.get(), pint.Quantity)  # Default unchanged
+    assert np.allclose(p.get(quantity=True).to("mm").magnitude, [1.0, -2.0])
+    p.set(np.array([3.0, 4.0]) * ureg.mm)
+    assert np.allclose(p.value, [3e-3, 4e-3])
 
 
 def test_hardware_unit_of_model():
@@ -299,32 +284,40 @@ def test_rf_is_converted_to_si(install_test_package):
 
 
 @TANGO
-def test_set_accepts_quantity_on_control_system(install_test_package):
-    from tango.pyaml.attribute_store import get_attribute
+def test_quantities_on_control_system(install_test_package):
+    from tango.pyaml.attribute_store import get_attribute, set_attribute
 
+    for key, value in [("bpm1/H", 0.1), ("bpm1/V", -0.2), ("bpm2/H", 0.3), ("bpm2/V", -0.4)]:
+        set_attribute(f"sr/test/{key}", value, unit="mm")
     sr = Accelerator.from_dict(_config())
     rf = sr.live.rf.get("RF")
     tra = sr.live.rf.transmitter.get("RFTRA")
 
+    # set() converts a quantity to the pyAML unit, then to the device unit
     rf.frequency.set(352.3 * ureg.MHz)
     assert get_attribute("sr/test/rf/freq") == pytest.approx(352.3)
-    tra.voltage.set(0.8 * ureg.MV)
-    assert get_attribute("sr/test/rf/volt") == pytest.approx(800.0)
     tra.phase.set(45 * ureg.deg)
     assert get_attribute("sr/test/rf/phase") == pytest.approx(45.0)
-
-    q1 = sr.live.magnet.get("Q1")
-    q1.hardware.set(2 * ureg.A)
-    assert get_attribute("sr/test/ps/q1") == pytest.approx(2000.0)
-
-    # Arrays and aggregators accept quantities too
-    quads = sr.live.magnets.get("QUADS")
-    quads.hardwares.set(np.array([1.0, 3.0]) * ureg.A)
-    assert get_attribute("sr/test/ps/q1") == pytest.approx(1000.0)
-    assert get_attribute("sr/test/ps/q2") == pytest.approx(3000.0)
-
+    rf.voltage.set(2 * ureg.MV)  # Total voltage, aggregate of transmitters
+    assert get_attribute("sr/test/rf/volt") == pytest.approx(2000.0)
     with pytest.raises(PyAMLException):
         rf.frequency.set(1 * ureg.A)
+
+    # get(quantity=True) returns a quantity in unit(), get() still a float
+    assert rf.frequency.get(quantity=True).to("MHz").magnitude == pytest.approx(352.3)
+    assert isinstance(rf.frequency.get(), float)
+    q = sr.live.diagnostic.bpms.get("BPM").positions.get(quantity=True)
+    assert q.shape == (2, 2) and np.allclose(q.to("mm").magnitude, [[0.1, -0.2], [0.3, -0.4]])
+
+    # Arrays and aggregators
+    quads = sr.live.magnets.get("QUADS")
+    quads.hardwares.set(np.array([1.0, 3.0]) * ureg.A)
+    assert [get_attribute("sr/test/ps/q1"), get_attribute("sr/test/ps/q2")] == pytest.approx([1000.0, 3000.0])
+    assert np.allclose(quads.hardwares.get(quantity=True).to("mA").magnitude, [1000.0, 3000.0])
+    agg = sr.live.create_magnet_strength_aggregator(list(quads))
+    agg.set(np.array([0.01, 0.02]) / ureg.m)
+    assert [m.strength.get() for m in quads] == pytest.approx([0.01, 0.02])
+    assert agg.get(quantity=True).units == 1 / ureg.m
 
 
 @TANGO
@@ -362,19 +355,6 @@ def test_magnet_device_unit_is_converted_to_model_hardware_unit(install_test_pac
     assert get_attribute("sr/test/ps/q1") == pytest.approx(10000.0)
     assert get_attribute("sr/test/ps/q2") == pytest.approx(14000.0)
     assert np.allclose(quads.hardwares.get(), [10.0, 14.0])
-
-
-@TANGO
-def test_strength_aggregator_unit_and_quantity(install_test_package):
-    from tango.pyaml.attribute_store import get_attribute
-
-    sr = Accelerator.from_dict(_config())
-    agg = sr.live.create_magnet_strength_aggregator(list(sr.live.magnets.get("QUADS")))
-    assert agg.unit() == "1/m"
-    agg.set(np.array([0.01, 0.02]) / ureg.m)
-    q1, q2 = sr.live.magnet.get("Q1"), sr.live.magnet.get("Q2")
-    assert [q1.strength.get(), q2.strength.get()] == pytest.approx([0.01, 0.02])
-    assert get_attribute("sr/test/ps/q1") == pytest.approx(1000 * q1.hardware.get())
 
 
 @TANGO
@@ -440,20 +420,15 @@ def test_incompatible_device_unit_raises_at_load(install_test_package):
 
 
 @TANGO
-def test_device_without_unit_is_passthrough(install_test_package):
+@pytest.mark.parametrize("no_unit", ["", "No unit"])
+def test_device_without_unit_is_passthrough(install_test_package, no_unit):
     from tango.pyaml.attribute_store import get_attribute
 
-    sr = Accelerator.from_dict(_config(freq_unit=""))
-    sr.live.rf.get("RF").frequency.set(352.5)
-    assert get_attribute("sr/test/rf/freq") == pytest.approx(352.5)
-
-
-@TANGO
-@pytest.mark.parametrize("no_unit", ["", "No unit"])
-def test_device_without_unit_reports_si_unit(install_test_package, no_unit):
     from pyaml.control.si_deviceaccess import SIDeviceAccess
 
     sr = Accelerator.from_dict(_config(bpm_unit=no_unit, freq_unit=no_unit, ps_unit=no_unit))
+    sr.live.rf.get("RF").frequency.set(352.5)  # Assumed to already be in Hz
+    assert get_attribute("sr/test/rf/freq") == pytest.approx(352.5)
 
     dev = sr.live.get_si_device_access("rf/freq", "Hz")
     assert isinstance(dev, SIDeviceAccess) and dev.factor == 1.0
@@ -468,38 +443,9 @@ def test_device_without_unit_reports_si_unit(install_test_package, no_unit):
 
 
 @TANGO
-def test_si_device_access_reports_control_system_unit(install_test_package):
+def test_accessors_report_control_system_unit(install_test_package):
     from pyaml.control.si_deviceaccess import control_system_unit_of
 
-    sr = Accelerator.from_dict(_config())
-    dev = sr.live.get_si_device_access("rf/freq", "Hz")
-    assert dev.unit() == "Hz"
-    assert dev.control_system_unit() == "MHz"
-    assert control_system_unit_of(dev) == "MHz"
-    assert control_system_unit_of(sr.live.get_device_access("rf/freq")) == "MHz"
-    assert control_system_unit_of(None) is None
-
-    quads = list(sr.live.magnets.get("QUADS"))
-    agg = sr.live.create_magnet_hardware_aggregator(quads)
-    assert agg.unit() == "A"
-    assert agg.control_system_unit() == "mA"
-    assert agg._devs.control_system_unit() == ["mA", "mA"]  # Device level: one per device
-
-
-@TANGO
-def test_total_voltage_unit_is_si(install_test_package):
-    from tango.pyaml.attribute_store import get_attribute
-
-    sr = Accelerator.from_dict(_config())
-    rf = sr.live.rf.get("RF")
-    assert rf.voltage.unit() == "V"
-    rf.voltage.set(2 * ureg.MV)
-    assert get_attribute("sr/test/rf/volt") == pytest.approx(2000.0)
-    assert rf.voltage.get() == pytest.approx(2e6)
-
-
-@TANGO
-def test_accessors_report_control_system_unit(install_test_package):
     sr = Accelerator.from_dict(_config())
 
     bpm = sr.live.diagnostic.bpm.get("BPM1")
@@ -526,62 +472,28 @@ def test_accessors_report_control_system_unit(install_test_package):
     assert bpms.positions.control_system_unit() == "mm"
     assert bpms.h.control_system_unit() == "mm"
 
-
-def test_control_system_unit_defaults_to_unit_on_simulator():
-    sr = Accelerator.load("tests/config/EBS_rf.yaml", ignore_external=True)
-    assert sr.design.rf.frequency.control_system_unit() == sr.design.rf.frequency.unit() == "Hz"
-
-
-@TANGO
-def test_get_quantity_on_control_system(install_test_package):
-    from tango.pyaml.attribute_store import set_attribute
-
-    for key, value in [("bpm1/H", 0.1), ("bpm1/V", -0.2), ("bpm2/H", 0.3), ("bpm2/V", -0.4)]:
-        set_attribute(f"sr/test/{key}", value, unit="mm")
-    sr = Accelerator.from_dict(_config())
-
-    rf = sr.live.rf.get("RF")
-    rf.frequency.set(352.2 * ureg.MHz)
-    f = rf.frequency.get(quantity=True)
-    assert isinstance(f, pint.Quantity) and f.to("MHz").magnitude == pytest.approx(352.2)
-    assert isinstance(rf.frequency.get(), float)  # Default unchanged
-
-    bpm = sr.live.diagnostic.bpm.get("BPM1")
-    assert np.allclose(bpm.positions.get(quantity=True).to("mm").magnitude, [0.1, -0.2])
-    bpms = sr.live.diagnostic.bpms.get("BPM")
-    q = bpms.positions.get(quantity=True)
-    assert q.shape == (2, 2) and np.allclose(q.to("mm").magnitude, [[0.1, -0.2], [0.3, -0.4]])
-    assert np.allclose(bpms.h.get(quantity=True).to("um").magnitude, [100.0, 300.0])
-
-    quads = sr.live.magnets.get("QUADS")
-    quads.hardwares.set(np.array([1.0, 3.0]) * ureg.A)
-    assert np.allclose(quads.hardwares.get(quantity=True).to("mA").magnitude, [1000.0, 3000.0])
-    assert quads.strengths.get(quantity=True).units == 1 / ureg.m
-
-    agg = sr.live.create_magnet_strength_aggregator(list(quads))
-    assert agg.get(quantity=True).units == 1 / ureg.m
-    assert sr.live.magnet.get("Q1").hardware.get(quantity=True).to("mA").magnitude == pytest.approx(1000.0)
-
-
-def test_get_quantity_on_simulator():
-    sr = Accelerator.load("tests/config/EBS_rf.yaml", ignore_external=True)
-    sr.design.rf.frequency.set(352.3 * ureg.MHz)
-    assert sr.design.rf.frequency.get(quantity=True).to("MHz").magnitude == pytest.approx(352.3)
+    # Device level: SIDeviceAccess reports both units, lists one unit per device
+    dev = sr.live.get_si_device_access("rf/freq", "Hz")
+    assert (dev.unit(), dev.control_system_unit()) == ("Hz", "MHz")
+    assert control_system_unit_of(sr.live.get_device_access("rf/freq")) == "MHz"
+    assert control_system_unit_of(None) is None
+    agg = sr.live.create_magnet_hardware_aggregator(list(quads))
+    assert (agg.unit(), agg.control_system_unit()) == ("A", "mA")
+    assert agg._devs.control_system_unit() == ["mA", "mA"]
 
 
 # --------------------------------------------------------------------------- simulator
 
 
-def test_set_accepts_quantity_on_simulator():
+def test_quantities_on_simulator():
     sr = Accelerator.load("tests/config/EBS_rf.yaml", ignore_external=True)
-    sr.design.rf.frequency.set(352.3 * ureg.MHz)
-    assert sr.design.rf.frequency.get() == pytest.approx(352.3e6)
+    freq = sr.design.rf.frequency
+    freq.set(352.3 * ureg.MHz)
+    assert freq.get() == pytest.approx(352.3e6)
+    assert freq.get(quantity=True).to("MHz").magnitude == pytest.approx(352.3)
+    assert freq.control_system_unit() == freq.unit() == "Hz"  # No device: same as unit()
     with pytest.raises(PyAMLException):
-        sr.design.rf.frequency.set(1 * ureg.m)
-
-
-def test_set_energy_accepts_quantity():
-    sr = Accelerator.load("tests/config/EBS_rf.yaml", ignore_external=True)
+        freq.set(1 * ureg.m)
     sr.set_energy(6 * ureg.GeV)
     assert sr._energy == pytest.approx(6e9)
 

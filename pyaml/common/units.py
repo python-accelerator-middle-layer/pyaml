@@ -46,7 +46,7 @@ import pint
 
 from .exception import PyAMLConfigException, PyAMLException
 
-# Units used by PyAML (interally and used by get/set methods).
+# pyAML units, used internally and by get()/set().
 SI_POSITION = "m"
 SI_ANGLE = "rad"
 SI_VOLTAGE = "V"

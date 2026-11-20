@@ -51,7 +51,6 @@ from .si_deviceaccess import SIDeviceAccessList, wrap_si
 
 def _hardware_unit(model, index: int = 0) -> str:
     """Return the hardware unit of device ``index`` of a magnet model ('' if unknown)."""
-    # Identity models without power supply still report the unit of the device they read
     units = model.get_hardware_units()
     if not units:
         return ""
@@ -182,6 +181,11 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         units = si_units if isinstance(si_units, list) else [si_units] * len(refs)
         return [self.get_si_device_access(ref, unit) for ref, unit in zip(refs, units, strict=True)]
 
+    def _get_magnet_devices(self, model) -> list[DeviceAccess | None]:
+        """Resolve all devices of a magnet model, each read and written in its model hardware unit."""
+        names = model.get_device_names()
+        return self.get_si_devices_access(names, [_hardware_unit(model, i) for i in range(len(names))])
+
     def _get_si_aggregator(self) -> SIDeviceAccessList | None:
         """Return an empty backend aggregator wrapped for SI conversion, or ``None``."""
         agg = self.get_aggregator()
@@ -214,9 +218,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             return None
         magg = CSStrengthScalarAggregator(agg)
         for m in magnets:
-            names = m.model.get_device_names()
-            devs = self.get_si_devices_access(names, [_hardware_unit(m.model, i) for i in range(len(names))])
-            magg.add_magnet(m, devs)
+            magg.add_magnet(m, self._get_magnet_devices(m.model))
         return magg
 
     def create_magnet_hardware_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator | None:
@@ -283,8 +285,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         self.magnet.add(magnet.attach(self, strength, current))
 
     def _fill_combined_function_magnet(self, magnet: CombinedFunctionMagnet) -> None:
-        names = magnet.model.get_device_names()
-        devices = self.get_si_devices_access(names, [_hardware_unit(magnet.model, i) for i in range(len(names))])
+        devices = self._get_magnet_devices(magnet.model)
         currents = RWHardwareArray(magnet.model, devices)
         strengths = RWStrengthArray(magnet.model, devices)
         attached_magnets = magnet.attach(self, strengths, currents)
@@ -344,10 +345,13 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             raise PyAMLConfigException(
                 f"{monitor.get_name()}: tune devices in a frequency unit need rf_plant_name to be converted to tunes"
             )
-        tune = RBetatronTuneArray(devices, is_frequency, monitor.tune_above_half)
-        attached = monitor.attach(self, tune)
-        tune.set_revolution_frequency_source(lambda: self.rf.get(monitor.rf_plant_name).revolution_frequency())
-        self.add_betatron_tune_monitor(attached)
+        tune = RBetatronTuneArray(
+            devices,
+            is_frequency,
+            monitor.tune_above_half,
+            revolution_frequency=lambda: self.rf.get(monitor.rf_plant_name).revolution_frequency(),
+        )
+        self.add_betatron_tune_monitor(monitor.attach(self, tune))
 
     def _fill_tool(self, tool: TuningTool | MeasurementTool) -> None:
         self.add_tool(tool.attach(self))

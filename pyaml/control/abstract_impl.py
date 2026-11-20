@@ -1398,6 +1398,9 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
     above_half : list[bool] or None, optional
         ``[horizontal, vertical]`` flags, ``True`` when the fractional tune of
         a plane read in Hz is above the half-integer.
+    revolution_frequency : callable or None, optional
+        Returns the revolution frequency in Hz, called on every ``get()``
+        when a plane is read in Hz.
 
     Methods
     -------
@@ -1407,37 +1410,30 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
         Return the pyAML unit for this quantity, i.e. returned by get().
     control_system_unit()
         Return the control-system unit for this quantity.
-    set_revolution_frequency_source(source)
-        Set the callable returning the revolution frequency in Hz.
     """
 
-    def __init__(self, devs: list[DeviceAccess], is_frequency: list[bool] | None = None, above_half: list[bool] | None = None):
+    def __init__(
+        self,
+        devs: list[DeviceAccess],
+        is_frequency: list[bool] | None = None,
+        above_half: list[bool] | None = None,
+        revolution_frequency=None,
+    ):
         """
         Initialize the RBetatronTuneArray.
         """
         self.__devs = devs
         self.__is_frequency = np.array(is_frequency if is_frequency is not None else [False, False], dtype=bool)
         self.__above_half = np.array(above_half if above_half is not None else [False, False], dtype=bool)
-        self.__frev_source = None
-
-    def set_revolution_frequency_source(self, source):
-        """
-        Set the callable returning the revolution frequency in Hz.
-
-        Parameters
-        ----------
-        source : callable
-            Called on every ``get()`` when a plane is read in Hz.
-        """
-        self.__frev_source = source
+        self.__revolution_frequency = revolution_frequency
 
     def get(self) -> NDArray:
         """Return horizontal and vertical betatron tunes."""
         values = np.array([d.get() for d in self.__devs], dtype=float)
         if self.__is_frequency.any():
-            if self.__frev_source is None:
-                raise PyAMLException("Tune devices read in Hz need a revolution frequency source")
-            q = np.mod(values / self.__frev_source(), 1.0)  # Sidebands (n ± q) f_rev
+            if self.__revolution_frequency is None:
+                raise PyAMLException("Tune devices read in Hz need a revolution frequency")
+            q = np.mod(values / self.__revolution_frequency(), 1.0)  # Sidebands (n ± q) f_rev
             q = np.minimum(q, 1.0 - q)  # Fold into [0, 0.5]
             q = np.where(self.__above_half, 1.0 - q, q)
             values = np.where(self.__is_frequency, q, values)

@@ -172,11 +172,8 @@ def wrap_si(dev: DeviceAccess | None, si_unit: str | None) -> DeviceAccess | Non
     """
     if dev is None or isinstance(dev, SIDeviceAccess) or si_unit is None or not str(si_unit).strip():
         return dev
-    dev_unit = dev.unit()
-    if isinstance(dev_unit, (list, tuple)):  # Defensive: some backends may return a list
-        dev_unit = dev_unit[0] if dev_unit else None
     try:
-        k = conversion_factor(dev_unit, si_unit)
+        k = conversion_factor(dev.unit(), si_unit)
     except PyAMLConfigException as e:
         raise PyAMLConfigException(f"Device '{dev.name()}': {e}") from e
     return SIDeviceAccess(dev, si_unit, k)
