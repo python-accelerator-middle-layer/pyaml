@@ -34,9 +34,7 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
     The tune devices may report the fractional tune (unit ``"1"`` or no
     unit) or the betatron frequency, in any frequency unit (``Hz``,
     ``kHz``...). The fractional tune ``q`` is then computed from the
-    frequency ``f`` and the revolution frequency ``f_rev = f_RF / h``, read
-    on every call from the RF plant ``rf_plant_name`` and the accelerator
-    ``harmonic_number``, which are then both required.
+    frequency ``f`` and the revolution frequency of the RF plant.
 
     Parameters
     ----------
@@ -72,10 +70,6 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
 
     Methods
     -------
-    set_harmonic(h)
-        Set the harmonic number used for tune-frequency conversion.
-    revolution_frequency()
-        Return the revolution frequency from the RF frequency and harmonic number.
     attach(peer, betatron_tune)
         Attach the tune monitor to a peer with betatron tune data.
 
@@ -115,45 +109,13 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
             )
         self._tune_above_half = [bool(a) for a in tune_above_half]
         self.__tune = None
-        self._h = None
 
-    def set_harmonic(self, h: int):
-        """
-        Set the harmonic number used for tune-frequency conversion.
-
-        Parameters
-        ----------
-        h : int
-            Harmonic number relating the RF frequency to the measured
-            betatron tune frequency.
-        """
-        self._h = float(h)
-
-    def revolution_frequency(self) -> float:
-        """
-        Return the revolution frequency from the RF frequency and harmonic number.
-
-        The RF frequency is read from the RF plant ``rf_plant_name`` of the
-        mode the monitor is attached to.
-
-        Returns
-        -------
-        float
-            Revolution frequency ``f_RF / h`` in Hz.
-
-        Raises
-        ------
-        PyAMLException
-            If no RF plant or no harmonic number is defined.
-        """
+    def _rf_plant(self):
+        """Return the RF plant of the mode the monitor is attached to."""
         if self._rf_plant_name is None:
             raise PyAMLException(f"{self.get_name()}: rf_plant_name is required to compute the revolution frequency")
-        if self._h is None:
-            raise PyAMLException(
-                f"{self.get_name()}: the accelerator harmonic_number is required to compute the revolution frequency"
-            )
         self.check_peer()
-        return self.peer.rf.get(self._rf_plant_name).frequency.get() / self._h
+        return self.peer.rf.get(self._rf_plant_name)
 
     def _fill_device(self, holder: "ElementHolder") -> None:
         holder._fill_betatron_tune_monitor(self)
@@ -227,7 +189,7 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
 
             def get(self) -> NDArray:
                 """Return tune frequencies in hertz."""
-                return self.parent.tune.get() * self.parent.revolution_frequency()
+                return self.parent.tune.get() * self.parent._rf_plant().revolution_frequency()
 
             def unit(self) -> str:
                 """Return the pyAML unit for this quantity, i.e. returned by get()."""

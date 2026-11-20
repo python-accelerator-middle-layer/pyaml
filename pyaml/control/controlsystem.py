@@ -346,7 +346,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             )
         tune = RBetatronTuneArray(devices, is_frequency, monitor.tune_above_half)
         attached = monitor.attach(self, tune)
-        tune.set_revolution_frequency_source(attached.revolution_frequency)
+        tune.set_revolution_frequency_source(lambda: self.rf.get(monitor.rf_plant_name).revolution_frequency())
         self.add_betatron_tune_monitor(attached)
 
     def _fill_tool(self, tool: TuningTool | MeasurementTool) -> None:

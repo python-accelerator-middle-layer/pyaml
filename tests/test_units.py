@@ -418,6 +418,7 @@ def test_tune_device_in_frequency_unit(install_test_package):
     for f_rf in (352.2e6, 352.3e6):  # The revolution frequency follows the RF frequency
         rf.frequency.set(f_rf)
         f_rev = f_rf / 416
+        assert rf.revolution_frequency() == pytest.approx(f_rev)
         assert np.allclose(tune.tune.get(), [180e3 / f_rev, 1 - 300e3 / f_rev])  # Vertical tune above half
     # Any betatron sideband (n ± q) f_rev gives the same tune
     for f in (f_rev + 180e3, 2 * f_rev - 180e3):
