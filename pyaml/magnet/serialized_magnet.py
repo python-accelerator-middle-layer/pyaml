@@ -45,7 +45,7 @@ class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the shared strength and wait for convergence.
     unit()
-        Return the physical strength unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     get_model()
         Return the magnet conversion model.
     get_elements()
@@ -97,7 +97,7 @@ class ReadWriteSerializedStrengths(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the physical strength unit."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self.model.get_strength_units()[0]
 
     def get_model(self) -> MagnetModel:
@@ -134,7 +134,9 @@ class ReadWriteSerializedHardwares(ReadWriteSerializedStrengths):
     Methods
     -------
     unit()
-        Return the hardware-value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     set_magnet_rigidity(brho)
         Set the magnetic rigidity used for conversion.
     """
@@ -150,8 +152,12 @@ class ReadWriteSerializedHardwares(ReadWriteSerializedStrengths):
         super().__init__(elements, model)
 
     def unit(self) -> str:
-        """Return the hardware-value unit."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self.model.get_hardware_units()[0]
+
+    def control_system_unit(self) -> str | None:
+        """Return the control-system unit for this quantity."""
+        return self.elements[0].control_system_unit()
 
     def set_magnet_rigidity(self, brho: np.double):
         """

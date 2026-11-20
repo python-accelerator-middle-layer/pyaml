@@ -50,7 +50,7 @@ def test_cfm_ranges_from_yaml_are_propagated_and_enforced(magnet_file, install_t
         [-1.5, None],
     ]
 
-    devs = sr.live.get_devices_access(dev_names)
+    devs = [sr.live.get_device_access(name) for name in dev_names]
 
     got_ranges = [d.get_range() for d in devs]
     assert got_ranges == expected_ranges

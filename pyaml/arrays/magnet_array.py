@@ -10,6 +10,7 @@ import numpy as np
 
 from ..common.abstract import ReadWriteFloatArray
 from ..common.abstract_aggregator import ScalarAggregator
+from ..common.units import common_unit
 from ..magnet.magnet import Magnet
 from .element_array import ElementArray
 
@@ -34,7 +35,7 @@ class RWMagnetStrength(ReadWriteFloatArray):
     set_and_wait(value)
         Set every strength and wait for the readbacks to converge.
     unit()
-        Return the strength unit of every magnet in the array.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     set_aggregator(agg)
         Install an aggregator so the array is read and written in a single call.
     """
@@ -99,9 +100,9 @@ class RWMagnetStrength(ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the values
-    def unit(self) -> list[str]:
-        """Return the strength unit of every magnet in the array."""
-        return [m.strength.unit() for m in self.__magnets]
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit([m.strength.unit() for m in self.__magnets])
 
     # Set the aggregator (Control system only)
     def set_aggregator(self, agg: ScalarAggregator):
@@ -137,7 +138,9 @@ class RWMagnetHardware(ReadWriteFloatArray):
     set_and_wait(value)
         Set every hardware value and wait for the readbacks to converge.
     unit()
-        Return the hardware unit of every magnet in the array.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     set_aggregator(agg)
         Install an aggregator so the array is read and written in a single call.
     """
@@ -194,9 +197,13 @@ class RWMagnetHardware(ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the values
-    def unit(self) -> list[str]:
-        """Return the hardware unit of every magnet in the array."""
-        return [m.hardware.unit() for m in self.__magnets]
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit([m.hardware.unit() for m in self.__magnets])
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        return common_unit([m.hardware.control_system_unit() for m in self.__magnets])
 
     # Set the aggregator
     def set_aggregator(self, agg: ScalarAggregator):

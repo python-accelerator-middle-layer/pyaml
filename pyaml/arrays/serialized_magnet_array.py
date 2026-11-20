@@ -8,6 +8,7 @@ import numpy as np
 
 from ..common.abstract import ReadWriteFloatArray
 from ..common.exception import PyAMLException
+from ..common.units import common_unit
 from ..magnet.serialized_magnet import SerializedMagnets
 from .element_array import ElementArray
 
@@ -34,7 +35,7 @@ class RWMagnetStrengths(ReadWriteFloatArray):
     set_and_wait(value)
         Set every shared strength and wait for the readbacks to converge.
     unit()
-        Return the strength unit of every serialized group.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, name: str, magnets: list[SerializedMagnets]):
@@ -82,12 +83,9 @@ class RWMagnetStrengths(ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the values
-    def unit(self) -> list[str]:
-        """Return the strength unit of every serialized group."""
-        r = []
-        for m in self.__magnets:
-            r.extend(m.strength.unit())
-        return r
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit([m.strength.unit() for m in self.__magnets])
 
 
 class RWMagnetHardwares(ReadWriteFloatArray):
@@ -110,7 +108,9 @@ class RWMagnetHardwares(ReadWriteFloatArray):
     set_and_wait(value)
         Set every shared hardware value and wait for the readbacks to converge.
     unit()
-        Return the hardware unit of every serialized group.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, name: str, magnets: list[SerializedMagnets]):
@@ -158,12 +158,13 @@ class RWMagnetHardwares(ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the values
-    def unit(self) -> list[str]:
-        """Return the hardware unit of every serialized group."""
-        r = []
-        for m in self.__magnets:
-            r.extend(m.hardware.unit())
-        return r
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit([m.hardware.unit() for m in self.__magnets])
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        return common_unit([m.hardware.control_system_unit() for m in self.__magnets])
 
 
 class SerializedMagnetsArray(ElementArray):

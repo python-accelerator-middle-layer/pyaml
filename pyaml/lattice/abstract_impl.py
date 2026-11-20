@@ -13,6 +13,7 @@ from scipy.constants import speed_of_light
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.exception import PyAMLException
+from ..common.units import SI_ANGLE, SI_FREQUENCY, SI_POSITION, SI_TUNE, SI_VOLTAGE, common_unit
 from ..magnet.model import MagnetModel
 from .polynom_info import PolynomInfo
 
@@ -64,7 +65,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     get_model()
         Return the associated magnet model.
     """
@@ -127,7 +128,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the value unit."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self._model.get_hardware_units()[0]
 
     def get_model(self) -> MagnetModel:
@@ -166,7 +167,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     get_model()
         Return the associated magnet model.
     """
@@ -263,7 +264,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the value unit."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self._model.get_strength_units()[0]
 
     # ------------------------------------------------------------------------------
@@ -299,7 +300,7 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     set_magnet_rigidity(brho)
         Set the magnetic rigidity used for conversion.
     """
@@ -358,7 +359,7 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the value unit."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self.__elements[self.__element_index].unit()
 
     def set_magnet_rigidity(self, brho: np.double):
@@ -399,7 +400,7 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     set_magnet_rigidity(brho)
         Set the magnetic rigidity used for conversion.
     """
@@ -485,7 +486,7 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the value unit."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self.__element.unit()
 
     def set_magnet_rigidity(self, brho: np.double):
@@ -524,7 +525,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, elements: list[at.Element], poly: list[PolynomInfo], model: MagnetModel):
@@ -584,9 +585,9 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
-    def unit(self) -> list[str]:
-        """Return the value unit."""
-        return self.__model.get_hardware_units()
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit(self.__model.get_hardware_units())
 
 
 # ------------------------------------------------------------------------------
@@ -615,7 +616,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, elements: list[at.Element], poly: list[PolynomInfo], model: MagnetModel):
@@ -675,9 +676,9 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
-    def unit(self) -> list[str]:
-        """Return the value unit."""
-        return self.__model.get_strength_units()
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit(self.__model.get_strength_units())
 
 
 # ------------------------------------------------------------------------------
@@ -705,7 +706,7 @@ class BPMScalarAggregator(ScalarAggregator):
     readback()
         Return the current readback value.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, ring: at.Lattice, twiss_in: dict):
@@ -760,8 +761,8 @@ class BPMScalarAggregator(ScalarAggregator):
         return self.get()
 
     def unit(self) -> str:
-        """Return the value unit."""
-        return "m"
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_POSITION
 
     def _transform(self) -> np.array:
         """Transform the configured value for the lattice interface."""
@@ -860,7 +861,7 @@ class RBpmArray(abstract.ReadFloatArray):
     get()
         Return the current value.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get().
     """
 
     def __init__(self, element: at.Element, lattice: at.Lattice, twiss_in: dict):
@@ -886,8 +887,8 @@ class RBpmArray(abstract.ReadFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the value unit."""
-        return "m"
+        """Return the pyAML unit for this quantity, i.e. returned by get()."""
+        return SI_POSITION
 
 
 # ------------------------------------------------------------------------------
@@ -912,7 +913,7 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, element: at.Element):
@@ -958,8 +959,8 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the value unit."""
-        return "m"  # Assuming all offsets are in m
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_POSITION
 
 
 # ------------------------------------------------------------------------------
@@ -986,7 +987,7 @@ class RWBpmTiltScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, element: at.Element):
@@ -1035,8 +1036,8 @@ class RWBpmTiltScalar(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the value unit."""
-        return "rad"  # Assuming BPM tilts are in rad
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_ANGLE
 
 
 # ------------------------------------------------------------------------------
@@ -1061,7 +1062,7 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, elements: list[at.Element]):
@@ -1107,8 +1108,8 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the value unit."""
-        return "V"
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_VOLTAGE
 
 
 # ------------------------------------------------------------------------------
@@ -1136,7 +1137,7 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, elements: list[at.Element]):
@@ -1182,8 +1183,8 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the value unit."""
-        return "rad"
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_ANGLE
 
 
 # ------------------------------------------------------------------------------
@@ -1209,7 +1210,7 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, elements: list[at.Element], harmonics: list[float]):
@@ -1253,8 +1254,8 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the value unit."""
-        return "Hz"
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_FREQUENCY
 
 
 # ------------------------------------------------------------------------------
@@ -1281,7 +1282,7 @@ class RWRFATFrequencyScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, ring: at.Lattice):
@@ -1322,8 +1323,8 @@ class RWRFATFrequencyScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the value unit."""
-        return "Hz"
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_FREQUENCY
 
 
 # ------------------------------------------------------------------------------
@@ -1350,7 +1351,7 @@ class RWRFATotalVoltageScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, ring: at.Lattice):
@@ -1391,8 +1392,8 @@ class RWRFATotalVoltageScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the value unit."""
-        return "V"
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_VOLTAGE
 
 
 # ------------------------------------------------------------------------------
@@ -1412,7 +1413,7 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
     get()
         Return the current value.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get().
     """
 
     def __init__(self, ring: at.Lattice):
@@ -1426,8 +1427,8 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
         return self.__ring.get_tune()[:2]
 
     def unit(self) -> str:
-        """Return the value unit."""
-        return "1"
+        """Return the pyAML unit for this quantity, i.e. returned by get()."""
+        return SI_TUNE
 
 
 # ------------------------------------------------------------------------------

@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING, Self
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import Element, __pyaml_repr__
+from ..common.units import SI_VOLTAGE
 from ..validation import DynamicValidation, register_schema
 from .rf_transmitter import RFTransmitter
 
@@ -52,6 +53,10 @@ class RFPlant(Element, DynamicValidation):
 
     Methods
     -------
+    set_harmonic(h)
+        Set the harmonic number used to compute the revolution frequency.
+    revolution_frequency()
+        Return the revolution frequency ``f_RF / h``.
     attach(peer, frequency, voltage)
         Return a copy attached to RF read/write handles.
 
@@ -86,6 +91,40 @@ class RFPlant(Element, DynamicValidation):
         self.transmitters = transmitters
         self.__frequency = None
         self.__voltage = None
+        self._h = None
+
+    def set_harmonic(self, h: int):
+        """
+        Set the harmonic number used to compute the revolution frequency.
+
+        Parameters
+        ----------
+        h : int
+            Number of RF buckets per revolution.
+        """
+        self._h = float(h)
+
+    def revolution_frequency(self) -> float:
+        """
+        Return the revolution frequency ``f_RF / h``.
+
+        The RF frequency is read on every call.
+
+        Returns
+        -------
+        float
+            Revolution frequency in Hz.
+
+        Raises
+        ------
+        PyAMLException
+            If no harmonic number is defined or the plant has no master clock.
+        """
+        if self._h is None:
+            raise PyAMLException(
+                f"{self.get_name()}: the accelerator harmonic_number is required to compute the revolution frequency"
+            )
+        return self.frequency.get() / self._h
 
     @property
     def frequency(self) -> abstract.ReadWriteFloatScalar:
@@ -153,7 +192,7 @@ class RWTotalVoltage(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the total voltage and wait for readback convergence.
     unit()
-        Return the voltage unit reported by the first transmitter.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, transmitters: list[RFTransmitter]):
@@ -204,8 +243,8 @@ class RWTotalVoltage(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the voltage unit reported by the first transmitter."""
-        return self.__trans[0].phase_device_access.unit()
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_VOLTAGE
 
     def __repr__(self):
         """

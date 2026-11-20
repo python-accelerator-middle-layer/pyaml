@@ -38,7 +38,7 @@ class DeviceAccessList(metaclass=ABCMeta):
     readback()
         Return the latest measured values in collection order.
     unit()
-        Return the unit or units associated with the devices.
+        Return the unit of each device.
     get_range()
         Get the valid range for the device variables.
     check_device_availability()
@@ -122,8 +122,8 @@ class DeviceAccessList(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def unit(self) -> str:
-        """Return the unit or units associated with the devices."""
+    def unit(self) -> list[str]:
+        """Return the unit of each device."""
         pass
 
     @abstractmethod
