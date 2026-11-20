@@ -15,9 +15,10 @@ from numpy.typing import NDArray
 from .. import PyAMLException
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
-from ..common.units import SI_ANGLE, SI_FREQUENCY, SI_POSITION, SI_TUNE, SI_VOLTAGE
+from ..common.units import SI_ANGLE, SI_FREQUENCY, SI_POSITION, SI_TUNE, SI_VOLTAGE, common_unit
 from ..control.deviceaccess import DeviceAccess
 from ..control.deviceaccesslist import DeviceAccessList
+from ..control.si_deviceaccess import control_system_unit_of
 from ..magnet.magnet import Magnet
 from ..magnet.model import MagnetModel
 from ..rf.rf_plant import RFPlant
@@ -222,7 +223,9 @@ class CSScalarAggregator(ScalarAggregator):
     readback()
         Read the last available values from all managed devices.
     unit()
-        Return the unit reported by the managed devices.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     nb_device()
         Return the number of managed devices.
     """
@@ -283,9 +286,13 @@ class CSScalarAggregator(ScalarAggregator):
         """Read the last available values from all managed devices."""
         return self._devs.readback()
 
-    def unit(self) -> str:
-        """Return the unit reported by the managed devices."""
-        return self._devs.unit()
+    def unit(self) -> str | list[str] | None:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit(self._devs.unit())
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        return common_unit(self._devs.control_system_unit())
 
     def nb_device(self) -> int:
         """Return the number of managed devices."""
@@ -322,6 +329,8 @@ class CSSparseScalarAggregator(CSScalarAggregator):
         Read all slot readbacks, NaN for slots without device.
     nb_device()
         Return the number of slots.
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, devs: DeviceAccessList):
@@ -374,6 +383,13 @@ class CSSparseScalarAggregator(CSScalarAggregator):
         """Return the number of slots."""
         return self._nb_slots
 
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        out: list[str | None] = [None] * self._nb_slots
+        for slot, u in zip(self._slots, self._devs.control_system_unit(), strict=True):
+            out[slot] = u
+        return common_unit(out)
+
 
 # ------------------------------------------------------------------------------
 
@@ -404,7 +420,9 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
     readback()
         Read back magnet strengths from measured hardware values.
     unit()
-        Return the strength unit of each registered magnet.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, peer: CSScalarAggregator):
@@ -522,9 +540,17 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
             hardwareIndex += nbDev
         return allStrength
 
-    def unit(self) -> list[str]:
-        """Return the strength unit of each registered magnet."""
-        return list(self.__units)
+    def unit(self) -> str | list[str] | None:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit(self.__units)
+
+    def control_system_unit(self) -> str | list[str] | None:
+        """
+        Return the control-system unit for this quantity.
+
+        Same as unit(): no control-system device holds these values.
+        """
+        return self.unit()
 
 
 # ------------------------------------------------------------------------------
@@ -553,7 +579,9 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the hardware value and wait for readback confirmation.
     unit()
-        Return the hardware unit defined by the magnet model.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     set_magnet_rigidity(brho)
         Set the beam rigidity used by the magnet model.
     """
@@ -605,8 +633,12 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the hardware unit defined by the magnet model."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self.__model.get_hardware_units()[0]
+
+    def control_system_unit(self) -> str | None:
+        """Return the control-system unit for this quantity."""
+        return control_system_unit_of(self.__dev)
 
     def set_magnet_rigidity(self, brho: np.double):
         """
@@ -643,7 +675,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set a magnet strength and wait for readback confirmation.
     unit()
-        Return the strength unit defined by the magnet model.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     set_magnet_rigidity(brho)
         Set the beam rigidity used by the magnet model.
     """
@@ -702,7 +734,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the strength unit defined by the magnet model."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self.__model.get_strength_units()[0]
 
     def set_magnet_rigidity(self, brho: np.double):
@@ -776,7 +808,9 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
     set_and_wait(value)
         Set hardware values and wait for readback confirmation.
     unit()
-        Return the hardware units defined by the magnet model.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, model: MagnetModel, devs: list[DeviceAccess]):
@@ -830,9 +864,13 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
-    def unit(self) -> list[str]:
-        """Return the hardware units defined by the magnet model."""
-        return self.__model.get_hardware_units()
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit(self.__model.get_hardware_units())
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        return common_unit([control_system_unit_of(d) for d in self.__devs])
 
 
 # ------------------------------------------------------------------------------
@@ -858,7 +896,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
     set_and_wait(value)
         Set magnet strengths and wait for readback confirmation.
     unit()
-        Return the strength units defined by the magnet model.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, model: MagnetModel, devs: list[DeviceAccess]):
@@ -912,9 +950,9 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
-    def unit(self) -> list[str]:
-        """Return the strength units defined by the magnet model."""
-        return self.__model.get_strength_units()
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit(self.__model.get_strength_units())
 
 
 # ------------------------------------------------------------------------------
@@ -938,7 +976,9 @@ class RBpmArray(abstract.ReadFloatArray):
     get()
         Return horizontal and vertical BPM positions (NaN for a missing plane).
     unit()
-        Return the SI unit of BPM positions.
+        Return the pyAML unit for this quantity, i.e. returned by get().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, hDev: DeviceAccess | None, vDev: DeviceAccess | None):
@@ -953,8 +993,12 @@ class RBpmArray(abstract.ReadFloatArray):
         return np.array([d.get() if d is not None else np.nan for d in (self._hDev, self._vDev)], dtype=float)
 
     def unit(self) -> str:
-        """Return the SI unit of BPM positions."""
+        """Return the pyAML unit for this quantity, i.e. returned by get()."""
         return SI_POSITION
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        return common_unit([control_system_unit_of(d) for d in (self._hDev, self._vDev)])
 
 
 # ------------------------------------------------------------------------------
@@ -978,7 +1022,9 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
     set_and_wait(value)
         Set the BPM tilt and wait for readback confirmation.
     unit()
-        Return the SI unit of the BPM tilt.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, dev: DeviceAccess):
@@ -1020,8 +1066,12 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the SI unit of the BPM tilt."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return SI_ANGLE
+
+    def control_system_unit(self) -> str | None:
+        """Return the control-system unit for this quantity."""
+        return control_system_unit_of(self._dev)
 
 
 # ------------------------------------------------------------------------------
@@ -1047,7 +1097,9 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     set_and_wait(value)
         Set BPM offsets and wait for readback confirmation.
     unit()
-        Return the SI unit of BPM offsets.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, hDev: DeviceAccess, vDev: DeviceAccess):
@@ -1090,8 +1142,12 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the SI unit of BPM offsets."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return SI_POSITION
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        return common_unit([control_system_unit_of(d) for d in (self._hDev, self._vDev)])
 
 
 # ------------------------------------------------------------------------------
@@ -1118,7 +1174,9 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the cavity voltage and wait for readback confirmation.
     unit()
-        Return the SI unit of the cavity voltage.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, transmitter: RFTransmitter, dev: DeviceAccess):
@@ -1160,8 +1218,12 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the SI unit of the cavity voltage."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return SI_VOLTAGE
+
+    def control_system_unit(self) -> str | None:
+        """Return the control-system unit for this quantity."""
+        return control_system_unit_of(self.__dev)
 
 
 # ------------------------------------------------------------------------------
@@ -1188,7 +1250,9 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the cavity phase and wait for readback confirmation.
     unit()
-        Return the SI unit of the cavity phase.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, transmitter: RFTransmitter, dev: DeviceAccess):
@@ -1230,8 +1294,12 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the SI unit of the cavity phase."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return SI_ANGLE
+
+    def control_system_unit(self) -> str | None:
+        """Return the control-system unit for this quantity."""
+        return control_system_unit_of(self.__dev)
 
 
 # ------------------------------------------------------------------------------
@@ -1257,7 +1325,9 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the RF frequency and wait for readback confirmation.
     unit()
-        Return the SI unit of the RF frequency.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, rf: RFPlant, dev: DeviceAccess):
@@ -1300,8 +1370,12 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the SI unit of the RF frequency."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return SI_FREQUENCY
+
+    def control_system_unit(self) -> str | None:
+        """Return the control-system unit for this quantity."""
+        return control_system_unit_of(self.__dev)
 
 
 # ------------------------------------------------------------------------------
@@ -1323,7 +1397,9 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
     get()
         Return horizontal and vertical betatron tunes.
     unit()
-        Return the betatron-tune unit (dimensionless).
+        Return the pyAML unit for this quantity, i.e. returned by get().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, tune_monitor, devs: list[DeviceAccess]):
@@ -1344,8 +1420,12 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
         )
 
     def unit(self) -> str:
-        """Return the betatron-tune unit (dimensionless)."""
+        """Return the pyAML unit for this quantity, i.e. returned by get()."""
         return SI_TUNE
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        return common_unit([control_system_unit_of(d) for d in self.__devs])
 
 
 # ------------------------------------------------------------------------------

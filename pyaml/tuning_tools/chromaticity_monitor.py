@@ -50,7 +50,7 @@ class RChromaDispArray(ReadFloatArray):
     get()
         Return the latest chromaticity or dispersion values.
     unit()
-        Return the unit of the reported values.
+        Return the pyAML unit for this quantity, i.e. returned by get().
     """
 
     def __init__(self, parent: "ChromaticityMonitor", name: str, unit: str):
@@ -70,7 +70,7 @@ class RChromaDispArray(ReadFloatArray):
             return None
 
     def unit(self) -> str:
-        """Return the unit of the reported values."""
+        """Return the pyAML unit for this quantity, i.e. returned by get()."""
         return self._unit
 
 

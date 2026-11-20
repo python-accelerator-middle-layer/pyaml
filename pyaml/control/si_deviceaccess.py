@@ -25,9 +25,9 @@ from .deviceaccesslist import DeviceAccessList
 from .readback_value import Value
 
 
-def _scale(value: Any, k: float | np.ndarray) -> Any:
+def _scale(value: Any, k: float | np.ndarray, inverse: bool = False) -> Any:
     """
-    Multiply a raw device value by ``k`` (one factor, or one per element).
+    Multiply a raw device value by ``k`` (one factor, or one per element), or divide it when ``inverse``.
 
     Handles scalars, numeric arrays, :class:`Value` objects (metadata kept) and
     lists/object arrays of them, as returned by ``readback()``.
@@ -35,12 +35,12 @@ def _scale(value: Any, k: float | np.ndarray) -> Any:
     if value is None:
         return None
     if isinstance(value, Value):
-        return Value(_scale(value.value, k), value.quality, value.timestamp)
+        return Value(_scale(value.value, k, inverse), value.quality, value.timestamp)
     if isinstance(value, (list, tuple)) or (isinstance(value, np.ndarray) and value.dtype == object):
         ks = np.broadcast_to(k, (len(value),))
-        scaled = [_scale(v, kk) for v, kk in zip(value, ks, strict=True)]
+        scaled = [_scale(v, kk, inverse) for v, kk in zip(value, ks, strict=True)]
         return np.array(scaled, dtype=object) if isinstance(value, np.ndarray) else scaled
-    return value * k
+    return value / k if inverse else value * k
 
 
 def _scale_range(rng: list | None, k: float | np.ndarray) -> list | None:
@@ -84,14 +84,16 @@ class SIDeviceAccess(DeviceAccess):
     readback()
         Return the latest measured value in SI.
     unit()
-        Return the SI unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit of the wrapped backend device.
     get_range()
         Return the device range in SI.
     check_device_availability()
         Check if the device is available and accessible.
     """
 
-    def __init__(self, raw: DeviceAccess, si_unit: str, factor: float):
+    def __init__(self, raw: DeviceAccess, si_unit: str, factor: float = 1.0):
         self.raw = raw
         self.factor = factor
         self._si_unit = si_unit
@@ -106,27 +108,34 @@ class SIDeviceAccess(DeviceAccess):
 
     def set(self, value):
         """Convert a SI setpoint to the device unit and write it."""
-        self.raw.set(_scale(value, 1.0 / self.factor))
+        self.raw.set(value if self.factor == 1.0 else _scale(value, self.factor, inverse=True))
 
     def set_and_wait(self, value):
         """Convert a SI setpoint to the device unit, write it and wait."""
-        self.raw.set_and_wait(_scale(value, 1.0 / self.factor))
+        self.raw.set_and_wait(value if self.factor == 1.0 else _scale(value, self.factor, inverse=True))
 
     def get(self):
         """Return the current setpoint in SI."""
-        return _scale(self.raw.get(), self.factor)
+        v = self.raw.get()
+        return v if self.factor == 1.0 else _scale(v, self.factor)
 
     def readback(self):
         """Return the latest measured value in SI."""
-        return _scale(self.raw.readback(), self.factor)
+        v = self.raw.readback()
+        return v if self.factor == 1.0 else _scale(v, self.factor)
 
     def unit(self) -> str:
-        """Return the SI unit."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self._si_unit
+
+    def control_system_unit(self) -> str | None:
+        """Return the control-system unit of the wrapped backend device."""
+        return self.raw.unit()
 
     def get_range(self) -> list[float]:
         """Return the device range in SI."""
-        return _scale_range(self.raw.get_range(), self.factor)
+        rng = self.raw.get_range()
+        return rng if self.factor == 1.0 else _scale_range(rng, self.factor)
 
     def check_device_availability(self) -> bool:
         """Check if the device is available and accessible."""
@@ -153,15 +162,15 @@ def wrap_si(dev: DeviceAccess | None, si_unit: str | None) -> DeviceAccess | Non
     Returns
     -------
     DeviceAccess or None
-        ``dev`` itself when no conversion is needed (factor 1, empty unit),
-        otherwise a :class:`SIDeviceAccess`.
+        A :class:`SIDeviceAccess` (with factor 1 when no conversion is
+        needed), or ``dev`` itself when ``si_unit`` is empty or ``None``.
 
     Raises
     ------
     PyAMLConfigException
         If the device unit cannot be converted to ``si_unit``.
     """
-    if dev is None or isinstance(dev, SIDeviceAccess):
+    if dev is None or isinstance(dev, SIDeviceAccess) or si_unit is None or not str(si_unit).strip():
         return dev
     dev_unit = dev.unit()
     if isinstance(dev_unit, (list, tuple)):  # Defensive: some backends may return a list
@@ -170,8 +179,6 @@ def wrap_si(dev: DeviceAccess | None, si_unit: str | None) -> DeviceAccess | Non
         k = conversion_factor(dev_unit, si_unit)
     except PyAMLConfigException as e:
         raise PyAMLConfigException(f"Device '{dev.name()}': {e}") from e
-    if k == 1.0:
-        return dev
     return SIDeviceAccess(dev, si_unit, k)
 
 
@@ -211,7 +218,9 @@ class SIDeviceAccessList(DeviceAccessList):
     readback()
         Return all readbacks in SI.
     unit()
-        Return the SI unit of each device.
+        Return the pyAML unit for each device, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit of each wrapped backend device.
     get_range()
         Return the ranges in SI.
     check_device_availability()
@@ -261,8 +270,12 @@ class SIDeviceAccessList(DeviceAccessList):
         return v if self._passthrough or v is None or len(v) == 0 else _scale(v, self.factors)
 
     def unit(self) -> list[str]:
-        """Return the SI unit of each device."""
+        """Return the pyAML unit for each device, i.e. returned by get() and expected by set()."""
         return [d.unit() for d in self._items]
+
+    def control_system_unit(self) -> list[str | None]:
+        """Return the control-system unit of each wrapped backend device."""
+        return [control_system_unit_of(d) for d in self._items]
 
     def get_range(self) -> list[float]:
         """Return the ranges in SI."""
@@ -272,3 +285,22 @@ class SIDeviceAccessList(DeviceAccessList):
     def check_device_availability(self) -> bool:
         """Check if all devices are available."""
         return self.raw.check_device_availability()
+
+
+def control_system_unit_of(dev: DeviceAccess | None) -> str | None:
+    """
+    Return the control-system unit of ``dev``.
+
+    Parameters
+    ----------
+    dev : DeviceAccess or None
+        Backend device, possibly wrapped in a :class:`SIDeviceAccess`.
+
+    Returns
+    -------
+    str or None
+        Unit reported by the backend device, ``None`` for a missing device.
+    """
+    if dev is None:
+        return None
+    return dev.control_system_unit() if isinstance(dev, SIDeviceAccess) else dev.unit()

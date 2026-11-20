@@ -6,7 +6,15 @@ import pytest
 
 from pyaml.accelerator import Accelerator
 from pyaml.common.exception import PyAMLConfigException, PyAMLException
-from pyaml.common.units import conversion_factor, get_registry, normalize_unit, to_magnitude
+from pyaml.common.units import (
+    common_unit,
+    conversion_factor,
+    format_unit,
+    get_registry,
+    normalize_unit,
+    to_magnitude,
+    to_quantity,
+)
 
 TANGO = pytest.mark.parametrize(
     "install_test_package",
@@ -38,12 +46,14 @@ def test_conversion_factor(src, dst, k):
     assert conversion_factor(src, dst) == pytest.approx(k)
 
 
-@pytest.mark.parametrize("src,dst", [("", "m"), (None, "m"), ("mm", ""), ("A", "A"), ("whatever", "whatever")])
+@pytest.mark.parametrize("src,dst", [("", "m"), (None, "m"), ("", "1"), ("A", "A"), ("whatever", "whatever")])
 def test_conversion_factor_passthrough(src, dst):
     assert conversion_factor(src, dst) == 1.0
 
 
-@pytest.mark.parametrize("src,dst", [("A", "m"), ("foo", "m"), ("degC", "K"), ("%", "rad"), ("count", "rad")])
+@pytest.mark.parametrize(
+    "src,dst", [("A", "m"), ("foo", "m"), ("degC", "K"), ("%", "rad"), ("count", "rad"), ("mm", ""), ("Hz", "1")]
+)
 def test_conversion_factor_errors(src, dst):
     with pytest.raises(PyAMLConfigException):
         conversion_factor(src, dst)
@@ -53,6 +63,12 @@ def test_normalize_unit():
     assert normalize_unit(" m-2 ") == "m^-2"
     assert normalize_unit("T.m") == "T*m"
     assert normalize_unit("mm") == "mm"
+    # Canonical form reported by unit(): equivalent spellings compare equal
+    assert format_unit("m-1") == format_unit("1/m") == format_unit("m^-1") == "1/m"
+    assert format_unit("T.m") == "m*T"
+    assert format_unit("") == format_unit("No unit") == ""
+    assert format_unit("dimensionless") == "1"
+    assert format_unit("whatever") == "whatever"
 
 
 def test_to_magnitude():
@@ -94,6 +110,50 @@ def test_read_write_interfaces_accept_quantity():
     assert t.value == pytest.approx(1e-3)
 
 
+def test_to_quantity():
+    assert to_quantity(None, "m") is None
+    q = to_quantity(1.5, "mm")
+    assert q.units == ureg.mm and q.magnitude == 1.5
+    assert np.allclose(to_quantity(np.array([1.0, 2.0]), "m").to("mm").magnitude, [1e3, 2e3])
+    assert to_quantity(0.2, "").dimensionless
+    assert to_quantity(0.2, "1").dimensionless
+    assert to_quantity([1.0, 2.0], "m-1").units == 1 / ureg.m  # Accelerator notation
+    # Same unit for all values: one array quantity
+    q = to_quantity([1.0, 2.0], ["A", "A"])
+    assert q.units == ureg.A and np.allclose(q.magnitude, [1.0, 2.0])
+    # Mixed units: one quantity per value
+    q = to_quantity([0.5, 0.1], ["1/m", "1/m**2"])
+    assert isinstance(q, list) and q[0].units == 1 / ureg.m and q[1].units == 1 / ureg.m**2
+    with pytest.raises(PyAMLException):
+        to_quantity([0.5, 0.1, 0.2], ["1/m", "1/m**2"])
+    with pytest.raises(PyAMLException):
+        to_quantity(1.0, "foo")
+
+
+def test_common_unit():
+    assert common_unit(["A", "A"]) == "A"
+    assert common_unit([["mm", "mm"], ["mm", None]]) == "mm"  # Nested (shaped like get()), missing device ignored
+    assert common_unit(["1/m", "1/m**2"]) == ["1/m", "1/m**2"]  # Units that really differ are kept
+    assert common_unit([None, None]) is None
+
+
+def test_get_returns_quantity_on_any_implementation():
+    from pyaml.common.abstract import ReadFloatArray
+
+    class Positions(ReadFloatArray):  # Minimal implementation, like an external package
+        def get(self):
+            return np.array([1e-3, -2e-3])
+
+        def unit(self):
+            return "m"
+
+    p = Positions()
+    assert isinstance(p.get(), np.ndarray)  # Default unchanged
+    q = p.get(quantity=True)
+    assert np.allclose(q.to("mm").magnitude, [1.0, -2.0])
+    assert p.get(quantity=False) is not None and not isinstance(p.get(quantity=False), pint.Quantity)
+
+
 def test_hardware_unit_of_model():
     from pyaml.control.controlsystem import _hardware_unit
 
@@ -125,14 +185,14 @@ def _entry(key: str, unit: str, range=None, read_only=False) -> dict:
     return {"type": "tango.pyaml.static_catalog_entry", "key": key, "device": device}
 
 
-def _quad(name: str, ps: str) -> dict:
+def _quad(name: str, ps: str, unit: str = "1/m") -> dict:
     return {
         "type": "pyaml.magnet.quadrupole",
         "name": name,
         "model": {
             "type": "pyaml.magnet.linear_model",
             "calibration_factor": 0.01,
-            "unit": "1/m",
+            "unit": unit,
             "hardware_unit": "A",
             "powerconverter": ps,
         },
@@ -187,7 +247,7 @@ def _config(bpm_unit="mm", freq_unit="MHz", volt_unit="kV", phase_unit="deg", ps
                 ],
             },
             _quad("Q1", "ps/q1"),
-            _quad("Q2", "ps/q2"),
+            _quad("Q2", "ps/q2", unit="m-1"),  # Same unit as Q1, spelled differently
         ],
     }
 
@@ -222,9 +282,9 @@ def test_rf_is_converted_to_si(install_test_package):
     rf = sr.live.rf.get("RF")
     tra = sr.live.rf.transmitter.get("RFTRA")
 
-    rf.frequency.set(352.2e6)
-    assert get_attribute("sr/test/rf/freq") == pytest.approx(352.2)
-    assert rf.frequency.get() == pytest.approx(352.2e6)
+    rf.frequency.set(352.372e6)
+    assert get_attribute("sr/test/rf/freq") == 352.372  # Divided by the factor: exact, no rounding error
+    assert rf.frequency.get() == pytest.approx(352.372e6)
     assert rf.frequency.unit() == "Hz"
 
     tra.voltage.set(1.5e6)
@@ -310,7 +370,7 @@ def test_strength_aggregator_unit_and_quantity(install_test_package):
 
     sr = Accelerator.from_dict(_config())
     agg = sr.live.create_magnet_strength_aggregator(list(sr.live.magnets.get("QUADS")))
-    assert agg.unit() == ["1/m", "1/m"]
+    assert agg.unit() == "1/m"
     agg.set(np.array([0.01, 0.02]) / ureg.m)
     q1, q2 = sr.live.magnet.get("Q1"), sr.live.magnet.get("Q2")
     assert [q1.strength.get(), q2.strength.get()] == pytest.approx([0.01, 0.02])
@@ -347,6 +407,127 @@ def test_device_without_unit_is_passthrough(install_test_package):
     assert get_attribute("sr/test/rf/freq") == pytest.approx(352.5)
 
 
+@TANGO
+@pytest.mark.parametrize("no_unit", ["", "No unit"])
+def test_device_without_unit_reports_si_unit(install_test_package, no_unit):
+    from pyaml.control.si_deviceaccess import SIDeviceAccess
+
+    sr = Accelerator.from_dict(_config(bpm_unit=no_unit, freq_unit=no_unit, ps_unit=no_unit))
+
+    dev = sr.live.get_si_device_access("rf/freq", "Hz")
+    assert isinstance(dev, SIDeviceAccess) and dev.factor == 1.0
+    assert dev.unit() == "Hz"
+    assert dev.control_system_unit() == no_unit
+
+    # Grouped accessors report the SI unit, not the raw device unit
+    quads = list(sr.live.magnets.get("QUADS"))
+    assert sr.live.create_magnet_hardware_aggregator(quads).unit() == "A"
+    _, aggh, _ = sr.live.create_bpm_aggregators(list(sr.live.diagnostic.bpms.get("BPM")))
+    assert aggh.unit() == "m"
+
+
+@TANGO
+def test_si_device_access_reports_control_system_unit(install_test_package):
+    from pyaml.control.si_deviceaccess import control_system_unit_of
+
+    sr = Accelerator.from_dict(_config())
+    dev = sr.live.get_si_device_access("rf/freq", "Hz")
+    assert dev.unit() == "Hz"
+    assert dev.control_system_unit() == "MHz"
+    assert control_system_unit_of(dev) == "MHz"
+    assert control_system_unit_of(sr.live.get_device_access("rf/freq")) == "MHz"
+    assert control_system_unit_of(None) is None
+
+    quads = list(sr.live.magnets.get("QUADS"))
+    agg = sr.live.create_magnet_hardware_aggregator(quads)
+    assert agg.unit() == "A"
+    assert agg.control_system_unit() == "mA"
+    assert agg._devs.control_system_unit() == ["mA", "mA"]  # Device level: one per device
+
+
+@TANGO
+def test_total_voltage_unit_is_si(install_test_package):
+    from tango.pyaml.attribute_store import get_attribute
+
+    sr = Accelerator.from_dict(_config())
+    rf = sr.live.rf.get("RF")
+    assert rf.voltage.unit() == "V"
+    rf.voltage.set(2 * ureg.MV)
+    assert get_attribute("sr/test/rf/volt") == pytest.approx(2000.0)
+    assert rf.voltage.get() == pytest.approx(2e6)
+
+
+@TANGO
+def test_accessors_report_control_system_unit(install_test_package):
+    sr = Accelerator.from_dict(_config())
+
+    bpm = sr.live.diagnostic.bpm.get("BPM1")
+    assert bpm.positions.unit() == "m"
+    assert bpm.positions.control_system_unit() == "mm"
+
+    rf = sr.live.rf.get("RF")
+    tra = sr.live.rf.transmitter.get("RFTRA")
+    assert rf.frequency.control_system_unit() == "MHz"
+    assert tra.voltage.control_system_unit() == "kV"
+    assert tra.phase.control_system_unit() == "deg"
+    assert rf.voltage.control_system_unit() == "V"  # Aggregate of transmitters, no device
+
+    q1 = sr.live.magnet.get("Q1")
+    assert q1.hardware.unit() == "A"
+    assert q1.hardware.control_system_unit() == "mA"
+    assert q1.strength.control_system_unit() == q1.strength.unit()  # No device holds a strength
+
+    quads = sr.live.magnets.get("QUADS")
+    assert quads.hardwares.control_system_unit() == "mA"
+    assert quads.strengths.control_system_unit() == quads.strengths.unit()
+
+    bpms = sr.live.diagnostic.bpms.get("BPM")
+    assert bpms.positions.control_system_unit() == "mm"
+    assert bpms.h.control_system_unit() == "mm"
+
+
+def test_control_system_unit_defaults_to_unit_on_simulator():
+    sr = Accelerator.load("tests/config/EBS_rf.yaml", ignore_external=True)
+    assert sr.design.rf.frequency.control_system_unit() == sr.design.rf.frequency.unit() == "Hz"
+
+
+@TANGO
+def test_get_quantity_on_control_system(install_test_package):
+    from tango.pyaml.attribute_store import set_attribute
+
+    for key, value in [("bpm1/H", 0.1), ("bpm1/V", -0.2), ("bpm2/H", 0.3), ("bpm2/V", -0.4)]:
+        set_attribute(f"sr/test/{key}", value, unit="mm")
+    sr = Accelerator.from_dict(_config())
+
+    rf = sr.live.rf.get("RF")
+    rf.frequency.set(352.2 * ureg.MHz)
+    f = rf.frequency.get(quantity=True)
+    assert isinstance(f, pint.Quantity) and f.to("MHz").magnitude == pytest.approx(352.2)
+    assert isinstance(rf.frequency.get(), float)  # Default unchanged
+
+    bpm = sr.live.diagnostic.bpm.get("BPM1")
+    assert np.allclose(bpm.positions.get(quantity=True).to("mm").magnitude, [0.1, -0.2])
+    bpms = sr.live.diagnostic.bpms.get("BPM")
+    q = bpms.positions.get(quantity=True)
+    assert q.shape == (2, 2) and np.allclose(q.to("mm").magnitude, [[0.1, -0.2], [0.3, -0.4]])
+    assert np.allclose(bpms.h.get(quantity=True).to("um").magnitude, [100.0, 300.0])
+
+    quads = sr.live.magnets.get("QUADS")
+    quads.hardwares.set(np.array([1.0, 3.0]) * ureg.A)
+    assert np.allclose(quads.hardwares.get(quantity=True).to("mA").magnitude, [1000.0, 3000.0])
+    assert quads.strengths.get(quantity=True).units == 1 / ureg.m
+
+    agg = sr.live.create_magnet_strength_aggregator(list(quads))
+    assert agg.get(quantity=True).units == 1 / ureg.m
+    assert sr.live.magnet.get("Q1").hardware.get(quantity=True).to("mA").magnitude == pytest.approx(1000.0)
+
+
+def test_get_quantity_on_simulator():
+    sr = Accelerator.load("tests/config/EBS_rf.yaml", ignore_external=True)
+    sr.design.rf.frequency.set(352.3 * ureg.MHz)
+    assert sr.design.rf.frequency.get(quantity=True).to("MHz").magnitude == pytest.approx(352.3)
+
+
 # --------------------------------------------------------------------------- simulator
 
 
@@ -362,3 +543,39 @@ def test_set_energy_accepts_quantity():
     sr = Accelerator.load("tests/config/EBS_rf.yaml", ignore_external=True)
     sr.set_energy(6 * ureg.GeV)
     assert sr._energy == pytest.approx(6e9)
+
+
+def _check_units(acc):
+    """A single unit when all values share it, one per value (shaped like get()) only when they differ."""
+    values = acc.get()
+    for unit in (acc.unit(), acc.control_system_unit()):
+        if not isinstance(unit, str):
+            assert np.shape(unit) == np.shape(values) and len(set(np.ravel(unit))) > 1, unit
+    acc.get(quantity=True)
+
+
+def test_units_of_simulator_accessors():
+    sr = Accelerator.load("tests/config/sr_serialized_magnets.yaml", ignore_external=True)
+    series = sr.design.serialized_magnets.get("QForTune")
+    _check_units(series.strengths)
+    _check_units(series.hardwares)
+    assert series.strengths.unit() == "1/m"  # Declared as m-1, reported in canonical form
+
+    sr = Accelerator.load("tests/config/EBSOrbit.yaml", ignore_external=True)
+    bpms = sr.design.diagnostic.bpms.get("BPM")
+    bpm = sr.design.diagnostic.bpm.get(bpms.names()[0])
+    for acc in (bpms.positions, bpms.h, bpms.v, bpm.positions, bpm.offset):
+        _check_units(acc)
+
+
+@TANGO
+def test_units_of_control_system_accessors(install_test_package):
+    sr = Accelerator.from_dict(_config())
+    bpms = sr.live.diagnostic.bpms.get("BPM")
+    quads = sr.live.magnets.get("QUADS")
+    assert quads.strengths.unit() == "1/m"  # Q1 in 1/m and Q2 in m-1 share one unit
+    accessors = [bpms.positions, bpms.h, bpms.v, quads.hardwares, quads.strengths]
+    accessors += [sr.live.create_magnet_strength_aggregator(list(quads))]
+    accessors += sr.live.create_bpm_aggregators(list(bpms))
+    for acc in accessors:
+        _check_units(acc)

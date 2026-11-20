@@ -21,16 +21,23 @@ class ReadFloatScalar(AcceptsQuantity, metaclass=ABCMeta):
 
     Methods
     -------
-    get()
+    get(quantity=False)
         Return the current scalar value.
     unit()
-        Return the physical unit of the scalar value.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     @abstractmethod
     def get(self) -> double:
         """
         Return the current scalar value.
+
+        Implementations take no argument: every subclass also accepts
+        ``get(quantity=True)``, which returns the value as a
+        :class:`pint.Quantity` in ``unit()`` (see
+        :class:`~pyaml.common.units.AcceptsQuantity`).
 
         Returns
         -------
@@ -42,7 +49,10 @@ class ReadFloatScalar(AcceptsQuantity, metaclass=ABCMeta):
     @abstractmethod
     def unit(self) -> str:
         """
-        Return the physical unit of the scalar value.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+
+        A :class:`pint.Quantity` passed to ``set()`` is converted to this unit.
+        Unit strings use the pyAML canonical format (see :mod:`pyaml.common.units`).
 
         Returns
         -------
@@ -50,6 +60,21 @@ class ReadFloatScalar(AcceptsQuantity, metaclass=ABCMeta):
             Unit label.
         """
         pass
+
+    def control_system_unit(self) -> str | None:
+        """
+        Return the control-system unit for this quantity.
+
+        Same as ``unit()`` by default, for values that no control-system
+        device holds (simulator, computed values). Unit strings use the pyAML
+        canonical format (see :mod:`pyaml.common.units`).
+
+        Returns
+        -------
+        str or None
+            Unit label.
+        """
+        return self.unit()
 
 
 class ReadWriteFloatScalar(ReadFloatScalar):
@@ -96,21 +121,58 @@ class ReadFloatArray(AcceptsQuantity, metaclass=ABCMeta):
 
     Methods
     -------
-    get()
+    get(quantity=False)
         Return the current values as an array.
     unit()
-        Return the units associated with the array values.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     @abstractmethod
     def get(self) -> array:
-        """Return the current values as an array."""
+        """
+        Return the current values as an array.
+
+        Implementations take no argument: every subclass also accepts
+        ``get(quantity=True)``, which returns the values as a
+        :class:`pint.Quantity` in ``unit()`` (see
+        :class:`~pyaml.common.units.AcceptsQuantity`).
+        """
         pass
 
     @abstractmethod
-    def unit(self) -> list[str]:
-        """Return the units associated with the array values."""
+    def unit(self) -> str | list[str]:
+        """
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+
+        A single unit when all values share it, one unit per value (shaped
+        like ``get()``) only when they differ. Unit strings use the pyAML canonical format
+        (see :mod:`pyaml.common.units`).
+
+        Returns
+        -------
+        str or list of str
+            Unit label(s).
+        """
         pass
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """
+        Return the control-system unit for this quantity.
+
+        A single unit when all devices share it, one unit per value (shaped
+        like ``get()``) only when they differ. Same as ``unit()`` by default,
+        for values that no control-system device holds (simulator, computed
+        values). Unit strings use the pyAML canonical format
+        (see :mod:`pyaml.common.units`).
+
+        Returns
+        -------
+        str or list of str or None
+            Unit label(s).
+        """
+        return self.unit()
 
 
 class ReadWriteFloatArray(ReadFloatScalar):
@@ -171,7 +233,9 @@ class RWMapper(ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for it to reach the setpoint.
     unit()
-        Get the unit for the value.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     index()
         Get the mapped array index.
     """
@@ -229,14 +293,27 @@ class RWMapper(ReadWriteFloatScalar):
     # Return the unit
     def unit(self) -> str:
         """
-        Get the unit for the value.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
 
         Returns
         -------
         str
-            Unit string for the value at the mapped index
+            Unit label of the value at the mapped index.
         """
-        return self.bind.unit()[self.idx]
+        unit = self.bind.unit()
+        return unit if isinstance(unit, str) or unit is None else unit[self.idx]
+
+    def control_system_unit(self) -> str | None:
+        """
+        Return the control-system unit for this quantity.
+
+        Returns
+        -------
+        str or None
+            Unit label of the device at the mapped index.
+        """
+        unit = self.bind.control_system_unit()
+        return unit if isinstance(unit, str) or unit is None else unit[self.idx]
 
     # Return the mapped index
     def index(self) -> int:

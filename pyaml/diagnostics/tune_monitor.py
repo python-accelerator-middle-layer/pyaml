@@ -154,7 +154,7 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
             get()
                 Return tune frequencies in hertz.
             unit()
-                Return the frequency unit label.
+                Return the pyAML unit for this quantity, i.e. returned by get().
             """
 
             def __init__(self, parent: BetatronTuneMonitor):
@@ -174,7 +174,7 @@ class BetatronTuneMonitor(Element, DynamicValidation, ABetatronTuneMonitor):
                     return tune * freq / h
 
             def unit(self) -> str:
-                """Return the frequency unit label."""
+                """Return the pyAML unit for this quantity, i.e. returned by get()."""
                 return "Hz"
 
         self.check_peer()

@@ -140,9 +140,10 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         Returns
         -------
         DeviceAccess or None
-            The backend device, wrapped in a
-            :class:`~pyaml.control.si_deviceaccess.SIDeviceAccess` when a
-            conversion is needed.
+            The backend device wrapped in a
+            :class:`~pyaml.control.si_deviceaccess.SIDeviceAccess` (factor 1
+            when no conversion is needed), or the raw backend device when
+            ``si_unit`` is empty.
 
         Raises
         ------
