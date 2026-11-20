@@ -18,6 +18,7 @@ from ..common.exception import PyAMLException
 from ..common.holders.element_holder import ElementHolder
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
+    CSHardwareScalarAggregator,
     CSScalarAggregator,
     CSSparseScalarAggregator,
     CSStrengthScalarAggregator,
@@ -180,12 +181,13 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         agg = self._create_scalar_aggregator()
         if agg is None:
             return None
+        hagg = CSHardwareScalarAggregator(agg)
         for m in magnets:
             if not m.model.has_hardware():
                 return None
             psIndex = m.hardware.index() if isinstance(m.hardware, RWMapper) else 0
-            agg.add_devices(self.get_devices_access([m.model.get_device_names()[psIndex]])[0])
-        return agg
+            hagg.add_magnet(m, self.get_devices_access([m.model.get_device_names()[psIndex]])[0])
+        return hagg
 
     def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator | None]:
         """
