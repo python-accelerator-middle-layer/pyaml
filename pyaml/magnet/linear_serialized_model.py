@@ -261,6 +261,8 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         Convert hardware values to magnet strengths.
     compute_hardware_values_partial(current_hardware, strengths_by_index)
         Convert the strengths of some magnets of the series to the shared hardware value.
+    compute_hardware_from_hardwares(hardwares_by_index)
+        Return the shared hardware value for the hardware values requested for some magnets of the series.
     compute_mean_strength(current)
         Return the average strength of the series for a hardware value.
     compute_hardware_from_mean_strength(strength, current_hardware=None)
@@ -542,6 +544,32 @@ class LinearSerializedMagnetModel(MagnetModel, DynamicValidation):
         indices = list(strengths_by_index.keys())
         strengths = np.array(list(strengths_by_index.values()), dtype=float)
         return np.array([self._compute_hardware_from_strengths(strengths, indices, float(current_hardware[0]))])
+
+    def compute_hardware_from_hardwares(self, hardwares_by_index: dict[int, float]) -> float:
+        """
+        Return the shared hardware value for the hardware values requested for some magnets of the series.
+
+        Every magnet of the series reads the same hardware value, so the power supply gets the average of the values
+        requested for the magnets present in the request. The other magnets of the series follow it.
+
+        Parameters
+        ----------
+        hardwares_by_index : dict[int, float]
+            Requested hardware values, indexed by the position of the magnet in the series.
+
+        Returns
+        -------
+        float
+            Average of the requested hardware values.
+
+        Raises
+        ------
+        PyAMLException
+            If no hardware value is requested.
+        """
+        if not hardwares_by_index:
+            raise PyAMLException(f"No hardware value requested for the series on {self._powerconverter}")
+        return float(np.mean(list(hardwares_by_index.values())))
 
     def compute_mean_strength(self, current: float) -> float:
         """

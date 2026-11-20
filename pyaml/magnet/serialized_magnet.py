@@ -279,7 +279,7 @@ class ReadWriteSerializedHardwareArray(abstract.ReadWriteFloatArray):
             raise PyAMLException(
                 f"One hardware value per magnet is expected ({len(self._hardwares)} values), got {np.shape(value)}"
             )
-        self._hardwares[0].set(float(np.mean(value)))
+        self._hardwares[0].set(self._model.compute_hardware_from_hardwares(dict(enumerate(value))))
 
     def set_and_wait(self, value: np.ndarray):
         """
