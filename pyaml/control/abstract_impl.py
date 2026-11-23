@@ -538,6 +538,130 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         return self._devs.unit()
 
 
+class CSHardwareScalarAggregator(CSScalarAggregator):
+    """
+    Aggregate magnet hardware values, writing the power supply of a series once.
+
+    Each registered magnet has one value. The magnets of a series share one power-supply device, added once: it gets
+    the hardware value computed by the model of the series from the values of the magnets of the series present in the
+    aggregator, and its value is read back for each of them.
+
+    Parameters
+    ----------
+    peer : CSScalarAggregator
+        Scalar device aggregator receiving the hardware devices.
+
+    Methods
+    -------
+    add_magnet(magnet, dev)
+        Register a magnet and the device holding its hardware value.
+    set(value)
+        Write the hardware value of every registered magnet.
+    set_and_wait(value)
+        Set the hardware values and wait for hardware readback.
+    get()
+        Return the hardware value of every registered magnet.
+    readback()
+        Return the hardware readback of every registered magnet.
+    nb_device()
+        Return the number of registered magnets.
+    """
+
+    def __init__(self, peer: CSScalarAggregator):
+        """
+        Initialize the CSHardwareScalarAggregator.
+        """
+        CSScalarAggregator.__init__(self, peer._devs)
+        self.__slotToDevice: list[int] = []  # device index of each registered magnet
+        self.__deviceOfSeries: dict[int, int] = {}  # id of a series model -> device index
+        self.__series: list[tuple[MagnetModel, list[tuple[int, int]]] | None] = []  # per device: model, (slot, index)
+
+    def add_magnet(self, magnet: Magnet, dev: DeviceAccess):
+        """
+        Register a magnet and the device holding its hardware value.
+
+        Parameters
+        ----------
+        magnet : Magnet
+            Magnet whose hardware value is aggregated.
+        dev : DeviceAccess
+            Device holding the hardware value of the magnet.
+        """
+        slot = len(self.__slotToDevice)
+        series_index = magnet.series_index
+        if series_index is None:
+            device = self.__add_device(dev, None)
+        else:
+            device = self.__deviceOfSeries.get(id(magnet.model))
+            if device is None:
+                device = self.__add_device(dev, magnet.model)
+                self.__deviceOfSeries[id(magnet.model)] = device
+            self.__series[device][1].append((slot, series_index))
+        self.__slotToDevice.append(device)
+
+    def __add_device(self, dev: DeviceAccess, model: MagnetModel | None) -> int:
+        self._devs.add_devices(dev)
+        self.__series.append(None if model is None else (model, []))
+        return len(self.__series) - 1
+
+    def __device_values(self, value: NDArray[np.float64]) -> NDArray[np.float64]:
+        """Return the value to write to each device from the value of each registered magnet."""
+        value = np.asarray(value, dtype=float)
+        if value.ndim == 0:
+            value = np.full(len(self.__slotToDevice), float(value))
+        deviceValues = np.zeros(len(self.__series))
+        for slot, device in enumerate(self.__slotToDevice):
+            if self.__series[device] is None:
+                deviceValues[device] = value[slot]
+        for device, series in enumerate(self.__series):
+            if series is not None:
+                model, members = series
+                deviceValues[device] = model.compute_hardware_from_hardwares({idx: value[slot] for slot, idx in members})
+        dev_range = self._devs.get_range()
+        if not check_range(deviceValues, dev_range):
+            raise PyAMLException(format_out_of_range_message(deviceValues, self._devs))
+        return deviceValues
+
+    def set(self, value: NDArray[np.float64]):
+        """
+        Write the hardware value of every registered magnet.
+
+        Parameters
+        ----------
+        value : NDArray[np.float64]
+            Hardware value of each registered magnet, in registration order. A scalar is applied to every magnet.
+
+        Raises
+        ------
+        PyAMLException
+            If a value to write is outside the range of its device. Nothing is written.
+        """
+        self._devs.set(self.__device_values(value))
+
+    def set_and_wait(self, value: NDArray[np.float64]):
+        """
+        Set the hardware values and wait for hardware readback.
+
+        Parameters
+        ----------
+        value : NDArray[np.float64]
+            Hardware value of each registered magnet, in registration order.
+        """
+        self._devs.set_and_wait(self.__device_values(value))
+
+    def get(self) -> NDArray[np.float64]:
+        """Return the hardware value of every registered magnet."""
+        return np.asarray(self._devs.get())[self.__slotToDevice]
+
+    def readback(self) -> np.array:
+        """Return the hardware readback of every registered magnet."""
+        return np.asarray(self._devs.readback())[self.__slotToDevice]
+
+    def nb_device(self) -> int:
+        """Return the number of registered magnets."""
+        return len(self.__slotToDevice)
+
+
 # ------------------------------------------------------------------------------
 
 

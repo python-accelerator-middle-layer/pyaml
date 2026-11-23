@@ -226,6 +226,144 @@ def test_array_with_part_of_a_series_drives_the_series_from_the_requested_magnet
 
 @pytest.mark.parametrize("mode", MODES)
 @pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
+def test_array_hardwares_with_two_magnets_of_a_series_apply_their_average_current(install_test_package, mode):
+    from pyaml.arrays.magnet_array import MagnetArray
+
+    sr: Accelerator = Accelerator.load(CONFIG)
+    family = _family(sr, mode)
+    family.hardware.set(80.0)
+    magnets = family.get_magnets()
+    array = MagnetArray("PART", [magnets[1], magnets[2]])
+
+    array.hardwares.set(np.array([10.0, 20.0]))
+
+    # Same rule as family.hardwares, over the magnets of the series present in the array: I = mean(10, 20)
+    assert family.hardware.get() == pytest.approx(15.0)
+    assert np.allclose(array.hardwares.get(), [15.0, 15.0])
+
+
+@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
+def test_array_hardwares_write_each_series_with_the_average_of_its_magnets(install_test_package, mode):
+    sr: Accelerator = Accelerator.load(CONFIG)
+    qf1a, qd2a = _family(sr, mode, "QF1A"), _family(sr, mode, "QD2A")
+    array = getattr(sr, mode).magnets.get("ALL_SERIALIZED")
+
+    array.hardwares.set(np.array([10.0, 20.0, 30.0, 40.0, 5.0, 6.0, 7.0]))
+
+    assert qf1a.hardware.get() == pytest.approx(25.0)
+    assert qd2a.hardware.get() == pytest.approx(6.0)
+    assert np.allclose(array.hardwares.get(), [25.0] * 4 + [6.0] * 3)
+
+
+@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
+def test_array_hardwares_of_a_whole_series_match_the_family_hardwares(install_test_package, mode):
+    from pyaml.arrays.magnet_array import MagnetArray
+
+    sr: Accelerator = Accelerator.load(CONFIG)
+    family = _family(sr, mode)
+    requested = np.array([79.0, 80.0, 81.0, 84.0])
+
+    family.hardwares.set(requested)
+    from_family = family.hardware.get()
+    family.hardware.set(0.0)
+    MagnetArray("WHOLE", family.get_magnets()).hardwares.set(requested)
+
+    assert family.hardware.get() == pytest.approx(from_family)
+
+
+@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
+def test_writing_back_the_hardwares_of_part_of_a_series_keeps_the_power_supply(install_test_package, mode):
+    from pyaml.arrays.magnet_array import MagnetArray
+
+    sr: Accelerator = Accelerator.load(CONFIG)
+    family = _family(sr, mode)
+    family.hardware.set(80.0)
+    magnets = family.get_magnets()
+    array = MagnetArray("PART", [magnets[1], magnets[2]])
+
+    array.hardwares.set(array.hardwares.get())
+
+    assert family.hardware.get() == pytest.approx(80.0)
+
+
+@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
+def test_array_strengths_of_part_of_a_series_match_the_family_strengths(install_test_package, mode):
+    from pyaml.arrays.magnet_array import MagnetArray
+
+    sr: Accelerator = Accelerator.load(CONFIG)
+    family = _family(sr, mode)
+    magnets = family.get_magnets()
+    array = MagnetArray("PART", [magnets[0], magnets[1]])
+    # Each magnet asks for its own strength at 10 A or 20 A: [k_0(10 A), k_1(20 A), k_2(10 A), k_3(20 A)]
+    requested = np.array([family.model.get_sub_model(i).compute_strengths([[10.0, 20.0][i % 2]])[0] for i in range(4)])
+
+    family.strengths.set(requested)
+    from_family = family.hardware.get()
+    family.hardware.set(80.0)
+    array.strengths.set(requested[:2])
+
+    # Both solve in strength space, sum((f_i(I) - k_i) / span_i) == 0: the same current, not the mean of 10 A and 20 A
+    assert family.hardware.get() == pytest.approx(from_family)
+
+
+@pytest.mark.parametrize("value", [12.0, 12, np.float64(12.0)])
+@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
+def test_array_hardwares_broadcast_a_single_value(install_test_package, mode, value):
+    sr: Accelerator = Accelerator.load(CONFIG)
+    qf1a, qd2a = _family(sr, mode, "QF1A"), _family(sr, mode, "QD2A")
+    array = getattr(sr, mode).magnets.get("ALL_SERIALIZED")
+
+    array.hardwares.set(value)
+
+    assert qf1a.hardware.get() == pytest.approx(12.0)
+    assert qd2a.hardware.get() == pytest.approx(12.0)
+
+
+@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
+def test_array_strengths_broadcast_an_integer_like_a_float(install_test_package, mode):
+    from pyaml.arrays.magnet_array import MagnetArray
+
+    sr: Accelerator = Accelerator.load(CONFIG)
+    family = _family(sr, mode)
+    array = MagnetArray("WHOLE", family.get_magnets())
+
+    family.hardware.set(80.0)
+    array.strengths.set(0.0)
+    from_float = family.hardware.get()
+    family.hardware.set(80.0)
+    array.strengths.set(0)
+
+    assert family.hardware.get() == pytest.approx(from_float)
+
+
+@pytest.mark.parametrize("value", [[10.0], [10.0, 20.0, 30.0, 40.0, 5.0, 6.0, 7.0, 8.0], [[10.0] * 7]])
+@pytest.mark.parametrize("accessor", ["strengths", "hardwares"])
+@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
+def test_array_writes_need_one_value_per_magnet(install_test_package, mode, accessor, value):
+    sr: Accelerator = Accelerator.load(CONFIG)
+    qf1a, qd2a = _family(sr, mode, "QF1A"), _family(sr, mode, "QD2A")
+    qf1a.hardware.set(80.0)
+    qd2a.hardware.set(20.0)
+    # 7 magnets: 4 of QF1A and 3 of QD2A
+    array = getattr(sr, mode).magnets.get("ALL_SERIALIZED")
+
+    with pytest.raises(PyAMLException, match="One .* value per magnet"):
+        getattr(array, accessor).set(np.array(value))
+
+    # Nothing is written
+    assert qf1a.hardware.get() == pytest.approx(80.0)
+    assert qd2a.hardware.get() == pytest.approx(20.0)
+
+
+@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
 def test_strength_outside_the_excitation_curve_is_clamped_with_a_warning(install_test_package, mode, caplog):
     sr: Accelerator = Accelerator.load(CONFIG)
     family = _family(sr, mode)
@@ -312,6 +450,7 @@ def test_power_supply_range_protects_every_write_to_a_series(install_test_packag
 
     writes = [
         lambda: sr.live.magnets.get("QF1A_PART").strengths.set(too_strong[[1, 2]]),
+        lambda: sr.live.magnets.get("QF1A_PART").hardwares.set(np.array([95.0, 105.0])),
         lambda: family.strengths.set(too_strong),
         lambda: family.strength.set(np.mean(too_strong)),
         lambda: magnets[1].strength.set(too_strong[1]),
