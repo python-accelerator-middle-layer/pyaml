@@ -310,17 +310,56 @@ def test_array_strengths_of_part_of_a_series_match_the_family_strengths(install_
     assert family.hardware.get() == pytest.approx(from_family)
 
 
+@pytest.mark.parametrize("value", [12.0, 12, np.float64(12.0)])
 @pytest.mark.parametrize("mode", MODES)
 @pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
-def test_array_hardwares_broadcast_a_single_value(install_test_package, mode):
+def test_array_hardwares_broadcast_a_single_value(install_test_package, mode, value):
     sr: Accelerator = Accelerator.load(CONFIG)
     qf1a, qd2a = _family(sr, mode, "QF1A"), _family(sr, mode, "QD2A")
     array = getattr(sr, mode).magnets.get("ALL_SERIALIZED")
 
-    array.hardwares.set(12.0)
+    array.hardwares.set(value)
 
     assert qf1a.hardware.get() == pytest.approx(12.0)
     assert qd2a.hardware.get() == pytest.approx(12.0)
+
+
+@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
+def test_array_strengths_broadcast_an_integer_like_a_float(install_test_package, mode):
+    from pyaml.arrays.magnet_array import MagnetArray
+
+    sr: Accelerator = Accelerator.load(CONFIG)
+    family = _family(sr, mode)
+    array = MagnetArray("WHOLE", family.get_magnets())
+
+    family.hardware.set(80.0)
+    array.strengths.set(0.0)
+    from_float = family.hardware.get()
+    family.hardware.set(80.0)
+    array.strengths.set(0)
+
+    assert family.hardware.get() == pytest.approx(from_float)
+
+
+@pytest.mark.parametrize("value", [[10.0], [10.0, 20.0, 30.0, 40.0, 5.0, 6.0, 7.0, 8.0], [[10.0] * 7]])
+@pytest.mark.parametrize("accessor", ["strengths", "hardwares"])
+@pytest.mark.parametrize("mode", MODES)
+@pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
+def test_array_writes_need_one_value_per_magnet(install_test_package, mode, accessor, value):
+    sr: Accelerator = Accelerator.load(CONFIG)
+    qf1a, qd2a = _family(sr, mode, "QF1A"), _family(sr, mode, "QD2A")
+    qf1a.hardware.set(80.0)
+    qd2a.hardware.set(20.0)
+    # 7 magnets: 4 of QF1A and 3 of QD2A
+    array = getattr(sr, mode).magnets.get("ALL_SERIALIZED")
+
+    with pytest.raises(PyAMLException, match="One .* value per magnet"):
+        getattr(array, accessor).set(np.array(value))
+
+    # Nothing is written
+    assert qf1a.hardware.get() == pytest.approx(80.0)
+    assert qd2a.hardware.get() == pytest.approx(20.0)
 
 
 @pytest.mark.parametrize("mode", MODES)

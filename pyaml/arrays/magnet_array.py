@@ -15,6 +15,32 @@ from ..magnet.magnet import Magnet
 from .element_array import ElementArray
 
 
+def _values_per_magnet(value, nb: int, kind: str) -> np.ndarray:
+    """
+    Return one value per magnet of the array.
+
+    Parameters
+    ----------
+    value : float | int | array-like
+        A scalar, broadcast to every magnet, or one value per magnet.
+    nb : int
+        Number of magnets of the array.
+    kind : str
+        Kind of value (``strength`` or ``hardware``), used in the error message.
+
+    Raises
+    ------
+    PyAMLException
+        If ``value`` is neither a scalar nor a 1-D sequence holding one value per magnet.
+    """
+    if np.ndim(value) == 0:
+        return np.full(nb, float(value))
+    values = np.asarray(value, dtype=float)
+    if values.ndim != 1 or len(values) != nb:
+        raise PyAMLException(f"One {kind} value per magnet is expected ({nb} values), got {np.shape(value)}")
+    return values
+
+
 class RWMagnetStrength(ReadWriteFloatArray):
     """
     Array accessor for the strengths of a magnet family.
@@ -70,8 +96,13 @@ class RWMagnetStrength(ReadWriteFloatArray):
         wait_seconds_after: float
             number of seconds to wait after setting the strengths.
             see also set_and_wait for waiting based on setpoint-readback difference.
+
+        Raises
+        ------
+        PyAMLException
+            If ``value`` is neither a scalar nor one value per magnet. Nothing is written.
         """
-        nvalue = np.ones(self.__nb) * value if isinstance(value, float) else value
+        nvalue = _values_per_magnet(value, self.__nb, "strength")
         if not self.__aggregator:
             # Magnets of a series share one power supply: it is written once, from the strengths of the
             # magnets of the series present in the array, the others following the resulting hardware value.
@@ -180,8 +211,13 @@ class RWMagnetHardware(ReadWriteFloatArray):
         ----------
         value : np.array
             Hardware value for each magnet, ordered like the array. A scalar is broadcast to every magnet.
+
+        Raises
+        ------
+        PyAMLException
+            If ``value`` is neither a scalar nor one value per magnet. Nothing is written.
         """
-        nvalue = np.ones(self.__nb) * value if isinstance(value, float) else value
+        nvalue = _values_per_magnet(value, self.__nb, "hardware")
         if not self.__aggregator:
             # Magnets of a series share one power supply: it is written once, from the hardware values of the
             # magnets of the series present in the array, the others following it.
