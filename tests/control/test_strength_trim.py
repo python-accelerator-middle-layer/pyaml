@@ -1,0 +1,67 @@
+from unittest.mock import Mock
+
+import numpy as np
+import pytest
+
+from pyaml import PyAMLException
+from pyaml.control.abstract_impl import RWStrengthTrim
+from pyaml.control.deviceaccess import DeviceAccess
+from pyaml.magnet.model import MagnetModel
+
+
+@pytest.fixture
+def trim_setup():
+    # Nonlinear, invertible excitation curve with a nonzero strength offset.
+    model = Mock(spec=MagnetModel)
+    model.compute_strengths.side_effect = lambda currents: np.asarray(currents) ** 3 + 7.0
+    model.compute_hardware_values.side_effect = lambda strengths: np.cbrt(np.asarray(strengths) - 7.0)
+    main = Mock(spec=DeviceAccess)
+    main.get.return_value = 2.0
+    trim = Mock(spec=DeviceAccess)
+    trim.get.return_value = 0.5
+    trim.get_range.return_value = [-2.0, 2.0]
+    trim.name.return_value = "trim/current"
+    trim.unit.return_value = "A"
+    trim.set.side_effect = lambda value: setattr(trim.get, "return_value", value)
+    return model, main, trim
+
+
+def test_read_trim_strength_tracks_main_current(trim_setup):
+    model, main, trim = trim_setup
+    strength = RWStrengthTrim(model, main, trim)
+    assert strength.get() == pytest.approx(7.625)  # f(2.5) - f(2)
+
+    main.get.return_value = 3.0
+    assert strength.get() == pytest.approx(15.875)  # f(3.5) - f(3)
+    trim.set.assert_not_called()
+    main.set.assert_not_called()
+
+
+def test_write_trim_strength_with_signed_scaling(trim_setup):
+    model, main, trim = trim_setup
+    strength = RWStrengthTrim(model, main, trim, trim_factor=-2.0)
+    strength.set(19.0)  # f(3) - f(2): equivalent current increases by 1 A.
+    trim.set.assert_called_once_with(pytest.approx(-0.5))
+    assert strength.get() == pytest.approx(19.0)
+
+    main.get.return_value = 3.0
+    strength.set(19.0)
+    assert trim.get.return_value == pytest.approx((np.cbrt(46.0) - 3.0) / -2.0)
+    assert strength.get() == pytest.approx(19.0)
+    main.set.assert_not_called()
+
+
+def test_out_of_range_rejects_trim_write(trim_setup):
+    model, main, trim = trim_setup
+    trim.get_range.return_value = [-0.25, 0.25]
+    strength = RWStrengthTrim(model, main, trim)
+    with pytest.raises(PyAMLException, match="Values out of range"):
+        strength.set(19.0)
+    main.set.assert_not_called()
+    trim.set.assert_not_called()
+
+
+def test_zero_factor_is_rejected(trim_setup):
+    model, main, trim = trim_setup
+    with pytest.raises(ValueError, match="nonzero"):
+        RWStrengthTrim(model, main, trim, 0.0)
