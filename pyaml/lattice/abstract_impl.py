@@ -294,6 +294,55 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 # ------------------------------------------------------------------------------
 
 
+class RWStrengthTuple:
+    """Control two contributions whose sum is written to one scalar strength.
+
+    Parameters
+    ----------
+    total_accessor : abstract.ReadWriteFloatScalar
+        Accessor for the total integrated strength. It owns the conversion to
+        lattice coefficients, including signs, lengths, and bending angles.
+    initial : tuple[float, float]
+        Initial contributions in the underlying accessor's unit. Construction
+        writes their sum to the underlying accessor once.
+
+    Notes
+    -----
+    ``get()`` returns their stored values, not a decomposition of lattice readback.
+    All writes must go through this tuple: direct writes to the underlying
+    accessor are unsupported. ``set(pair)`` reapplies the authoritative total.
+
+    A successful write stores the new pair only after the underlying write
+    returns. On failure the stored pair is unchanged; any partial effects of a
+    failing underlying accessor cannot be rolled back here.
+    """
+
+    def __init__(self, total_accessor: abstract.ReadWriteFloatScalar, initial: tuple[float, float]):
+        self._total_accessor = total_accessor
+        self.set(initial)
+
+    def get(self) -> tuple[float, float]:
+        """Return an immutable pair of the stored contributions."""
+        return self._values
+
+    def set(self, values: tuple[float, float]):
+        """Write the sum of the supplied pair, then store its contributions."""
+        main, trim = values
+        self._total_accessor.set(main + trim)
+        self._values = values
+
+    def unit(self) -> str:
+        """Return the shared physical unit of both contributions."""
+        return self._total_accessor.unit()
+
+    def set_and_wait(self, values: tuple[float, float]):
+        """Waiting for lattice strength convergence is not implemented."""
+        raise NotImplementedError("Not implemented yet.")
+
+
+# ------------------------------------------------------------------------------
+
+
 class RWSerializedHardware(abstract.ReadWriteFloatScalar):
     """
     Hardware value of one magnet of a serialized group.
