@@ -343,6 +343,92 @@ class RWStrengthTuple:
 # ------------------------------------------------------------------------------
 
 
+class RWStrengthTrim(abstract.ReadWriteFloatScalar):
+    """Expose the trim contribution of a simulated main/trim strength pair.
+
+    Reads and writes address only the second contribution of ``strengths``.
+    No current conversion is performed; the tuple writes the summed strength
+    through its underlying lattice accessor.
+    """
+
+    def __init__(self, strengths: RWStrengthTuple):
+        self._strengths = strengths
+
+    def get(self) -> float:
+        """Return the stored trim strength."""
+        return self._strengths.get()[1]
+
+    def set(self, value: float):
+        """Update the trim strength while preserving the main contribution."""
+        main, _ = self._strengths.get()
+        self._strengths.set((main, value))
+
+    def unit(self) -> str:
+        return self._strengths.unit()
+
+    def set_and_wait(self, value: float):
+        raise NotImplementedError("Not implemented yet.")
+
+
+class RWHardwareTrim(abstract.ReadWriteFloatScalar):
+    """Expose physical trim current for a simulated main/trim strength pair.
+
+    Parameters
+    ----------
+    strengths : RWStrengthTuple
+        Main and incremental trim strengths sharing one lattice component.
+    model : MagnetModel
+        Single-magnet excitation model, including its inverse conversion.
+    trim_factor : float
+        Nonzero signed factor converting physical trim current to equivalent
+        main-coil current. Defaults to 1.0.
+
+    Notes
+    -----
+    For excitation curve ``f``, readback is
+    ``(inverse_f(main + trim) - inverse_f(main)) / trim_factor``.
+    Writes preserve the main strength and set the trim contribution to
+    ``f(inverse_f(main) + trim_factor * current) - main``.
+    Like RWHardwareScalar, readback follows the model's inverse convention;
+    currents are not independently retained for non-unique inverses.
+
+    The family must preserve trim currents explicitly when changing the shared
+    main supply: read the trim currents before updating the main contributions,
+    then reapply them at the new operating point.
+    """
+
+    def __init__(self, strengths: RWStrengthTuple, model: MagnetModel, trim_factor: float = 1.0):
+        if trim_factor == 0:
+            raise ValueError("trim_factor must be nonzero")
+        self._strengths = strengths
+        self._model = model
+        self._trim_factor = trim_factor
+
+    def get(self) -> float:
+        main, trim = self._strengths.get()
+        main_current = self._model.compute_hardware_values([main])[0]
+        total_current = self._model.compute_hardware_values([main + trim])[0]
+        return (total_current - main_current) / self._trim_factor
+
+    def set(self, value: float):
+        main, _ = self._strengths.get()
+        main_current = self._model.compute_hardware_values([main])[0]
+        total = self._model.compute_strengths([main_current + self._trim_factor * value])[0]
+        self._strengths.set((main, total - main))
+
+    def unit(self) -> str:
+        return self._model.get_hardware_units()[0]
+
+    def get_model(self) -> MagnetModel:
+        return self._model
+
+    def set_and_wait(self, value: float):
+        raise NotImplementedError("Not implemented yet.")
+
+
+# ------------------------------------------------------------------------------
+
+
 class RWSerializedHardware(abstract.ReadWriteFloatScalar):
     """
     Hardware value of one magnet of a serialized group.
