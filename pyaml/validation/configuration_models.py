@@ -2,7 +2,7 @@
 
 import importlib
 import logging
-from typing import Any, ClassVar
+from typing import Any, ClassVar, get_origin
 
 from pydantic import AliasChoices, BaseModel, ConfigDict, Field, GetCoreSchemaHandler
 from pydantic_core import CoreSchema, core_schema
@@ -45,7 +45,9 @@ class PyAMLBaseModel(BaseModel):
         lines = [f"{cls.__name__}("]
 
         for name, field in cls.model_fields.items():
-            line = f"    {name}: {getattr(field.annotation, '__name__', field.annotation)}"
+            annotation = field.annotation
+            type_name = str(annotation) if get_origin(annotation) else getattr(annotation, "__name__", annotation)
+            line = f"    {name}: {type_name}"
             if field.description:
                 line += f" — {field.description}"
             lines.append(line)
