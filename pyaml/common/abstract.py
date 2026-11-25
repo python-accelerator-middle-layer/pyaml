@@ -10,20 +10,18 @@ from abc import ABCMeta, abstractmethod
 
 from numpy import array, double
 
-# Boolean --------------------------------------------------------------
 
-
-class BinaryState(metaclass=ABCMeta):
-    """Define boolean readback and confirmed writes for an enable/disable channel."""
+class RWScalarBoolean(metaclass=ABCMeta):
+    """Define backend-independent boolean get/set access."""
 
     @abstractmethod
-    def readback(self) -> bool:
-        """Return the actual boolean state, raising if it is unavailable or invalid."""
+    def get(self) -> bool:
+        """Return the boolean state."""
         pass
 
     @abstractmethod
-    def set_and_wait(self, value: bool) -> None:
-        """Write a boolean state and wait for the backend to confirm it."""
+    def set(self, value: bool) -> None:
+        """Write the boolean state."""
         pass
 
 

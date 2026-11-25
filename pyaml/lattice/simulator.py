@@ -34,11 +34,11 @@ from ..lattice.abstract_impl import (
     RWRFFrequencyScalar,
     RWRFPhaseScalar,
     RWRFVoltageScalar,
+    RWScalarBoolean,
     RWSerializedHardware,
     RWSerializedStrength,
     RWStrengthArray,
     RWStrengthScalar,
-    SimulatedBinaryState,
     update_bpm_transform_matrix,
 )
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
@@ -341,7 +341,7 @@ class Simulator(ElementHolder, DynamicValidation):
         self.add_tool(tool.attach(self))
 
     def _fill_switch_element(self, element: SwitchElement) -> None:
-        self._add(self._ALL, element.attach(self, SimulatedBinaryState()))
+        self._add(self._ALL, element.attach(self, RWScalarBoolean(element.name)))
 
     def _fill_unbound_element(self, element: "UnboundElement") -> None:
         pass

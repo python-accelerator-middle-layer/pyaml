@@ -19,7 +19,6 @@ from ..common.holders.element_holder import ElementHolder
 from ..common.switch_element import SwitchElement
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
-    CSBinaryState,
     CSScalarAggregator,
     CSSparseScalarAggregator,
     CSStrengthScalarAggregator,
@@ -32,6 +31,7 @@ from ..control.abstract_impl import (
     RWRFFrequencyScalar,
     RWRFPhaseScalar,
     RWRFVoltageScalar,
+    RWScalarBoolean,
     RWSerializedStrengthScalar,
     RWStrengthArray,
     RWStrengthScalar,
@@ -282,7 +282,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         device = self.get_device_access(element.device)
         if device is None:
             raise PyAMLException(f"{element.name}: switch channel {element.device!r} is unavailable")
-        self._add(self._ALL, element.attach(self, CSBinaryState(device)))
+        self._add(self._ALL, element.attach(self, RWScalarBoolean(device)))
 
     def _fill_unbound_element(self, element: UnboundElement) -> None:
         if self.name() not in element._control_modes:

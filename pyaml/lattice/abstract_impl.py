@@ -21,19 +21,22 @@ from .polynom_info import PolynomInfo
 # ------------------------------------------------------------------------------
 
 
-class SimulatedBinaryState(abstract.BinaryState):
+class RWScalarBoolean(abstract.RWScalarBoolean):
     """Maintain an initially disabled boolean state independent of the lattice."""
 
-    def __init__(self):
+    def __init__(self, name: str):
+        self._name = name
         self._enabled = False
 
-    def set_and_wait(self, value: bool) -> None:
-        """Set the simulated state immediately."""
-        self._enabled = value
-
-    def readback(self) -> bool:
+    def get(self) -> bool:
         """Return the simulated boolean state."""
         return self._enabled
+
+    def set(self, value: bool) -> None:
+        """Store a boolean without accessing the lattice."""
+        if not isinstance(value, bool):
+            raise PyAMLException(f"{self._name}: expected a boolean flag, got {value!r}")
+        self._enabled = value
 
 
 def _effective_lengths(elements: list[at.Element]) -> list[float]:

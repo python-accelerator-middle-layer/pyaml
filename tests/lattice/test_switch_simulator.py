@@ -33,6 +33,7 @@ def test_simulated_switch_bypasses_lattice_lookup(design, monkeypatch):
     lookup = Mock(side_effect=AssertionError("Switch must not resolve a lattice element"))
     monkeypatch.setattr(design, "get_at_elems", lookup)
     monkeypatch.setattr(design, "_linker", Mock())
+    monkeypatch.setattr(design, "ring", Mock())
     configured = SwitchElement("NO_LATTICE_EQUIVALENT", "UNRESOLVED_DEVICE")
 
     design.fill_device([configured])
@@ -41,20 +42,36 @@ def test_simulated_switch_bypasses_lattice_lookup(design, monkeypatch):
     assert switch is not configured
     assert switch.peer is design
     assert configured.peer is None
-    assert switch.is_enabled() is False
+    assert switch.enabled.get() is False
     for _ in range(2):
-        switch.enable()
-        assert switch.is_enabled() is True
+        switch.enabled.set(True)
+        assert switch.enabled.get() is True
         switch.disable()
         assert switch.is_enabled() is False
+        switch.enable()
+        assert switch.enabled.get() is True
+        switch.enabled.set(False)
     lookup.assert_not_called()
     assert design._linker.mock_calls == []
+    assert design.ring.mock_calls == []
+
+
+@pytest.mark.parametrize("value", [0, 1, 0.0, "true", None, [True]])
+def test_simulated_boolean_accessor_rejects_invalid_writes_without_changing_state(design, value):
+    design.fill_device([SwitchElement("SOFB", "SOFB_ENABLED")])
+    switch = design["SOFB"]
+    switch.enabled.set(True)
+
+    with pytest.raises(PyAMLException, match="SOFB: expected a boolean flag"):
+        switch.enabled.set(value)
+
+    assert switch.enabled.get() is True
 
 
 def test_simulated_state_is_independent_per_element_and_mode(design, ebs_lattice_file):
     configured = SwitchElement("SOFB", "SOFB_ENABLED")
     design.fill_device([configured, SwitchElement("FOFB", "FOFB_ENABLED")])
-    design["SOFB"].enable()
+    design["SOFB"].enabled.set(True)
     other = Simulator(name="other", lattice=str(ebs_lattice_file))
     other.fill_device([configured])
 
@@ -123,15 +140,15 @@ def test_accelerator_configuration_keeps_live_and_simulated_state_separate(
     set_spy.assert_not_called()
     assert sr.live["SOFB"].peer is sr.live
     assert sr.design["SOFB"].peer is sr.design
-    assert sr.live["SOFB"].is_enabled() is True
-    assert sr.design["SOFB"].is_enabled() is False
+    assert sr.live["SOFB"].enabled.get() is True
+    assert sr.design["SOFB"].enabled.get() is False
     assert sr.design.diagnostic.bpm["BPM_C04-01"] is not None
-    sr.design["SOFB"].enable()
+    sr.design["SOFB"].enabled.set(True)
     sr.design["SOFB"].disable()
     assert get_attribute(device_name) is True
 
-    sr.live["SOFB"].disable()
-    assert sr.live["SOFB"].is_enabled() is False
+    sr.live["SOFB"].enabled.set(False)
+    assert sr.live["SOFB"].enabled.get() is False
     sr.design["SOFB"].enable()
     assert sr.live["SOFB"].is_enabled() is False
     sr.live["SOFB"].enable()

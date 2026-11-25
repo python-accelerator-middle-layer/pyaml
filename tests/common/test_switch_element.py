@@ -2,7 +2,7 @@ from unittest.mock import create_autospec
 
 import pytest
 
-from pyaml.common.abstract import BinaryState
+from pyaml.common import abstract
 from pyaml.common.exception import PyAMLConfigException, PyAMLException
 from pyaml.common.switch_element import SwitchElement
 from pyaml.configuration.factory import Factory
@@ -19,14 +19,16 @@ def switch():
     return SwitchElement("SOFB", "SOFB_ENABLED", description="Slow orbit feedback")
 
 
-@pytest.mark.parametrize("operation", ["enable", "disable", "is_enabled"])
+@pytest.mark.parametrize("operation", ["enable", "disable", "is_enabled", "enabled"])
 def test_unattached_operations_raise(switch, operation):
-    with pytest.raises(PyAMLException, match="SOFB has no attached switch channel"):
-        getattr(switch, operation)()
+    with pytest.raises(PyAMLException, match="SOFB: enabled state is unavailable before attachment"):
+        value = getattr(switch, operation)
+        if operation != "enabled":
+            value()
 
 
 def test_attachment_copies_configuration_without_io(switch):
-    state = create_autospec(BinaryState, instance=True)
+    state = create_autospec(abstract.RWScalarBoolean, instance=True)
     peer = create_autospec(ControlSystemAdapter, instance=True)
     peer.name.return_value = "live"
 
@@ -42,6 +44,22 @@ def test_attachment_copies_configuration_without_io(switch):
     assert "SOFB_ENABLED" in repr(attached)
     assert "unavailable" not in repr(attached)
     assert state.mock_calls == []
+
+
+def test_element_delegates_to_boolean_accessor(switch):
+    enabled = create_autospec(abstract.RWScalarBoolean, instance=True)
+    attached = switch.attach(DispatchHolder(), enabled=enabled)
+
+    attached.enable()
+    enabled.set.assert_called_once_with(True)
+    enabled.get.assert_not_called()
+    enabled.reset_mock()
+    attached.disable()
+    enabled.set.assert_called_once_with(False)
+    enabled.get.assert_not_called()
+    enabled.get.return_value = False
+    assert attached.is_enabled() is False
+    enabled.get.assert_called_once_with()
 
 
 def test_unsupported_holder_raises_without_new_abstract_requirement(switch):
