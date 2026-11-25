@@ -16,15 +16,15 @@ Example (the lattice already contains the kickmap)::
 
 Runtime ``control_variables`` use existing pyAML scalar accessors. An absent key
 means no configured variable; None means configured but unavailable.
-ReadFloatScalar and ReadWriteFloatScalar distinguish read-only and writable
-control variables.
+Live variables expose ReadWriteFloatScalar accessors; the fixed model exposes
+ReadFloatScalar accessors with restricted writes.
 
 Live control variables bind through opaque backend references. ``get()`` reads
-the measured value; ``get_setpoint()`` reads the requested value. ``access: read``
-exposes a read-only variable. Without a backend reference a variable remains
-unavailable. Gap and phase/shift variables use ``set_and_wait()`` with a configured
-boolean movement flag. PS1 and other current controls have no movement flags and
-use plain ``set()``. Sequencing and interlocks remain control-system concerns.
+the requested setpoint; ``readback()`` reads the measured value. Without a backend
+reference a variable remains unavailable. Gap and phase/shift variables use
+``set_and_wait()`` with a configured boolean movement flag. PS1 and other current
+controls have no movement flags and use plain ``set()``. Sequencing and interlocks
+remain control-system concerns.
 FFWD objects own their correctors, controls and measurements.
 
 The same class supports phase-only devices (including a fixed gap in the model
@@ -37,7 +37,7 @@ reference) and electromagnetic devices with arbitrarily named current variables:
       control_variables:
         ps1: {unit: A, backend: EM01_PS1}
         ps2: {unit: A, backend: EM01_PS2}
-        ps3: {unit: A, backend: EM01_PS3, access: read}
+        ps3: {unit: A, backend: EM01_PS3}
       model_operating_point: {ps1: 100.0, ps2: 0.0, ps3: 0.0}
 
 After retrieving a device through ``sr.live.insertion_device.get(name)``, use
@@ -80,8 +80,8 @@ PYAMLCLASS = "InsertionDevice"
 class InsertionDevice(Element, DynamicValidation):
     """Hold control variables and references to other pyAML elements.
 
-    ``control_variables`` configures units, opaque backend references and access
-    (``read`` or ``readwrite``, the default). Gap and phase/shift variables may
+    ``control_variables`` configures units and opaque backend references.
+    Live control variables are always read/write. Gap and phase/shift variables may
     configure a ``movement_flag`` for ``set_and_wait()``. Current controls have
     no movement flags and use ``set()``.
     After attachment, the same attribute exposes the bound scalar accessors.
@@ -118,10 +118,8 @@ class InsertionDevice(Element, DynamicValidation):
         for key, definition in control_variables.items():
             if not key.strip() or not definition.get("unit", "").strip():
                 raise PyAMLConfigException(f"{name}: each control variable requires a name and unit")
-            if set(definition) - {"unit", "backend", "movement_flag", "access"}:
-                raise PyAMLConfigException(f"{name}.{key}: expected only unit, backend, movement_flag and access")
-            if definition.get("access", "readwrite") not in {"read", "readwrite"}:
-                raise PyAMLConfigException(f"{name}.{key}: access must be read or readwrite")
+            if set(definition) - {"unit", "backend", "movement_flag"}:
+                raise PyAMLConfigException(f"{name}.{key}: expected only unit, backend and movement_flag")
             for field in ("backend", "movement_flag"):
                 if field in definition and not definition[field].strip():
                     raise PyAMLConfigException(f"{name}.{key}: {field} must not be empty")

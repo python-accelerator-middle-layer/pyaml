@@ -2,7 +2,7 @@
 
 import time
 
-from ..common.abstract import ReadFloatScalar, ReadWriteFloatScalar
+from ..common.abstract import ReadWriteFloatScalar
 from ..common.exception import PyAMLConfigException, PyAMLException
 from .abstract_impl import RWScalarBoolean, check_range, format_out_of_range_message
 from .deviceaccess import DeviceAccess
@@ -29,8 +29,8 @@ class InsertionDeviceMode:
         self._device.set(value)
 
 
-class RInsertionDeviceControlVariable(ReadFloatScalar):
-    """Read an ID control variable, its setpoint, units and backend limits."""
+class RWInsertionDeviceControlVariable(ReadWriteFloatScalar):
+    """Write gap/phase variables with movement flags or currents without them."""
 
     def __init__(self, device: DeviceAccess, unit: str, moving: RWScalarBoolean | None = None):
         if device.unit() != unit:
@@ -42,20 +42,18 @@ class RInsertionDeviceControlVariable(ReadFloatScalar):
         self.moving = moving
 
     def get(self) -> float:
-        return float(self._device.readback())
-
-    def get_setpoint(self) -> float:
+        """Return the requested setpoint."""
         return float(self._device.get())
+
+    def readback(self) -> float:
+        """Return the measured control-variable value."""
+        return float(self._device.readback())
 
     def unit(self) -> str:
         return self._unit
 
     def get_range(self) -> list[float | None]:
         return self._device.get_range()
-
-
-class RWInsertionDeviceControlVariable(RInsertionDeviceControlVariable, ReadWriteFloatScalar):
-    """Write gap/phase variables with movement flags or currents without them."""
 
     def set(self, value: float) -> None:
         if not check_range(value, self.get_range()):

@@ -99,7 +99,7 @@ def _machine(path, devices=None, controls=None):
         ({"type": "pyaml.insertion_device"}, {"gap": {"unit": "mm"}}, {"gap": 4.0}),
         (
             {"class": "pyaml.insertion_device.InsertionDevice"},
-            {"phase": {"unit": "mm", "access": "read"}},
+            {"phase": {"unit": "mm"}},
             {"gap": 4.0, "phase": 0.0},
         ),
         (
@@ -141,7 +141,7 @@ def test_configuration_supports_control_variable_families(id_lattice_file, decla
         ({"control_variables": {}}, "at least one control variable"),
         ({"control_variables": None}, "at least one control variable"),
         ({"control_variables": {"gap": {}}}, "requires a name and unit"),
-        ({"control_variables": {"gap": {"unit": "mm", "access": "invalid"}}}, "access must be"),
+        ({"control_variables": {"gap": {"unit": "mm", "access": "read"}}}, "expected only unit, backend and movement_flag"),
         ({"control_variables": {"gap": {"unit": "mm", "backend": ""}}}, "backend must not be empty"),
         ({"model_operating_point": {"gap": float("inf")}}, "finite coordinate"),
         ({"model_operating_point": {}}, "include every configured control variable"),
@@ -200,8 +200,8 @@ def test_live_attachment_binds_hardware_separately_from_model(id_lattice_file):
     design = machine.design.insertion_device.get("ID")
     gap = live.control_variables["gap"]
     assert isinstance(gap, ReadWriteFloatScalar)
-    assert gap.get() == 8.0
-    assert gap.get_setpoint() == 9.0
+    assert gap.readback() == 8.0
+    assert gap.get() == 9.0
     assert gap.get_range() == [2.0, 30.0]
     assert "phase" not in live.control_variables
     assert isinstance(live.flags["moving"], RWScalarBoolean)
@@ -249,17 +249,17 @@ def test_same_class_binds_mechanical_and_current_control_variables(names):
     for variable in attached.control_variables.values():
         assert isinstance(variable, ReadWriteFloatScalar)
         variable.set(5.0)
-        assert variable.get_setpoint() == 5.0
-        assert variable.get() == 0.0
+        assert variable.get() == 5.0
+        assert variable.readback() == 0.0
         assert variable.unit() == unit
     assert attached.model is None
     assert source.peer is None
 
 
-def test_read_only_and_unavailable_control_variables_are_distinguishable():
+def test_writable_and_unavailable_control_variables_are_distinguishable():
     source = _device(
         control_variables={
-            "gap": {"unit": "mm", "backend": "GAP", "access": "read"},
+            "gap": {"unit": "mm", "backend": "GAP"},
             "phase": {"unit": "mm"},
         }
     )
@@ -267,11 +267,9 @@ def test_read_only_and_unavailable_control_variables_are_distinguishable():
     control.fill_device([source])
     device = control.insertion_device.get("ID")
     gap = device.control_variables["gap"]
-    assert isinstance(gap, ReadFloatScalar)
-    assert not isinstance(gap, ReadWriteFloatScalar)
-    assert not hasattr(gap, "set")
-    assert gap.get() == 8.0
-    assert gap.get_setpoint() == 9.0
+    assert isinstance(gap, ReadWriteFloatScalar)
+    assert gap.readback() == 8.0
+    assert gap.get() == 9.0
     assert gap.get_range() == [2.0, 30.0]
     assert device.control_variables["phase"] is None
     assert "current" not in device.control_variables
@@ -306,7 +304,7 @@ def test_set_and_wait_without_flag_does_not_write():
     variable = control.insertion_device.get("ID").control_variables["current"]
     with pytest.raises(PyAMLException, match="requires a movement_flag"):
         variable.set_and_wait(12.0)
-    assert variable.get_setpoint() == 0.0
+    assert variable.get() == 0.0
 
 
 def test_limits_and_backend_errors_are_propagated():
@@ -317,7 +315,7 @@ def test_limits_and_backend_errors_are_propagated():
     for method in (gap.set, gap.set_and_wait):
         with pytest.raises(PyAMLException, match="out of range"):
             method(40.0)
-    assert gap.get_setpoint() == 9.0
+    assert gap.get() == 9.0
     for ref, write, value in (
         ("GAP", gap.set_and_wait, 12.0),
         ("MODE", device.mode.set, "antiparallel"),
@@ -377,6 +375,7 @@ def test_optional_controls_and_hardware_motion_do_not_change_model(id_lattice_fi
     live.mode.set("antiparallel")
     live.flags["orbit_ff"].set(False)
     assert live.control_variables["gap"].get() == 12.0
+    assert live.control_variables["gap"].readback() == 12.0
     assert live.mode.get() == "antiparallel"
     assert live.flags["orbit_ff"].get() is False
     assert design.control_variables["gap"].get() == 4.0
@@ -393,7 +392,7 @@ def test_fixed_reference_noops_and_rejected_writes(id_lattice_file):
     device = machine.design.insertion_device.get("ID")
     variable = device.control_variables["gap"]
     reference = device.model.reference
-    assert variable.get_setpoint() == variable.get() == 4.0
+    assert variable.readback() == variable.get() == 4.0
     for disabled in (False, True):
         if disabled:
             device.model.disable()

@@ -47,7 +47,7 @@ from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
 from .deviceaccess import DeviceAccess
 from .deviceaccesslist import DeviceAccessList
-from .insertion_device import InsertionDeviceMode, RInsertionDeviceControlVariable, RWInsertionDeviceControlVariable
+from .insertion_device import InsertionDeviceMode, RWInsertionDeviceControlVariable
 
 
 class ControlSystem(ElementHolder, metaclass=ABCMeta):
@@ -229,10 +229,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             moving = (
                 RWScalarBoolean(self.get_device_access(definition["movement_flag"])) if "movement_flag" in definition else None
             )
-            accessor = (
-                RInsertionDeviceControlVariable if definition.get("access") == "read" else RWInsertionDeviceControlVariable
-            )
-            control_variables[name] = accessor(backend, definition["unit"], moving)
+            control_variables[name] = RWInsertionDeviceControlVariable(backend, definition["unit"], moving)
         flags = {name: RWScalarBoolean(self.get_device_access(ref)) for name, ref in device.flag_references.items()}
         mode = InsertionDeviceMode(self.get_device_access(device.control_mode)) if device.control_mode is not None else None
         self.insertion_device.add(device.attach(self, control_variables, flags=flags, mode=mode))

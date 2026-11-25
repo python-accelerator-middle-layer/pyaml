@@ -25,8 +25,8 @@ class RInsertionDeviceControlVariable(ReadFloatScalar):
     def get(self) -> float:
         return self._value
 
-    def get_setpoint(self) -> float:
-        """Return the model reference, not a hardware setpoint."""
+    def readback(self) -> float:
+        """Return the model reference, not a hardware readback."""
         return self._value
 
     def unit(self) -> str:
