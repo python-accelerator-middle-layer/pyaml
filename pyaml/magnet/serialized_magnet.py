@@ -359,7 +359,16 @@ class ReadWriteSerializedStrengthArray(abstract.ReadWriteFloatArray):
         ----------
         value : np.ndarray
             Requested strength of each magnet, in declaration order.
+
+        Raises
+        ------
+        PyAMLException
+            If ``value`` is not a 1-D sequence holding one value per magnet.
         """
+        if np.ndim(value) != 1 or len(value) != len(self._strengths):
+            raise PyAMLException(
+                f"One strength value per magnet is expected ({len(self._strengths)} values), got {np.shape(value)}"
+            )
         self._hardwares[0].set(self._model.compute_hardware_from_strengths(value, self._hardwares[0].get()))
 
     def set_and_wait(self, value: np.ndarray):

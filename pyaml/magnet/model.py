@@ -142,7 +142,7 @@ class MagnetModel(metaclass=ABCMeta):
         Tells if all the strengths of the model are driven by one power supply.
 
         Returns
-        ----------
+        -------
         bool
             True if the model has a single degree of freedom shared by all its strengths (serialized magnets)
         """
