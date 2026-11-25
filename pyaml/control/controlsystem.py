@@ -19,6 +19,7 @@ from ..common.holders.element_holder import ElementHolder
 from ..common.units import SI_ANGLE, SI_FREQUENCY, SI_POSITION, SI_TUNE, SI_VOLTAGE, is_frequency_unit
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
+    CSHardwareScalarAggregator,
     CSScalarAggregator,
     CSSparseScalarAggregator,
     CSStrengthScalarAggregator,
@@ -242,13 +243,14 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         agg = self._create_scalar_aggregator()
         if agg is None:
             return None
+        hagg = CSHardwareScalarAggregator(agg)
         for m in magnets:
             if not m.model.has_hardware():
                 return None
             psIndex = m.hardware.index() if isinstance(m.hardware, RWMapper) else 0
             ref = m.model.get_device_names()[psIndex]
-            agg.add_devices(self.get_si_device_access(ref, _hardware_unit(m.model, psIndex)))
-        return agg
+            hagg.add_magnet(m, self.get_si_device_access(ref, _hardware_unit(m.model, psIndex)))
+        return hagg
 
     def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator | None]:
         """
@@ -301,7 +303,9 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         for index in range(magnets.get_nb_magnets()):
             sub_model = magnets.model.get_sub_model(index)
             currents.append(RWHardwareScalar(sub_model, device) if magnets.model.has_hardware() else None)
-            strengths.append(RWSerializedStrengthScalar(sub_model, device, index) if magnets.model.has_physics() else None)
+            strengths.append(
+                RWSerializedStrengthScalar(sub_model, device, index, magnets.model) if magnets.model.has_physics() else None
+            )
         attached_magnets = magnets.attach(self, strengths, currents)
         self.serialized_magnet.add(attached_magnets[0])
         for magnet in attached_magnets[1:]:

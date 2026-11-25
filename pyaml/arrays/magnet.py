@@ -30,6 +30,26 @@ class Magnet(ArrayConfig, DynamicValidation):
     fill_array(holder)
         Fill the magnet array in the element holder.
 
+    Notes
+    -----
+    A serialized family (:py:class:`~pyaml.magnet.serialized_magnet.SerializedMagnets`) is a magnet: its name,
+    or a pattern matching it, adds one element to the array, the family, which reads and writes the average
+    strength and the power-supply current of its series. The magnets of the family are not added, even when
+    listed explicitly or matched by the same pattern: they are already driven through the family.
+
+    - ``~FAMILY`` excludes the family and its magnets.
+    - Excluding one magnet of a family which is in the array raises an error: a series cannot be split. List the
+      individual magnets of the series instead to drive a part of it.
+
+    .. code-block:: yaml
+
+        - type: pyaml.arrays.magnet
+          name: QForTune
+          elements:
+            - QF1A          # serialized family: one element
+            - QF1A-C05      # magnet of QF1A: already driven by the family, not added
+            - QD2*          # individual quadrupoles and families matching the pattern
+
     Examples
     --------
 

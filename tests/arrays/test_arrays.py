@@ -247,9 +247,12 @@ def test_arrays(install_test_package):
         "tests/config/sr_serialized_magnets.yaml",
     ],
 )
-def test_serialized_magnets_arrays(sr_file):
-    sr: Accelerator = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
-    the_serie = sr.design.serialized_magnets.get("series")
+def test_deprecated_serialized_magnet_array_config_builds_a_magnet_array(sr_file):
+    # "series" is declared with the deprecated type pyaml.arrays.serialized_magnet
+    with pytest.warns(DeprecationWarning, match="pyaml.arrays.serialized_magnet is deprecated"):
+        sr: Accelerator = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
+    the_serie = sr.design.magnets.get("series")
+    assert isinstance(the_serie, MagnetArray)
     strength = the_serie.strengths.get()
     assert len(strength) == 1
     print(strength)
