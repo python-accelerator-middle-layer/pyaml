@@ -19,10 +19,11 @@ means no configured variable; None means configured but unavailable.
 ReadFloatScalar and ReadWriteFloatScalar distinguish read-only and writable
 control variables.
 
-Live control variables bind through opaque backend references. ``get()`` reads the measured
-coordinate; ``get_setpoint()`` reads the requested value. ``access: read`` exposes
-a read-only variable. Without a backend reference a variable remains unavailable.
-``set_and_wait()`` uses the configured boolean movement flag; current variables can
+Live control variables bind through opaque backend references. ``get()`` reads
+the measured value; ``get_setpoint()`` reads the requested value. ``access: read``
+exposes a read-only variable. Without a backend reference a variable remains
+unavailable. Gap and phase/shift variables use ``set_and_wait()`` with a configured
+boolean movement flag. PS1 and other current controls have no movement flags and
 use plain ``set()``. Sequencing and interlocks remain control-system concerns.
 FFWD objects own their correctors, controls and measurements.
 
@@ -40,12 +41,12 @@ reference) and electromagnetic devices with arbitrarily named current variables:
       model_operating_point: {ps1: 100.0, ps2: 0.0, ps3: 0.0}
 
 After retrieving a device through ``sr.live.insertion_device.get(name)``, use
-``device.control_variables["gap"].set_and_wait(12.0)`` for a mechanical variable
-with a movement flag, or ``device.control_variables["ps1"].set(100.0)`` for a
-current variable.
-Waiting only polls the boolean flag until false: no readback tolerance, moving
-edge detection, or timeout policy is added. Without a movement flag,
-``set_and_wait()`` raises before writing. Backend errors propagate unchanged.
+``device.control_variables["gap"].set_and_wait(12.0)`` for gap or phase/shift
+motion, or ``device.control_variables["ps1"].set(100.0)`` for a current control
+without a movement flag. For gap and phase/shift motion, waiting only polls the
+boolean flag until false: no readback tolerance, moving edge detection, or
+timeout policy is added. Without a movement flag, ``set_and_wait()`` raises
+before writing. Backend errors propagate unchanged.
 Optional controls use ``device.mode.get()/set(value)`` and
 ``device.flags[name].get()/set(value)``; the latter reuse ``RWScalarBoolean``.
 
@@ -79,8 +80,10 @@ PYAMLCLASS = "InsertionDevice"
 class InsertionDevice(Element, DynamicValidation):
     """Hold control variables and references to other pyAML elements.
 
-    ``control_variables`` configures units, opaque backend references, optional
-    movement_flag and access (``read`` or ``readwrite``, the default).
+    ``control_variables`` configures units, opaque backend references and access
+    (``read`` or ``readwrite``, the default). Gap and phase/shift variables may
+    configure a ``movement_flag`` for ``set_and_wait()``. Current controls have
+    no movement flags and use ``set()``.
     After attachment, the same attribute exposes the bound scalar accessors.
     At least one named variable is required, but no particular gap, phase or
     current channel is mandatory.

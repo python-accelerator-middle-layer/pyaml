@@ -55,7 +55,7 @@ class RInsertionDeviceControlVariable(ReadFloatScalar):
 
 
 class RWInsertionDeviceControlVariable(RInsertionDeviceControlVariable, ReadWriteFloatScalar):
-    """Write a control variable, optionally waiting on its boolean movement flag."""
+    """Write gap/phase variables with movement flags or currents without them."""
 
     def set(self, value: float) -> None:
         if not check_range(value, self.get_range()):
@@ -63,6 +63,7 @@ class RWInsertionDeviceControlVariable(RInsertionDeviceControlVariable, ReadWrit
         self._device.set(value)
 
     def set_and_wait(self, value: float) -> None:
+        """Set a gap or phase/shift variable and wait while its movement flag is true."""
         if self.moving is None:
             raise PyAMLException(
                 f"{self._device.name()}: set_and_wait requires a movement_flag; use set() for current variables"
