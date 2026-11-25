@@ -16,8 +16,8 @@ Example (the lattice already contains the kickmap)::
 
 Runtime ``control_variables`` use existing pyAML scalar accessors. An absent key
 means no configured variable; None means configured but unavailable.
-Live variables expose ReadWriteFloatScalar accessors; the fixed model exposes
-ReadFloatScalar accessors with restricted writes.
+Both backends expose ReadWriteFloatScalar accessors; the fixed model rejects
+control-variable writes.
 
 Live control variables bind through opaque backend references. ``get()`` reads
 the requested setpoint; ``readback()`` reads the measured value. Without a backend
@@ -50,8 +50,8 @@ before writing. Backend errors propagate unchanged.
 Optional controls use ``device.mode.get()/set(value)`` and
 ``device.flags[name].get()/set(value)``; the latter reuse ``RWScalarBoolean``.
 
-In a simulator, variable reads report the configured reference point; writes accept
-only that exact value as a no-op. ``device.model.disable()`` delegates to pyAT's
+In a simulator, variable reads report the configured reference point and all
+control-variable writes raise an error. ``device.model.disable()`` delegates to pyAT's
 same-length drift/identity approximation; ``enable()`` restores the kickmap.
 Neither operation changes the reference point or any hardware.
 """
@@ -62,16 +62,16 @@ from collections.abc import Mapping
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Self
 
-from .common.abstract import ReadFloatScalar
-from .common.element import Element
-from .common.exception import PyAMLConfigException
-from .validation import DynamicValidation, register_schema
+from ..common.abstract import ReadWriteFloatScalar
+from ..common.element import Element
+from ..common.exception import PyAMLConfigException
+from ..validation import DynamicValidation, register_schema
 
 if TYPE_CHECKING:
-    from .common.holders.element_holder import ElementHolder
-    from .control.abstract_impl import RWScalarBoolean
-    from .control.insertion_device import InsertionDeviceMode
-    from .lattice.insertion_device import FixedInsertionDeviceModel
+    from ..common.holders.element_holder import ElementHolder
+    from ..control.abstract_impl import RWScalarBoolean
+    from ..control.insertion_device import RWInsertionDeviceMode
+    from ..lattice import insertion_device
 
 PYAMLCLASS = "InsertionDevice"
 
@@ -142,15 +142,15 @@ class InsertionDevice(Element, DynamicValidation):
         self._control_variable_definitions = copy.deepcopy(control_variables)
         self._flag_refs = dict(flags or {})
         self._point = dict(model_operating_point) if model_operating_point is not None else None
-        self._control_variables: dict[str, ReadFloatScalar | None] = dict.fromkeys(self._control_variable_definitions)
+        self._control_variables: dict[str, ReadWriteFloatScalar | None] = dict.fromkeys(self._control_variable_definitions)
         self._flags: dict[str, RWScalarBoolean | None] = dict.fromkeys(self._flag_refs)
-        self.mode: InsertionDeviceMode | None = None
+        self.mode: RWInsertionDeviceMode | None = None
         self.orbit_feedforward: Element | None = None
         self.tune_feedforward: Element | None = None
-        self.model: FixedInsertionDeviceModel | None = None
+        self.model: insertion_device.InsertionDevice | None = None
 
     @property
-    def control_variables(self) -> Mapping[str, ReadFloatScalar | None]:
+    def control_variables(self) -> Mapping[str, ReadWriteFloatScalar | None]:
         """Bound scalar accessors, or None for configured but unavailable variables."""
         return MappingProxyType(self._control_variables)
 
@@ -170,10 +170,10 @@ class InsertionDevice(Element, DynamicValidation):
     def attach(
         self,
         peer: "ElementHolder",
-        control_variables: Mapping[str, ReadFloatScalar | None] | None = None,
-        model: "FixedInsertionDeviceModel | None" = None,
+        control_variables: Mapping[str, ReadWriteFloatScalar | None] | None = None,
+        model: "insertion_device.InsertionDevice | None" = None,
         flags: Mapping[str, "RWScalarBoolean | None"] | None = None,
-        mode: "InsertionDeviceMode | None" = None,
+        mode: "RWInsertionDeviceMode | None" = None,
     ) -> Self:
         """Return a per-peer copy; defaults give metadata-only access."""
         obj = copy.copy(self)

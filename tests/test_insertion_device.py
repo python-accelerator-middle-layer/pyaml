@@ -7,7 +7,7 @@ import pytest
 
 from pyaml import PyAMLConfigException, PyAMLException
 from pyaml.accelerator import Accelerator
-from pyaml.common.abstract import ReadFloatScalar, ReadWriteFloatScalar
+from pyaml.common.abstract import ReadWriteFloatScalar
 from pyaml.common.element import Element
 from pyaml.configuration.factory import Factory
 from pyaml.control.abstract_impl import RWScalarBoolean
@@ -103,7 +103,7 @@ def _machine(path, devices=None, controls=None):
             {"gap": 4.0, "phase": 0.0},
         ),
         (
-            {"class_path": "pyaml.insertion_device.InsertionDevice"},
+            {"class_path": "pyaml.insertion_device.insertion_device.InsertionDevice"},
             {"gap": {"unit": "mm"}, "parallel": {"unit": "mm"}, "antiparallel": {"unit": "mm"}},
             {"gap": 4.0, "parallel": 1.0, "antiparallel": 0.0, "mode": "parallel"},
         ),
@@ -211,8 +211,7 @@ def test_live_attachment_binds_hardware_separately_from_model(id_lattice_file):
     assert live.control_mode == "MODE"
     assert live.mode.get() == "parallel"
     assert live.model is None
-    assert isinstance(design.control_variables["gap"], ReadFloatScalar)
-    assert not isinstance(design.control_variables["gap"], ReadWriteFloatScalar)
+    assert isinstance(design.control_variables["gap"], ReadWriteFloatScalar)
     assert source.control_variables["gap"] is None
     assert source.mode is None
     assert source.flags == {"moving": None, "orbit_ff": None}
@@ -387,7 +386,7 @@ def test_optional_controls_and_hardware_motion_do_not_change_model(id_lattice_fi
     assert design.model.reference == reference
 
 
-def test_fixed_reference_noops_and_rejected_writes(id_lattice_file):
+def test_fixed_reference_rejects_control_variable_writes(id_lattice_file):
     machine = _machine(id_lattice_file, [_device(control_mode="MODE", model_operating_point={"gap": 4.0, "mode": "parallel"})])
     device = machine.design.insertion_device.get("ID")
     variable = device.control_variables["gap"]
@@ -396,14 +395,11 @@ def test_fixed_reference_noops_and_rejected_writes(id_lattice_file):
     for disabled in (False, True):
         if disabled:
             device.model.disable()
-        variable.set(4.0)
-        variable.set_and_wait(4.0)
         device.model.mode = "parallel"
-        for value in (5.0, float("nan")):
-            with pytest.raises(PyAMLException, match="fixed model operating point"):
-                variable.set_and_wait(value)
-        with pytest.raises(PyAMLException, match="fixed model operating point"):
-            variable.set(5.0)
+        for value in (4.0, 5.0, float("nan")):
+            for write in (variable.set, variable.set_and_wait):
+                with pytest.raises(PyAMLException, match="fixed model operating point"):
+                    write(value)
         with pytest.raises(PyAMLException, match="fixed model operating point"):
             device.model.mode = "antiparallel"
         assert variable.get() == 4.0

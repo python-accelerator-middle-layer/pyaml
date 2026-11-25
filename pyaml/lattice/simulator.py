@@ -18,7 +18,7 @@ from ..common.exception import PyAMLException
 from ..common.holders.element_holder import ElementHolder
 from ..configuration import ROOT
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
-from ..insertion_device import InsertionDevice
+from ..insertion_device import insertion_device
 from ..lattice.abstract_impl import (
     BPMHScalarAggregator,
     BPMScalarAggregator,
@@ -48,7 +48,7 @@ from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
 from ..validation import DynamicValidation, register_schema
-from .insertion_device import FixedInsertionDeviceModel
+from .insertion_device import InsertionDevice
 from .lattice_elements_linker import LatticeElementsLinker
 from .twiss_in import TwissIn
 
@@ -247,7 +247,7 @@ class Simulator(ElementHolder, DynamicValidation):
             aggv.add_elem(e)
         return [agg, aggh, aggv]
 
-    def _fill_insertion_device(self, device: InsertionDevice) -> None:
+    def _fill_insertion_device(self, device: insertion_device.InsertionDevice) -> None:
         kickmaps = []
         for element in self.get_at_elems(device):
             if not isinstance(element, at.InsertionDeviceKickMap):
@@ -255,7 +255,7 @@ class Simulator(ElementHolder, DynamicValidation):
             kickmaps.append(element)
         if not kickmaps:
             raise PyAMLException(f"{device.name}: no insertion-device kickmaps found")
-        model = FixedInsertionDeviceModel(device, kickmaps)
+        model = InsertionDevice(device, kickmaps)
         self.insertion_device.add(model.attach(device, self))
 
     def _fill_magnet(self, magnet: Magnet) -> None:

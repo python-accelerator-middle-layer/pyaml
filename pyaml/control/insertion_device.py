@@ -9,7 +9,7 @@ from .deviceaccess import DeviceAccess
 from .readback_value import Value
 
 
-class InsertionDeviceMode:
+class RWInsertionDeviceMode:
     """Expose an optional mode; the control system owns allowed transitions."""
 
     def __init__(self, device: DeviceAccess):

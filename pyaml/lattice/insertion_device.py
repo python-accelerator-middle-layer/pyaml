@@ -1,21 +1,20 @@
 """Fixed-operating-point insertion-device accessors for pyAT."""
 
 import copy
-import math
 from typing import TYPE_CHECKING
 
 import at
 
-from ..common.abstract import ReadFloatScalar
+from ..common.abstract import ReadWriteFloatScalar
 from ..common.exception import PyAMLException
-from ..insertion_device import InsertionDevice
+from ..insertion_device import insertion_device
 
 if TYPE_CHECKING:
     from ..common.holders.element_holder import ElementHolder
 
 
-class RInsertionDeviceControlVariable(ReadFloatScalar):
-    """Expose a control variable at the kickmap's fixed operating point."""
+class RWInsertionDeviceControlVariable(ReadWriteFloatScalar):
+    """Expose the shared control-variable interface while rejecting model writes."""
 
     def __init__(self, name: str, value: float, unit: str):
         self._name = name
@@ -36,17 +35,16 @@ class RInsertionDeviceControlVariable(ReadFloatScalar):
         return [self._value, self._value]
 
     def set(self, value: float) -> None:
-        if not isinstance(value, (int, float)) or not math.isfinite(value) or value != self._value:
-            raise PyAMLException(f"{self._name}: fixed model operating point does not support {value!r}")
+        raise PyAMLException(f"{self._name}: fixed model operating point does not support writes ({value!r})")
 
     def set_and_wait(self, value: float) -> None:
         self.set(value)
 
 
-class FixedInsertionDeviceModel:
+class InsertionDevice:
     """Linked kickmap segment(s) and their fixed reference, independent of hardware."""
 
-    def __init__(self, device: InsertionDevice, kickmaps: list[at.InsertionDeviceKickMap]):
+    def __init__(self, device: insertion_device.InsertionDevice, kickmaps: list[at.InsertionDeviceKickMap]):
         point = device.model_operating_point
         if point is None or not set(device.control_variables).issubset(point):
             raise PyAMLException(f"{device.name}: model_operating_point must include every configured control variable")
@@ -95,13 +93,13 @@ class FixedInsertionDeviceModel:
         for element in self._kickmaps:
             element.disable()
 
-    def attach(self, device: InsertionDevice, peer: "ElementHolder") -> InsertionDevice:
+    def attach(self, device: insertion_device.InsertionDevice, peer: "ElementHolder") -> insertion_device.InsertionDevice:
         control_variables = {}
         for name, definition in device._control_variable_definitions.items():
             value = self._point[name]
             if not isinstance(value, (int, float)):
                 raise PyAMLException(f"{device.name}.{name}: numeric model reference is required")
-            control_variables[name] = RInsertionDeviceControlVariable(
+            control_variables[name] = RWInsertionDeviceControlVariable(
                 f"{device.name}.{name}", float(value), definition["unit"]
             )
         return device.attach(peer, control_variables, self)
