@@ -548,7 +548,6 @@ class YellowPages:
             ("diagnostic.bpms", "_BPM_ARRAYS", YellowPagesCategory.ARRAYS),
             ("magnets", "_MAGNET_ARRAYS", YellowPagesCategory.ARRAYS),
             ("combined_function_magnets", "_CFM_MAGNET_ARRAYS", YellowPagesCategory.ARRAYS),
-            ("serialized_magnets", "_SERIALIZED_MAGNETS_ARRAYS", YellowPagesCategory.ARRAYS),
             ("", "_ELEMENT_ARRAYS", YellowPagesCategory.ARRAYS),
             ("tool", "_TOOLS", YellowPagesCategory.TOOLS),
             ("diagnostic", "_DIAG", YellowPagesCategory.DIAGNOSTICS),

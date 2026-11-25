@@ -35,6 +35,10 @@ class GenericArrayHolder(Generic[T, A]):
         Callback constructing an array from a name and elements.
     what : str
         Human-readable array type used for lookup errors.
+    members_func : Callable[[str], list[str] | None], optional
+        Callback returning the names of the members of a group element (a
+        serialized family), ``None`` for an element that is not a group. See
+        :meth:`ElementHolder._fill_array`.
 
     Methods
     -------
@@ -59,6 +63,7 @@ class GenericArrayHolder(Generic[T, A]):
         get_func: Callable[[str], T],
         constructor: Callable[[str, list[T]], A],
         what: str,
+        members_func: Callable[[str], list[str] | None] | None = None,
     ):
         """
         Initialize an array holder with storage and lookup callbacks.
@@ -69,6 +74,7 @@ class GenericArrayHolder(Generic[T, A]):
         self._get_func = get_func
         self._constructor = constructor
         self._what = what
+        self._members_func = members_func
 
     def get(self, name: str | None = None) -> A:
         """
@@ -106,7 +112,9 @@ class GenericArrayHolder(Generic[T, A]):
         :class:`~pyaml.common.holders.element_holder.ElementHolder`, including
         wildcard and exclusion patterns.
         """
-        self._peer._fill_array(arrayName, elementNames, self._get_func, self._constructor, self._array_store)
+        self._peer._fill_array(
+            arrayName, elementNames, self._get_func, self._constructor, self._array_store, self._members_func
+        )
 
     def __getitem__(self, key):
         """
