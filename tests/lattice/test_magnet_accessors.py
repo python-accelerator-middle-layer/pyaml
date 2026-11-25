@@ -9,6 +9,7 @@ from pyaml.lattice.abstract_impl import (
     RWStrengthArray,
     RWStrengthScalar,
 )
+from pyaml.lattice.polynom_info import PolynomInfo
 from pyaml.magnet.hcorrector import HCorrector
 from pyaml.magnet.identity_cfm_model import IdentityCFMagnetModel
 from pyaml.magnet.identity_model import IdentityMagnetModel
@@ -90,3 +91,43 @@ def test_serialized_magnets_follow_the_strength_of_one_magnet():
     assert elements[0].PolynomB[0] == pytest.approx(-1.0e-6)
     assert elements[1].PolynomB[0] * elements[1].Length == pytest.approx(-1.0e-6)
     assert serialized[1].index() == 1
+
+
+@pytest.mark.parametrize("accessor_type", [RWStrengthScalar, RWHardwareScalar])
+@pytest.mark.parametrize("sign", [-1.0, 1.0])
+@pytest.mark.parametrize("length", [0.0, 0.4])
+@pytest.mark.parametrize("angle", [0.0, 0.02])
+def test_scalar_bending_angle(accessor_type, sign, length, angle):
+    element = at.Dipole("BEND", length, angle)
+    element.PolynomB[0] = 0.003
+    effective_length = length or 1.0
+    model = IdentityMagnetModel(physics="COR", unit="rad")
+    accessor = accessor_type([element], PolynomInfo("PolynomB", 0, sign), model)
+
+    assert accessor.get() == pytest.approx(sign * 0.003 * effective_length + angle)
+    accessor.set(0.025)
+    assert element.PolynomB[0] == pytest.approx((0.025 - angle) / (sign * effective_length))
+    assert accessor.get() == pytest.approx(0.025)
+    assert element.BendingAngle == angle
+
+    element.BendingAngle += 0.01
+    assert accessor.get() == pytest.approx(0.035)
+    accessor.set(0.04)
+    assert element.PolynomB[0] == pytest.approx((0.04 - angle - 0.01) / (sign * effective_length))
+    assert accessor.get() == pytest.approx(0.04)
+
+
+def test_serialized_magnets_with_bending_angles():
+    elements = [at.Dipole("B1", 0.2, 0.01), at.Dipole("B2", 0.4, 0.03)]
+    model = IdentityMagnetModel(physics="COR", unit="rad")
+    strengths = [RWStrengthScalar([e], HCorrector.polynom, model) for e in elements]
+    currents = [RWHardwareScalar([e], HCorrector.polynom, model) for e in elements]
+    serialized = [RWSerializedStrength(strengths, currents, i) for i in range(len(elements))]
+
+    serialized[0].set(0.05)
+
+    for accessor in serialized:
+        assert accessor.get() == pytest.approx(0.05)
+    assert elements[0].PolynomB[0] == pytest.approx(-0.2)
+    assert elements[1].PolynomB[0] == pytest.approx(-0.05)
+    assert [e.BendingAngle for e in elements] == [0.01, 0.03]

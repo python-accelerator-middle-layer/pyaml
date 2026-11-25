@@ -3,6 +3,12 @@ Read/write interfaces for simulated lattice elements.
 
 This module adapts Accelerator Toolbox lattice elements to PyAML accessors for
 magnet strengths, hardware values, BPM readings, RF parameters, and tune data.
+
+For ``PolynomB[0]``, integrated strength is
+``sign * coefficient * effective_length + BendingAngle``. The bending angle is
+outside the sign conversion and defaults to zero when absent. Writes subtract
+the total bending angle before distributing the residual polynomial strength;
+they never change the lattice elements' bending angles.
 """
 
 import at
@@ -34,6 +40,13 @@ def _effective_lengths(elements: list[at.Element]) -> list[float]:
     if all(L == 0.0 for L in lengths):
         return [1.0] * len(lengths)
     return lengths
+
+
+def _bending_angle(element: at.Element, polynom: str, index: int) -> float:
+    """Return one element's current bend offset for the horizontal dipole component."""
+    if polynom == "PolynomB" and index == 0:
+        return getattr(element, "BendingAngle", 0.0)
+    return 0.0
 
 
 class RWHardwareScalar(abstract.ReadWriteFloatScalar):
@@ -78,6 +91,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         self._poly = [e.__getattribute__(poly.attName) for e in elements]
         self._sign = poly.sign
         self._polyIdx = poly.index
+        self._polyName = poly.attName
         self._is_thin = all(e.Length == 0 for e in elements)
         self._lengths = _effective_lengths(elements)
         self._length: float = sum(self._lengths)
@@ -92,7 +106,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
 
     def get(self) -> float:
         """Return the current value."""
-        s = 0
+        s = sum(_bending_angle(e, self._polyName, self._polyIdx) for e in self._elements)
         for idx, _ in enumerate(self._elements):
             s += self._poly[idx][self._polyIdx] * self._sign * self._lengths[idx]
         return self._model.compute_hardware_values([s])[0]
@@ -107,6 +121,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
             Hardware value to apply, in the unit reported by the magnet model.
         """
         s = self._model.compute_strengths([value])[0]
+        s -= sum(_bending_angle(e, self._polyName, self._polyIdx) for e in self._elements)
         for idx, _ in enumerate(self._elements):
             self._poly[idx][self._polyIdx] = s / (self._length * self._sign)
 
@@ -180,6 +195,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         self._poly = [e.__getattribute__(poly.attName) for e in elements]
         self._sign = poly.sign
         self._polyIdx = poly.index
+        self._polyName = poly.attName
         self._lengths = _effective_lengths(elements)
         self._length: float = sum(self._lengths)
 
@@ -208,12 +224,13 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         if polynom is None:
             pIdx = self._polyIdx
             poly = self._poly
+            polynom = self._polyName
         else:
             # Override strength access
             pIdx = polyidx
             poly = [e.__getattribute__(polynom) for e in self._elements]
 
-        s = 0
+        s = sum(_bending_angle(e, polynom, pIdx) for e in self._elements)
         for idx, _ in enumerate(self._elements):
             s += poly[idx][pIdx] * self._sign * self._lengths[idx]
         return s
@@ -236,11 +253,13 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         if polynom is None:
             pIdx = self._polyIdx
             poly = self._poly
+            polynom = self._polyName
         else:
             # Override strength access
             pIdx = polyidx
             poly = [e.__getattribute__(polynom) for e in self._elements]
 
+        value -= sum(_bending_angle(e, polynom, pIdx) for e in self._elements)
         for idx, _ in enumerate(self._elements):
             poly[idx][pIdx] = value / (self._length * self._sign)
 
@@ -524,12 +543,14 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         self.__elements = elements
         self.__poly = []
         self.__polyIdx = []
+        self.__polyName = []
         self.__sign = []
         self.__model = model
         self.__length = _effective_lengths(elements[:1])[0]
         for p in poly:
             self.__poly.append(elements[0].__getattribute__(p.attName))
             self.__polyIdx.append(p.index)
+            self.__polyName.append(p.attName)
             self.__sign.append(p.sign)
 
     # Gets the value
@@ -539,6 +560,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
             s[i] = self.__poly[i][self.__polyIdx[i]] * self.__sign[i] * self.__length
+            s[i] += _bending_angle(self.__elements[0], self.__polyName[i], self.__polyIdx[i])
         return self.__model.compute_hardware_values(s)
 
     # Sets the value
@@ -554,7 +576,8 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = self.__model.compute_strengths(value)
         for i in range(nbStrength):
-            self.__poly[i][self.__polyIdx[i]] = s[i] / (self.__length * self.__sign[i])
+            offset = _bending_angle(self.__elements[0], self.__polyName[i], self.__polyIdx[i])
+            self.__poly[i][self.__polyIdx[i]] = (s[i] - offset) / (self.__length * self.__sign[i])
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
@@ -615,12 +638,14 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         self.__elements = elements
         self.__poly = []
         self.__polyIdx = []
+        self.__polyName = []
         self.__sign = []
         self.__model = model
         self.__length = _effective_lengths(elements[:1])[0]
         for p in poly:
             self.__poly.append(elements[0].__getattribute__(p.attName))
             self.__polyIdx.append(p.index)
+            self.__polyName.append(p.attName)
             self.__sign.append(p.sign)
 
     # Gets the value
@@ -630,6 +655,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
             s[i] = self.__poly[i][self.__polyIdx[i]] * self.__sign[i] * self.__length
+            s[i] += _bending_angle(self.__elements[0], self.__polyName[i], self.__polyIdx[i])
         return s
 
     # Sets the value
@@ -643,9 +669,9 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
             Integrated strengths to apply, one per magnet and ordered like the array.
         """
         nbStrength = len(self.__poly)
-        s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            self.__poly[i][self.__polyIdx[i]] = value[i] / (self.__length * self.__sign[i])
+            offset = _bending_angle(self.__elements[0], self.__polyName[i], self.__polyIdx[i])
+            self.__poly[i][self.__polyIdx[i]] = (value[i] - offset) / (self.__length * self.__sign[i])
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
