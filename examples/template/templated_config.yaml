@@ -1,0 +1,29 @@
+class: pyaml.accelerator.Accelerator
+machine: sr
+facility: PETRAIII
+energy: 6e9
+controls:
+ - class: tango.pyaml.controlsystem.TangoControlSystem
+   tango_host: ebs-simu-3:10000
+   name: live
+   catalog:
+     class: tango.pyaml.tango_catalog.TangoCatalog
+     disconnected: True
+devices:
+- ${template:SHI,SHI,01}
+- ${template:SHI,SHI,02}
+- ${template:SHI,SHI,03}
+templates:
+  - name: SHI
+    parameters:
+      - sh_name
+      - ii
+    config:
+      class: pyaml.magnet.hcorrector.HCorrector
+      name: "{sh_name}-{ii}"
+      model:
+        class: pyaml.magnet.linear_model.LinearMagnetModel
+        unit: rad
+        hardware_unit: str
+        calibration_factor: 1.0
+        powerconverter: tango/MAGNET/{sh_name}-{ii}/B1L

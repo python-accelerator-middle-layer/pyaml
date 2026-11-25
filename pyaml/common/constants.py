@@ -15,7 +15,7 @@ HORIZONTAL_KICK_SIGN: float = -1.0
 
 class Action(Enum):
     """
-    Identify callback points in measurement-tool workflows.
+    Identify callback points in measurement and orbit-correction workflows.
 
     Attributes
     ----------
@@ -27,6 +27,8 @@ class Action(Enum):
         Callback triggered immediately after taking a measurement.
     INIT : int
         Triggered once before the measurement starts
+    BEFORE_BPM_READING : int
+        Triggered before each BPM acquisition and its configured read delay.
     """
 
     APPLY = 0
@@ -37,3 +39,5 @@ class Action(Enum):
     "Triggered immediately after taking a measurement."
     INIT = 3
     "Triggered once before the measurement starts"
+    BEFORE_BPM_READING = 4
+    "Triggered before each BPM acquisition and its configured read delay."

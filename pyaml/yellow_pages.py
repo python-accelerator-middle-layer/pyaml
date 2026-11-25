@@ -7,6 +7,7 @@ Key points:
     - Auto-discovery only: arrays, tools and diagnostics are discovered at runtime
       by scanning all modes.
     - No caching: every call reflects current runtime state.
+    - The printed overview groups entries by their accelerator holder access paths.
     - Simple query syntax for identifiers:
         - wildcard / fnmatch:
             yp["OH4*"]
@@ -99,6 +100,11 @@ class YellowPages:
     - ``simulators() -> dict[str, ElementHolder]``
     - ``modes() -> dict[str, ElementHolder]``
 
+    The printed overview groups entries by holder access path. Programmatic
+    categories remain ``Arrays``, ``Tools`` and ``Diagnostics``. Identifier
+    searches return lists of names; retrieve the corresponding objects through
+    the holder of a mode where they are available.
+
     Examples
     --------
 
@@ -108,17 +114,25 @@ class YellowPages:
 
         >>> print(sr.yellow_pages)
 
-    Resolve an entry across all modes:
+    List the identifiers in a named array across all modes:
 
     .. code-block:: python
 
         >>> sr.yellow_pages.get("BPM")
 
-    Resolve in a specific mode:
+    List the identifiers in a named array in a specific mode:
 
     .. code-block:: python
 
         >>> sr.yellow_pages.get("BPM", mode="live")
+
+    Retrieve configured arrays through the paths shown in the overview:
+
+    .. code-block:: python
+
+        >>> sr.design.magnets.get("QForTune")
+        >>> sr.design.diagnostic.bpms.get("BPM")
+        >>> sr.design.get("Cell1")
 
     Search identifiers using wildcards:
 
@@ -430,10 +444,12 @@ class YellowPages:
 
         - controls
         - simulators
-        - discovered arrays, tools and diagnostics
+        - discovered arrays, tools and diagnostics grouped by holder access path
+        - retrieval templates for each nonempty group
 
         The displayed type corresponds to the Python module
-        defining the resolved object.
+        defining the resolved object. Substitute a listed mode and entry name
+        in the retrieval template, choosing a mode where that entry is available.
 
         Examples
         --------
@@ -454,16 +470,30 @@ class YellowPages:
                 design
                 .
 
-            Arrays:
+            Use <mode> from Controls or Simulators and <name> from the relevant group.
+
+            diagnostic.bpms:
+                Access: accelerator.<mode>.diagnostic.bpms.get("<name>")
                 BPM (pyaml.arrays.bpm_array) size=224
+                .
+
+            magnets:
+                Access: accelerator.<mode>.magnets.get("<name>")
                 HCORR (pyaml.arrays.magnet_array) size=96
                 .
 
-            Tools:
+            Named element arrays:
+                Access: accelerator.<mode>.get("<name>")
+                Cell1 (pyaml.arrays.element_array) size=4
+                .
+
+            tool:
+                Access: accelerator.<mode>.tool.get("<name>")
                 DEFAULT_ORBIT_CORRECTION (pyaml.tuning_tools.orbit)
                 .
 
-            Diagnostics:
+            diagnostic:
+                Access: accelerator.<mode>.diagnostic.get("<name>")
                 BETATRON_TUNE (pyaml.diagnostics.tune_monitor)
                 .
         """
@@ -485,15 +515,17 @@ class YellowPages:
         lines.append("    .")
         lines.append("")
 
-        discovered = self._discover()
-        for cat in YellowPagesCategory:
-            keys = discovered.get(cat, set())
-            if not keys:
-                continue
+        discovered = self._discover_overview()
+        if discovered:
+            lines.append("Use <mode> from Controls or Simulators and <name> from the relevant group.")
+            lines.append("")
 
-            lines.append(f"{cat.value}:")
-            for key in keys:
-                lines.append(self._format_key(cat, key))
+        for path, category, entries in discovered:
+            lines.append(f"{path or 'Named element arrays'}:")
+            accessor = f".{path}" if path else ""
+            lines.append(f'    Access: accelerator.<mode>{accessor}.get("<name>")')
+            for key, resolved in entries.items():
+                lines.append(self._format_key(category, key, resolved))
             lines.append("    .")
             lines.append("")
 
@@ -506,9 +538,34 @@ class YellowPages:
         Returns
         -------
         str
-            Table of the discovered categories and their keys.
+            Overview of the holder access paths and their entries.
         """
         return self.__repr__()
+
+    def _discover_overview(self) -> list[tuple[str, YellowPagesCategory, dict[str, dict[str, Any]]]]:
+        """Group registered objects by access path, retaining their per-mode values."""
+        groups = (
+            ("diagnostic.bpms", "_BPM_ARRAYS", YellowPagesCategory.ARRAYS),
+            ("magnets", "_MAGNET_ARRAYS", YellowPagesCategory.ARRAYS),
+            ("combined_function_magnets", "_CFM_MAGNET_ARRAYS", YellowPagesCategory.ARRAYS),
+            ("serialized_magnets", "_SERIALIZED_MAGNETS_ARRAYS", YellowPagesCategory.ARRAYS),
+            ("", "_ELEMENT_ARRAYS", YellowPagesCategory.ARRAYS),
+            ("tool", "_TOOLS", YellowPagesCategory.TOOLS),
+            ("diagnostic", "_DIAG", YellowPagesCategory.DIAGNOSTICS),
+        )
+        modes = self._acc.modes()
+        overview: list[tuple[str, YellowPagesCategory, dict[str, dict[str, Any]]]] = []
+        for path, store_name, category in groups:
+            entries: dict[str, dict[str, Any]] = {}
+            for mode_name, holder in modes.items():
+                for key, obj in getattr(holder, store_name).items():
+                    # Root lookup gives typed arrays precedence over generic arrays.
+                    if not path and holder._get_array(key) is not obj:
+                        continue
+                    entries.setdefault(key, {})[mode_name] = obj
+            if entries:
+                overview.append((path, category, entries))
+        return overview
 
     def _discover(self) -> dict[YellowPagesCategory, list[str]]:
         """Scan every mode and group the objects it exposes by category."""
@@ -636,11 +693,10 @@ class YellowPages:
             return obj.__class__.__module__
         return None
 
-    def _format_key(self, category: YellowPagesCategory, key: str) -> str:
+    def _format_key(self, category: YellowPagesCategory, key: str, resolved: dict[str, Any]) -> str:
         """
         Format one discovered key for ``__repr__``.
         """
-        resolved = self._get_object(key)
         type_name = self._get_type_name_from_resolved(resolved)
         type_part = f" ({type_name})" if type_name else ""
 
@@ -653,12 +709,7 @@ class YellowPages:
             availability_part = f" modes={modes} missing={missing}"
 
         if category == YellowPagesCategory.ARRAYS:
-            sizes: dict[str, int] = {}
-            for mode_name, obj in resolved.items():
-                try:
-                    sizes[mode_name] = len(obj)
-                except Exception:
-                    sizes[mode_name] = 0
+            sizes = {mode_name: len(obj) for mode_name, obj in resolved.items()}
 
             if modes == all_modes and sizes and len(set(sizes.values())) == 1:
                 size_part = f" size={next(iter(sizes.values()))}"

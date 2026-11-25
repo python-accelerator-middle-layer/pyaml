@@ -6,6 +6,7 @@ from collections.abc import Generator
 from pathlib import Path
 
 import pytest
+from jsonschema import validate
 from pydantic import Field
 
 from pyaml.validation import (
@@ -51,6 +52,10 @@ class ContainerSchema(ConfigurationSchema):
         default=None,
         description="Container schema used for testing.",
     )
+
+
+class GrandchildSchema(ChildSchemaA):
+    pass
 
 
 # ==========================================================
@@ -120,7 +125,7 @@ def test_save_writes_schema_to_file(registry: SchemaRegistry, tmp_path: Path):
 # ==========================================================
 
 
-def test_generate_replaces_parent_schema_with_registered_subclasses(
+def test_generate_includes_parent_and_registered_subclasses(
     registry: SchemaRegistry,
 ):
     registry.register("pkg.module.Parent", ParentSchema)
@@ -130,6 +135,11 @@ def test_generate_replaces_parent_schema_with_registered_subclasses(
     schema = SchemaGenerator.generate("pkg.module.Parent")
 
     oneof = schema.get("oneOf", [])
+
+    # Parent schema is included directly
+    assert oneof[0]["title"] == "ParentSchema"
+
+    # Subclasses are included as references or inline schemas
     refs = {item["$ref"] for item in oneof if "$ref" in item}
     if refs:
         assert "#/$defs/ChildSchemaA" in refs
@@ -173,6 +183,31 @@ def test_model_schema_preserves_metadata_from_parent_schema(
 
     assert schema["title"] == "ParentSchema"
     assert schema["description"] == "Parent schema used to test inheritance."
+
+
+# ==========================================================
+# oneOf exclusivity
+# ==========================================================
+
+
+def test_generate_oneof_validates_parent_and_subclasses(
+    registry: SchemaRegistry,
+):
+    """Validate the parent, direct children, and a grandchild."""
+    registry.register("pkg.module.Parent", ParentSchema)
+    registry.register("pkg.module.ChildA", ChildSchemaA)
+    registry.register("pkg.module.ChildB", ChildSchemaB)
+    registry.register("pkg.module.Grandchild", GrandchildSchema)
+
+    schema = SchemaGenerator.generate("pkg.module.Parent")
+
+    for class_path in [
+        "pkg.module.Parent",
+        "pkg.module.ChildA",
+        "pkg.module.ChildB",
+        "pkg.module.Grandchild",
+    ]:
+        validate({"class": class_path}, schema)
 
 
 # ==========================================================

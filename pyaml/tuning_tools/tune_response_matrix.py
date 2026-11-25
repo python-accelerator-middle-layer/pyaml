@@ -256,10 +256,8 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
                 for step, d in enumerate(deltas):
                     # apply strength
                     m.strength.set(str + d)
-
-                    self.send_callback(
-                        Action.APPLY, {"idx": qidx, "step": step, "magnet": m.get_name(), "strength": float(str + d)}
-                    )
+                    self._callback_data = {"idx": qidx, "step": step, "magnet": m.get_name(), "strength": float(str + d)}
+                    self.send_callback(Action.APPLY)
 
                     sleep(sleep_step)
 
@@ -268,10 +266,14 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
                     for avg in range(nb_meas):
                         tune = tm.tune.get()
                         Q[step] += tune
-                        self.send_callback(
-                            Action.MEASURE,
-                            {"idx": qidx, "step": step, "avg_step": avg, "magnet": m.get_name(), "tune": tune},
-                        )
+                        self._callback_data = {
+                            "idx": qidx,
+                            "step": step,
+                            "avg_step": avg,
+                            "magnet": m.get_name(),
+                            "tune": tune,
+                        }
+                        self.send_callback(Action.MEASURE)
                         if avg < nb_meas - 1:
                             sleep(sleep_meas)
                     Q[step] /= float(nb_meas)
@@ -285,10 +287,8 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
 
                 # Restore strength
                 m.strength.set(str)
-                self.send_callback(
-                    Action.RESTORE,
-                    {"idx": qidx, "magnet": m.get_name(), "strength": float(str), "dtune": tunemat[qidx]},
-                )
+                self._callback_data = {"idx": qidx, "magnet": m.get_name(), "strength": float(str), "dtune": tunemat[qidx]}
+                self.send_callback(Action.RESTORE)
 
         except Exception as ex:
             err = ex
@@ -297,11 +297,8 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
         finally:
             # Restore strength
             m.strength.set(str)
-            self.send_callback(
-                Action.RESTORE,
-                {"step": qidx, "magnet": m.get_name(), "strength": float(str), "dtune": tunemat[qidx]},
-                raiseException=False,
-            )
+            self._callback_data = {"step": qidx, "magnet": m.get_name(), "strength": float(str), "dtune": tunemat[qidx]}
+            self.send_callback(Action.RESTORE, raiseException=False)
 
         if err is not None:
             raise (err)

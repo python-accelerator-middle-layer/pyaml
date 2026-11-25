@@ -116,7 +116,7 @@ class BPM(Element, DynamicValidation):
             If positions have not been attached
         """
         if self._positions is None:
-            raise PyAMLException(f"{str(self)} has no attached positions")
+            raise PyAMLException(f"{self.name} has no attached positions")
         return self._positions
 
     @property
@@ -135,7 +135,7 @@ class BPM(Element, DynamicValidation):
             If offset has not been attached
         """
         if self._offset is None:
-            raise PyAMLException(f"{str(self)} has no attached offset")
+            raise PyAMLException(f"{self.name} has no attached offset")
         return self._offset
 
     @property
@@ -154,7 +154,7 @@ class BPM(Element, DynamicValidation):
             If tilt has not been attached
         """
         if self._tilt is None:
-            raise PyAMLException(f"{str(self)} has no attached tilt")
+            raise PyAMLException(f"{self.name} has no attached tilt")
         return self._tilt
 
     def attach(

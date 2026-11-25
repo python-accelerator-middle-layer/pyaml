@@ -2,11 +2,7 @@ import numpy as np
 import pytest
 
 from pyaml.accelerator import Accelerator
-
-
-def callback(action: int, data: dict):
-    print(f"action:{action}, data:{data}")
-    return True
+from pyaml.common.constants import Action
 
 
 def test_simulator_chromaticity_monitor():
@@ -16,10 +12,24 @@ def test_simulator_chromaticity_monitor():
     chromaticity_monitor = sr.design.tool.get("CHROMATICITY_MONITOR")
     assert chromaticity_monitor.chromaticity.unit() == "1"
     assert chromaticity_monitor.dispersion.unit() == "m"
+
+    # for callback testing
+    actions = []
+
+    def callback(action, data):
+        print(f"action:{action}, data:{data}")
+        actions.append(action)
+        return True
+
     chromaticity_monitor.measure(fit_dispersion=True, callback=callback)
     chroma = chromaticity_monitor.chromaticity.get()
     assert np.abs(chroma[0] - chromaAT[0]) < 1e-2
     assert np.abs(chroma[1] - chromaAT[1]) < 1e-2
+
+    assert Action.APPLY in actions
+    assert Action.MEASURE in actions
+    # assert Action.INIT in actions # Action.INIT is never found!! To be implemented
+    assert Action.RESTORE in actions
 
     dispx = chromaticity_monitor.dispersion.get()[0, :]
     assert np.abs(dispx[0] + 0.00157552) < 1e-8

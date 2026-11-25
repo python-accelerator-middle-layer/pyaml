@@ -6,7 +6,7 @@ import warnings
 
 from .arrays.array import ArrayConfig
 from .common.element import Element, __pyaml_repr__
-from .common.exception import PyAMLConfigException
+from .common.exception import PyAMLConfigException, PyAMLException
 from .common.holders.element_holder import ElementHolder
 from .configuration import ConfigurationManager, UnsupportedConfigurationRootError
 from .configuration.factory import Factory
@@ -58,8 +58,14 @@ class Accelerator(DynamicValidation):
     ----------
     live
         Control system named ``live``, if one is configured.
+    virtual
+        Control system named ``virtual`` for the virtual accelerator (digital twin), if one is configured.
     design
         Simulator named ``design``, if one is configured.
+    model
+        Simulator named ``model``, if one is configured.
+    errors
+        Simulator named ``errors``, if one is configured.
     yellow_pages
         Discovery service over the arrays, tools and diagnostics of every mode.
 
@@ -73,6 +79,8 @@ class Accelerator(DynamicValidation):
         Set the number of bucket.
     add_device(config, ignore_external=False)
         Dynamically add a device to this accelerator.
+    add(element)
+        Bind and register an element or tool in every mode.
     post_init()
         Method triggered after all initialisations are done
     get_description()
@@ -91,9 +99,11 @@ class Accelerator(DynamicValidation):
     Notes
     -----
     Control systems and simulators are registered by name and are exposed as
-    attributes of the accelerator instance. The control system named ``"live"``
-    and the simulator named ``"design"`` are additionally available through the
-    :attr:`live` and :attr:`design` properties.
+    attributes of the accelerator instance. The control systems named ``"live"``
+    and ``"virtual"`` and the simulators named ``"design"``, ``"model"`` and
+    ``"errors"`` are available through explicitly declared properties. These
+    properties return ``None`` when the corresponding mode is not configured.
+    The ``model`` and ``design`` modes are independent; neither aliases the other.
     """
 
     __pyaml_repr_exclude__ = ("description", "yellow_pages")
@@ -127,8 +137,11 @@ class Accelerator(DynamicValidation):
         self._arrays = arrays
         self._devices = devices
 
-        self.__design = None
-        self.__live = None
+        self.__design: Simulator | None = None
+        self.__model: Simulator | None = None
+        self.__live: ControlSystem | None = None
+        self.__errors: Simulator | None = None
+        self.__virtual: ControlSystem | None = None
 
         self._controls: dict[str, ElementHolder] = {}
         self._simulators: dict[str, ElementHolder] = {}
@@ -137,6 +150,8 @@ class Accelerator(DynamicValidation):
             for c in controls:
                 if c.name() == "live":
                     self.__live = c
+                elif c.name() == "virtual":
+                    self.__virtual = c
                 else:
                     # Add as dynamic attribute
                     setattr(self, c.name(), c)
@@ -148,6 +163,10 @@ class Accelerator(DynamicValidation):
             for s in simulators:
                 if s.name() == "design":
                     self.__design = s
+                elif s.name() == "model":
+                    self.__model = s
+                elif s.name() == "errors":
+                    self.__errors = s
                 else:
                     # Add as dynamic attribute
                     setattr(self, s.name(), s)
@@ -208,6 +227,7 @@ class Accelerator(DynamicValidation):
             Energy value to set in eV
         """
         self._set_properties("_set_energy", E)
+        self._energy = E
 
     def set_mcf(self, alphac: float):
         """
@@ -219,6 +239,7 @@ class Accelerator(DynamicValidation):
             Moment compaction factor
         """
         self._set_properties("_set_mcf", alphac)
+        self._alphac = alphac
 
     def set_harmonic_number(self, h: int):
         """
@@ -230,6 +251,106 @@ class Accelerator(DynamicValidation):
             Number of bucket
         """
         self._set_properties("_set_harmonic", h)
+        self._harmonic_number = h
+
+    def add(self, element: Element) -> None:
+        """
+        Bind and register an element or tool in every mode.
+
+        Use the same backend binding as configured devices, including any
+        backend-specific mode restrictions. Newly registered instances receive
+        the current accelerator properties and run their post-initialization
+        hooks. Existing elements are not reinitialized. If binding or
+        initialization fails, all holder element stores are restored to
+        their previous state.
+
+        Parameters
+        ----------
+        element : Element
+            Element to add, including tuning and measurement tools, magnets,
+            BPMs, RF plants, and diagnostics.
+
+        Raises
+        ------
+        TypeError
+            If the supplied object is not an Element.
+        PyAMLException
+            If the element's name is already registered in any mode, or
+            backend binding or initialization fails. Binding and initialization
+            errors include the element and mode names and preserve the original
+            exception as their cause.
+
+        Notes
+        -----
+        Binding normally creates a separate attached instance in each mode,
+        leaving the supplied element reusable. Access these instances through
+        their mode's holders or by name, for example ``sr.design["ALTUNE"]``.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            tune = Tune(
+                "ALTUNE",
+                quad_array_name="QCORR",
+                response_matrix="respmat.json",
+                betatron_tune_name="BETATRON_TUNE2",
+            )
+            sr.add(tune)
+            print(sr.design.tool.get("ALTUNE").tune_monitor)
+            print(sr.live.tool.get("ALTUNE").tune_monitor)
+        """
+        if not isinstance(element, Element):
+            raise TypeError(f"Accelerator.add() expects an Element, got {type(element).__name__}")
+
+        holders = (*self._simulators.values(), *self._controls.values())
+        for holder in holders:
+            if element.name in holder._ALL:
+                raise PyAMLException(f"Duplicate element {element.name} in mode {holder.name()}")
+
+        snapshots = [
+            (store, store.copy())
+            for holder in holders
+            for store in (
+                holder._ALL,
+                holder._MAGNETS,
+                holder._CFM_MAGNETS,
+                holder._SERIALIZED_MAGNETS,
+                holder._BPMS,
+                holder._RFPLANT,
+                holder._RFTRANSMITTER,
+                holder._DIAG,
+                holder._TOOLS,
+            )
+        ]
+        added: list[tuple[ElementHolder, Element]] = []
+        try:
+            for holder in holders:
+                mode_name = holder.name()
+                existing_names = set(holder._ALL)
+                holder.fill_device([element])
+                added.extend((holder, instance) for name, instance in holder._ALL.items() if name not in existing_names)
+
+            for holder, instance in added:
+                mode_name = holder.name()
+                if self._energy is not None:
+                    instance.set_energy(self._energy)
+                if self._alphac is not None:
+                    instance.set_mcf(self._alphac)
+                if self._harmonic_number is not None:
+                    instance.set_harmonic(self._harmonic_number)
+            for holder, instance in added:
+                mode_name = holder.name()
+                instance.post_init()
+        except Exception as err:
+            for store, snapshot in snapshots:
+                store.clear()
+                store.update(snapshot)
+            raise PyAMLException(f"Failed to add element {element.name} in mode {mode_name}: {err}") from err
+
+        if self._devices is None:
+            self._devices = []
+        self._devices.append(element)
 
     def add_device(self, config: dict, ignore_external=False):
         """
@@ -250,14 +371,7 @@ class Accelerator(DynamicValidation):
                 "Invalid device type, Element or sub classes of Element expected " + f"but got {dev.__class__.__name__}"
             )
 
-        self._devices.append(dev)
-        if self._controls is not None:
-            for c in self._controls:
-                c.fill_device([dev])
-
-        if self._simulators is not None:
-            for s in self._simulators:
-                s.fill_device([dev])
+        self.add(dev)
 
     def post_init(self):
         """
@@ -277,28 +391,64 @@ class Accelerator(DynamicValidation):
         return self.description
 
     @property
-    def live(self) -> ControlSystem:
+    def live(self) -> ControlSystem | None:
         """
         Get the live control system.
 
         Returns
         -------
-        ControlSystem
-            The live control system instance
+        ControlSystem | None
+            The live control system instance, or None if not configured.
         """
         return self.__live
 
     @property
-    def design(self) -> Simulator:
+    def virtual(self) -> ControlSystem | None:
+        """
+        Get the virtual control system for the twin.
+
+        Returns
+        -------
+        ControlSystem | None
+            The virtual control system instance, or None if not configured.
+        """
+        return self.__virtual
+
+    @property
+    def design(self) -> Simulator | None:
         """
         Get the design simulator.
 
         Returns
         -------
-        Simulator
-            The design simulator instance
+        Simulator | None
+            The design simulator instance, or None if not configured.
         """
         return self.__design
+
+    @property
+    def model(self) -> Simulator | None:
+        """
+        Get the model simulator.
+
+        Returns
+        -------
+        Simulator | None
+            The model simulator instance, or None if not configured.
+        """
+        return self.__model
+
+    @property
+    def errors(self) -> Simulator | None:
+        """
+        Get the errors simulator.
+
+        Returns
+        -------
+        Simulator | None
+            The errors simulator instance, or None if not configured.
+        """
+        return self.__errors
 
     @property
     def yellow_pages(self) -> YellowPages:

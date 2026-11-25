@@ -5,6 +5,7 @@ import numpy as np
 import pytest
 
 from pyaml.accelerator import Accelerator
+from pyaml.common.constants import Action
 from pyaml.common.exception import PyAMLConfigException
 from pyaml.configuration.factory import Factory
 
@@ -24,10 +25,19 @@ def test_tuning_orbit_correction():
     vcorr = element_holder.magnets.get("VCorr")
     bpms = element_holder.diagnostic.bpms.get("BPM")
 
+    # for callback testing
+    actions = []
+
+    def callback(action, data):
+        actions.append(action)
+        return True
+
     x, y = bpms.positions.get().T  # get reference orbit
     reference = np.concat((x, y))
     # there should be nothing to correct, but still work
-    element_holder.tool.orbit.correct(reference=reference)
+    element_holder.tool.orbit.correct(reference=reference, callback=callback)
+
+    assert Action.BEFORE_BPM_READING in actions
 
     h_strengths = hcorr.strengths.get() + std_kick * np.random.normal(size=len(hcorr))
     v_strengths = vcorr.strengths.get() + std_kick * np.random.normal(size=len(vcorr))

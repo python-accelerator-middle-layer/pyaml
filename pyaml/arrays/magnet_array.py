@@ -4,6 +4,8 @@ Magnet Array module.
 This module provides magnet array functionality for the PyAML accelerator middle layer.
 """
 
+import time
+
 import numpy as np
 
 from ..common.abstract import ReadWriteFloatArray
@@ -55,7 +57,7 @@ class RWMagnetStrength(ReadWriteFloatArray):
             return self.__aggregator.get()
 
     # Sets the values
-    def set(self, value: np.array):
+    def set(self, value: np.array, wait_seconds_after: float = None):
         """
         Set the strength of every magnet in the array.
 
@@ -63,6 +65,10 @@ class RWMagnetStrength(ReadWriteFloatArray):
         ----------
         value : np.array
             Strength for each magnet, ordered like the array. A scalar is broadcast to every magnet.
+
+        wait_seconds_after: float
+            number of seconds to wait after setting the strengths.
+            see also set_and_wait for waiting based on setpoint-readback difference.
         """
         nvalue = np.ones(self.__nb) * value if isinstance(value, float) else value
         if not self.__aggregator:
@@ -70,6 +76,10 @@ class RWMagnetStrength(ReadWriteFloatArray):
                 m.strength.set(nvalue[idx])
         else:
             self.__aggregator.set(nvalue)
+
+        # wait the given seconds after setting
+        if wait_seconds_after is not None:
+            time.sleep(wait_seconds_after)
 
     # Sets the values and waits that the read values reach their setpoint
     def set_and_wait(self, value: np.array):

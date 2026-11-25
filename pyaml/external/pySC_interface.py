@@ -6,12 +6,14 @@ operations expected by pySC while using PyAML element-holder accessors.
 """
 
 import time
-from typing import TYPE_CHECKING, Optional, Tuple
+from typing import TYPE_CHECKING, Callable, Optional, Tuple
 
 import numpy as np
 
 if TYPE_CHECKING:
+    from ..common.element import Element
     from ..common.holders.element_holder import ElementHolder
+from ..common.constants import Action
 from ..common.exception import PyAMLException
 
 
@@ -27,6 +29,17 @@ class pySCInterface:
         Name of the BPM array used for orbit readback.
     rf_plant_name : Optional[str]
         Optional RF plant name, required for RF-related pySC operations.
+    callback : Callable, optional
+        Called as ``callback(action, data)`` with ``Action.BEFORE_BPM_READING``
+        before each BPM acquisition.  Return ``True`` to continue;
+        a false value raises ``KeyboardInterrupt``.
+    orbits_to_average : int, default 1
+        Positive number of BPM acquisitions to average per ``get_orbit()`` call.
+
+    Raises
+    ------
+    ValueError
+        If ``orbits_to_average`` is not a positive integer.
 
     Methods
     -------
@@ -44,16 +57,22 @@ class pySCInterface:
 
     set_wait_time: float = 0
     read_wait_time: float = 0
+    orbits_to_average: int = 1
 
     def __init__(
         self,
         element_holder: "ElementHolder",
         bpm_array_name: str,
         rf_plant_name: Optional[str] = None,
+        send_callback: Optional[Callable] = None,
+        orbits_to_average: int = 1,
     ):
         """
         Initialize a pySC adapter from a PyAML element holder.
         """
+        if not isinstance(orbits_to_average, (int, np.integer)) or orbits_to_average < 1:
+            raise ValueError("orbits_to_average must be a positive integer.")
+
         self.element_holder = element_holder
 
         self.bpm_array = element_holder.diagnostic.bpms.get(bpm_array_name)
@@ -64,11 +83,30 @@ class pySCInterface:
         else:
             self.rf_plant = None
 
+        self.send_callback = send_callback
+        self.orbits_to_average = orbits_to_average
+
     def get_orbit(self) -> Tuple[np.array, np.array]:
-        """Return horizontal and vertical orbit readings from the BPM array."""
+        """Return mean horizontal and vertical orbits over ``orbits_to_average`` reads.
+
+        Invoke ``Action.BEFORE_BPM_READING`` before each acquisition and its
+        ``read_wait_time`` delay, including each sample used in the average.
+        """
+        if self.send_callback is not None:
+            self.send_callback(Action.BEFORE_BPM_READING, {})
         time.sleep(self.read_wait_time)
         positions = self.bpm_array.positions.get()
-        return positions[:, 0], positions[:, 1]
+        x = positions[:, 0] / self.orbits_to_average
+        y = positions[:, 1] / self.orbits_to_average
+
+        for _ in range(1, self.orbits_to_average):
+            if self.send_callback is not None:
+                self.send_callback(Action.BEFORE_BPM_READING, {})
+            time.sleep(self.read_wait_time)
+            positions = self.bpm_array.positions.get()
+            x += positions[:, 0] / self.orbits_to_average
+            y += positions[:, 1] / self.orbits_to_average
+        return x, y
 
     def get(self, name: str) -> float:
         """

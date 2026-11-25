@@ -79,6 +79,11 @@ class BBA(MeasurementTool, DynamicValidation):
         Number of BPM measurements to average at each step.
     sleep_between_meas : float, default=0
         Time in seconds to wait between individual BPM measurements.
+    bipolar : bool, default=False
+        Quadrupole modulation. If ``False`` (unipolar), the orbit is measured
+        at the initial strength and at ``+quad_delta`` for each corrector
+        step. If ``True`` (bipolar), it is also measured at ``-quad_delta``
+        and the induced orbit shift is fitted over the three strengths.
 
     Methods
     -------
@@ -112,7 +117,7 @@ class BBA(MeasurementTool, DynamicValidation):
     -------------
     .. code-block:: yaml
 
-        - type: pyaml.tuning_tools.bba
+        - class: pyaml.tuning_tools.bba.BBA
           name: BBA
           bpm_array_name: BPM
           bpm_name: BPM_NAME
@@ -123,6 +128,7 @@ class BBA(MeasurementTool, DynamicValidation):
           vcorr_delta: 1e-5
           hquad_delta: 5e-3
           vquad_delta: 5e-3
+          bipolar: true
     """
 
     def __init__(
@@ -141,6 +147,7 @@ class BBA(MeasurementTool, DynamicValidation):
         sleep_between_step: float = 0,
         n_avg_meas: int = 1,
         sleep_between_meas: float = 0,
+        bipolar: bool = False,
     ):
         """
         Initialize the BBA.
@@ -159,6 +166,7 @@ class BBA(MeasurementTool, DynamicValidation):
         self.sleep_between_step = sleep_between_step
         self.n_avg_meas = n_avg_meas
         self.sleep_between_meas = sleep_between_meas
+        self.bipolar = bipolar
 
     @property
     def bpms(self) -> "BPMArray":
@@ -197,6 +205,7 @@ class BBA(MeasurementTool, DynamicValidation):
         sleep_between_meas: Optional[float] = None,
         callback: Optional[Callable] = None,
         plane: Optional[str] = None,
+        bipolar: Optional[bool] = None,
     ):
         """
         Measure BBA.
@@ -235,15 +244,22 @@ class BBA(MeasurementTool, DynamicValidation):
             If the callback returns false, then the process is aborted.
         plane : str, optional
             Plane to perform ("H" or "V", None => both plane)
+        bipolar : bool, optional
+            Bipolar (+-quad_delta) or unipolar (+quad_delta) quadrupole
+            modulation.
+            Default: from config.
         """
         nb_meas = n_avg_meas if n_avg_meas is not None else self.n_avg_meas
         sleep_step = sleep_between_step if sleep_between_step is not None else self.sleep_between_step
         sleep_meas = sleep_between_meas if sleep_between_meas is not None else self.sleep_between_meas
+        bipolar = bipolar if bipolar is not None else self.bipolar
 
+        self._register_callback(callback)
         element_holder = self._peer
         interface = pySCInterface(
             element_holder=element_holder,
             bpm_array_name=self.bpm_array_name,
+            send_callback=self.send_callback,
         )
         interface.set_wait_time = sleep_step
         interface.read_wait_time = sleep_meas
@@ -271,7 +287,7 @@ class BBA(MeasurementTool, DynamicValidation):
             config=bba_pySC_config,
             shots_per_orbit=nb_meas,
             n_corr_steps=self.n_step,
-            bipolar=False,
+            bipolar=bipolar,
             skip_save=True,
             plane=plane,
             live_ios=True,
@@ -284,34 +300,29 @@ class BBA(MeasurementTool, DynamicValidation):
         vstep = 0
 
         try:
-            self._register_callback(callback)
             self._init_measure()
             self.latest_measurement["HData"] = None
             self.latest_measurement["VData"] = None
             for code, measurement_object in generator:
                 if code == BBACode.HORIZONTAL_IOS_READY:
-                    self.send_callback(
-                        Action.MEASURE,
-                        {
-                            "step": hstep,
-                            "plane": "H",
-                            "bpm_pos": measurement_object.last_bpm_pos,
-                            "ios": measurement_object.last_ios,
-                            "bba_data": measurement_object.H_data,
-                        },
-                    )
+                    self._callback_data = {
+                        "step": hstep,
+                        "plane": "H",
+                        "bpm_pos": measurement_object.last_bpm_pos,
+                        "ios": measurement_object.last_ios,
+                        "bba_data": measurement_object.H_data,
+                    }
+                    self.send_callback(Action.MEASURE)
                     hstep += 1
                 if code == BBACode.VERTICAL_IOS_READY:
-                    self.send_callback(
-                        Action.MEASURE,
-                        {
-                            "step": vstep,
-                            "plane": "V",
-                            "bpm_pos": measurement_object.last_bpm_pos,
-                            "ios": measurement_object.last_ios,
-                            "bba_data": measurement_object.V_data,
-                        },
-                    )
+                    self._callback_data = {
+                        "step": vstep,
+                        "plane": "V",
+                        "bpm_pos": measurement_object.last_bpm_pos,
+                        "ios": measurement_object.last_ios,
+                        "bba_data": measurement_object.V_data,
+                    }
+                    self.send_callback(Action.MEASURE)
                     vstep += 1
                 if code == BBACode.HORIZONTAL_DONE:
                     result = BBAAnalysis.analyze(measurement_object.H_data)
@@ -327,9 +338,9 @@ class BBA(MeasurementTool, DynamicValidation):
         finally:
             # Restore steerer/quad strength
             # TODO
+            self._callback_data = {}
             self.send_callback(
                 Action.RESTORE,
-                {},
                 raiseException=False,
             )
 

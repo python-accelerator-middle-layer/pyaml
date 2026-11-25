@@ -229,10 +229,8 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
                 for step, d in enumerate(deltas):
                     # apply strength
                     m.strength.set(str + d)
-
-                    self.send_callback(
-                        Action.APPLY, {"idx": qidx, "step": step, "magnet": m.get_name(), "strength": float(str + d)}
-                    )
+                    self._callback_data = {"idx": qidx, "step": step, "magnet": m.get_name(), "strength": float(str + d)}
+                    self.send_callback(Action.APPLY)
 
                     time.sleep(sleep_step)
 
@@ -243,11 +241,14 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
                             raise KeyboardInterrupt
                         chroma = cm.chromaticity.get()
                         Qp[step] += chroma
-
-                        self.send_callback(
-                            Action.MEASURE,
-                            {"idx": qidx, "step": step, "avg_step": avg, "magnet": m.get_name(), "chroma": chroma},
-                        )
+                        self._callback_data = {
+                            "idx": qidx,
+                            "step": step,
+                            "avg_step": avg,
+                            "magnet": m.get_name(),
+                            "chroma": chroma,
+                        }
+                        self.send_callback(Action.MEASURE)
 
                         if avg < nb_meas - 1:
                             time.sleep(sleep_meas)
@@ -262,10 +263,8 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
 
                 # Restore strength
                 m.strength.set(str)
-                self.send_callback(
-                    Action.RESTORE,
-                    {"idx": qidx, "magnet": m.get_name(), "strength": float(str), "dchroma": chromamat[qidx]},
-                )
+                self._callback_data = {"idx": qidx, "magnet": m.get_name(), "strength": float(str), "dchroma": chromamat[qidx]}
+                self.send_callback(Action.RESTORE)
 
         except Exception as ex:
             err = ex
@@ -274,11 +273,8 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
         finally:
             # Restore strength
             m.strength.set(str)
-            self.send_callback(
-                Action.RESTORE,
-                {"step": qidx, "magnet": m.get_name(), "strength": float(str), "dchroma": chromamat[qidx]},
-                raiseException=False,
-            )
+            self._callback_data = {"step": qidx, "magnet": m.get_name(), "strength": float(str), "dchroma": chromamat[qidx]}
+            self.send_callback(Action.RESTORE, raiseException=False)
 
         if err is not None:
             raise (err)
