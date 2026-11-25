@@ -27,6 +27,9 @@ from ..control.abstract_impl import (
     RWBpmTiltScalar,
     RWHardwareArray,
     RWHardwareScalar,
+    RWInsertionDeviceControlVariable,
+    RWInsertionDeviceEnabled,
+    RWInsertionDeviceMode,
     RWRFFrequencyScalar,
     RWRFPhaseScalar,
     RWRFVoltageScalar,
@@ -47,7 +50,6 @@ from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
 from .deviceaccess import DeviceAccess
 from .deviceaccesslist import DeviceAccessList
-from .insertion_device import RWInsertionDeviceControlVariable, RWInsertionDeviceMode
 
 
 class ControlSystem(ElementHolder, metaclass=ABCMeta):
@@ -220,7 +222,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
     def _fill_insertion_device(self, device: InsertionDevice) -> None:
         """Bind named control variables and optional controls through backend references."""
-        control_variables: dict[str, ReadWriteFloatScalar | None] = {}
+        control_variables: dict[str, RWInsertionDeviceControlVariable | None] = {}
         for name, definition in device._control_variable_definitions.items():
             if "backend" not in definition:
                 control_variables[name] = None
@@ -232,7 +234,10 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             control_variables[name] = RWInsertionDeviceControlVariable(backend, definition["unit"], moving)
         flags = {name: RWScalarBoolean(self.get_device_access(ref)) for name, ref in device.flag_references.items()}
         mode = RWInsertionDeviceMode(self.get_device_access(device.control_mode)) if device.control_mode is not None else None
-        self.insertion_device.add(device.attach(self, control_variables, flags=flags, mode=mode))
+        enabled = RWInsertionDeviceEnabled(
+            device.name, control_variables, device.model_operating_point, device.disabled_operating_point, mode
+        )
+        self.insertion_device.add(device.attach(self, control_variables, enabled=enabled, flags=flags, mode=mode))
 
     def _fill_magnet(self, magnet: Magnet) -> None:
         device = self.get_device_access(magnet.model.get_device_names()[0])

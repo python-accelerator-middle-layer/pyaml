@@ -10,6 +10,35 @@ from abc import ABCMeta, abstractmethod
 
 from numpy import array, double
 
+
+class RWScalarBoolean(metaclass=ABCMeta):
+    """Define backend-independent boolean get/set access."""
+
+    @abstractmethod
+    def get(self) -> bool:
+        """Return the boolean state."""
+        pass
+
+    @abstractmethod
+    def set(self, value: bool) -> None:
+        """Write the boolean state."""
+        pass
+
+
+class RWInsertionDeviceMode(metaclass=ABCMeta):
+    """Define the optional mode interface shared by live and design accessors."""
+
+    @abstractmethod
+    def get(self) -> str:
+        """Return the mode."""
+        pass
+
+    @abstractmethod
+    def set(self, value: str) -> None:
+        """Request a mode."""
+        pass
+
+
 # Float ----------------------------------------------------------------
 
 

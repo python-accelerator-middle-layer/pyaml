@@ -21,6 +21,74 @@ from .polynom_info import PolynomInfo
 # ------------------------------------------------------------------------------
 
 
+class RWInsertionDeviceControlVariable(abstract.ReadWriteFloatScalar):
+    """Expose the shared control-variable interface while rejecting model writes."""
+
+    def __init__(self, name: str, value: float, unit: str):
+        self._name = name
+        self._value = value
+        self._unit = unit
+
+    def get(self) -> float:
+        return self._value
+
+    def readback(self) -> float:
+        """Return the model reference, not a hardware readback."""
+        return self._value
+
+    def unit(self) -> str:
+        return self._unit
+
+    def get_range(self) -> list[float]:
+        return [self._value, self._value]
+
+    def set(self, value: float) -> None:
+        raise PyAMLException(f"{self._name}: fixed model operating point does not support writes ({value!r})")
+
+    def set_and_wait(self, value: float) -> None:
+        self.set(value)
+
+
+class RWInsertionDeviceMode(abstract.RWInsertionDeviceMode):
+    """Expose the fixed reference mode through the shared mode interface."""
+
+    def __init__(self, name: str, mode: str):
+        self._name = name
+        self._mode = mode
+
+    def get(self) -> str:
+        return self._mode
+
+    def set(self, value: str) -> None:
+        if value != self._mode:
+            raise PyAMLException(f"{self._name}: fixed model operating point does not support mode {value!r}")
+
+
+class RWInsertionDeviceEnabled(abstract.RWScalarBoolean):
+    """Toggle kickmap tracking and retain pyAML's logical enabled state."""
+
+    def __init__(self, name: str, kickmaps: list[at.InsertionDeviceKickMap]):
+        self._name = name
+        self._kickmaps = tuple(kickmaps)
+        states = {element.PassMethod not in ("DriftPass", "IdentityPass") for element in self._kickmaps}
+        if len(states) != 1:
+            raise PyAMLException(f"{self._name}: inconsistent kickmap enabled states")
+        self._enabled = states.pop()
+
+    def get(self) -> bool:
+        return self._enabled
+
+    def set(self, value: bool) -> None:
+        if not isinstance(value, bool):
+            raise PyAMLException(f"{self._name}: expected a boolean enabled state, got {value!r}")
+        for element in self._kickmaps:
+            if value:
+                element.enable()
+            else:
+                element.disable()
+        self._enabled = value
+
+
 def _effective_lengths(elements: list[at.Element]) -> list[float]:
     """
     Return the lengths used to convert between integrated strengths and polynom coefficients.

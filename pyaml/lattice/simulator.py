@@ -18,7 +18,7 @@ from ..common.exception import PyAMLException
 from ..common.holders.element_holder import ElementHolder
 from ..configuration import ROOT
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
-from ..insertion_device import insertion_device
+from ..insertion_device import InsertionDevice
 from ..lattice.abstract_impl import (
     BPMHScalarAggregator,
     BPMScalarAggregator,
@@ -29,6 +29,9 @@ from ..lattice.abstract_impl import (
     RWBpmTiltScalar,
     RWHardwareArray,
     RWHardwareScalar,
+    RWInsertionDeviceControlVariable,
+    RWInsertionDeviceEnabled,
+    RWInsertionDeviceMode,
     RWRFATFrequencyScalar,
     RWRFATotalVoltageScalar,
     RWRFFrequencyScalar,
@@ -48,7 +51,6 @@ from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
 from ..validation import DynamicValidation, register_schema
-from .insertion_device import InsertionDevice
 from .lattice_elements_linker import LatticeElementsLinker
 from .twiss_in import TwissIn
 
@@ -247,7 +249,7 @@ class Simulator(ElementHolder, DynamicValidation):
             aggv.add_elem(e)
         return [agg, aggh, aggv]
 
-    def _fill_insertion_device(self, device: insertion_device.InsertionDevice) -> None:
+    def _fill_insertion_device(self, device: InsertionDevice) -> None:
         kickmaps = []
         for element in self.get_at_elems(device):
             if not isinstance(element, at.InsertionDeviceKickMap):
@@ -255,8 +257,25 @@ class Simulator(ElementHolder, DynamicValidation):
             kickmaps.append(element)
         if not kickmaps:
             raise PyAMLException(f"{device.name}: no insertion-device kickmaps found")
-        model = InsertionDevice(device, kickmaps)
-        self.insertion_device.add(model.attach(device, self))
+        point = device.model_operating_point
+        if point is None or not set(device.control_variables).issubset(point):
+            raise PyAMLException(f"{device.name}: model_operating_point must include every configured control variable")
+        mode = None
+        if device.control_mode is not None:
+            if point.mode is None:
+                raise PyAMLException(f"{device.name}: model_operating_point must include mode")
+            mode = RWInsertionDeviceMode(device.name, point.mode)
+        control_variables = {}
+        for name, definition in device._control_variable_definitions.items():
+            value = point[name]
+            if not isinstance(value, (int, float)):
+                raise PyAMLException(f"{device.name}.{name}: numeric model reference is required")
+            control_variables[name] = RWInsertionDeviceControlVariable(
+                f"{device.name}.{name}", float(value), definition["unit"]
+            )
+        enabled = RWInsertionDeviceEnabled(device.name, kickmaps)
+        model_maps = tuple(getattr(element, "Filename_in", None) for element in kickmaps)
+        self.insertion_device.add(device.attach(self, control_variables, enabled=enabled, mode=mode, model_maps=model_maps))
 
     def _fill_magnet(self, magnet: Magnet) -> None:
         current = (

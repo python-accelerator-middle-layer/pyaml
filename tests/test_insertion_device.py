@@ -7,7 +7,8 @@ import pytest
 
 from pyaml import PyAMLConfigException, PyAMLException
 from pyaml.accelerator import Accelerator
-from pyaml.common.abstract import ReadWriteFloatScalar
+from pyaml.common import abstract
+from pyaml.common.abstract_impl import RInsertionDeviceModelPoint
 from pyaml.common.element import Element
 from pyaml.configuration.factory import Factory
 from pyaml.control.abstract_impl import RWScalarBoolean
@@ -122,6 +123,7 @@ def test_configuration_supports_control_variable_families(id_lattice_file, decla
         "lattice_names": "list(MAP)",
         "control_variables": control_variables,
         "model_operating_point": point,
+        "disabled_operating_point": {name: 0.0 for name in control_variables},
     }
     device = Factory.build(SchemaValidator.validate_to_dict(config))
     simulator = Simulator("design", id_lattice_file)
@@ -131,7 +133,8 @@ def test_configuration_supports_control_variable_families(id_lattice_file, decla
     for name, definition in control_variables.items():
         assert attached.control_variables[name].get() == point[name]
         assert attached.control_variables[name].unit() == definition["unit"]
-    assert attached.model.reference["operating_point"] == point
+    assert attached.model_reference["operating_point"] == point
+    assert attached.disabled_operating_point == {name: 0.0 for name in control_variables}
     assert device.peer is None
 
 
@@ -144,6 +147,10 @@ def test_configuration_supports_control_variable_families(id_lattice_file, decla
         ({"control_variables": {"gap": {"unit": "mm", "access": "read"}}}, "expected only unit, backend and movement_flag"),
         ({"control_variables": {"gap": {"unit": "mm", "backend": ""}}}, "backend must not be empty"),
         ({"model_operating_point": {"gap": float("inf")}}, "finite coordinate"),
+        ({"disabled_operating_point": {}}, "must not be empty"),
+        ({"disabled_operating_point": {"missing": 0.0}}, "requires a configured control variable"),
+        ({"disabled_operating_point": {"gap": float("nan")}}, "requires a finite setpoint"),
+        ({"disabled_operating_point": {"gap": True}}, "valid number"),
         ({"model_operating_point": {}}, "include every configured control variable"),
         ({"control_mode": "MODE"}, "include mode"),
         ({"lattice_names": "list(D)"}, "expected InsertionDeviceKickMap"),
@@ -167,6 +174,8 @@ def test_holder_registration_associations_and_add_rollback(id_lattice_file):
     copies = []
     for holder in machine.modes().values():
         device = holder.insertion_device.get("ID")
+        assert type(device) is InsertionDevice
+        assert isinstance(device.enabled, abstract.RWScalarBoolean)
         copies.append(device)
         assert holder["ID"] is device
         assert holder.insertion_device.all() == [device]
@@ -199,7 +208,7 @@ def test_live_attachment_binds_hardware_separately_from_model(id_lattice_file):
     live = machine.live.insertion_device.get("ID")
     design = machine.design.insertion_device.get("ID")
     gap = live.control_variables["gap"]
-    assert isinstance(gap, ReadWriteFloatScalar)
+    assert isinstance(gap, abstract.ReadWriteFloatScalar)
     assert gap.readback() == 8.0
     assert gap.get() == 9.0
     assert gap.get_range() == [2.0, 30.0]
@@ -210,12 +219,22 @@ def test_live_attachment_binds_hardware_separately_from_model(id_lattice_file):
     assert live.flag_references["moving"] == "MOVING"
     assert live.control_mode == "MODE"
     assert live.mode.get() == "parallel"
-    assert live.model is None
-    assert isinstance(design.control_variables["gap"], ReadWriteFloatScalar)
+    assert live.enabled.get() is True
+    assert design.mode.get() == "parallel"
+    assert isinstance(design.control_variables["gap"], abstract.ReadWriteFloatScalar)
     assert source.control_variables["gap"] is None
     assert source.mode is None
     assert source.flags == {"moving": None, "orbit_ff": None}
     assert design.flags == {"moving": None, "orbit_ff": None}
+    point = live.model_operating_point
+    assert isinstance(point, RInsertionDeviceModelPoint)
+    assert point is design.model_operating_point is source.model_operating_point
+    assert dict(point) == {"gap": 4.0, "mode": "parallel"}
+    assert point.units == {"gap": "mm"}
+    with pytest.raises(TypeError):
+        point["gap"] = 20.0
+    with pytest.raises(TypeError):
+        point.units["gap"] = "m"
     assert design.control_variables["gap"].unit() == live.control_variables["gap"].unit() == "mm"
     assert "InsertionDevice" in repr(live)
 
@@ -246,12 +265,12 @@ def test_same_class_binds_mechanical_and_current_control_variables(names):
     assert type(attached) is InsertionDevice
     assert set(attached.control_variables) == set(names)
     for variable in attached.control_variables.values():
-        assert isinstance(variable, ReadWriteFloatScalar)
+        assert isinstance(variable, abstract.ReadWriteFloatScalar)
         variable.set(5.0)
         assert variable.get() == 5.0
         assert variable.readback() == 0.0
         assert variable.unit() == unit
-    assert attached.model is None
+    assert attached.enabled.get() is True
     assert source.peer is None
 
 
@@ -266,7 +285,7 @@ def test_writable_and_unavailable_control_variables_are_distinguishable():
     control.fill_device([source])
     device = control.insertion_device.get("ID")
     gap = device.control_variables["gap"]
-    assert isinstance(gap, ReadWriteFloatScalar)
+    assert isinstance(gap, abstract.ReadWriteFloatScalar)
     assert gap.readback() == 8.0
     assert gap.get() == 9.0
     assert gap.get_range() == [2.0, 30.0]
@@ -282,7 +301,7 @@ def test_set_and_wait_uses_only_boolean_movement_flag(monkeypatch, moving_values
     backend = control.get_device_access("GAP")
     moving = control.get_device_access("MOVING")
     sleep = Mock()
-    monkeypatch.setattr("pyaml.control.insertion_device.time.sleep", sleep)
+    monkeypatch.setattr("pyaml.control.abstract_impl.time.sleep", sleep)
     with (
         patch.object(backend, "set", wraps=backend.set) as write,
         patch.object(backend, "set_and_wait", side_effect=AssertionError("Must not use backend completion logic")),
@@ -368,7 +387,7 @@ def test_optional_controls_and_hardware_motion_do_not_change_model(id_lattice_fi
     machine = _machine(id_lattice_file, [source], controls=[control])
     live = machine.live.insertion_device.get("ID")
     design = machine.design.insertion_device.get("ID")
-    reference = design.model.reference
+    reference = design.model_reference
     live.control_variables["gap"].set_and_wait(12.0)
     set_attribute("GAP", 12.0)
     live.mode.set("antiparallel")
@@ -379,60 +398,230 @@ def test_optional_controls_and_hardware_motion_do_not_change_model(id_lattice_fi
     assert live.flags["orbit_ff"].get() is False
     assert design.control_variables["gap"].get() == 4.0
     assert design.control_variables["gap"].get_range() == [4.0, 4.0]
-    assert design.model.mode == "parallel"
+    assert design.mode.get() == "parallel"
+    assert live.model_operating_point["gap"] == 4.0
+    assert live.model_operating_point.mode == "parallel"
     with patch.object(control, "get_device_access", side_effect=AssertionError("Model must not access hardware")):
-        design.model.disable()
-        design.model.enable()
-    assert design.model.reference == reference
+        design.disable()
+        design.enable()
+    assert design.model_reference == reference
 
 
 def test_fixed_reference_rejects_control_variable_writes(id_lattice_file):
     machine = _machine(id_lattice_file, [_device(control_mode="MODE", model_operating_point={"gap": 4.0, "mode": "parallel"})])
     device = machine.design.insertion_device.get("ID")
     variable = device.control_variables["gap"]
-    reference = device.model.reference
+    reference = device.model_reference
     assert variable.readback() == variable.get() == 4.0
     for disabled in (False, True):
         if disabled:
-            device.model.disable()
-        device.model.mode = "parallel"
+            device.disable()
+        device.mode.set("parallel")
         for value in (4.0, 5.0, float("nan")):
             for write in (variable.set, variable.set_and_wait):
                 with pytest.raises(PyAMLException, match="fixed model operating point"):
                     write(value)
         with pytest.raises(PyAMLException, match="fixed model operating point"):
-            device.model.mode = "antiparallel"
+            device.mode.set("antiparallel")
         assert variable.get() == 4.0
-        assert device.model.reference == reference
+        assert device.model_reference == reference
     reference["operating_point"]["gap"] = 20.0
-    assert device.model.reference["operating_point"]["gap"] == 4.0
+    assert device.model_reference["operating_point"]["gap"] == 4.0
 
 
 def test_model_on_off_preserves_split_maps_and_tracking(id_lattice_file):
     machine = _machine(id_lattice_file, [_device()])
-    model = machine.design.insertion_device.get("ID").model
+    device = machine.design.insertion_device.get("ID")
     maps = machine.design.ring[:2]
     original = [(element.PassMethod, element.Length, element.xkick.copy(), element.ykick.copy()) for element in maps]
-    reference = model.reference
+    reference = device.model_reference
+    assert reference["maps"] == tuple(getattr(element, "Filename_in", None) for element in maps)
     particle = np.array([1.0e-3, 0.0, 2.0e-3, 0.0, 0.0, 0.0])
     enabled = at.lattice_track(machine.design.ring, particle.copy(), nturns=1)[0]
-    assert model.enabled
-    model.disable()
-    model.disable()
-    assert not model.enabled
+    assert device.enabled.get()
+    device.disable()
+    device.enabled.set(False)
+    assert not device.enabled.get()
     disabled = at.lattice_track(machine.design.ring, particle.copy(), nturns=1)[0]
     drift = at.Lattice([at.Drift("D", sum(element.Length for element in machine.design.ring))], energy=3.0e9)
     np.testing.assert_allclose(disabled, at.lattice_track(drift, particle.copy(), nturns=1)[0])
     assert not np.allclose(disabled, enabled, atol=1e-12, rtol=0)
-    assert machine.comparison.insertion_device.get("ID").model.enabled
-    assert machine.live.insertion_device.get("ID").model is None
-    model.enable()
-    model.enable()
-    assert model.enabled
+    assert machine.comparison.insertion_device.get("ID").enabled.get()
+    assert machine.live.insertion_device.get("ID").enabled.get()
+    device.enable()
+    device.enabled.set(True)
+    assert device.enabled.get()
     np.testing.assert_allclose(at.lattice_track(machine.design.ring, particle.copy(), nturns=1)[0], enabled)
     for element, (method, length, xkick, ykick) in zip(maps, original, strict=True):
         assert element.PassMethod == method
         assert element.Length == length
         np.testing.assert_array_equal(element.xkick, xkick)
         np.testing.assert_array_equal(element.ykick, ykick)
-    assert model.reference == reference
+    assert device.model_reference == reference
+
+
+def test_live_enable_disable_apply_points_and_keep_logical_state():
+    control = _control()
+    control.fill_device(
+        [
+            _device(
+                control_mode="MODE",
+                model_operating_point={"gap": 4.0, "mode": "parallel"},
+                disabled_operating_point={"gap": 30},
+            )
+        ]
+    )
+    device = control.insertion_device.get("ID")
+    reference = device.model_reference
+    gap = device.control_variables["gap"]
+    assert device.enabled.get() is True
+    gap.set(30.0)
+    assert device.enabled.get() is True
+    device.mode.set("antiparallel")
+    with patch.object(control.get_device_access("MOVING"), "readback", side_effect=AssertionError("Must not wait")):
+        device.enable()
+        assert gap.get() == 4.0
+        assert device.mode.get() == "parallel"
+        gap.set(12.0)
+        device.enabled.set(True)
+        assert gap.get() == 4.0
+        device.disable()
+        assert device.enabled.get() is False
+        assert gap.get() == 30.0
+        gap.set(12.0)
+        assert device.enabled.get() is False
+        device.enabled.set(False)
+        assert gap.get() == 30.0
+    assert gap.readback() == 8.0
+    assert device.model_reference == reference
+
+
+@pytest.mark.parametrize(("values", "enabled"), [((0.0, 0.0), False), ((1.0e-12, 0.0), True), ((0.0, 1.0), True)])
+def test_initial_live_state_matches_all_disabled_requested_setpoints(values, enabled):
+    from tango.pyaml.attribute_store import set_attribute
+
+    control = _control()
+    names = ("ps1", "ps2")
+    for name, value in zip(names, values, strict=True):
+        set_attribute(name, value, unit="A", range=(-100.0, 100.0), readback=50.0)
+    control.fill_device(
+        [
+            _device(
+                control_variables={name: {"unit": "A", "backend": name} for name in names},
+                model_operating_point={"ps1": 10.0, "ps2": 20.0},
+                disabled_operating_point={name: 0.0 for name in names},
+            )
+        ]
+    )
+    device = control.insertion_device.get("ID")
+    assert device.enabled.get() is enabled
+    device.enable()
+    assert [device.control_variables[name].get() for name in names] == [10.0, 20.0]
+    device.disable()
+    assert [device.control_variables[name].get() for name in names] == [0.0, 0.0]
+
+
+@pytest.mark.parametrize(
+    ("overrides", "command", "error"),
+    [
+        ({}, "disable", "disabled_operating_point is required"),
+        ({"model_operating_point": None}, "enable", "include every configured control variable"),
+        ({"control_mode": "MODE"}, "enable", "include mode"),
+        ({"control_variables": {"gap": {"unit": "mm"}}}, "enable", "control variable is unavailable"),
+    ],
+)
+def test_live_enable_disable_missing_configuration_fails_before_writes(overrides, command, error):
+    control = _control()
+    control.fill_device([_device(**overrides)])
+    device = control.insertion_device.get("ID")
+    backend = control.get_device_access("GAP")
+    with patch.object(backend, "set", wraps=backend.set) as write:
+        with pytest.raises(PyAMLException, match=error):
+            getattr(device, command)()
+        write.assert_not_called()
+    assert device.enabled.get() is True
+
+
+def test_live_enable_prevalidates_all_targets_before_writing():
+    from tango.pyaml.attribute_store import set_attribute
+
+    control = _control()
+    set_attribute("PHASE", 0.0, unit="mm", range=(-10.0, 10.0))
+    control.fill_device(
+        [
+            _device(
+                control_variables={"gap": {"unit": "mm", "backend": "GAP"}, "phase": {"unit": "mm", "backend": "PHASE"}},
+                model_operating_point={"gap": 4.0, "phase": 20.0},
+                disabled_operating_point={"gap": 30.0},
+            )
+        ]
+    )
+    device = control.insertion_device.get("ID")
+    backend = control.get_device_access("GAP")
+    with patch.object(backend, "set", wraps=backend.set) as write:
+        with pytest.raises(PyAMLException, match="out of range"):
+            device.enable()
+        write.assert_not_called()
+    device.disable()
+    assert device.control_variables["gap"].get() == 30.0
+    assert device.control_variables["phase"].get() == 0.0
+
+
+@pytest.mark.parametrize(("command", "ref"), [("disable", "GAP"), ("enable", "MODE")])
+def test_live_enable_disable_failures_do_not_update_logical_state(command, ref):
+    control = _control()
+    control.fill_device(
+        [
+            _device(
+                control_mode="MODE",
+                model_operating_point={"gap": 4.0, "mode": "parallel"},
+                disabled_operating_point={"gap": 30.0},
+            )
+        ]
+    )
+    device = control.insertion_device.get("ID")
+    if command == "enable":
+        device.disable()
+    previous = device.enabled.get()
+    error = RuntimeError("Interlocked")
+    with patch.object(control.get_device_access(ref), "set", side_effect=error):
+        with pytest.raises(RuntimeError) as caught:
+            getattr(device, command)()
+    assert caught.value is error
+    assert device.enabled.get() is previous
+    if command == "enable":
+        assert device.control_variables["gap"].get() == 4.0
+
+
+def test_enabled_accessors_reject_nonboolean_writes(id_lattice_file):
+    machine = _machine(id_lattice_file, [_device()])
+    for holder in machine.modes().values():
+        device = holder.insertion_device.get("ID")
+        with pytest.raises(PyAMLException, match="boolean enabled state"):
+            device.enabled.set(1)
+        assert device.enabled.get() is True
+
+
+def test_unattached_enabled_state_is_unavailable():
+    device = _device()
+    for command in (device.enable, device.disable):
+        with pytest.raises(PyAMLException, match="before attachment"):
+            command()
+
+
+@pytest.mark.parametrize("disabled_maps", [1, 2])
+def test_design_initial_enabled_state_comes_from_consistent_kickmaps(id_lattice_file, disabled_maps):
+    simulator = Simulator("design", id_lattice_file)
+    for element in simulator.ring[:disabled_maps]:
+        element.disable()
+    if disabled_maps == 1:
+        with pytest.raises(PyAMLException, match="inconsistent kickmap enabled states"):
+            simulator.fill_device([_device()])
+        assert not simulator.insertion_device.all()
+    else:
+        simulator.fill_device([_device()])
+        device = simulator.insertion_device.get("ID")
+        assert device.enabled.get() is False
+        device.enable()
+        assert device.enabled.get() is True
+        assert all(element.PassMethod == "IdTablePass" for element in simulator.ring[:2])

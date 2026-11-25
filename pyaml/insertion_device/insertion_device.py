@@ -12,6 +12,7 @@ Example (the lattice already contains the kickmap)::
         phase: {unit: mm, backend: APPLE01_PHASE, movement_flag: APPLE01_MOVING}
       control_mode: APPLE01_MODE
       model_operating_point: {gap: 4.0, phase: 0.0, mode: parallel}
+      disabled_operating_point: {gap: 30.0, phase: 0.0}
       orbit_feedforward: ID01_ORBIT_FF
 
 Runtime ``control_variables`` use existing pyAML scalar accessors. An absent key
@@ -50,10 +51,23 @@ before writing. Backend errors propagate unchanged.
 Optional controls use ``device.mode.get()/set(value)`` and
 ``device.flags[name].get()/set(value)``; the latter reuse ``RWScalarBoolean``.
 
+Both holders expose ``device.enable()``, ``device.disable()`` and the boolean
+``device.enabled.get()/set(value)`` accessor. Live enable applies the configured
+model point; disable applies ``disabled_operating_point``, a nonempty subset of
+the configured control variables. Targets and bindings are checked before writes.
+Writes follow configuration order, with mode last on enable; they do not wait
+for motion or provide atomicity. Sequencing and interlocks remain backend concerns.
+The logical state initially reflects an exact match of requested setpoints to
+the disabled point (otherwise enabled). It changes only after successful
+enable/disable commands, not after external changes or direct variable writes.
+
 In a simulator, variable reads report the configured reference point and all
-control-variable writes raise an error. ``device.model.disable()`` delegates to pyAT's
-same-length drift/identity approximation; ``enable()`` restores the kickmap.
-Neither operation changes the reference point or any hardware.
+control-variable writes raise an error. Disable delegates to pyAT's same-length
+drift/identity approximation; enable restores the kickmap. Neither changes the
+reference point or any hardware. ``model_reference`` exposes reference metadata,
+including kickmap filenames when attached to a simulator.
+``model_operating_point`` exposes the same read-only
+``RInsertionDeviceModelPoint`` in live and simulator holders.
 """
 
 import copy
@@ -62,16 +76,16 @@ from collections.abc import Mapping
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Self
 
-from ..common.abstract import ReadWriteFloatScalar
+from pydantic import StrictFloat
+
+from ..common import abstract
+from ..common.abstract_impl import RInsertionDeviceModelPoint
 from ..common.element import Element
-from ..common.exception import PyAMLConfigException
+from ..common.exception import PyAMLConfigException, PyAMLException
 from ..validation import DynamicValidation, register_schema
 
 if TYPE_CHECKING:
     from ..common.holders.element_holder import ElementHolder
-    from ..control.abstract_impl import RWScalarBoolean
-    from ..control.insertion_device import RWInsertionDeviceMode
-    from ..lattice import insertion_device
 
 PYAMLCLASS = "InsertionDevice"
 
@@ -95,6 +109,8 @@ class InsertionDevice(Element, DynamicValidation):
     ``orbit_feedforward`` and ``tune_feedforward`` reference existing elements
     in the same holder, resolved after attachment. Runtime ``mode`` and ``flags``
     expose the optional backend controls.
+    ``disabled_operating_point`` configures live resting setpoints. Enable uses
+    ``model_operating_point``; neither command modifies that fixed reference.
     """
 
     def __init__(
@@ -109,6 +125,7 @@ class InsertionDevice(Element, DynamicValidation):
         model_operating_point: dict[str, float | str] | None = None,
         lattice_names: str | None = None,
         description: str | None = None,
+        disabled_operating_point: dict[str, StrictFloat] | None = None,
     ):
         super().__init__(name, lattice_names, description)
         if not device_id.strip():
@@ -135,27 +152,48 @@ class InsertionDevice(Element, DynamicValidation):
             )
             if not key.strip() or not valid:
                 raise PyAMLConfigException(f"{name}.{key}: expected a finite coordinate or string mode")
+        if disabled_operating_point is not None:
+            if not disabled_operating_point:
+                raise PyAMLConfigException(f"{name}: disabled_operating_point must not be empty")
+            for key, value in disabled_operating_point.items():
+                if key not in control_variables:
+                    raise PyAMLConfigException(
+                        f"{name}.{key}: disabled_operating_point requires a configured control variable"
+                    )
+                if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+                    raise PyAMLConfigException(f"{name}.{key}: disabled_operating_point requires a finite setpoint")
         self.device_id = device_id
         self.control_mode = control_mode
         self.orbit_feedforward_name = orbit_feedforward
         self.tune_feedforward_name = tune_feedforward
         self._control_variable_definitions = copy.deepcopy(control_variables)
         self._flag_refs = dict(flags or {})
-        self._point = dict(model_operating_point) if model_operating_point is not None else None
-        self._control_variables: dict[str, ReadWriteFloatScalar | None] = dict.fromkeys(self._control_variable_definitions)
-        self._flags: dict[str, RWScalarBoolean | None] = dict.fromkeys(self._flag_refs)
-        self.mode: RWInsertionDeviceMode | None = None
+        self._disabled_point = dict(disabled_operating_point) if disabled_operating_point is not None else None
+        self._point = (
+            RInsertionDeviceModelPoint(
+                model_operating_point,
+                {name: definition["unit"] for name, definition in self._control_variable_definitions.items()},
+            )
+            if model_operating_point is not None
+            else None
+        )
+        self._control_variables: dict[str, abstract.ReadWriteFloatScalar | None] = dict.fromkeys(
+            self._control_variable_definitions
+        )
+        self._flags: dict[str, abstract.RWScalarBoolean | None] = dict.fromkeys(self._flag_refs)
+        self.mode: abstract.RWInsertionDeviceMode | None = None
         self.orbit_feedforward: Element | None = None
         self.tune_feedforward: Element | None = None
-        self.model: insertion_device.InsertionDevice | None = None
+        self._enabled: abstract.RWScalarBoolean | None = None
+        self._model_maps: tuple[str | None, ...] = ()
 
     @property
-    def control_variables(self) -> Mapping[str, ReadWriteFloatScalar | None]:
+    def control_variables(self) -> Mapping[str, abstract.ReadWriteFloatScalar | None]:
         """Bound scalar accessors, or None for configured but unavailable variables."""
         return MappingProxyType(self._control_variables)
 
     @property
-    def flags(self) -> Mapping[str, "RWScalarBoolean | None"]:
+    def flags(self) -> Mapping[str, abstract.RWScalarBoolean | None]:
         """Boolean backend controls, or None when unavailable in this holder."""
         return MappingProxyType(self._flags)
 
@@ -164,16 +202,49 @@ class InsertionDevice(Element, DynamicValidation):
         return MappingProxyType(self._flag_refs)
 
     @property
-    def model_operating_point(self) -> Mapping[str, float | str] | None:
-        return MappingProxyType(self._point) if self._point is not None else None
+    def model_operating_point(self) -> RInsertionDeviceModelPoint | None:
+        """Configured model reference, independent of the holder or hardware state."""
+        return self._point
+
+    @property
+    def disabled_operating_point(self) -> Mapping[str, float] | None:
+        """Configured live resting setpoints."""
+        return MappingProxyType(self._disabled_point) if self._disabled_point is not None else None
+
+    @property
+    def model_reference(self) -> dict:
+        """Return a snapshot of model settings and provenance, never live values."""
+        return {
+            "device_id": self.device_id,
+            "description": self.description,
+            "operating_point": dict(self._point) if self._point is not None else None,
+            "units": dict(self._point.units) if self._point is not None else {},
+            "maps": self._model_maps,
+        }
+
+    @property
+    def enabled(self) -> abstract.RWScalarBoolean:
+        """Logical enabled-state accessor for this holder."""
+        if self._enabled is None:
+            raise PyAMLException(f"{self.name}: enabled state is unavailable before attachment")
+        return self._enabled
+
+    def enable(self) -> None:
+        """Apply the live model point or restore design kickmap tracking."""
+        self.enabled.set(True)
+
+    def disable(self) -> None:
+        """Apply live resting setpoints or disable design kickmap tracking."""
+        self.enabled.set(False)
 
     def attach(
         self,
         peer: "ElementHolder",
-        control_variables: Mapping[str, ReadWriteFloatScalar | None] | None = None,
-        model: "insertion_device.InsertionDevice | None" = None,
-        flags: Mapping[str, "RWScalarBoolean | None"] | None = None,
-        mode: "RWInsertionDeviceMode | None" = None,
+        control_variables: Mapping[str, abstract.ReadWriteFloatScalar | None] | None = None,
+        enabled: abstract.RWScalarBoolean | None = None,
+        flags: Mapping[str, abstract.RWScalarBoolean | None] | None = None,
+        mode: abstract.RWInsertionDeviceMode | None = None,
+        model_maps: tuple[str | None, ...] = (),
     ) -> Self:
         """Return a per-peer copy; defaults give metadata-only access."""
         obj = copy.copy(self)
@@ -184,7 +255,8 @@ class InsertionDevice(Element, DynamicValidation):
         obj._flags = dict(flags) if flags is not None else dict.fromkeys(self._flag_refs)
         obj.mode = mode
         obj.orbit_feedforward = obj.tune_feedforward = None
-        obj.model = model
+        obj._enabled = enabled
+        obj._model_maps = model_maps
         return obj
 
     def _fill_device(self, holder: "ElementHolder") -> None:

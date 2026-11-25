@@ -6,6 +6,8 @@ array interfaces, including conversions between hardware values, magnet
 strengths, BPM readings, and RF quantities.
 """
 
+import time
+from collections.abc import Mapping
 from typing import Any
 
 import numpy as np
@@ -15,6 +17,8 @@ from numpy.typing import NDArray
 from .. import PyAMLException
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
+from ..common.abstract_impl import RInsertionDeviceModelPoint
+from ..common.exception import PyAMLConfigException
 from ..control.deviceaccess import DeviceAccess
 from ..control.deviceaccesslist import DeviceAccessList
 from ..magnet.magnet import Magnet
@@ -26,7 +30,7 @@ from .readback_value import Value
 # ------------------------------------------------------------------------------
 
 
-class RWScalarBoolean:
+class RWScalarBoolean(abstract.RWScalarBoolean):
     """Expose a backend boolean through reusable get/set accessors."""
 
     def __init__(self, device: DeviceAccess):
@@ -44,6 +48,137 @@ class RWScalarBoolean:
         if not isinstance(value, bool):
             raise PyAMLException(f"{self._device.name()}: expected a boolean flag, got {value!r}")
         self._device.set(value)
+
+
+class RWInsertionDeviceMode(abstract.RWInsertionDeviceMode):
+    """Expose an optional mode; the control system owns allowed transitions."""
+
+    def __init__(self, device: DeviceAccess):
+        self._device = device
+
+    def get(self) -> str:
+        value = self._device.readback()
+        if isinstance(value, Value):
+            value = value.value
+        if not isinstance(value, str) or not value.strip():
+            raise PyAMLException(f"{self._device.name()}: expected a nonempty string mode, got {value!r}")
+        return value
+
+    def set(self, value: str) -> None:
+        if not isinstance(value, str) or not value.strip():
+            raise PyAMLException(f"{self._device.name()}: expected a nonempty string mode, got {value!r}")
+        self._device.set(value)
+
+
+class RWInsertionDeviceControlVariable(abstract.ReadWriteFloatScalar):
+    """Write gap/phase variables with movement flags or currents without them."""
+
+    def __init__(self, device: DeviceAccess, unit: str, moving: abstract.RWScalarBoolean | None = None):
+        if device.unit() != unit:
+            raise PyAMLConfigException(
+                f"{device.name()}: backend unit {device.unit()!r} does not match configured unit {unit!r}"
+            )
+        self._device = device
+        self._unit = unit
+        self.moving = moving
+
+    def get(self) -> float:
+        """Return the requested setpoint."""
+        return float(self._device.get())
+
+    def readback(self) -> float:
+        """Return the measured control-variable value."""
+        return float(self._device.readback())
+
+    def unit(self) -> str:
+        return self._unit
+
+    def get_range(self) -> list[float | None]:
+        return self._device.get_range()
+
+    def set(self, value: float) -> None:
+        if not check_range(value, self.get_range()):
+            raise PyAMLException(format_out_of_range_message(value, self._device))
+        self._device.set(value)
+
+    def set_and_wait(self, value: float) -> None:
+        """Set a gap or phase/shift variable and wait while its movement flag is true."""
+        if self.moving is None:
+            raise PyAMLException(
+                f"{self._device.name()}: set_and_wait requires a movement_flag; use set() for current variables"
+            )
+        self.set(value)
+        while self.moving.get():
+            time.sleep(0.1)
+
+
+class RWInsertionDeviceEnabled(abstract.RWScalarBoolean):
+    """Apply live operating points and retain pyAML's logical enabled state."""
+
+    def __init__(
+        self,
+        name: str,
+        control_variables: Mapping[str, RWInsertionDeviceControlVariable | None],
+        point: RInsertionDeviceModelPoint | None,
+        disabled_point: Mapping[str, float] | None,
+        mode: RWInsertionDeviceMode | None,
+    ):
+        self._name = name
+        self._control_variables = dict(control_variables)
+        self._point = point
+        self._disabled_point = dict(disabled_point) if disabled_point is not None else None
+        self._mode = mode
+        self._enabled = True
+        if self._disabled_point:
+            variables = self._variables(self._disabled_point)
+            self._enabled = not all(variable.get() == target for _, variable, target in variables)
+
+    def get(self) -> bool:
+        """Return logical state, not measured completion or external changes."""
+        return self._enabled
+
+    def _variables(self, targets: Mapping[str, float]) -> list[tuple[str, RWInsertionDeviceControlVariable, float]]:
+        variables = []
+        for name, target in targets.items():
+            variable = self._control_variables.get(name)
+            if variable is None:
+                raise PyAMLException(f"{self._name}.{name}: control variable is unavailable")
+            variables.append((name, variable, target))
+        return variables
+
+    def set(self, value: bool) -> None:
+        if not isinstance(value, bool):
+            raise PyAMLException(f"{self._name}: expected a boolean enabled state, got {value!r}")
+        mode = None
+        if value:
+            if self._point is None or not set(self._control_variables).issubset(self._point):
+                raise PyAMLException(
+                    f"{self._name}: model_operating_point must include every configured control variable to enable"
+                )
+            targets = {}
+            for name in self._control_variables:
+                target = self._point[name]
+                if not isinstance(target, (int, float)):
+                    raise PyAMLException(f"{self._name}.{name}: numeric model reference is required")
+                targets[name] = float(target)
+            if self._mode is not None:
+                mode = self._point.mode
+                if mode is None:
+                    raise PyAMLException(f"{self._name}: model_operating_point must include mode to enable")
+        else:
+            if not self._disabled_point:
+                raise PyAMLException(f"{self._name}: disabled_operating_point is required to disable")
+            targets = self._disabled_point
+        variables = self._variables(targets)
+        for name, variable, target in variables:
+            limits = variable.get_range()
+            if not check_range(target, limits):
+                raise PyAMLException(f"{self._name}.{name}: value {target!r} is out of range {limits}")
+        for _, variable, target in variables:
+            variable.set(target)
+        if mode is not None and self._mode is not None:
+            self._mode.set(mode)
+        self._enabled = value
 
 
 def check_range(values: Any, dev_range: Any) -> bool:
