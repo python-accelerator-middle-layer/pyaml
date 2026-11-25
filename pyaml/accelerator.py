@@ -319,6 +319,7 @@ class Accelerator(DynamicValidation):
                 holder._BPMS,
                 holder._RFPLANT,
                 holder._RFTRANSMITTER,
+                holder._INSERTION_DEVICES,
                 holder._DIAG,
                 holder._TOOLS,
             )

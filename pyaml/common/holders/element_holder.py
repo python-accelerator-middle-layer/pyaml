@@ -7,6 +7,7 @@ from pyaml.diagnostics.bpm import BPM
 
 from ...arrays.element_array import ElementArray
 from ...diagnostics.tune_monitor import BetatronTuneMonitor
+from ...insertion_device import InsertionDevice
 from ...magnet.cfm_magnet import CombinedFunctionMagnet
 from ...magnet.magnet import Magnet
 from ...magnet.serialized_magnet import SerializedMagnets
@@ -21,6 +22,7 @@ from .rf_holder import RFHolder
 from .sub_holders import (
     CombinedFunctionMagnetHolder,
     CombinedFunctionMagnetsHolder,
+    InsertionDeviceHolder,
     MagnetHolder,
     MagnetsHolder,
     SerializedMagnetHolder,
@@ -54,6 +56,8 @@ class ElementHolder(metaclass=ABCMeta):
         Single serialized magnet group by name, or a named array.
     rf
         RF plant and transmitters of this mode.
+    insertion_device
+        Individual insertion devices and their component capabilities.
     diagnostic
         Diagnostics of this mode, with typed default-name access.
     tool
@@ -94,6 +98,7 @@ class ElementHolder(metaclass=ABCMeta):
         self._BPMS: dict[str, BPM] = {}
         self._RFPLANT: dict[str, RFPlant] = {}
         self._RFTRANSMITTER: dict[str, RFTransmitter] = {}
+        self._INSERTION_DEVICES: dict[str, InsertionDevice] = {}
         self._DIAG: dict[str, Element] = {}
         self._TOOLS: dict[str, Element] = {}
         self._ALL: dict[str, Element] = {}
@@ -105,6 +110,7 @@ class ElementHolder(metaclass=ABCMeta):
             BPM: self._BPMS,
             RFPlant: self._RFPLANT,
             RFTransmitter: self._RFTRANSMITTER,
+            InsertionDevice: self._INSERTION_DEVICES,
         }
 
         # Array handle
@@ -122,6 +128,7 @@ class ElementHolder(metaclass=ABCMeta):
         self._combined_function_magnet_holder = CombinedFunctionMagnetHolder(self)
         self._combined_function_magnets_holder = CombinedFunctionMagnetsHolder(self)
         self._rf_holder = RFHolder(self)
+        self._insertion_device_holder = InsertionDeviceHolder(self)
         self._diagnostic_holder = DiagnosticHolder(self)
         self._tool_holder = ToolHolder(self)
 
@@ -131,6 +138,11 @@ class ElementHolder(metaclass=ABCMeta):
         return self._peer
 
     # Sub holders ----------------------------------------------------------------
+
+    @property
+    def insertion_device(self) -> InsertionDeviceHolder:
+        """Return this mode's insertion devices."""
+        return self._insertion_device_holder
 
     @property
     def magnet(self) -> MagnetHolder:
@@ -185,6 +197,9 @@ class ElementHolder(metaclass=ABCMeta):
     def fill_device(self, elements: list[Element]):
         for element in elements:
             element._fill_device(self)
+
+    def _fill_insertion_device(self, device: InsertionDevice) -> None:
+        raise PyAMLException(f"{device.name}: insertion devices are unsupported by {self.__class__.__name__}")
 
     @abstractmethod
     def _fill_magnet(self, magnet: Magnet) -> None:

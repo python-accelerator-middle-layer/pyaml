@@ -9,6 +9,7 @@ import sys
 
 modules = [
     "pyaml.accelerator",
+    "pyaml.insertion_device",
     "pyaml.arrays.array",
     "pyaml.arrays.bpm",
     "pyaml.arrays.bpm_array",

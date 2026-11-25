@@ -8,6 +8,7 @@ from ...arrays.bpm_array import BPMArray
 from ...arrays.cfm_magnet_array import CombinedFunctionMagnetArray
 from ...arrays.magnet_array import MagnetArray
 from ...arrays.serialized_magnet_array import SerializedMagnetsArray
+from ...insertion_device import InsertionDevice
 from ...magnet.cfm_magnet import CombinedFunctionMagnet
 from ...magnet.magnet import Magnet
 from ...magnet.serialized_magnet import SerializedMagnets
@@ -16,6 +17,13 @@ from .generic_element_holder import GenericElementHolder
 
 if TYPE_CHECKING:
     from .element_holder import ElementHolder
+
+
+class InsertionDeviceHolder(GenericElementHolder[InsertionDevice]):
+    """Provide typed access to individual insertion devices."""
+
+    def __init__(self, peer: "ElementHolder"):
+        super().__init__(peer, peer._INSERTION_DEVICES, "Insertion device")
 
 
 class MagnetHolder(GenericElementHolder[Magnet]):

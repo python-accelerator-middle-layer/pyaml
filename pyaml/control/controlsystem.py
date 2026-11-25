@@ -36,6 +36,7 @@ from ..control.abstract_impl import (
 )
 from ..diagnostics.atune_monitor import ABetatronTuneMonitor
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
+from ..insertion_device import InsertionDevice
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..magnet.serialized_magnet import SerializedMagnets
@@ -214,6 +215,10 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             aggh.add_devices(devs[0])
             aggv.add_devices(devs[1])
         return [agg, aggh, aggv]
+
+    def _fill_insertion_device(self, device: InsertionDevice) -> None:
+        """Register metadata only; concrete ID hardware binding is adapter-owned."""
+        self.insertion_device.add(device.attach(self))
 
     def _fill_magnet(self, magnet: Magnet) -> None:
         device = self.get_device_access(magnet.model.get_device_names()[0])
