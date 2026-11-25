@@ -12,7 +12,7 @@ from pydantic import BaseModel
 
 from pyaml.diagnostics.bpm import BPM
 
-from ..common.abstract import RWMapper
+from ..common.abstract import ReadFloatScalar, RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.exception import PyAMLException
 from ..common.holders.element_holder import ElementHolder
@@ -30,6 +30,7 @@ from ..control.abstract_impl import (
     RWRFFrequencyScalar,
     RWRFPhaseScalar,
     RWRFVoltageScalar,
+    RWScalarBoolean,
     RWSerializedStrengthScalar,
     RWStrengthArray,
     RWStrengthScalar,
@@ -46,6 +47,7 @@ from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
 from .deviceaccess import DeviceAccess
 from .deviceaccesslist import DeviceAccessList
+from .insertion_device import InsertionDeviceMode, RInsertionDeviceControlVariable, RWInsertionDeviceControlVariable
 
 
 class ControlSystem(ElementHolder, metaclass=ABCMeta):
@@ -217,8 +219,23 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         return [agg, aggh, aggv]
 
     def _fill_insertion_device(self, device: InsertionDevice) -> None:
-        """Register metadata only; concrete ID hardware binding is adapter-owned."""
-        self.insertion_device.add(device.attach(self))
+        """Bind named control variables and optional controls through backend references."""
+        control_variables: dict[str, ReadFloatScalar | None] = {}
+        for name, definition in device._control_variable_definitions.items():
+            if "backend" not in definition:
+                control_variables[name] = None
+                continue
+            backend = self.get_device_access(definition["backend"])
+            moving = (
+                RWScalarBoolean(self.get_device_access(definition["movement_flag"])) if "movement_flag" in definition else None
+            )
+            accessor = (
+                RInsertionDeviceControlVariable if definition.get("access") == "read" else RWInsertionDeviceControlVariable
+            )
+            control_variables[name] = accessor(backend, definition["unit"], moving)
+        flags = {name: RWScalarBoolean(self.get_device_access(ref)) for name, ref in device.flag_references.items()}
+        mode = InsertionDeviceMode(self.get_device_access(device.control_mode)) if device.control_mode is not None else None
+        self.insertion_device.add(device.attach(self, control_variables, flags=flags, mode=mode))
 
     def _fill_magnet(self, magnet: Magnet) -> None:
         device = self.get_device_access(magnet.model.get_device_names()[0])

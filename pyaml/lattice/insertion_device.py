@@ -14,7 +14,9 @@ if TYPE_CHECKING:
     from ..common.holders.element_holder import ElementHolder
 
 
-class _FixedDrive(ReadFloatScalar):
+class RInsertionDeviceControlVariable(ReadFloatScalar):
+    """Expose a control variable at the kickmap's fixed operating point."""
+
     def __init__(self, name: str, value: float, unit: str):
         self._name = name
         self._value = value
@@ -30,6 +32,9 @@ class _FixedDrive(ReadFloatScalar):
     def unit(self) -> str:
         return self._unit
 
+    def get_range(self) -> list[float]:
+        return [self._value, self._value]
+
     def set(self, value: float) -> None:
         if not isinstance(value, (int, float)) or not math.isfinite(value) or value != self._value:
             raise PyAMLException(f"{self._name}: fixed model operating point does not support {value!r}")
@@ -43,8 +48,8 @@ class FixedInsertionDeviceModel:
 
     def __init__(self, device: InsertionDevice, kickmaps: list[at.InsertionDeviceKickMap]):
         point = device.model_operating_point
-        if point is None or not set(device.drives).issubset(point):
-            raise PyAMLException(f"{device.name}: model_operating_point must include every configured drive")
+        if point is None or not set(device.control_variables).issubset(point):
+            raise PyAMLException(f"{device.name}: model_operating_point must include every configured control variable")
         if device.control_mode is not None and "mode" not in point:
             raise PyAMLException(f"{device.name}: model_operating_point must include mode")
         self._name = device.name
@@ -54,7 +59,7 @@ class FixedInsertionDeviceModel:
             "device_id": device.device_id,
             "description": device.description,
             "operating_point": dict(point),
-            "units": {name: definition["unit"] for name, definition in device.drives.items()},
+            "units": {name: definition["unit"] for name, definition in device._control_variable_definitions.items()},
             "maps": tuple(getattr(element, "Filename_in", None) for element in kickmaps),
         }
 
@@ -91,10 +96,12 @@ class FixedInsertionDeviceModel:
             element.disable()
 
     def attach(self, device: InsertionDevice, peer: "ElementHolder") -> InsertionDevice:
-        components = {}
-        for name, definition in device.drives.items():
+        control_variables = {}
+        for name, definition in device._control_variable_definitions.items():
             value = self._point[name]
             if not isinstance(value, (int, float)):
                 raise PyAMLException(f"{device.name}.{name}: numeric model reference is required")
-            components[name] = _FixedDrive(f"{device.name}.{name}", float(value), definition["unit"])
-        return device.attach(peer, components, self)
+            control_variables[name] = RInsertionDeviceControlVariable(
+                f"{device.name}.{name}", float(value), definition["unit"]
+            )
+        return device.attach(peer, control_variables, self)

@@ -57,7 +57,7 @@ class ElementHolder(metaclass=ABCMeta):
     rf
         RF plant and transmitters of this mode.
     insertion_device
-        Individual insertion devices and their component capabilities.
+        Individual insertion devices and their control variables.
     diagnostic
         Diagnostics of this mode, with typed default-name access.
     tool

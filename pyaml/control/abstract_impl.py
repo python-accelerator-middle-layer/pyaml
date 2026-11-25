@@ -21,8 +21,29 @@ from ..magnet.magnet import Magnet
 from ..magnet.model import MagnetModel
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
+from .readback_value import Value
 
 # ------------------------------------------------------------------------------
+
+
+class RWScalarBoolean:
+    """Expose a backend boolean through reusable get/set accessors."""
+
+    def __init__(self, device: DeviceAccess):
+        self._device = device
+
+    def get(self) -> bool:
+        value = self._device.readback()
+        if isinstance(value, Value):
+            value = value.value
+        if value not in (False, True):
+            raise PyAMLException(f"{self._device.name()}: expected a boolean flag, got {value!r}")
+        return bool(value)
+
+    def set(self, value: bool) -> None:
+        if not isinstance(value, bool):
+            raise PyAMLException(f"{self._device.name()}: expected a boolean flag, got {value!r}")
+        self._device.set(value)
 
 
 def check_range(values: Any, dev_range: Any) -> bool:
