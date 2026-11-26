@@ -34,12 +34,14 @@ from ..control.abstract_impl import (
     RWSerializedStrengthScalar,
     RWStrengthArray,
     RWStrengthScalar,
+    RWStrengthTrim,
 )
 from ..diagnostics.atune_monitor import ABetatronTuneMonitor
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..magnet.serialized_magnet import SerializedMagnets
+from ..magnet.serialized_magnet_trims import SerializedMagnetsWithTrims
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.measurement_tool import MeasurementTool
@@ -248,9 +250,26 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         for magnet in attached_magnets[1:]:
             self.magnet.add(magnet)
 
-    def _fill_serialized_magnets_with_trims(self, magnets: SerializedMagnets) -> None:
-        # To be implemented in next PR, now it is dummy for test not to fail.
-        pass
+    def _fill_serialized_magnets_with_trims(self, magnets: SerializedMagnetsWithTrims) -> None:
+        """Bind the shared main supply and each independent trim supply."""
+        main_device = self.get_device_access(magnets.model.get_device_names()[0])
+        currents, strengths = [], []
+        for index in range(magnets.get_nb_magnets()):
+            sub_model = magnets.model.get_sub_model(index)
+            currents.append(RWHardwareScalar(sub_model, main_device))
+            strengths.append(RWSerializedStrengthScalar(sub_model, main_device, index, magnets.model))
+
+        trim_currents, trim_strengths = [], []
+        for trim, magnet in zip(magnets.model.trims, magnets.get_trim_magnets(), strict=True):
+            device = self.get_device_access(trim.powerconverter)
+            sub_model = magnets.model.get_sub_model(magnets.names().index(trim.element))
+            trim_currents.append(RWHardwareScalar(magnet.model, device))
+            trim_strengths.append(RWStrengthTrim(sub_model, main_device, device, trim.trim_factor))
+
+        attached = magnets.attach(self, strengths, currents, trim_strengths, trim_currents)
+        self.serialized_magnet.add(attached[0])
+        for magnet in attached[1:]:
+            self.magnet.add(magnet)
 
     def _fill_bpm(self, bpm: BPM) -> None:
         position_devices = self.get_devices_access(bpm.get_pos_devices())

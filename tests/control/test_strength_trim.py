@@ -5,8 +5,13 @@ import pytest
 
 from pyaml import PyAMLException
 from pyaml.control.abstract_impl import RWStrengthTrim
+from pyaml.control.controlsystem import ControlSystemAdapter
 from pyaml.control.deviceaccess import DeviceAccess
+from pyaml.magnet.inline_curve import InlineCurve
+from pyaml.magnet.linear_serialized_with_trims_model import LinearSerializedMagnetWithTrimsModel
 from pyaml.magnet.model import MagnetModel
+from pyaml.magnet.serialized_magnet_trims import SerializedMagnetsWithTrims
+from pyaml.magnet.trim_coil import TrimCoil
 
 
 @pytest.fixture
@@ -65,3 +70,48 @@ def test_zero_factor_is_rejected(trim_setup):
     model, main, trim = trim_setup
     with pytest.raises(ValueError, match="nonzero"):
         RWStrengthTrim(model, main, trim, 0.0)
+
+
+def test_control_attachment_and_independent_trim_supply(trim_setup, monkeypatch):
+    _, main_device, trim_device = trim_setup
+    main_device.get.return_value = 1.0
+    main_device.get_range.return_value = [0.0, 3.0]
+    main_device.set.side_effect = lambda value: setattr(main_device.get, "return_value", value)
+    trim_device.get.return_value = -0.25
+    devices = {"main/current": main_device, "trim/current": trim_device}
+    controls = ControlSystemAdapter()
+    monkeypatch.setattr(controls, "get_device_access", devices.__getitem__)
+    model = LinearSerializedMagnetWithTrimsModel(
+        curves=InlineCurve([[0, 0], [1, 1], [2, 4], [3, 9]]),
+        trims=[TrimCoil("D2", "T2", "trim/current", trim_factor=-2, hardware_unit="trim A")],
+        powerconverter="main/current",
+        unit="rad",
+        hardware_unit="A",
+    )
+    family = SerializedMagnetsWithTrims("series", "B0", ["D1", "D2"], model)
+    model.set_magnet_rigidity(1.0)
+    controls.fill_device([family])
+    attached = controls.serialized_magnet["series"]
+    trim = controls.magnet["T2"]
+
+    assert isinstance(attached, SerializedMagnetsWithTrims)
+    assert attached.names() == ["D1", "D2"]
+    assert attached.get_trim_magnets() == [trim]
+    assert trim.peer is controls
+    assert trim.hardware.unit() == "trim A"
+    assert trim.strength.unit() == "rad"
+    assert trim.strength.get() == pytest.approx(1.5)
+
+    attached.strength.set(model.compute_mean_strength(2.0))
+    np.testing.assert_allclose(attached.hardwares.get(), [2.0, 2.0])
+    assert trim.hardware.get() == pytest.approx(-0.25)
+    assert trim.strength.get() == pytest.approx(2.5)
+    trim_device.set.assert_not_called()
+
+    main_device.set.reset_mock()
+    trim.strength.set(1.0)
+    assert trim.hardware.get() == pytest.approx(-0.1)
+    assert trim.strength.get() == pytest.approx(1.0)
+    trim.hardware.set(-0.25)
+    assert trim.strength.get() == pytest.approx(2.5)
+    main_device.set.assert_not_called()
