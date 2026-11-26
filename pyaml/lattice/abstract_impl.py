@@ -64,7 +64,7 @@ class RWInsertionDeviceMode(abstract.RWInsertionDeviceMode):
             raise PyAMLException(f"{self._name}: fixed model operating point does not support mode {value!r}")
 
 
-class RWInsertionDeviceEnabled(abstract.RWScalarBoolean):
+class RWInsertionDeviceEnabled(abstract.RWBooleanScalar):
     """Toggle kickmap tracking and retain pyAML's logical enabled state."""
 
     def __init__(self, name: str, kickmaps: list[at.InsertionDeviceKickMap]):

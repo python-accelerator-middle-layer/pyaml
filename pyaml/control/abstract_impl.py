@@ -30,7 +30,7 @@ from .readback_value import Value
 # ------------------------------------------------------------------------------
 
 
-class RWScalarBoolean(abstract.RWScalarBoolean):
+class RWBooleanScalar(abstract.RWBooleanScalar):
     """Expose a backend boolean through reusable get/set accessors."""
 
     def __init__(self, device: DeviceAccess):
@@ -73,7 +73,7 @@ class RWInsertionDeviceMode(abstract.RWInsertionDeviceMode):
 class RWInsertionDeviceControlVariable(abstract.ReadWriteFloatScalar):
     """Write gap/phase variables with movement flags or currents without them."""
 
-    def __init__(self, device: DeviceAccess, unit: str, moving: abstract.RWScalarBoolean | None = None):
+    def __init__(self, device: DeviceAccess, unit: str, moving: abstract.RWBooleanScalar | None = None):
         if device.unit() != unit:
             raise PyAMLConfigException(
                 f"{device.name()}: backend unit {device.unit()!r} does not match configured unit {unit!r}"
@@ -112,7 +112,7 @@ class RWInsertionDeviceControlVariable(abstract.ReadWriteFloatScalar):
             time.sleep(0.1)
 
 
-class RWInsertionDeviceEnabled(abstract.RWScalarBoolean):
+class RWInsertionDeviceEnabled(abstract.RWBooleanScalar):
     """Apply live operating points and retain pyAML's logical enabled state."""
 
     def __init__(

@@ -11,7 +11,7 @@ from pyaml.common import abstract
 from pyaml.common.abstract_impl import RInsertionDeviceModelPoint
 from pyaml.common.element import Element
 from pyaml.configuration.factory import Factory
-from pyaml.control.abstract_impl import RWScalarBoolean
+from pyaml.control.abstract_impl import RWBooleanScalar
 from pyaml.control.controlsystem import ControlSystem
 from pyaml.control.readback_value import Value
 from pyaml.insertion_device import InsertionDevice
@@ -175,7 +175,7 @@ def test_holder_registration_associations_and_add_rollback(id_lattice_file):
     for holder in machine.modes().values():
         device = holder.insertion_device.get("ID")
         assert type(device) is InsertionDevice
-        assert isinstance(device.enabled, abstract.RWScalarBoolean)
+        assert isinstance(device.enabled, abstract.RWBooleanScalar)
         copies.append(device)
         assert holder["ID"] is device
         assert holder.insertion_device.all() == [device]
@@ -213,7 +213,7 @@ def test_live_attachment_binds_hardware_separately_from_model(id_lattice_file):
     assert gap.get() == 9.0
     assert gap.get_range() == [2.0, 30.0]
     assert "phase" not in live.control_variables
-    assert isinstance(live.flags["moving"], RWScalarBoolean)
+    assert isinstance(live.flags["moving"], RWBooleanScalar)
     assert live.flags["moving"].get() is False
     assert live.flags["orbit_ff"].get() is True
     assert live.flag_references["moving"] == "MOVING"
@@ -363,13 +363,13 @@ def test_boolean_scalar_reads_boolean_value(value):
     control = _control()
     backend = control.get_device_access("FF")
     with patch.object(backend, "readback", return_value=value):
-        assert RWScalarBoolean(backend).get() is bool(value.value if isinstance(value, Value) else value)
+        assert RWBooleanScalar(backend).get() is bool(value.value if isinstance(value, Value) else value)
 
 
 def test_boolean_scalar_writes_and_rejects_nonboolean_values():
     control = _control()
     backend = control.get_device_access("FF")
-    flag = RWScalarBoolean(backend)
+    flag = RWBooleanScalar(backend)
     flag.set(False)
     assert flag.get() is False
     with pytest.raises(PyAMLException, match="boolean flag"):

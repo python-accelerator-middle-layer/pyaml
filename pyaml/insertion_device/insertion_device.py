@@ -49,7 +49,7 @@ boolean flag until false: no readback tolerance, moving edge detection, or
 timeout policy is added. Without a movement flag, ``set_and_wait()`` raises
 before writing. Backend errors propagate unchanged.
 Optional controls use ``device.mode.get()/set(value)`` and
-``device.flags[name].get()/set(value)``; the latter reuse ``RWScalarBoolean``.
+``device.flags[name].get()/set(value)``; the latter reuse ``RWBooleanScalar``.
 
 Both holders expose ``device.enable()``, ``device.disable()`` and the boolean
 ``device.enabled.get()/set(value)`` accessor. Live enable applies the configured
@@ -180,11 +180,11 @@ class InsertionDevice(Element, DynamicValidation):
         self._control_variables: dict[str, abstract.ReadWriteFloatScalar | None] = dict.fromkeys(
             self._control_variable_definitions
         )
-        self._flags: dict[str, abstract.RWScalarBoolean | None] = dict.fromkeys(self._flag_refs)
+        self._flags: dict[str, abstract.RWBooleanScalar | None] = dict.fromkeys(self._flag_refs)
         self.mode: abstract.RWInsertionDeviceMode | None = None
         self.orbit_feedforward: Element | None = None
         self.tune_feedforward: Element | None = None
-        self._enabled: abstract.RWScalarBoolean | None = None
+        self._enabled: abstract.RWBooleanScalar | None = None
         self._model_maps: tuple[str | None, ...] = ()
 
     @property
@@ -193,7 +193,7 @@ class InsertionDevice(Element, DynamicValidation):
         return MappingProxyType(self._control_variables)
 
     @property
-    def flags(self) -> Mapping[str, abstract.RWScalarBoolean | None]:
+    def flags(self) -> Mapping[str, abstract.RWBooleanScalar | None]:
         """Boolean backend controls, or None when unavailable in this holder."""
         return MappingProxyType(self._flags)
 
@@ -223,7 +223,7 @@ class InsertionDevice(Element, DynamicValidation):
         }
 
     @property
-    def enabled(self) -> abstract.RWScalarBoolean:
+    def enabled(self) -> abstract.RWBooleanScalar:
         """Logical enabled-state accessor for this holder."""
         if self._enabled is None:
             raise PyAMLException(f"{self.name}: enabled state is unavailable before attachment")
@@ -241,8 +241,8 @@ class InsertionDevice(Element, DynamicValidation):
         self,
         peer: "ElementHolder",
         control_variables: Mapping[str, abstract.ReadWriteFloatScalar | None] | None = None,
-        enabled: abstract.RWScalarBoolean | None = None,
-        flags: Mapping[str, abstract.RWScalarBoolean | None] | None = None,
+        enabled: abstract.RWBooleanScalar | None = None,
+        flags: Mapping[str, abstract.RWBooleanScalar | None] | None = None,
         mode: abstract.RWInsertionDeviceMode | None = None,
         model_maps: tuple[str | None, ...] = (),
     ) -> Self:
