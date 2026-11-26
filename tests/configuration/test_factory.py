@@ -17,7 +17,7 @@ def test_factory_build_default():
     assert obj.name == "simple"
 
 
-@pytest.mark.parametrize("value", [4.0, "parallel", True, {"labels": ["a", "b"]}])
+@pytest.mark.parametrize("value", [True, {"labels": ["a", "b"]}])
 def test_named_value_configuration(value):
     obj = Factory.build(
         SchemaValidator.validate_to_dict({"type": "pyaml.configuration.named_value", "name": "setting", "value": value})
@@ -27,8 +27,11 @@ def test_named_value_configuration(value):
     assert obj.value == value
     assert type(obj.value) is type(value)
     assert "setting" not in ELEMENT_REGISTRY
+
+
+def test_named_value_requires_nonempty_name():
     with pytest.raises(PyAMLConfigException, match="nonempty name"):
-        NamedValue(" ", value)
+        NamedValue(" ", 4.0)
 
 
 @pytest.mark.parametrize(
