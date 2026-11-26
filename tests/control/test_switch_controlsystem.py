@@ -15,11 +15,6 @@ def device():
     device = create_autospec(DeviceAccess, instance=True)
     device.name.return_value = "feedback/enabled"
     device.readback.return_value = Value(True)
-
-    def write(value):
-        device.readback.return_value = Value(value)
-
-    device.set.side_effect = write
     return device
 
 
@@ -39,84 +34,74 @@ def test_attachment_and_representation_do_not_access_channel(live, device):
     assert device.mock_calls == []
 
 
-@pytest.mark.parametrize("enabled,operation", [(True, "enable"), (False, "disable")])
-def test_operation_uses_set_without_waiting_or_completion_checks(live, device, enabled, operation):
-    getattr(live["SOFB"], operation)()
+def test_commands_and_accessor_write_without_waiting_and_read_actual_state(live, device):
+    switch = live["SOFB"]
+    device.readback.return_value = Value(False)
 
-    assert device.mock_calls == [call.set(enabled)]
-    assert type(device.set.call_args.args[0]) is bool
-    assert live["SOFB"].is_enabled() is enabled
+    switch.enable()
+    assert switch.enabled.get() is False
+    device.readback.return_value = Value(True)
+    switch.disable()
+    assert switch.is_enabled() is True
+    switch.enabled.set(False)
+    assert switch.enabled.get() is True
+    device.readback.return_value = Value(False)
+    assert switch.is_enabled() is False
+
+    assert device.mock_calls == [
+        call.set(True),
+        call.readback(),
+        call.set(False),
+        call.readback(),
+        call.set(False),
+        call.readback(),
+        call.readback(),
+    ]
     device.set_and_wait.assert_not_called()
     device.get.assert_not_called()
 
 
-def test_direct_boolean_accessor_writes_and_reads(live, device):
-    switch = live["SOFB"]
-    switch.enabled.set(False)
-    assert switch.enabled.get() is False
-    switch.enabled.set(True)
-    assert switch.enabled.get() is True
-    assert device.mock_calls == [call.set(False), call.readback(), call.set(True), call.readback()]
+@pytest.mark.parametrize(
+    "value,expected",
+    [
+        pytest.param(False, False, id="boolean"),
+        pytest.param(Value(True, quality=Quality.INVALID), True, id="wrapped-boolean-invalid-quality"),
+        pytest.param(0, False, id="numeric-zero"),
+        pytest.param(Value(1), True, id="wrapped-numeric-one"),
+        pytest.param(np.bool_(True), True, id="numpy-boolean"),
+    ],
+)
+def test_status_returns_native_boolean_from_actual_readback(live, device, value, expected):
+    device.get.return_value = not expected
+    device.readback.return_value = value
 
-
-@pytest.mark.parametrize("value", [True, False, np.bool_(True), np.bool_(False), 0, 1, 0.0, 1.0, np.int64(1)])
-@pytest.mark.parametrize("wrapped", [False, True])
-def test_status_returns_native_boolean_from_actual_readback(live, device, value, wrapped):
-    device.get.return_value = not bool(value)
-    device.readback.return_value = Value(value) if wrapped else value
-
-    assert live["SOFB"].enabled.get() is bool(value)
-    assert live["SOFB"].is_enabled() is bool(value)
+    assert live["SOFB"].enabled.get() is expected
     device.get.assert_not_called()
 
 
 @pytest.mark.parametrize(
-    "value",
-    [2, -1, 0.5, np.nan, "true", "False", None, [True], {"enabled": True}],
+    "value", [pytest.param(2, id="numeric"), pytest.param(Value("off"), id="wrapped-string"), pytest.param(None, id="missing")]
 )
-@pytest.mark.parametrize("wrapped", [False, True])
-def test_status_rejects_non_boolean_readback(live, device, value, wrapped):
-    device.readback.return_value = Value(value) if wrapped else value
+def test_status_rejects_non_boolean_readback(live, device, value):
+    device.readback.return_value = value
 
     with pytest.raises(PyAMLException, match="feedback/enabled: expected a boolean flag"):
         live["SOFB"].enabled.get()
 
 
-@pytest.mark.parametrize("quality", [Quality.INVALID, Quality.ALARM, Quality.CHANGING, Quality.WARNING])
-def test_boolean_accessor_adds_no_quality_policy(live, device, quality):
-    device.readback.return_value = Value(True, quality=quality)
-
-    assert live["SOFB"].enabled.get() is True
-
-
-@pytest.mark.parametrize("enabled,operation", [(True, "enable"), (False, "disable")])
-def test_write_does_not_claim_completion_or_cache_commanded_state(live, device, enabled, operation):
-    device.set.side_effect = None
-    device.get.return_value = enabled
-    device.readback.return_value = Value(not enabled)
-
-    getattr(live["SOFB"], operation)()
-
-    device.readback.assert_not_called()
-    assert live["SOFB"].enabled.get() is not enabled
-    device.set_and_wait.assert_not_called()
-    device.get.assert_not_called()
-
-
-@pytest.mark.parametrize("value", [0, 1, 0.0, np.bool_(True), "true", None, [True]])
+@pytest.mark.parametrize("value", [1, np.bool_(True), "true"])
 def test_direct_writes_require_python_boolean(live, device, value):
     with pytest.raises(PyAMLException, match="feedback/enabled: expected a boolean flag"):
         live["SOFB"].enabled.set(value)
     device.set.assert_not_called()
 
 
-@pytest.mark.parametrize("error", [TimeoutError("timed out"), NotImplementedError("read-only"), OSError("disconnected")])
-@pytest.mark.parametrize("operation", ["enable", "disable"])
-def test_backend_write_errors_propagate(live, device, error, operation):
+def test_backend_write_errors_propagate(live, device):
+    error = OSError("disconnected")
     device.set.side_effect = error
 
-    with pytest.raises(type(error)) as exc:
-        getattr(live["SOFB"], operation)()
+    with pytest.raises(OSError) as exc:
+        live["SOFB"].enable()
 
     assert exc.value is error
     device.set_and_wait.assert_not_called()

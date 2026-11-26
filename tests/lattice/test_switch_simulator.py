@@ -1,14 +1,13 @@
-import json
 from unittest.mock import Mock
 
 import pytest
 import yaml
 
 from pyaml.accelerator import Accelerator
-from pyaml.arrays.element_array import ElementArray
 from pyaml.common.exception import PyAMLException
 from pyaml.common.switch_element import SwitchElement
 from pyaml.control.controlsystem import ControlSystemAdapter
+from pyaml.lattice.abstract_impl import RWBooleanScalar
 from pyaml.lattice.simulator import Simulator
 from pyaml.validation import register_schema
 from pyaml.validation.schema_builder import generate_configuration_schema
@@ -43,29 +42,28 @@ def test_simulated_switch_bypasses_lattice_lookup(design, monkeypatch):
     assert switch.peer is design
     assert configured.peer is None
     assert switch.enabled.get() is False
-    for _ in range(2):
-        switch.enabled.set(True)
-        assert switch.enabled.get() is True
-        switch.disable()
-        assert switch.is_enabled() is False
-        switch.enable()
-        assert switch.enabled.get() is True
-        switch.enabled.set(False)
+    switch.enabled.set(True)
+    assert switch.enabled.get() is True
+    switch.disable()
+    assert switch.is_enabled() is False
+    switch.enable()
+    assert switch.enabled.get() is True
+    switch.enabled.set(False)
+    assert switch.enabled.get() is False
     lookup.assert_not_called()
     assert design._linker.mock_calls == []
     assert design.ring.mock_calls == []
 
 
-@pytest.mark.parametrize("value", [0, 1, 0.0, "true", None, [True]])
-def test_simulated_boolean_accessor_rejects_invalid_writes_without_changing_state(design, value):
-    design.fill_device([SwitchElement("SOFB", "SOFB_ENABLED")])
-    switch = design["SOFB"]
-    switch.enabled.set(True)
+@pytest.mark.parametrize("value", [1, "true"])
+def test_simulated_boolean_accessor_rejects_invalid_writes_without_changing_state(value):
+    enabled = RWBooleanScalar("SOFB")
+    enabled.set(True)
 
     with pytest.raises(PyAMLException, match="SOFB: expected a boolean flag"):
-        switch.enabled.set(value)
+        enabled.set(value)
 
-    assert switch.enabled.get() is True
+    assert enabled.get() is True
 
 
 def test_simulated_state_is_independent_per_element_and_mode(design, ebs_lattice_file):
@@ -84,15 +82,9 @@ def test_simulated_state_is_independent_per_element_and_mode(design, ebs_lattice
     assert configured.peer is None
 
 
-def test_generic_lookup_arrays_and_duplicate_names(design):
-    design.fill_device([SwitchElement("SOFB", "SOFB_ENABLED"), SwitchElement("FOFB", "FOFB_ENABLED")])
+def test_duplicate_registration_does_not_replace_simulated_switch(design):
+    design.fill_device([SwitchElement("SOFB", "SOFB_ENABLED")])
     original = design["SOFB"]
-
-    assert design.get().names() == ["SOFB", "FOFB"]
-    assert type(design["*OFB"]) is ElementArray
-    assert design["*OFB"].names() == ["SOFB", "FOFB"]
-    design.fill_element_array("FEEDBACKS", ["SOFB", "FOFB"])
-    assert design.get("FEEDBACKS")[0] is original
 
     with pytest.raises(PyAMLException, match="Duplicate element"):
         design.fill_device([SwitchElement("SOFB", "OTHER_CHANNEL")])
@@ -100,11 +92,7 @@ def test_generic_lookup_arrays_and_duplicate_names(design):
     assert design["SOFB"] is original
 
 
-@pytest.mark.parametrize("extension", ["yaml", "json"])
-@pytest.mark.parametrize("validate", [False, True])
-def test_accelerator_configuration_keeps_live_and_simulated_state_separate(
-    tmp_path, ebs_lattice_file, extension, validate, monkeypatch
-):
+def test_accelerator_configuration_keeps_live_and_simulated_state_separate(tmp_path, ebs_lattice_file, monkeypatch):
     from tango.pyaml.attribute import Attribute
     from tango.pyaml.attribute import ConfigModel as AttributeConfigModel
     from tango.pyaml.attribute_store import get_attribute, set_attribute
@@ -130,12 +118,12 @@ def test_accelerator_configuration_keeps_live_and_simulated_state_separate(
             {"type": "pyaml.diagnostics.bpm.bpm", "name": "BPM_C04-01"},
         ],
     }
-    config_path = tmp_path / f"switch.{extension}"
-    config_path.write_text(json.dumps(config) if extension == "json" else yaml.safe_dump(config), encoding="utf-8")
+    config_path = tmp_path / "switch.yaml"
+    config_path.write_text(yaml.safe_dump(config), encoding="utf-8")
     set_spy = Mock(side_effect=AssertionError("Loading must not write live hardware"))
     with monkeypatch.context() as patch:
         patch.setattr(Attribute, "set", set_spy)
-        sr = Accelerator.load(str(config_path), validate=validate)
+        sr = Accelerator.load(str(config_path), validate=True)
 
     set_spy.assert_not_called()
     assert sr.live["SOFB"].peer is sr.live

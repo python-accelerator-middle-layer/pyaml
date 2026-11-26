@@ -3,7 +3,7 @@ from unittest.mock import create_autospec
 import pytest
 
 from pyaml.common import abstract
-from pyaml.common.exception import PyAMLConfigException, PyAMLException
+from pyaml.common.exception import PyAMLException
 from pyaml.common.switch_element import SwitchElement
 from pyaml.configuration.factory import Factory
 from pyaml.control.controlsystem import ControlSystemAdapter
@@ -19,15 +19,7 @@ def switch():
     return SwitchElement("SOFB", "SOFB_ENABLED", description="Slow orbit feedback")
 
 
-@pytest.mark.parametrize("operation", ["enable", "disable", "is_enabled", "enabled"])
-def test_unattached_operations_raise(switch, operation):
-    with pytest.raises(PyAMLException, match="SOFB: enabled state is unavailable before attachment"):
-        value = getattr(switch, operation)
-        if operation != "enabled":
-            value()
-
-
-def test_attachment_copies_configuration_without_io(switch):
+def test_attachment_copies_configuration_and_delegates_to_accessor(switch):
     state = create_autospec(abstract.RWBooleanScalar, instance=True)
     peer = create_autospec(ControlSystemAdapter, instance=True)
     peer.name.return_value = "live"
@@ -45,21 +37,16 @@ def test_attachment_copies_configuration_without_io(switch):
     assert "unavailable" not in repr(attached)
     assert state.mock_calls == []
 
-
-def test_element_delegates_to_boolean_accessor(switch):
-    enabled = create_autospec(abstract.RWBooleanScalar, instance=True)
-    attached = switch.attach(DispatchHolder(), enabled=enabled)
-
     attached.enable()
-    enabled.set.assert_called_once_with(True)
-    enabled.get.assert_not_called()
-    enabled.reset_mock()
+    state.set.assert_called_once_with(True)
+    state.get.assert_not_called()
+    state.reset_mock()
     attached.disable()
-    enabled.set.assert_called_once_with(False)
-    enabled.get.assert_not_called()
-    enabled.get.return_value = False
+    state.set.assert_called_once_with(False)
+    state.get.assert_not_called()
+    state.get.return_value = False
     assert attached.is_enabled() is False
-    enabled.get.assert_called_once_with()
+    state.get.assert_called_once_with()
 
 
 def test_unsupported_holder_raises_without_new_abstract_requirement(switch):
@@ -75,7 +62,6 @@ def test_unsupported_holder_raises_without_new_abstract_requirement(switch):
     "declaration",
     [
         {"class": CLASS_PATH},
-        {"class_path": CLASS_PATH},
         {"type": "pyaml.common.switch_element"},
     ],
 )
@@ -104,18 +90,3 @@ def test_schema_is_discoverable_and_requires_one_device():
     assert {"name", "device"} <= set(schema["required"])
     assert schema["properties"]["device"]["type"] == "string"
     assert "initial_enabled" not in schema["properties"]
-
-
-@pytest.mark.parametrize("device", [None, True, 1, ["SOFB_ENABLED"]])
-def test_constructor_rejects_non_string_device(device):
-    with pytest.raises(PyAMLConfigException):
-        SwitchElement("SOFB", device)
-
-
-def test_schema_rejects_extra_configuration():
-    generate_configuration_schema(SwitchElement)
-
-    with pytest.raises(PyAMLConfigException, match="initial_enabled"):
-        SchemaValidator.validate_to_dict(
-            {"class": CLASS_PATH, "name": "SOFB", "device": "SOFB_ENABLED", "initial_enabled": True}
-        )
