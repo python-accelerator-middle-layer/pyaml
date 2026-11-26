@@ -35,7 +35,7 @@ class RWCorrectorAngle(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the kick angle and wait for it to reach the setpoint.
     unit()
-        Get the unit for the kick angle.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, corr: Magnet):
@@ -84,11 +84,11 @@ class RWCorrectorAngle(abstract.ReadWriteFloatScalar):
 
     def unit(self) -> str:
         """
-        Get the unit for the kick angle.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
 
         Returns
         -------
         str
-            Unit string, always 'rad' for radians
+            Unit label.
         """
         return "rad"

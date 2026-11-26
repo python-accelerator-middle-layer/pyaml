@@ -133,7 +133,7 @@ def test_combined_function_magnets(magnet_file, config_root_dir):
     )
     sh: CombinedFunctionMagnet = Factory.build(cfg_sh, False)
     sh.model.set_magnet_rigidity(6e9 / speed_of_light)
-    devs = cs.get_devices_access(sh.model.get_device_names())
+    devs = [cs.get_device_access(name) for name in sh.model.get_device_names()]
     currents = RWHardwareArray(sh.model, devs)
     strengths = RWStrengthArray(sh.model, devs)
     sUnits = sh.model.get_strength_units()

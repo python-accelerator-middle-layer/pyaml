@@ -190,10 +190,10 @@ def test_arrays(install_test_package):
     strHVSQu = cfm.strengths.unit()
     assert strHVSQu[0] == "rad"
     assert strHVSQu[1] == "rad"
-    assert strHVSQu[2] == "m-1"
+    assert strHVSQu[2] == "1/m"
     assert strHVSQu[3] == "rad"
     assert strHVSQu[4] == "rad"
-    assert strHVSQu[5] == "m-1"
+    assert strHVSQu[5] == "1/m"
 
     cfm.strengths.set([0.000010, 0.000015, 1e-6, -0.000008, -0.000017, 1e-6])
     strHVSQ = cfm.strengths.get()

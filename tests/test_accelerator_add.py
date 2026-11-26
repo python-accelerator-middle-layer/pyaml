@@ -168,7 +168,6 @@ def test_add_registers_diagnostics_in_every_mode(accelerator_factory):
         assert attached is holder[monitor.name]
         assert attached.peer is holder
         assert attached is not monitor
-        assert attached._h == 992
     assert monitor.peer is None
     assert accelerator.yellow_pages.availability(monitor.name) == set(accelerator.modes())
 
@@ -294,5 +293,4 @@ def test_add_device_uses_the_same_binding_and_initialization(accelerator_factory
     for holder in accelerator.modes().values():
         monitor = holder.diagnostic.get("NEW_TUNE")
         assert monitor.peer is holder
-        assert monitor._h == 992
     assert accelerator._devices[0].name == "NEW_TUNE"

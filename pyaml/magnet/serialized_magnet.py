@@ -12,6 +12,7 @@ from scipy.constants import speed_of_light
 from .. import PyAMLException
 from ..common import abstract
 from ..common.element import __pyaml_repr__
+from ..common.units import common_unit
 from ..configuration.factory import ELEMENT_REGISTRY
 from ..validation import DynamicValidation, register_schema
 from .function_mapping import function_map
@@ -48,7 +49,9 @@ class ReadWriteSerializedHardware(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the shared hardware value and wait for convergence.
     unit()
-        Return the hardware-value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     get_model()
         Return the magnet conversion model.
     set_magnet_rigidity(brho)
@@ -94,8 +97,12 @@ class ReadWriteSerializedHardware(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the hardware-value unit."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self._model.get_hardware_units()[0]
+
+    def control_system_unit(self) -> str | None:
+        """Return the control-system unit for this quantity."""
+        return self._hardwares[0].control_system_unit()
 
     def get_model(self) -> MagnetModel:
         """Return the magnet conversion model."""
@@ -146,7 +153,9 @@ class ReadWriteSerializedStrength(ReadWriteSerializedHardware):
     hardware_from_strength(strength, current_hardware)
         Return the hardware value giving an average strength, without device access.
     unit()
-        Return the physical strength unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
 
     Raises
     ------
@@ -213,8 +222,16 @@ class ReadWriteSerializedStrength(ReadWriteSerializedHardware):
         return self._model.compute_hardware_from_mean_strength(strength, current_hardware)
 
     def unit(self) -> str:
-        """Return the physical strength unit."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self._model.get_strength_units()[0]
+
+    def control_system_unit(self) -> str:
+        """
+        Return the control-system unit for this quantity.
+
+        Same as unit(): no control-system device holds the average strength.
+        """
+        return self.unit()
 
     def _check_homogeneous(self):
         if not self._homogeneous:
@@ -246,7 +263,9 @@ class ReadWriteSerializedHardwareArray(abstract.ReadWriteFloatArray):
     set_and_wait(value)
         Set the hardware values and wait for convergence.
     unit()
-        Return the hardware-value units.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, hardwares: list[abstract.ReadWriteFloatScalar], model: MagnetModel):
@@ -297,9 +316,13 @@ class ReadWriteSerializedHardwareArray(abstract.ReadWriteFloatArray):
         """
         raise NotImplementedError("Not implemented yet.")
 
-    def unit(self) -> list[str]:
-        """Return the hardware-value units."""
-        return self._model.get_hardware_units()
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit(self._model.get_hardware_units())
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        return common_unit([hardware.control_system_unit() for hardware in self._hardwares])
 
 
 class ReadWriteSerializedStrengthArray(abstract.ReadWriteFloatArray):
@@ -331,7 +354,7 @@ class ReadWriteSerializedStrengthArray(abstract.ReadWriteFloatArray):
     set_and_wait(value)
         Set the strengths and wait for convergence.
     unit()
-        Return the physical strength units.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(
@@ -387,9 +410,9 @@ class ReadWriteSerializedStrengthArray(abstract.ReadWriteFloatArray):
         """
         raise NotImplementedError("Not implemented yet.")
 
-    def unit(self) -> list[str]:
-        """Return the physical strength units."""
-        return self._model.get_strength_units()
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit(self._model.get_strength_units())
 
 
 @register_schema

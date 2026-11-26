@@ -58,7 +58,7 @@ def test_controlsystem_bpm_position(install_test_package):
 def test_controlsystem_get_devices_returns_attached_devices(install_test_package):
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
 
-    devs = sr.live.get_devices_access(["srdiag/bpm/c01-01/SA_HPosition", "srdiag/bpm/c01-01/SA_VPosition"])
+    devs = [sr.live.get_device_access(name) for name in ["srdiag/bpm/c01-01/SA_HPosition", "srdiag/bpm/c01-01/SA_VPosition"]]
 
     assert devs[0].name() == "//ebs-simu-3:10000/srdiag/bpm/c01-01/SA_HPosition"
     assert devs[1].name() == "//ebs-simu-3:10000/srdiag/bpm/c01-01/SA_VPosition"
@@ -93,7 +93,7 @@ def test_controlsystem_bpm_position_indexed(install_test_package):
     sr: Accelerator = Accelerator.load("tests/config/bpms.yaml")
     bpm = sr.live.diagnostic.bpm.get("BPM_C01-04")
 
-    assert np.allclose(bpm.positions.get(), np.array([0.0, 1.0]))
+    assert np.allclose(bpm.positions.get(), np.array([0.0, 1.0e-3]))
 
 
 def _single_plane_bpm_config() -> dict:
@@ -144,8 +144,8 @@ def test_controlsystem_bpm_single_plane(install_test_package):
 
     pos = xbpm.positions.get()
     assert np.isnan(pos[0])
-    assert pos[1] == pytest.approx(0.3)
-    assert xbpm.positions.unit() == "mm"
+    assert pos[1] == pytest.approx(0.3e-3)
+    assert xbpm.positions.unit() == "m"
 
 
 @pytest.mark.parametrize(
@@ -164,20 +164,20 @@ def test_controlsystem_bpm_array_with_single_plane_bpm(install_test_package):
     pos = bpms.positions.get()
     assert pos.shape == (3, 2)
     assert np.isnan(pos[2, 0])
-    assert np.allclose(pos[:2], [[0.1, -0.1], [0.2, -0.2]])
-    assert pos[2, 1] == pytest.approx(0.3)
+    assert np.allclose(pos[:2], [[0.1e-3, -0.1e-3], [0.2e-3, -0.2e-3]])
+    assert pos[2, 1] == pytest.approx(0.3e-3)
 
     h = bpms.h.get()
-    assert np.allclose(h[:2], [0.1, 0.2])
+    assert np.allclose(h[:2], [0.1e-3, 0.2e-3])
     assert np.isnan(h[2])
-    assert np.allclose(bpms.v.get(), [-0.1, -0.2, 0.3])
+    assert np.allclose(bpms.v.get(), [-0.1e-3, -0.2e-3, 0.3e-3])
 
     # The missing plane must not disable the grouped reads
     agg, aggh, aggv = sr.live.create_bpm_aggregators(list(bpms))
     assert [agg.nb_device(), aggh.nb_device(), aggv.nb_device()] == [6, 3, 3]
     assert np.allclose(agg.get(), pos.flatten(), equal_nan=True)
     assert np.allclose(aggh.get(), h, equal_nan=True)
-    assert np.allclose(aggv.get(), [-0.1, -0.2, 0.3])
+    assert np.allclose(aggv.get(), [-0.1e-3, -0.2e-3, 0.3e-3])
 
 
 @pytest.mark.parametrize(
@@ -195,5 +195,5 @@ def test_controlsystem_bpm_array_without_horizontal_plane(install_test_package):
     bpms = sr.live.diagnostic.bpms.get("BPM")
 
     assert np.isnan(bpms.h.get()).all()
-    assert np.allclose(bpms.v.get(), [0.3])
+    assert np.allclose(bpms.v.get(), [0.3e-3])
     assert bpms.positions.get().shape == (1, 2)

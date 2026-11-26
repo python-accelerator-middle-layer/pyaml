@@ -2005,11 +2005,11 @@ devices:
   tune_h:
     type: pyaml_cs_oa.tangoR
     attribute: srdiag/beam-tune/main/Qh
-    unit: mm
+    unit: '1'
   tune_v:
     type: pyaml_cs_oa.tangoR
     attribute: srdiag/beam-tune/main/Qv
-    unit: mm
+    unit: '1'
 - type: pyaml.tuning_tools.tune
   name: DEFAULT_TUNE_CORRECTION
   quad_array: QForTune
