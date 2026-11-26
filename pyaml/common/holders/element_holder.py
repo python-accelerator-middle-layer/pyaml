@@ -210,6 +210,10 @@ class ElementHolder(metaclass=ABCMeta):
         pass
 
     @abstractmethod
+    def _fill_serialized_magnets_with_trims(self, magnets: SerializedMagnets) -> None:
+        pass
+
+    @abstractmethod
     def _fill_bpm(self, bpm: BPM) -> None:
         pass
 

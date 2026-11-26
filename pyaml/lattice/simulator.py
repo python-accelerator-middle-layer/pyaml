@@ -27,7 +27,9 @@ from ..lattice.abstract_impl import (
     RWBpmOffsetArray,
     RWBpmTiltScalar,
     RWHardwareArray,
+    RWHardwareMainWithTrim,
     RWHardwareScalar,
+    RWHardwareTrim,
     RWRFATFrequencyScalar,
     RWRFATotalVoltageScalar,
     RWRFFrequencyScalar,
@@ -36,12 +38,16 @@ from ..lattice.abstract_impl import (
     RWSerializedHardware,
     RWSerializedStrength,
     RWStrengthArray,
+    RWStrengthMain,
     RWStrengthScalar,
+    RWStrengthTrim,
+    RWStrengthTuple,
     update_bpm_transform_matrix,
 )
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..magnet.serialized_magnet import SerializedMagnets
+from ..magnet.serialized_magnet_trims import SerializedMagnetsWithTrims
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.measurement_tool import MeasurementTool
@@ -292,6 +298,38 @@ class Simulator(ElementHolder, DynamicValidation):
         attached_magnets = magnets.attach(self, linked_strengths, linked_currents)
         self.serialized_magnet.add(attached_magnets[0])
         for magnet in attached_magnets[1:]:
+            self.magnet.add(magnet)
+
+    def _fill_serialized_magnets_with_trims(self, magnets: SerializedMagnetsWithTrims) -> None:
+        currents, strengths = [], []
+        trim_strengths, trim_currents = {}, {}
+        trims_by_element = {trim.element: trim for trim in magnets.model.trims}
+        for index, magnet in enumerate(magnets.get_magnets()):
+            model = magnets.model.get_sub_model(index)
+            elements = self.get_at_elems(magnet)
+            strength = RWStrengthScalar(elements, magnet.polynom, model)
+            trim = trims_by_element.get(magnet.name)
+            if trim is None:
+                current = RWHardwareScalar(elements, magnet.polynom, model)
+            else:
+                pair = RWStrengthTuple(strength, (strength.get(), 0.0))
+                trim_strengths[trim.name] = RWStrengthTrim(pair)
+                trim_currents[trim.name] = RWHardwareTrim(pair, model, trim.trim_factor, hardware_unit=trim.hardware_unit)
+                strength = RWStrengthMain(pair)
+                current = RWHardwareMainWithTrim(strength, trim_currents[trim.name], model)
+            strengths.append(strength)
+            currents.append(current)
+        linked_currents = [RWSerializedHardware(currents, index) for index in range(len(magnets))]
+        linked_strengths = [RWSerializedStrength(strengths, currents, index, magnets.model) for index in range(len(magnets))]
+        attached = magnets.attach(
+            self,
+            linked_strengths,
+            linked_currents,
+            [trim_strengths[trim.name] for trim in magnets.model.trims],
+            [trim_currents[trim.name] for trim in magnets.model.trims],
+        )
+        self.serialized_magnet.add(attached[0])
+        for magnet in attached[1:]:
             self.magnet.add(magnet)
 
     def _fill_bpm(self, bpm: BPM) -> None:
