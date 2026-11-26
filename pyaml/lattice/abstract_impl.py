@@ -370,6 +370,17 @@ class RWStrengthTrim(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
 
+class RWStrengthMain(RWStrengthTrim):
+    """Expose the main contribution of a simulated main/trim pair."""
+
+    def get(self) -> float:
+        return self._strengths.get()[0]
+
+    def set(self, value: float):
+        _, trim = self._strengths.get()
+        self._strengths.set((value, trim))
+
+
 class RWHardwareTrim(abstract.ReadWriteFloatScalar):
     """Expose physical trim current for a simulated main/trim strength pair.
 
@@ -382,6 +393,8 @@ class RWHardwareTrim(abstract.ReadWriteFloatScalar):
     trim_factor : float
         Nonzero signed factor converting physical trim current to equivalent
         main-coil current. Defaults to 1.0.
+    hardware_unit : str or None
+        Trim supply unit, defaulting to the main member's hardware unit.
 
     Notes
     -----
@@ -397,12 +410,15 @@ class RWHardwareTrim(abstract.ReadWriteFloatScalar):
     then reapply them at the new operating point.
     """
 
-    def __init__(self, strengths: RWStrengthTuple, model: MagnetModel, trim_factor: float = 1.0):
+    def __init__(
+        self, strengths: RWStrengthTuple, model: MagnetModel, trim_factor: float = 1.0, hardware_unit: str | None = None
+    ):
         if trim_factor == 0:
             raise ValueError("trim_factor must be nonzero")
         self._strengths = strengths
         self._model = model
         self._trim_factor = trim_factor
+        self._hardware_unit = hardware_unit
 
     def get(self) -> float:
         main, trim = self._strengths.get()
@@ -415,6 +431,32 @@ class RWHardwareTrim(abstract.ReadWriteFloatScalar):
         main_current = self._model.compute_hardware_values([main])[0]
         total = self._model.compute_strengths([main_current + self._trim_factor * value])[0]
         self._strengths.set((main, total - main))
+
+    def unit(self) -> str:
+        return self._model.get_hardware_units()[0] if self._hardware_unit is None else self._hardware_unit
+
+    def get_model(self) -> MagnetModel:
+        return self._model
+
+    def set_and_wait(self, value: float):
+        raise NotImplementedError("Not implemented yet.")
+
+
+class RWHardwareMainWithTrim(abstract.ReadWriteFloatScalar):
+    """Convert main strength to current, preserving trim current on writes."""
+
+    def __init__(self, strength: RWStrengthMain, trim_hardware: RWHardwareTrim, model: MagnetModel):
+        self._strength = strength
+        self._trim_hardware = trim_hardware
+        self._model = model
+
+    def get(self) -> float:
+        return self._model.compute_hardware_values([self._strength.get()])[0]
+
+    def set(self, value: float):
+        trim_current = self._trim_hardware.get()
+        self._strength.set(self._model.compute_strengths([value])[0])
+        self._trim_hardware.set(trim_current)
 
     def unit(self) -> str:
         return self._model.get_hardware_units()[0]
