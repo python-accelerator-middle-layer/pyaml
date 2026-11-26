@@ -2,9 +2,10 @@ import pytest
 
 from pyaml import PyAMLConfigException, PyAMLException
 from pyaml.accelerator import Accelerator
-from pyaml.configuration import ROOT
-from pyaml.configuration.factory import Factory
+from pyaml.configuration import ROOT, NamedValue
+from pyaml.configuration.factory import ELEMENT_REGISTRY, Factory
 from pyaml.configuration.fileloader import load
+from pyaml.validation.validator import SchemaValidator
 from tests.conftest import MockElement
 
 
@@ -14,6 +15,20 @@ def test_factory_build_default():
     obj = Factory.build(data, False)
     assert isinstance(obj, MockElement)
     assert obj.name == "simple"
+
+
+@pytest.mark.parametrize("value", [4.0, "parallel", True, {"labels": ["a", "b"]}])
+def test_named_value_configuration(value):
+    obj = Factory.build(
+        SchemaValidator.validate_to_dict({"type": "pyaml.configuration.named_value", "name": "setting", "value": value})
+    )
+    assert isinstance(obj, NamedValue)
+    assert obj.name == "setting"
+    assert obj.value == value
+    assert type(obj.value) is type(value)
+    assert "setting" not in ELEMENT_REGISTRY
+    with pytest.raises(PyAMLConfigException, match="nonempty name"):
+        NamedValue(" ", value)
 
 
 @pytest.mark.parametrize(

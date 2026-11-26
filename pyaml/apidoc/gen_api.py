@@ -10,6 +10,8 @@ import sys
 modules = [
     "pyaml.accelerator",
     "pyaml.insertion_device",
+    "pyaml.insertion_device.control_variable",
+    "pyaml.configuration.named_value",
     "pyaml.arrays.array",
     "pyaml.arrays.bpm",
     "pyaml.arrays.bpm_array",

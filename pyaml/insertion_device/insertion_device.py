@@ -1,6 +1,6 @@
 """Insertion-device holding class, independent of facility control systems.
 
-Example (the lattice already contains the kickmap)::
+Object-based configuration (the lattice already contains the kickmap)::
 
     - type: pyaml.insertion_device
       name: APPLE01
@@ -8,11 +8,34 @@ Example (the lattice already contains the kickmap)::
       lattice_names: ID02
       description: Kickmap measured at 4 mm gap and zero phase.
       control_variables:
-        gap: {unit: mm, backend: APPLE01_GAP, movement_flag: APPLE01_GAP_MOVING}
-        phase: {unit: mm, backend: APPLE01_PHASE, movement_flag: APPLE01_MOVING}
+        - type: pyaml.insertion_device.control_variable
+          name: gap
+          unit: mm
+          backend: APPLE01_GAP
+          movement_flag: APPLE01_GAP_MOVING
+        - type: pyaml.insertion_device.control_variable
+          name: phase
+          unit: mm
+          backend: APPLE01_PHASE
+          movement_flag: APPLE01_MOVING
       control_mode: APPLE01_MODE
-      model_operating_point: {gap: 4.0, phase: 0.0, mode: parallel}
-      disabled_operating_point: {gap: 30.0, phase: 0.0}
+      model_operating_point:
+        - type: pyaml.configuration.named_value
+          name: gap
+          value: 4.0
+        - type: pyaml.configuration.named_value
+          name: phase
+          value: 0.0
+        - type: pyaml.configuration.named_value
+          name: mode
+          value: parallel
+      disabled_operating_point:
+        - type: pyaml.configuration.named_value
+          name: gap
+          value: 30.0
+        - type: pyaml.configuration.named_value
+          name: phase
+          value: 0.0
       orbit_feedforward: ID01_ORBIT_FF
 
 Runtime ``control_variables`` use existing pyAML scalar accessors. An absent key
@@ -29,17 +52,36 @@ remain control-system concerns.
 FFWD objects own their correctors, controls and measurements.
 
 The same class supports phase-only devices (including a fixed gap in the model
-reference) and electromagnetic devices with arbitrarily named current variables::
+reference) and electromagnetic devices with arbitrarily named current variables.
+The equivalent object-based configuration is::
 
     - type: pyaml.insertion_device
       name: EM01
       device_id: EM01_SERIAL
       lattice_names: ID03
       control_variables:
-        ps1: {unit: A, backend: EM01_PS1}
-        ps2: {unit: A, backend: EM01_PS2}
-        ps3: {unit: A, backend: EM01_PS3}
-      model_operating_point: {ps1: 100.0, ps2: 0.0, ps3: 0.0}
+        - type: pyaml.insertion_device.control_variable
+          name: ps1
+          unit: A
+          backend: EM01_PS1
+        - type: pyaml.insertion_device.control_variable
+          name: ps2
+          unit: A
+          backend: EM01_PS2
+        - type: pyaml.insertion_device.control_variable
+          name: ps3
+          unit: A
+          backend: EM01_PS3
+      model_operating_point:
+        - type: pyaml.configuration.named_value
+          name: ps1
+          value: 100.0
+        - type: pyaml.configuration.named_value
+          name: ps2
+          value: 0.0
+        - type: pyaml.configuration.named_value
+          name: ps3
+          value: 0.0
 
 After retrieving a device through ``sr.live.insertion_device.get(name)``, use
 ``device.control_variables["gap"].set_and_wait(12.0)`` for gap or phase/shift
@@ -76,13 +118,13 @@ from collections.abc import Mapping
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Self
 
-from pydantic import StrictFloat
-
 from ..common import abstract
 from ..common.abstract_impl import RInsertionDeviceModelPoint
 from ..common.element import Element
 from ..common.exception import PyAMLConfigException, PyAMLException
+from ..configuration.named_value import NamedValue
 from ..validation import DynamicValidation, register_schema
+from .control_variable import ControlVariable
 
 if TYPE_CHECKING:
     from ..common.holders.element_holder import ElementHolder
@@ -94,22 +136,24 @@ PYAMLCLASS = "InsertionDevice"
 class InsertionDevice(Element, DynamicValidation):
     """Hold control variables and references to other pyAML elements.
 
-    ``control_variables`` configures units and opaque backend references.
+    ``control_variables`` is a list of named :class:`ControlVariable` objects
+    configuring units and opaque backend references.
     Live control variables are always read/write. Gap and phase/shift variables may
     configure a ``movement_flag`` for ``set_and_wait()``. Current controls have
     no movement flags and use ``set()``.
     After attachment, the same attribute exposes the bound scalar accessors.
     At least one named variable is required, but no particular gap, phase or
     current channel is mandatory.
-    ``model_operating_point`` is flat: numeric coordinates and optional string
-    ``mode``. Missing coordinates never imply zero. Additional provenance may
+    ``model_operating_point`` is a list of :class:`~pyaml.configuration.named_value.NamedValue` objects:
+    numeric coordinates and optional string ``mode``. Names must be unique in
+    each list. Missing coordinates never imply zero. Additional provenance may
     be recorded in the free-form ``description``.
 
     ``control_mode`` and boolean ``flags`` are opaque backend references.
     ``orbit_feedforward`` and ``tune_feedforward`` reference existing elements
     in the same holder, resolved after attachment. Runtime ``mode`` and ``flags``
     expose the optional backend controls.
-    ``disabled_operating_point`` configures live resting setpoints. Enable uses
+    ``disabled_operating_point`` lists named numeric live resting setpoints. Enable uses
     ``model_operating_point``; neither command modifies that fixed reference.
     """
 
@@ -117,46 +161,59 @@ class InsertionDevice(Element, DynamicValidation):
         self,
         name: str,
         device_id: str,
-        control_variables: dict[str, dict[str, str]] | None = None,
+        control_variables: list[ControlVariable] | None = None,
         control_mode: str | None = None,
         flags: dict[str, str] | None = None,
         orbit_feedforward: str | None = None,
         tune_feedforward: str | None = None,
-        model_operating_point: dict[str, float | str] | None = None,
+        model_operating_point: list[NamedValue] | None = None,
         lattice_names: str | None = None,
         description: str | None = None,
-        disabled_operating_point: dict[str, StrictFloat] | None = None,
+        disabled_operating_point: list[NamedValue] | None = None,
     ):
         super().__init__(name, lattice_names, description)
         if not device_id.strip():
             raise PyAMLConfigException(f"{name}: device_id must not be empty")
         if not control_variables:
             raise PyAMLConfigException(f"{name}: at least one control variable is required")
-        for key, definition in control_variables.items():
-            if not key.strip() or not definition.get("unit", "").strip():
-                raise PyAMLConfigException(f"{name}: each control variable requires a name and unit")
-            if set(definition) - {"unit", "backend", "movement_flag"}:
-                raise PyAMLConfigException(f"{name}.{key}: expected only unit, backend and movement_flag")
-            for field in ("backend", "movement_flag"):
-                if field in definition and not definition[field].strip():
-                    raise PyAMLConfigException(f"{name}.{key}: {field} must not be empty")
+        for field, entries in (
+            ("control_variables", control_variables),
+            ("model_operating_point", model_operating_point),
+            ("disabled_operating_point", disabled_operating_point),
+        ):
+            if entries is not None and len({entry.name for entry in entries}) != len(entries):
+                raise PyAMLConfigException(f"{name}: duplicate names in {field}")
+        definitions = {
+            entry.name: {
+                "unit": entry.unit,
+                **({"backend": entry.backend} if entry.backend is not None else {}),
+                **({"movement_flag": entry.movement_flag} if entry.movement_flag is not None else {}),
+            }
+            for entry in control_variables
+        }
+        model_values = (
+            {entry.name: entry.value for entry in model_operating_point} if model_operating_point is not None else None
+        )
+        disabled_values = (
+            {entry.name: entry.value for entry in disabled_operating_point} if disabled_operating_point is not None else None
+        )
         if any(not key.strip() or not value.strip() for key, value in (flags or {}).items()):
             raise PyAMLConfigException(f"{name}: flag names and references must not be empty")
         if control_mode is not None and not control_mode.strip():
             raise PyAMLConfigException(f"{name}: control_mode must not be empty")
-        for key, value in (model_operating_point or {}).items():
+        for key, value in (model_values or {}).items():
             valid = (
                 isinstance(value, str) and bool(value.strip())
                 if key == "mode"
-                else (isinstance(value, (int, float)) and math.isfinite(value))
+                else isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
             )
-            if not key.strip() or not valid:
+            if not valid:
                 raise PyAMLConfigException(f"{name}.{key}: expected a finite coordinate or string mode")
-        if disabled_operating_point is not None:
-            if not disabled_operating_point:
+        if disabled_values is not None:
+            if not disabled_values:
                 raise PyAMLConfigException(f"{name}: disabled_operating_point must not be empty")
-            for key, value in disabled_operating_point.items():
-                if key not in control_variables:
+            for key, value in disabled_values.items():
+                if key not in definitions:
                     raise PyAMLConfigException(
                         f"{name}.{key}: disabled_operating_point requires a configured control variable"
                     )
@@ -166,15 +223,15 @@ class InsertionDevice(Element, DynamicValidation):
         self.control_mode = control_mode
         self.orbit_feedforward_name = orbit_feedforward
         self.tune_feedforward_name = tune_feedforward
-        self._control_variable_definitions = copy.deepcopy(control_variables)
+        self._control_variable_definitions = definitions
         self._flag_refs = dict(flags or {})
-        self._disabled_point = dict(disabled_operating_point) if disabled_operating_point is not None else None
+        self._disabled_point = disabled_values
         self._point = (
             RInsertionDeviceModelPoint(
-                model_operating_point,
+                model_values,
                 {name: definition["unit"] for name, definition in self._control_variable_definitions.items()},
             )
-            if model_operating_point is not None
+            if model_values is not None
             else None
         )
         self._control_variables: dict[str, abstract.ReadWriteFloatScalar | None] = dict.fromkeys(

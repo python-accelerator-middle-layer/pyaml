@@ -10,11 +10,12 @@ from pyaml.accelerator import Accelerator
 from pyaml.common import abstract
 from pyaml.common.abstract_impl import RInsertionDeviceModelPoint
 from pyaml.common.element import Element
-from pyaml.configuration.factory import Factory
+from pyaml.configuration import NamedValue
+from pyaml.configuration.factory import ELEMENT_REGISTRY, Factory
 from pyaml.control.abstract_impl import RWBooleanScalar
 from pyaml.control.controlsystem import ControlSystem
 from pyaml.control.readback_value import Value
-from pyaml.insertion_device import InsertionDevice
+from pyaml.insertion_device import ControlVariable, InsertionDevice
 from pyaml.lattice.simulator import Simulator
 from pyaml.validation.validator import SchemaValidator
 
@@ -80,6 +81,13 @@ def _device(**overrides):
         "model_operating_point": {"gap": 4.0},
     }
     config.update(overrides)
+    if isinstance(config["control_variables"], dict):
+        config["control_variables"] = [
+            ControlVariable(name=name, **definition) for name, definition in config["control_variables"].items()
+        ]
+    for field in ("model_operating_point", "disabled_operating_point"):
+        if isinstance(config.get(field), dict):
+            config[field] = [NamedValue(name=name, value=value) for name, value in config[field].items()]
     return InsertionDevice(**config)
 
 
@@ -121,9 +129,16 @@ def test_configuration_supports_control_variable_families(id_lattice_file, decla
         "name": "ID",
         "device_id": "SERIAL",
         "lattice_names": "list(MAP)",
-        "control_variables": control_variables,
-        "model_operating_point": point,
-        "disabled_operating_point": {name: 0.0 for name in control_variables},
+        "control_variables": [
+            {"type": "pyaml.insertion_device.control_variable", "name": name, **definition}
+            for name, definition in control_variables.items()
+        ],
+        "model_operating_point": [
+            {"type": "pyaml.configuration.named_value", "name": name, "value": value} for name, value in point.items()
+        ],
+        "disabled_operating_point": [
+            {"type": "pyaml.configuration.named_value", "name": name, "value": 0.0} for name in control_variables
+        ],
     }
     device = Factory.build(SchemaValidator.validate_to_dict(config))
     simulator = Simulator("design", id_lattice_file)
@@ -136,6 +151,8 @@ def test_configuration_supports_control_variable_families(id_lattice_file, decla
     assert attached.model_reference["operating_point"] == point
     assert attached.disabled_operating_point == {name: 0.0 for name in control_variables}
     assert device.peer is None
+    assert "gap" not in ELEMENT_REGISTRY
+    assert "phase" not in ELEMENT_REGISTRY
 
 
 @pytest.mark.parametrize(
@@ -143,23 +160,38 @@ def test_configuration_supports_control_variable_families(id_lattice_file, decla
     [
         ({"control_variables": {}}, "at least one control variable"),
         ({"control_variables": None}, "at least one control variable"),
-        ({"control_variables": {"gap": {}}}, "requires a name and unit"),
-        ({"control_variables": {"gap": {"unit": "mm", "access": "read"}}}, "expected only unit, backend and movement_flag"),
+        ({"control_variables": {"gap": {"unit": ""}}}, "requires a name and unit"),
+        ({"control_variables": {"gap": {"unit": "mm", "access": "read"}}}, "unexpected keyword argument"),
         ({"control_variables": {"gap": {"unit": "mm", "backend": ""}}}, "backend must not be empty"),
         ({"model_operating_point": {"gap": float("inf")}}, "finite coordinate"),
         ({"disabled_operating_point": {}}, "must not be empty"),
         ({"disabled_operating_point": {"missing": 0.0}}, "requires a configured control variable"),
-        ({"disabled_operating_point": {"gap": float("nan")}}, "requires a finite setpoint"),
-        ({"disabled_operating_point": {"gap": True}}, "valid number"),
+        ({"disabled_operating_point": {"gap": float("nan")}}, "finite setpoint"),
+        ({"disabled_operating_point": {"gap": True}}, "finite setpoint"),
+        ({"model_operating_point": {"gap": True}}, "finite coordinate"),
+        ({"model_operating_point": {"gap": "4.0"}}, "finite coordinate"),
+        ({"model_operating_point": {"gap": 4.0, "mode": 1.0}}, "string mode"),
         ({"model_operating_point": {}}, "include every configured control variable"),
         ({"control_mode": "MODE"}, "include mode"),
         ({"lattice_names": "list(D)"}, "expected InsertionDeviceKickMap"),
         ({"lattice_names": "list(MISSING)"}, "not found in lattice"),
+        (
+            {"control_variables": [ControlVariable("gap", "mm"), ControlVariable("gap", "mm")]},
+            "duplicate names in control_variables",
+        ),
+        (
+            {"model_operating_point": [NamedValue("gap", 4.0), NamedValue("gap", 5.0)]},
+            "duplicate names in model_operating_point",
+        ),
+        (
+            {"disabled_operating_point": [NamedValue("gap", 30.0), NamedValue("gap", 20.0)]},
+            "duplicate names in disabled_operating_point",
+        ),
     ],
 )
 def test_invalid_configuration_or_mapping_is_rejected(id_lattice_file, overrides, error):
     simulator = Simulator("design", id_lattice_file)
-    with pytest.raises((PyAMLException, PyAMLConfigException), match=error):
+    with pytest.raises((PyAMLException, PyAMLConfigException, TypeError), match=error):
         simulator.fill_device([_device(**overrides)])
     assert not simulator.insertion_device.all()
     assert all(element.PassMethod == "IdTablePass" for element in simulator.ring[:2])
