@@ -3,17 +3,15 @@ from pathlib import Path
 
 import numpy as np
 import pytest
-from pyaml_test_lattice import configurations, lattices
 
 from pyaml.accelerator import Accelerator
-from pyaml.configuration import ConfigurationManager
+from tests.integration.fodo_fixtures import build_fodo_accelerator
 
 QF_001 = "QF_001"
 QF_001_STRENGTH = "AN01-AR/EM-QP/QF.01/magnetic_strength"
 RF_REFERENCE_FREQUENCY = "simulator/ringsimulator/ringsimulator/reference_frequency"
 EXAMPLES_ROOT = Path(__file__).parent.parent.parent / "examples" / "use_cases" / "config"
 
-FODO_LATTICE_KEY = "fodo_1gev_6d.json"
 FODO_1GEV_6D_TANGO_PYAML_CONFIG_KEY = "pyaml/tango/tango-pyaml/fodo_1gev_6d_pyaml.yaml"
 FODO_1GEV_6D_CS_OA_CONFIG_KEY = "pyaml/tango/pyaml-cs-oa/fodo_1gev_6d_pyaml-oa.yaml"
 FODO_1GEV_6D_CONFIGS = [
@@ -33,28 +31,8 @@ def _readback_value(device_access):
     return float(device_access.readback())
 
 
-def _load_fragment(config_key: str) -> dict:
-    """Load one pyaml-test-lattice merged config fragment as a plain dict.
-
-    The ``lattice`` reference is overridden since it lives in a different
-    package subtree (``data/lattice``) than the config fragment
-    (``data/configuration``).
-    """
-    config_path = Path(configurations[config_key])
-    manager = ConfigurationManager()
-    manager.add(config_path)
-    fragment = manager.to_dict()
-
-    fragment["simulators"][0]["lattice"] = str(Path(lattices[FODO_LATTICE_KEY]))
-
-    return fragment
-
-
-def _build_accelerator(config_key: str):
-    configuration_manager: ConfigurationManager = ConfigurationManager()
-    configuration_manager.add(_load_fragment(config_key))
-
-    return Accelerator.from_dict(configuration_manager.to_dict())
+def _build_accelerator(config_key: str) -> Accelerator:
+    return build_fodo_accelerator(config_key)
 
 
 @pytest.mark.parametrize("config_key", FODO_1GEV_6D_CONFIGS, ids=["tango-pyaml", "pyaml-cs-oa"])
