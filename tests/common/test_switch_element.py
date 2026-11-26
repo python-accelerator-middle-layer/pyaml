@@ -28,7 +28,7 @@ def test_unattached_operations_raise(switch, operation):
 
 
 def test_attachment_copies_configuration_without_io(switch):
-    state = create_autospec(abstract.RWScalarBoolean, instance=True)
+    state = create_autospec(abstract.RWBooleanScalar, instance=True)
     peer = create_autospec(ControlSystemAdapter, instance=True)
     peer.name.return_value = "live"
 
@@ -47,7 +47,7 @@ def test_attachment_copies_configuration_without_io(switch):
 
 
 def test_element_delegates_to_boolean_accessor(switch):
-    enabled = create_autospec(abstract.RWScalarBoolean, instance=True)
+    enabled = create_autospec(abstract.RWBooleanScalar, instance=True)
     attached = switch.attach(DispatchHolder(), enabled=enabled)
 
     attached.enable()

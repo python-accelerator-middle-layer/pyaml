@@ -26,7 +26,7 @@ from .readback_value import Value
 # ------------------------------------------------------------------------------
 
 
-class RWScalarBoolean(abstract.RWScalarBoolean):
+class RWBooleanScalar(abstract.RWBooleanScalar):
     """Expose a backend boolean through reusable get/set accessors."""
 
     def __init__(self, device: DeviceAccess):

@@ -37,7 +37,7 @@ class SwitchElement(Element, DynamicValidation):
 
     Notes
     -----
-    Control-system access uses the reusable RWScalarBoolean adapter: get()
+    Control-system access uses the reusable RWBooleanScalar adapter: get()
     reads the backend readback (including numeric 0/1 flags) and set() writes
     a Python boolean through DeviceAccess.set(). Value metadata is unwrapped;
     this interface adds no quality, waiting, or completion policy. Backend
@@ -79,9 +79,9 @@ class SwitchElement(Element, DynamicValidation):
         """Initialize the element configuration without accessing hardware."""
         super().__init__(name=name, description=description)
         self.device = device
-        self._enabled: abstract.RWScalarBoolean | None = None
+        self._enabled: abstract.RWBooleanScalar | None = None
 
-    def attach(self, peer: "ElementHolder", enabled: abstract.RWScalarBoolean) -> Self:
+    def attach(self, peer: "ElementHolder", enabled: abstract.RWBooleanScalar) -> Self:
         """
         Return a copy bound to a peer and its boolean state interface.
 
@@ -89,7 +89,7 @@ class SwitchElement(Element, DynamicValidation):
         ----------
         peer : ElementHolder
             Control system or simulator owning this runtime element.
-        enabled : abstract.RWScalarBoolean
+        enabled : abstract.RWBooleanScalar
             Boolean get/set interface owned by this attachment.
 
         Returns
@@ -103,7 +103,7 @@ class SwitchElement(Element, DynamicValidation):
         return obj
 
     @property
-    def enabled(self) -> abstract.RWScalarBoolean:
+    def enabled(self) -> abstract.RWBooleanScalar:
         """Return the boolean get/set accessor for this holder."""
         if self._enabled is None:
             raise PyAMLException(f"{self.name}: enabled state is unavailable before attachment")

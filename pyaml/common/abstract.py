@@ -11,7 +11,7 @@ from abc import ABCMeta, abstractmethod
 from numpy import array, double
 
 
-class RWScalarBoolean(metaclass=ABCMeta):
+class RWBooleanScalar(metaclass=ABCMeta):
     """Define backend-independent boolean get/set access."""
 
     @abstractmethod

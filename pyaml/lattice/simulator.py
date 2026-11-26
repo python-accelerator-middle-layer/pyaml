@@ -25,6 +25,7 @@ from ..lattice.abstract_impl import (
     BPMVScalarAggregator,
     RBetatronTuneArray,
     RBpmArray,
+    RWBooleanScalar,
     RWBpmOffsetArray,
     RWBpmTiltScalar,
     RWHardwareArray,
@@ -34,7 +35,6 @@ from ..lattice.abstract_impl import (
     RWRFFrequencyScalar,
     RWRFPhaseScalar,
     RWRFVoltageScalar,
-    RWScalarBoolean,
     RWSerializedHardware,
     RWSerializedStrength,
     RWStrengthArray,
@@ -341,7 +341,7 @@ class Simulator(ElementHolder, DynamicValidation):
         self.add_tool(tool.attach(self))
 
     def _fill_switch_element(self, element: SwitchElement) -> None:
-        self._add(self._ALL, element.attach(self, RWScalarBoolean(element.name)))
+        self._add(self._ALL, element.attach(self, RWBooleanScalar(element.name)))
 
     def _fill_unbound_element(self, element: "UnboundElement") -> None:
         pass

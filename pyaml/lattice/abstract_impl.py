@@ -21,7 +21,7 @@ from .polynom_info import PolynomInfo
 # ------------------------------------------------------------------------------
 
 
-class RWScalarBoolean(abstract.RWScalarBoolean):
+class RWBooleanScalar(abstract.RWBooleanScalar):
     """Maintain an initially disabled boolean state independent of the lattice."""
 
     def __init__(self, name: str):
