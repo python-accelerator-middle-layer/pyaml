@@ -26,7 +26,7 @@ class RWBPMPosition(ReadFloatArray):
     ----------
     name : str
         Name of the position accessor
-    bpms : list[pyaml.diagnostics.bpm.bpm.BPM]
+    bpms : list[pyaml.diagnostics.bpm.BPM]
         List of BPM objects to access
 
     Methods
@@ -106,7 +106,7 @@ class RWBPMSinglePosition(ReadFloatArray):
     ----------
     name : str
         Name of the position accessor
-    bpms : list[pyaml.diagnostics.bpm.bpm.BPM]
+    bpms : list[pyaml.diagnostics.bpm.BPM]
         List of BPM objects to access
     idx : int
         Index for the position axis (0 for horizontal, 1 for vertical)
@@ -184,7 +184,7 @@ class BPMArray(ElementArray):
     ----------
     arrayName : str
         Array name
-    bpms : list[pyaml.diagnostics.bpm.bpm.BPM]
+    bpms : list[pyaml.diagnostics.bpm.BPM]
         BPM list, all elements must be attached to the same instance of
         either a (:py:class:`~pyaml.lattice.simulator.Simulator`
         or a :py:class:`~pyaml.control.controlsystem.ControlSystem`).

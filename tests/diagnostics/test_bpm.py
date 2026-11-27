@@ -3,7 +3,7 @@ import pytest
 
 from pyaml.accelerator import Accelerator
 from pyaml.common.exception import PyAMLException
-from pyaml.diagnostics.bpm.bpm import BPM
+from pyaml.diagnostics.bpm import BPM
 
 
 def test_simulator_bpm_tilt():

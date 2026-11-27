@@ -4,7 +4,7 @@ from pyaml.arrays.bpm_array import BPMArray
 from pyaml.arrays.element_array import ElementArray
 from pyaml.arrays.magnet_array import MagnetArray
 from pyaml.common.exception import PyAMLException
-from pyaml.diagnostics.bpm.bpm import BPM
+from pyaml.diagnostics.bpm import BPM
 from pyaml.lattice.simulator import Simulator
 
 

@@ -215,8 +215,8 @@ def _config(bpm_unit="mm", freq_unit="MHz", volt_unit="kV", phase_unit="deg", ps
             {"type": "pyaml.arrays.magnet", "name": "QUADS", "elements": ["Q1", "Q2"]},
         ],
         "devices": [
-            {"type": "pyaml.diagnostics.bpm.bpm", "name": "BPM1", "x_pos": "bpm1/H", "y_pos": "bpm1/V"},
-            {"type": "pyaml.diagnostics.bpm.bpm", "name": "BPM2", "x_pos": "bpm2/H", "y_pos": "bpm2/V"},
+            {"type": "pyaml.diagnostics.bpm", "name": "BPM1", "x_pos": "bpm1/H", "y_pos": "bpm1/V"},
+            {"type": "pyaml.diagnostics.bpm", "name": "BPM2", "x_pos": "bpm2/H", "y_pos": "bpm2/V"},
             {
                 "type": "pyaml.rf.rf_plant",
                 "name": "RF",
