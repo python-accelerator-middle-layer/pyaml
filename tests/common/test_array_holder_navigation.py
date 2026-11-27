@@ -34,9 +34,14 @@ def test_dynamic_attribute_returns_named_bpm_array(holder):
     assert holder.diagnostic.bpms.BPMS is holder.diagnostic.bpms.get("BPMS")
 
 
-def test_dynamic_attribute_returns_named_serialized_magnet_array(serialized_holder):
-    assert serialized_holder.serialized_magnets.QForTune is serialized_holder.serialized_magnets.get("QForTune")
-    assert serialized_holder.serialized_magnets.series is serialized_holder.serialized_magnets.get("series")
+def test_dynamic_attribute_returns_named_array_of_serialized_families(serialized_holder):
+    assert serialized_holder.magnets.QForTune is serialized_holder.magnets.get("QForTune")
+    assert serialized_holder.magnets.series is serialized_holder.magnets.get("series")
+
+
+def test_deprecated_serialized_magnets_holder_shares_the_magnet_arrays(serialized_holder):
+    with pytest.warns(DeprecationWarning, match="holder.serialized_magnets is deprecated"):
+        assert serialized_holder.serialized_magnets.series is serialized_holder.magnets.get("series")
 
 
 def test_dynamic_attribute_unknown_name_raises_attribute_error(holder):

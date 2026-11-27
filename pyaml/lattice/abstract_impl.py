@@ -3,6 +3,12 @@ Read/write interfaces for simulated lattice elements.
 
 This module adapts Accelerator Toolbox lattice elements to PyAML accessors for
 magnet strengths, hardware values, BPM readings, RF parameters, and tune data.
+
+For ``PolynomB[0]``, integrated strength is
+``sign * coefficient * effective_length + BendingAngle``. The bending angle is
+outside the sign conversion and defaults to zero when absent. Writes subtract
+the total bending angle before distributing the residual polynomial strength;
+they never change the lattice elements' bending angles.
 """
 
 import at
@@ -13,6 +19,7 @@ from scipy.constants import speed_of_light
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.exception import PyAMLException
+from ..common.units import SI_ANGLE, SI_FREQUENCY, SI_POSITION, SI_TUNE, SI_VOLTAGE, common_unit
 from ..magnet.model import MagnetModel
 from .polynom_info import PolynomInfo
 
@@ -54,6 +61,13 @@ def _effective_lengths(elements: list[at.Element]) -> list[float]:
     return lengths
 
 
+def _bending_angle(element: at.Element, polynom: str, index: int) -> float:
+    """Return one element's current bend offset for the horizontal dipole component."""
+    if polynom == "PolynomB" and index == 0:
+        return getattr(element, "BendingAngle", 0.0)
+    return 0.0
+
+
 class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     """
     Provide read/write access to a simulated magnet in hardware units.
@@ -82,7 +96,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     get_model()
         Return the associated magnet model.
     """
@@ -96,6 +110,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         self._poly = [e.__getattribute__(poly.attName) for e in elements]
         self._sign = poly.sign
         self._polyIdx = poly.index
+        self._polyName = poly.attName
         self._is_thin = all(e.Length == 0 for e in elements)
         self._lengths = _effective_lengths(elements)
         self._length: float = sum(self._lengths)
@@ -110,7 +125,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
 
     def get(self) -> float:
         """Return the current value."""
-        s = 0
+        s = sum(_bending_angle(e, self._polyName, self._polyIdx) for e in self._elements)
         for idx, _ in enumerate(self._elements):
             s += self._poly[idx][self._polyIdx] * self._sign * self._lengths[idx]
         return self._model.compute_hardware_values([s])[0]
@@ -125,6 +140,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
             Hardware value to apply, in the unit reported by the magnet model.
         """
         s = self._model.compute_strengths([value])[0]
+        s -= sum(_bending_angle(e, self._polyName, self._polyIdx) for e in self._elements)
         for idx, _ in enumerate(self._elements):
             self._poly[idx][self._polyIdx] = s / (self._length * self._sign)
 
@@ -145,7 +161,7 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the value unit."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self._model.get_hardware_units()[0]
 
     def get_model(self) -> MagnetModel:
@@ -184,7 +200,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     get_model()
         Return the associated magnet model.
     """
@@ -198,6 +214,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         self._poly = [e.__getattribute__(poly.attName) for e in elements]
         self._sign = poly.sign
         self._polyIdx = poly.index
+        self._polyName = poly.attName
         self._lengths = _effective_lengths(elements)
         self._length: float = sum(self._lengths)
 
@@ -226,12 +243,13 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         if polynom is None:
             pIdx = self._polyIdx
             poly = self._poly
+            polynom = self._polyName
         else:
             # Override strength access
             pIdx = polyidx
             poly = [e.__getattribute__(polynom) for e in self._elements]
 
-        s = 0
+        s = sum(_bending_angle(e, polynom, pIdx) for e in self._elements)
         for idx, _ in enumerate(self._elements):
             s += poly[idx][pIdx] * self._sign * self._lengths[idx]
         return s
@@ -254,11 +272,13 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         if polynom is None:
             pIdx = self._polyIdx
             poly = self._poly
+            polynom = self._polyName
         else:
             # Override strength access
             pIdx = polyidx
             poly = [e.__getattribute__(polynom) for e in self._elements]
 
+        value -= sum(_bending_angle(e, polynom, pIdx) for e in self._elements)
         for idx, _ in enumerate(self._elements):
             poly[idx][pIdx] = value / (self._length * self._sign)
 
@@ -281,7 +301,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the value unit."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self._model.get_strength_units()[0]
 
     # ------------------------------------------------------------------------------
@@ -295,7 +315,10 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
 class RWSerializedHardware(abstract.ReadWriteFloatScalar):
     """
-    RWSerializedHardware configuration or runtime object.
+    Hardware value of one magnet of a serialized group.
+
+    All the magnets of the group share one power supply: writing the hardware
+    value of one magnet writes it to every magnet of the group.
 
     Parameters
     ----------
@@ -306,18 +329,18 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
 
     Methods
     -------
-    get_element_length()
-        Return the total length of the represented element.
-    get_total_length()
-        Return the total length of the represented elements.
+    index()
+        Return the position of the magnet in the serialized group.
     get()
         Return the current value.
     set(value)
-        Set the current value.
+        Set the current value of the whole serialized group.
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    get_model()
+        Return the submodel of the magnet.
     set_magnet_rigidity(brho)
         Set the magnetic rigidity used for conversion.
     """
@@ -328,17 +351,10 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
         """
         self.__elements = elements
         self.__element_index = element_index
-        self.__total_length = 0
-        for e in elements:
-            self.__total_length += e.get_length()
 
-    def get_element_length(self) -> float:
-        """Return the total length of the represented element."""
-        return self.__elements[self.__element_index].get_length()
-
-    def get_total_length(self) -> float:
-        """Return the total length of the represented elements."""
-        return self.__total_length
+    def index(self) -> int:
+        """Return the position of the magnet in the serialized group."""
+        return self.__element_index
 
     # Gets the value
     def get(self) -> float:
@@ -348,7 +364,7 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
     # Sets the value
     def set(self, value: float):
         """
-        Set the current value.
+        Set the current value of the whole serialized group.
 
         Parameters
         ----------
@@ -376,8 +392,12 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the value unit."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self.__elements[self.__element_index].unit()
+
+    def get_model(self) -> MagnetModel:
+        """Return the submodel of the magnet."""
+        return self.__elements[self.__element_index].get_model()
 
     def set_magnet_rigidity(self, brho: np.double):
         """
@@ -393,7 +413,14 @@ class RWSerializedHardware(abstract.ReadWriteFloatScalar):
 
 class RWSerializedStrength(abstract.ReadWriteFloatScalar):
     """
-    RWSerializedStrength configuration or runtime object.
+    Strength of one magnet of a serialized group.
+
+    All the magnets of the group share one power supply. Writing the strength
+    ``x`` of magnet ``i`` sets the shared hardware value ``I`` solving
+    ``f_i(I) = x``, and the other magnets follow as ``f_j(I)``. With the model of
+    the series, the solution starts from the present hardware value, so that the
+    power supply does not move when it already gives ``x`` (for example on a
+    plateau of the excitation curve).
 
     Parameters
     ----------
@@ -403,13 +430,14 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         Hardware accessors of the same magnets, used to apply the shared setpoint.
     element_index : int
         Index of the magnet this accessor represents within the serialized group.
+    series_model : MagnetModel, optional
+        Model of the series, used to convert the strength of the magnet to the shared hardware value. If omitted, the
+        submodel of the magnet is inverted.
 
     Methods
     -------
-    get_element_length()
-        Return the total length of the represented element.
-    get_total_length()
-        Return the total length of the represented elements.
+    index()
+        Return the position of the magnet in the serialized group.
     get()
         Return the current value.
     set(value)
@@ -417,7 +445,7 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     set_magnet_rigidity(brho)
         Set the magnetic rigidity used for conversion.
     """
@@ -427,38 +455,24 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         elements_strength: list[RWStrengthScalar],
         elements_hardware: list[RWHardwareScalar],
         element_index: int,
+        series_model: MagnetModel | None = None,
     ):
         """
         Initialize the RWSerializedStrength.
         """
         self.__element = elements_strength[element_index]
-        self.__elements_strength = elements_strength
         self.__elements_hardware = elements_hardware
         self.__element_index = element_index
-        # The strength is shared between the serialized magnets in proportion to their (effective) length: thick
-        # magnets share by length, thin magnets share equally. Mixing both has no meaningful share rule.
-        thin_flags = [e.is_thin() for e in elements_hardware]
-        if any(thin_flags) and not all(thin_flags):
-            raise PyAMLException(
-                "Serialized magnets must be either all thin (zero length) or all thick; "
-                f"got {sum(thin_flags)} thin out of {len(thin_flags)} magnets"
-            )
-        self.__total_length = 0
-        for e in self.__elements_hardware:
-            self.__total_length += e.get_length()
+        self.__series_model = series_model
 
-    def get_element_length(self) -> float:
-        """Return the total length of the represented element."""
-        return self.__element.get_element_length()
-
-    def get_total_length(self) -> float:
-        """Return the total length of the represented elements."""
-        return self.__total_length
+    def index(self) -> int:
+        """Return the position of the magnet in the serialized group."""
+        return self.__element_index
 
     # Gets the value
     def get(self) -> float:
         """Return the current value."""
-        return self.__elements_strength[self.__element_index].get()
+        return self.__element.get()
 
     # Sets the value
     def set(self, value: float):
@@ -470,19 +484,15 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
         value : float
             Strength to apply to the magnet, converted to the shared hardware setpoint.
         """
-        elements_values = [value * e.get_length() / self.get_total_length() for e in self.__elements_hardware]
-        self.__element.set(elements_values[self.__element_index])
-
-        # compute the local hardware value
-        hardware_value = self.__elements_hardware[self.__element_index].get()
-
-        # compute the total hardware value
-        total_hardware = hardware_value * self.get_total_length() / self.get_element_length()
-
-        # dispatch this value
-        for index, element in enumerate(self.__elements_hardware):
-            if index != self.__element_index:
-                element.set(total_hardware * element.get_length() / self.get_total_length())
+        hardware = self.__elements_hardware[self.__element_index]
+        if self.__series_model is None:
+            hardware_value = hardware.get_model().compute_hardware_values([value])[0]
+        else:
+            current_hardware = np.array([hardware.get()])
+            hardware_value = self.__series_model.compute_hardware_values_partial(
+                current_hardware, {self.__element_index: value}
+            )[0]
+        [element.set(hardware_value) for element in self.__elements_hardware]
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: float):
@@ -503,7 +513,7 @@ class RWSerializedStrength(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the value unit."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self.__element.unit()
 
     def set_magnet_rigidity(self, brho: np.double):
@@ -542,7 +552,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, elements: list[at.Element], poly: list[PolynomInfo], model: MagnetModel):
@@ -552,12 +562,14 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         self.__elements = elements
         self.__poly = []
         self.__polyIdx = []
+        self.__polyName = []
         self.__sign = []
         self.__model = model
         self.__length = _effective_lengths(elements[:1])[0]
         for p in poly:
             self.__poly.append(elements[0].__getattribute__(p.attName))
             self.__polyIdx.append(p.index)
+            self.__polyName.append(p.attName)
             self.__sign.append(p.sign)
 
     # Gets the value
@@ -567,6 +579,7 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
             s[i] = self.__poly[i][self.__polyIdx[i]] * self.__sign[i] * self.__length
+            s[i] += _bending_angle(self.__elements[0], self.__polyName[i], self.__polyIdx[i])
         return self.__model.compute_hardware_values(s)
 
     # Sets the value
@@ -582,7 +595,8 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         nbStrength = len(self.__poly)
         s = self.__model.compute_strengths(value)
         for i in range(nbStrength):
-            self.__poly[i][self.__polyIdx[i]] = s[i] / (self.__length * self.__sign[i])
+            offset = _bending_angle(self.__elements[0], self.__polyName[i], self.__polyIdx[i])
+            self.__poly[i][self.__polyIdx[i]] = (s[i] - offset) / (self.__length * self.__sign[i])
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
@@ -602,9 +616,9 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
-    def unit(self) -> list[str]:
-        """Return the value unit."""
-        return self.__model.get_hardware_units()
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit(self.__model.get_hardware_units())
 
 
 # ------------------------------------------------------------------------------
@@ -633,7 +647,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, elements: list[at.Element], poly: list[PolynomInfo], model: MagnetModel):
@@ -643,12 +657,14 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         self.__elements = elements
         self.__poly = []
         self.__polyIdx = []
+        self.__polyName = []
         self.__sign = []
         self.__model = model
         self.__length = _effective_lengths(elements[:1])[0]
         for p in poly:
             self.__poly.append(elements[0].__getattribute__(p.attName))
             self.__polyIdx.append(p.index)
+            self.__polyName.append(p.attName)
             self.__sign.append(p.sign)
 
     # Gets the value
@@ -658,6 +674,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         s = np.zeros(nbStrength)
         for i in range(nbStrength):
             s[i] = self.__poly[i][self.__polyIdx[i]] * self.__sign[i] * self.__length
+            s[i] += _bending_angle(self.__elements[0], self.__polyName[i], self.__polyIdx[i])
         return s
 
     # Sets the value
@@ -671,9 +688,9 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
             Integrated strengths to apply, one per magnet and ordered like the array.
         """
         nbStrength = len(self.__poly)
-        s = np.zeros(nbStrength)
         for i in range(nbStrength):
-            self.__poly[i][self.__polyIdx[i]] = value[i] / (self.__length * self.__sign[i])
+            offset = _bending_angle(self.__elements[0], self.__polyName[i], self.__polyIdx[i])
+            self.__poly[i][self.__polyIdx[i]] = (value[i] - offset) / (self.__length * self.__sign[i])
 
     # Sets the value and wait that the read value reach the setpoint
     def set_and_wait(self, value: np.array):
@@ -693,9 +710,9 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
-    def unit(self) -> list[str]:
-        """Return the value unit."""
-        return self.__model.get_strength_units()
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit(self.__model.get_strength_units())
 
 
 # ------------------------------------------------------------------------------
@@ -723,7 +740,7 @@ class BPMScalarAggregator(ScalarAggregator):
     readback()
         Return the current readback value.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, ring: at.Lattice, twiss_in: dict):
@@ -778,8 +795,8 @@ class BPMScalarAggregator(ScalarAggregator):
         return self.get()
 
     def unit(self) -> str:
-        """Return the value unit."""
-        return "m"
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_POSITION
 
     def _transform(self) -> np.array:
         """Transform the configured value for the lattice interface."""
@@ -878,7 +895,7 @@ class RBpmArray(abstract.ReadFloatArray):
     get()
         Return the current value.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get().
     """
 
     def __init__(self, element: at.Element, lattice: at.Lattice, twiss_in: dict):
@@ -904,8 +921,8 @@ class RBpmArray(abstract.ReadFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the value unit."""
-        return "m"
+        """Return the pyAML unit for this quantity, i.e. returned by get()."""
+        return SI_POSITION
 
 
 # ------------------------------------------------------------------------------
@@ -930,7 +947,7 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, element: at.Element):
@@ -976,8 +993,8 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the value unit."""
-        return "m"  # Assuming all offsets are in m
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_POSITION
 
 
 # ------------------------------------------------------------------------------
@@ -1004,7 +1021,7 @@ class RWBpmTiltScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, element: at.Element):
@@ -1053,8 +1070,8 @@ class RWBpmTiltScalar(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the value unit."""
-        return "rad"  # Assuming BPM tilts are in rad
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_ANGLE
 
 
 # ------------------------------------------------------------------------------
@@ -1079,7 +1096,7 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, elements: list[at.Element]):
@@ -1125,8 +1142,8 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the value unit."""
-        return "V"
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_VOLTAGE
 
 
 # ------------------------------------------------------------------------------
@@ -1154,7 +1171,7 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, elements: list[at.Element]):
@@ -1200,8 +1217,8 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the value unit."""
-        return "rad"
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_ANGLE
 
 
 # ------------------------------------------------------------------------------
@@ -1227,7 +1244,7 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, elements: list[at.Element], harmonics: list[float]):
@@ -1271,8 +1288,8 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the value unit."""
-        return "Hz"
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_FREQUENCY
 
 
 # ------------------------------------------------------------------------------
@@ -1299,7 +1316,7 @@ class RWRFATFrequencyScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, ring: at.Lattice):
@@ -1340,8 +1357,8 @@ class RWRFATFrequencyScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the value unit."""
-        return "Hz"
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_FREQUENCY
 
 
 # ------------------------------------------------------------------------------
@@ -1368,7 +1385,7 @@ class RWRFATotalVoltageScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the value and wait for readback convergence.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, ring: at.Lattice):
@@ -1409,8 +1426,8 @@ class RWRFATotalVoltageScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the value unit."""
-        return "V"
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_VOLTAGE
 
 
 # ------------------------------------------------------------------------------
@@ -1430,7 +1447,7 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
     get()
         Return the current value.
     unit()
-        Return the value unit.
+        Return the pyAML unit for this quantity, i.e. returned by get().
     """
 
     def __init__(self, ring: at.Lattice):
@@ -1444,8 +1461,8 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
         return self.__ring.get_tune()[:2]
 
     def unit(self) -> str:
-        """Return the value unit."""
-        return "1"
+        """Return the pyAML unit for this quantity, i.e. returned by get()."""
+        return SI_TUNE
 
 
 # ------------------------------------------------------------------------------

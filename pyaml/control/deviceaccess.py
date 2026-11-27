@@ -33,7 +33,7 @@ class DeviceAccess(metaclass=ABCMeta):
     readback()
         Return the latest measured value reported by the device.
     unit()
-        Return the physical unit of the device variable.
+        Return the control-system unit of the device variable.
     get_range()
         Get the valid range for the device variable.
     check_device_availability()
@@ -109,7 +109,7 @@ class DeviceAccess(metaclass=ABCMeta):
     @abstractmethod
     def unit(self) -> str:
         """
-        Return the physical unit of the device variable.
+        Return the control-system unit of the device variable.
 
         Returns
         -------

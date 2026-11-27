@@ -190,10 +190,10 @@ def test_arrays(install_test_package):
     strHVSQu = cfm.strengths.unit()
     assert strHVSQu[0] == "rad"
     assert strHVSQu[1] == "rad"
-    assert strHVSQu[2] == "m-1"
+    assert strHVSQu[2] == "1/m"
     assert strHVSQu[3] == "rad"
     assert strHVSQu[4] == "rad"
-    assert strHVSQu[5] == "m-1"
+    assert strHVSQu[5] == "1/m"
 
     cfm.strengths.set([0.000010, 0.000015, 1e-6, -0.000008, -0.000017, 1e-6])
     strHVSQ = cfm.strengths.get()
@@ -247,9 +247,12 @@ def test_arrays(install_test_package):
         "tests/config/sr_serialized_magnets.yaml",
     ],
 )
-def test_serialized_magnets_arrays(sr_file):
-    sr: Accelerator = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
-    the_serie = sr.design.serialized_magnets.get("series")
+def test_deprecated_serialized_magnet_array_config_builds_a_magnet_array(sr_file):
+    # "series" is declared with the deprecated type pyaml.arrays.serialized_magnet
+    with pytest.warns(DeprecationWarning, match="pyaml.arrays.serialized_magnet is deprecated"):
+        sr: Accelerator = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
+    the_serie = sr.design.magnets.get("series")
+    assert isinstance(the_serie, MagnetArray)
     strength = the_serie.strengths.get()
     assert len(strength) == 1
     print(strength)

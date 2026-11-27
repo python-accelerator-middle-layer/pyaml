@@ -1,5 +1,6 @@
 """Store, resolve, and group elements shared by runtime backends."""
 
+import warnings
 from abc import ABCMeta, abstractmethod
 from typing import TYPE_CHECKING, overload
 
@@ -51,8 +52,9 @@ class ElementHolder(metaclass=ABCMeta):
         Single magnet by name, or a named magnet array.
     combined_function_magnet, combined_function_magnets
         Single combined-function magnet by name, or a named array.
-    serialized_magnet, serialized_magnets
-        Single serialized magnet group by name, or a named array.
+    serialized_magnet
+        Single serialized magnet group by name. A serialized group is also a magnet and can be used in
+        ``magnets`` arrays. ``serialized_magnets`` is a deprecated alias of ``magnets`` arrays.
     rf
         RF plant and transmitters of this mode.
     diagnostic
@@ -111,7 +113,6 @@ class ElementHolder(metaclass=ABCMeta):
         # Array handle
         self._MAGNET_ARRAYS: dict = {}
         self._CFM_MAGNET_ARRAYS: dict = {}
-        self._SERIALIZED_MAGNETS_ARRAYS: dict = {}
         self._BPM_ARRAYS: dict = {}
         self._ELEMENT_ARRAYS: dict = {}
 
@@ -150,7 +151,17 @@ class ElementHolder(metaclass=ABCMeta):
 
     @property
     def serialized_magnets(self) -> SerializedMagnetsHolder:
-        """Return the serialized magnets."""
+        """
+        Return the serialized magnet arrays.
+
+        .. deprecated::
+            A serialized family is a magnet: use :attr:`magnets`, which shares the same arrays.
+        """
+        warnings.warn(
+            "holder.serialized_magnets is deprecated, a serialized family is a magnet: use holder.magnets",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         return self._serialized_magnets_holder
 
     @property
@@ -314,6 +325,7 @@ class ElementHolder(metaclass=ABCMeta):
         get_func,
         constructor,
         ARR: dict,
+        members_func=None,
     ):
         """
         Resolve selectors and store a constructed element array.
@@ -330,6 +342,16 @@ class ElementHolder(metaclass=ABCMeta):
             Constructor for the resulting array.
         ARR : dict
             Destination array store.
+        members_func : Callable[[str], list[str] | None], optional
+            Callback returning the member names of a group element (a serialized family), ``None`` for another
+            element. A group stands for one element of the array and already drives its members: the members of an
+            included group are left out of the array, and excluding a group also excludes its members.
+
+        Raises
+        ------
+        PyAMLException
+            If a name cannot be resolved, if an element is listed twice, or if a member of an included group is
+            excluded explicitly (a group cannot be split).
         """
         all_names: list[str] = []
         excluded_names: set[str] = set()
@@ -338,6 +360,23 @@ class ElementHolder(metaclass=ABCMeta):
                 excluded_names.update(self.find_elements(name[1:]))
             else:
                 all_names.extend(self.find_elements(name))
+
+        if members_func is not None:
+            members_of = {n: members_func(n) for n in set(all_names) | excluded_names}
+            for group in [n for n in excluded_names if members_of[n] is not None]:
+                excluded_names.update(members_of[group])
+            covered: set[str] = set()
+            for group in all_names:
+                if members_of[group] is None or group in excluded_names:
+                    continue
+                split = [m for m in members_of[group] if m in excluded_names]
+                if split:
+                    raise PyAMLException(
+                        f"{constructor.__name__} {array_name} : {split[0]} cannot be excluded, it is driven by "
+                        f"{group} which is in the array. List the individual magnets to drive a part of {group}"
+                    )
+                covered.update(members_of[group])
+            excluded_names.update(covered)
 
         all_names = [n for n in all_names if n not in excluded_names]
 
@@ -596,8 +635,6 @@ class ElementHolder(metaclass=ABCMeta):
             return self._MAGNET_ARRAYS[name]
         if name in self._CFM_MAGNET_ARRAYS:
             return self._CFM_MAGNET_ARRAYS[name]
-        if name in self._SERIALIZED_MAGNETS_ARRAYS:
-            return self._SERIALIZED_MAGNETS_ARRAYS[name]
         if name in self._ELEMENT_ARRAYS:
             return self._ELEMENT_ARRAYS[name]
 
@@ -627,7 +664,6 @@ class ElementHolder(metaclass=ABCMeta):
         arrays.extend(self._BPM_ARRAYS.keys())
         arrays.extend(self._MAGNET_ARRAYS.keys())
         arrays.extend(self._CFM_MAGNET_ARRAYS.keys())
-        arrays.extend(self._SERIALIZED_MAGNETS_ARRAYS.keys())
         arrays.extend(self._ELEMENT_ARRAYS.keys())
         return arrays
 

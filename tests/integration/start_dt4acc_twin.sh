@@ -2,7 +2,8 @@
 set -Eeuo pipefail
 
 DEFAULT_IMAGE_URI="oras://registry.synchrotron-soleil.fr/software_control_system_public/dt4acc-soleil-twin:latest"
-READY_PATTERN="Calculation heartbeat: simulator/ringsimulator/ringsimulator reachable"
+TANGO_READY_PATTERN="Calculation heartbeat: simulator/ringsimulator/ringsimulator reachable"
+EPICS_READY_PATTERN="EPICS IOC ready:"
 
 usage() {
   cat <<'EOF'
@@ -15,8 +16,13 @@ Required simulator input data:
   --lattice-file FILE             Lattice file passed to the twin.
 
 Options:
-  --tango-host HOST               Tango database host. Default: localhost.
-  --tango-port PORT               Tango database port. If omitted, the twin may choose it.
+  --mode tango|epics              Twin flavour. Default: tango.
+                                  tango: Tango twin with an embedded Tango database.
+                                  epics: EPICS soft-IOC twin, no database.
+  --tango-host HOST               Tango mode only. Tango database host. Default: localhost.
+  --tango-port PORT               Tango mode only. Tango database port. If omitted, the twin may choose it.
+  --prefix PREFIX                 EPICS mode only. PV prefix. If omitted, the twin uses
+                                  DT4ACC_PREFIX, then the current user name.
   --image-uri URI                 Apptainer image URI. Default: dt4acc latest ORAS image.
   --sif FILE                      Use a local SIF file instead of --image-uri.
   --log-file FILE                 Log file path. Default: mktemp under /tmp.
@@ -25,8 +31,9 @@ Options:
   --detach                        Exit after readiness and leave the twin running.
   -h, --help                      Show this help.
 
-The script prints "Ready to use" when the twin reaches the same heartbeat used by
-the dt4acc-integration CI workflow. Keep this process running; press Ctrl-C to
+The script prints "Ready to use" when the twin reaches the readiness log line used by
+the dt4acc-integration CI workflow (the calculation heartbeat in Tango mode, the
+"EPICS IOC ready" line in EPICS mode). Keep this process running; press Ctrl-C to
 stop the twin. With --detach, the script exits after readiness; use --pid-file
 so a later step can stop the twin.
 EOF
@@ -34,8 +41,12 @@ EOF
 
 accelerator_setup_file=""
 lattice_file=""
+mode="tango"
 tango_host="localhost"
 tango_port=""
+tango_option_given="0"
+prefix=""
+prefix_given="0"
 image_uri="${DEFAULT_IMAGE_URI}"
 sif_file=""
 log_file=""
@@ -54,12 +65,23 @@ while (($#)); do
       lattice_file="${2:-}"
       shift 2
       ;;
+    --mode)
+      mode="${2:-}"
+      shift 2
+      ;;
     --tango-host)
       tango_host="${2:-}"
+      tango_option_given="1"
       shift 2
       ;;
     --tango-port)
       tango_port="${2:-}"
+      tango_option_given="1"
+      shift 2
+      ;;
+    --prefix)
+      prefix="${2:-}"
+      prefix_given="1"
       shift 2
       ;;
     --image-uri)
@@ -128,6 +150,27 @@ if [[ -z "${accelerator_setup_file}" || -z "${lattice_file}" ]]; then
   usage >&2
   exit 2
 fi
+
+case "${mode}" in
+  tango)
+    if [[ "${prefix_given}" == "1" ]]; then
+      echo "--prefix is only valid with --mode epics." >&2
+      exit 2
+    fi
+    ready_pattern="${TANGO_READY_PATTERN}"
+    ;;
+  epics)
+    if [[ "${tango_option_given}" == "1" ]]; then
+      echo "--tango-host and --tango-port are only valid with --mode tango." >&2
+      exit 2
+    fi
+    ready_pattern="${EPICS_READY_PATTERN}"
+    ;;
+  *)
+    echo "--mode must be 'tango' or 'epics', got '${mode}'." >&2
+    exit 2
+    ;;
+esac
 
 if ! command -v apptainer >/dev/null 2>&1; then
   echo "apptainer is required but was not found in PATH." >&2
@@ -253,11 +296,16 @@ detect_tango_port() {
 }
 
 echo "Starting dt4acc twin"
+echo "  mode:               ${mode}"
 echo "  accelerator setup: ${accelerator_setup_file}"
 echo "  lattice file:       ${lattice_file}"
-echo "  tango host:         ${tango_host}"
-echo "  tango port:         ${tango_port:-auto}"
-echo "  requested TANGO_HOST: ${requested_tango_host}"
+if [[ "${mode}" == "tango" ]]; then
+  echo "  tango host:         ${tango_host}"
+  echo "  tango port:         ${tango_port:-auto}"
+  echo "  requested TANGO_HOST: ${requested_tango_host}"
+else
+  echo "  PV prefix:          ${prefix:-twin default}"
+fi
 echo "  image:              ${image_ref}"
 echo "  log file:           ${log_file}"
 if [[ -n "${pid_file}" ]]; then
@@ -266,15 +314,31 @@ fi
 
 trap cleanup INT TERM EXIT
 
-setsid env TANGO_HOST="${requested_tango_host}" apptainer run \
-  "${bind_args[@]}" \
-  "${image_ref}" \
-  tango-db-embedded \
-  --force-kill-db \
-  --tango-host "${requested_tango_host}" \
-  --accelerator-setup-file "${accelerator_setup_container}" \
-  --lattice-file "${lattice_container}" \
-  >"${log_file}" 2>&1 &
+if [[ "${mode}" == "tango" ]]; then
+  setsid env TANGO_HOST="${requested_tango_host}" apptainer run \
+    "${bind_args[@]}" \
+    "${image_ref}" \
+    tango-db-embedded \
+    --force-kill-db \
+    --tango-host "${requested_tango_host}" \
+    --accelerator-setup-file "${accelerator_setup_container}" \
+    --lattice-file "${lattice_container}" \
+    >"${log_file}" 2>&1 &
+else
+  epics_args=(
+    --accelerator-setup-file "${accelerator_setup_container}"
+    --lattice-file "${lattice_container}"
+  )
+  if [[ -n "${prefix}" ]]; then
+    epics_args+=(--prefix "${prefix}")
+  fi
+  setsid apptainer run \
+    "${bind_args[@]}" \
+    "${image_ref}" \
+    epics-embedded \
+    "${epics_args[@]}" \
+    >"${log_file}" 2>&1 &
+fi
 
 twin_pid="$!"
 if [[ -n "${pid_file}" ]]; then
@@ -289,7 +353,7 @@ while true; do
     exit 1
   fi
 
-  if [[ -z "${detected_tango_port}" ]]; then
+  if [[ "${mode}" == "tango" && -z "${detected_tango_port}" ]]; then
     if detected_tango_port="$(detect_tango_port)"; then
       echo "Detected Tango database port: ${detected_tango_port}"
       echo "Effective TANGO_HOST: ${tango_host}:${detected_tango_port}"
@@ -298,8 +362,8 @@ while true; do
     fi
   fi
 
-  if grep -q "${READY_PATTERN}" "${log_file}"; then
-    if [[ -z "${detected_tango_port}" ]]; then
+  if grep -q "${ready_pattern}" "${log_file}"; then
+    if [[ "${mode}" == "tango" && -z "${detected_tango_port}" ]]; then
       if detected_tango_port="$(detect_tango_port)"; then
         echo "Detected Tango database port: ${detected_tango_port}"
         echo "Effective TANGO_HOST: ${tango_host}:${detected_tango_port}"

@@ -8,6 +8,7 @@ import numpy as np
 
 from ..common.abstract import ReadWriteFloatArray
 from ..common.exception import PyAMLException
+from ..common.units import common_unit, per_value_units
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from .element_array import ElementArray
 
@@ -34,7 +35,7 @@ class RWMagnetStrengths(ReadWriteFloatArray):
     set_and_wait(value)
         Set every multipole strength and wait for the readbacks to converge.
     unit()
-        Return the strength unit of every multipole.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, name: str, magnets: list[CombinedFunctionMagnet]):
@@ -89,12 +90,12 @@ class RWMagnetStrengths(ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the values
-    def unit(self) -> list[str]:
-        """Return the strength unit of every multipole."""
-        r = []
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        units = []
         for m in self.__magnets:
-            r.extend(m.strengths.unit())
-        return r
+            units.extend(per_value_units(m.strengths.unit(), len(m.model.get_strength_units())))
+        return common_unit(units)
 
 
 class RWMagnetHardwares(ReadWriteFloatArray):
@@ -117,7 +118,9 @@ class RWMagnetHardwares(ReadWriteFloatArray):
     set_and_wait(value)
         Set every hardware value and wait for the readbacks to converge.
     unit()
-        Return the hardware unit of every multipole.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, name: str, magnets: list[CombinedFunctionMagnet]):
@@ -172,12 +175,19 @@ class RWMagnetHardwares(ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the values
-    def unit(self) -> list[str]:
-        """Return the hardware unit of every multipole."""
-        r = []
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        units = []
         for m in self.__magnets:
-            r.extend(m.hardwares.unit())
-        return r
+            units.extend(per_value_units(m.hardwares.unit(), len(m.model.get_hardware_units())))
+        return common_unit(units)
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        units = []
+        for m in self.__magnets:
+            units.extend(per_value_units(m.hardwares.control_system_unit(), len(m.model.get_hardware_units())))
+        return common_unit(units)
 
 
 class CombinedFunctionMagnetArray(ElementArray):

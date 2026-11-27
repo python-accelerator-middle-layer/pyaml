@@ -15,8 +15,10 @@ from numpy.typing import NDArray
 from .. import PyAMLException
 from ..common import abstract
 from ..common.abstract_aggregator import ScalarAggregator
+from ..common.units import SI_ANGLE, SI_FREQUENCY, SI_POSITION, SI_TUNE, SI_VOLTAGE, common_unit
 from ..control.deviceaccess import DeviceAccess
 from ..control.deviceaccesslist import DeviceAccessList
+from ..control.si_deviceaccess import control_system_unit_of
 from ..magnet.magnet import Magnet
 from ..magnet.model import MagnetModel
 from ..rf.rf_plant import RFPlant
@@ -255,7 +257,9 @@ class CSScalarAggregator(ScalarAggregator):
     readback()
         Read the last available values from all managed devices.
     unit()
-        Return the unit reported by the managed devices.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     nb_device()
         Return the number of managed devices.
     """
@@ -316,9 +320,13 @@ class CSScalarAggregator(ScalarAggregator):
         """Read the last available values from all managed devices."""
         return self._devs.readback()
 
-    def unit(self) -> str:
-        """Return the unit reported by the managed devices."""
-        return self._devs.unit()
+    def unit(self) -> str | list[str] | None:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit(self._devs.unit())
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        return common_unit(self._devs.control_system_unit())
 
     def nb_device(self) -> int:
         """Return the number of managed devices."""
@@ -355,6 +363,8 @@ class CSSparseScalarAggregator(CSScalarAggregator):
         Read all slot readbacks, NaN for slots without device.
     nb_device()
         Return the number of slots.
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, devs: DeviceAccessList):
@@ -407,6 +417,13 @@ class CSSparseScalarAggregator(CSScalarAggregator):
         """Return the number of slots."""
         return self._nb_slots
 
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        out: list[str | None] = [None] * self._nb_slots
+        for slot, u in zip(self._slots, self._devs.control_system_unit(), strict=True):
+            out[slot] = u
+        return common_unit(out)
+
 
 # ------------------------------------------------------------------------------
 
@@ -437,7 +454,9 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
     readback()
         Read back magnet strengths from measured hardware values.
     unit()
-        Return the units associated with the underlying devices.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, peer: CSScalarAggregator):
@@ -446,8 +465,10 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         """
         CSScalarAggregator.__init__(self, peer._devs)
         self.__models: list[MagnetModel] = []  # List of magnet model
-        self.__modelToMagnet: list[list[tuple[int, int]]] = []  # strengths indexing
+        self.__modelToMagnet: list[list[tuple[int, int | None]]] = []  # strengths indexing
+        self.__families: dict[int, Any] = {}  # model index -> strength accessor of a serialized family
         self.__nbMagnet = 0  # Number of magnet strengths
+        self.__units: list[str] = []  # Strength unit of each magnet
 
     def add_magnet(self, magnet: Magnet, devs: list[DeviceAccess]):
         # Incoming magnet can be a magnet exported from
@@ -465,9 +486,13 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
             Hardware devices associated with the magnet model.
         """
         # Magnets of a serialized group share the serialized model (one power supply for N strengths):
-        # the power-supply current is computed by the model from the N strengths (mean of the implied currents).
-        is_indexed = isinstance(magnet.strength, (abstract.RWMapper, RWSerializedStrengthScalar))
-        strengthIndex = magnet.strength.index() if is_indexed else 0
+        # the power-supply current is computed by the model from the strengths of the magnets present in the array,
+        # the others following the resulting current. A serialized family has no series index: its value is the
+        # average strength of the series, converted by the family strength accessor.
+        if magnet.model.shares_power_supply():
+            strengthIndex = magnet.series_index
+        else:
+            strengthIndex = magnet.strength.index() if isinstance(magnet.strength, abstract.RWMapper) else 0
         if magnet.model not in self.__models:
             index = len(self.__models)
             self.__models.append(magnet.model)
@@ -476,6 +501,10 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         else:
             index = self.__models.index(magnet.model)
             self.__modelToMagnet[index].append((self.__nbMagnet, strengthIndex))
+        self.__units.append(magnet.strength.unit())
+        if strengthIndex is None:
+            # MagnetArray guarantees that a family is never registered together with one of its magnets
+            self.__families[index] = magnet.strength
         self.__nbMagnet += 1
 
     def set(self, value: NDArray[np.float64]):
@@ -492,10 +521,17 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         hardwareIndex = 0
         for modelIndex, model in enumerate(self.__models):
             nbDev = len(model.get_device_names())
-            mStrengths = model.compute_strengths(allHardwareValues[hardwareIndex : hardwareIndex + nbDev])
-            for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
-                mStrengths[strengthIdx] = value[valueIdx]
-            newHardwareValues[hardwareIndex : hardwareIndex + nbDev] = model.compute_hardware_values(mStrengths)
+            current = allHardwareValues[hardwareIndex : hardwareIndex + nbDev]
+            if modelIndex in self.__families:
+                [(valueIdx, _)] = self.__modelToMagnet[modelIndex]
+                newHardwareValues[hardwareIndex] = self.__families[modelIndex].hardware_from_strength(
+                    value[valueIdx], current[0]
+                )
+            else:
+                requested = {strengthIdx: value[valueIdx] for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]}
+                newHardwareValues[hardwareIndex : hardwareIndex + nbDev] = model.compute_hardware_values_partial(
+                    current, requested
+                )
             hardwareIndex += nbDev
         dev_range = self._devs.get_range()
         if not check_range(newHardwareValues, dev_range):
@@ -522,14 +558,22 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
 
     def get(self) -> NDArray[np.float64]:
         """Read the current values from the underlying devices."""
-        allHardwareValues = self._devs.get()  # Read all hardware setpoints
+        return self.__strengths_from_hardware(self._devs.get())  # Read all hardware setpoints
+
+    def __strengths_from_hardware(self, allHardwareValues: NDArray[np.float64]) -> NDArray[np.float64]:
+        """Convert the hardware values of every registered device to the strength of every registered magnet."""
         allStrength = np.zeros(self.__nbMagnet)
         hardwareIndex = 0
         for modelIndex, model in enumerate(self.__models):
             nbDev = len(model.get_device_names())
-            mStrengths = model.compute_strengths(allHardwareValues[hardwareIndex : hardwareIndex + nbDev])
-            for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
-                allStrength[valueIdx] = mStrengths[strengthIdx]
+            hardware = allHardwareValues[hardwareIndex : hardwareIndex + nbDev]
+            if modelIndex in self.__families:
+                [(valueIdx, _)] = self.__modelToMagnet[modelIndex]
+                allStrength[valueIdx] = self.__families[modelIndex].strength_from_hardware(hardware[0])
+            else:
+                mStrengths = model.compute_strengths(hardware)
+                for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
+                    allStrength[valueIdx] = mStrengths[strengthIdx]
             hardwareIndex += nbDev
         return allStrength
 
@@ -542,20 +586,157 @@ class CSStrengthScalarAggregator(CSScalarAggregator):
         numpy.ndarray
             Magnet strengths corresponding to the latest device readbacks.
         """
-        allHardwareValues = self._devs.readback()  # Read all hardware readback
-        allStrength = np.zeros(self.__nbMagnet)
-        hardwareIndex = 0
-        for modelIndex, model in enumerate(self.__models):
-            nbDev = len(model.get_device_names())
-            mStrengths = model.compute_strengths(allHardwareValues[hardwareIndex : hardwareIndex + nbDev])
-            for valueIdx, strengthIdx in self.__modelToMagnet[modelIndex]:
-                allStrength[valueIdx] = mStrengths[strengthIdx]
-            hardwareIndex += nbDev
-        return allStrength
+        return self.__strengths_from_hardware(self._devs.readback())  # Read all hardware readback
 
-    def unit(self) -> str:
-        """Return the units associated with the underlying devices."""
-        return self._devs.unit()
+    def unit(self) -> str | list[str] | None:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit(self.__units)
+
+    def control_system_unit(self) -> str | list[str] | None:
+        """
+        Return the control-system unit for this quantity.
+
+        Same as unit(): no control-system device holds these values.
+        """
+        return self.unit()
+
+
+class CSHardwareScalarAggregator(CSScalarAggregator):
+    """
+    Aggregate magnet hardware values, writing the power supply of a series once.
+
+    Each registered magnet has one value. The magnets of a series share one power-supply device, added once: it gets
+    the hardware value computed by the model of the series from the values of the magnets of the series present in the
+    aggregator, and its value is read back for each of them.
+
+    Parameters
+    ----------
+    peer : CSScalarAggregator
+        Scalar device aggregator receiving the hardware devices.
+
+    Methods
+    -------
+    add_magnet(magnet, dev)
+        Register a magnet and the device holding its hardware value.
+    set(value)
+        Write the hardware value of every registered magnet.
+    set_and_wait(value)
+        Set the hardware values and wait for hardware readback.
+    get()
+        Return the hardware value of every registered magnet.
+    readback()
+        Return the hardware readback of every registered magnet.
+    unit()
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
+    nb_device()
+        Return the number of registered magnets.
+    """
+
+    def __init__(self, peer: CSScalarAggregator):
+        """
+        Initialize the CSHardwareScalarAggregator.
+        """
+        CSScalarAggregator.__init__(self, peer._devs)
+        self.__slotToDevice: list[int] = []  # device index of each registered magnet
+        self.__deviceOfSeries: dict[int, int] = {}  # id of a series model -> device index
+        self.__series: list[tuple[MagnetModel, list[tuple[int, int]]] | None] = []  # per device: model, (slot, index)
+
+    def add_magnet(self, magnet: Magnet, dev: DeviceAccess):
+        """
+        Register a magnet and the device holding its hardware value.
+
+        Parameters
+        ----------
+        magnet : Magnet
+            Magnet whose hardware value is aggregated.
+        dev : DeviceAccess
+            Device holding the hardware value of the magnet.
+        """
+        slot = len(self.__slotToDevice)
+        series_index = magnet.series_index
+        if series_index is None:
+            device = self.__add_device(dev, None)
+        else:
+            device = self.__deviceOfSeries.get(id(magnet.model))
+            if device is None:
+                device = self.__add_device(dev, magnet.model)
+                self.__deviceOfSeries[id(magnet.model)] = device
+            self.__series[device][1].append((slot, series_index))
+        self.__slotToDevice.append(device)
+
+    def __add_device(self, dev: DeviceAccess, model: MagnetModel | None) -> int:
+        self._devs.add_devices(dev)
+        self.__series.append(None if model is None else (model, []))
+        return len(self.__series) - 1
+
+    def __device_values(self, value: NDArray[np.float64]) -> NDArray[np.float64]:
+        """Return the value to write to each device from the value of each registered magnet."""
+        value = np.asarray(value, dtype=float)
+        if value.ndim == 0:
+            value = np.full(len(self.__slotToDevice), float(value))
+        deviceValues = np.zeros(len(self.__series))
+        for slot, device in enumerate(self.__slotToDevice):
+            if self.__series[device] is None:
+                deviceValues[device] = value[slot]
+        for device, series in enumerate(self.__series):
+            if series is not None:
+                model, members = series
+                deviceValues[device] = model.compute_hardware_from_hardwares({idx: value[slot] for slot, idx in members})
+        dev_range = self._devs.get_range()
+        if not check_range(deviceValues, dev_range):
+            raise PyAMLException(format_out_of_range_message(deviceValues, self._devs))
+        return deviceValues
+
+    def set(self, value: NDArray[np.float64]):
+        """
+        Write the hardware value of every registered magnet.
+
+        Parameters
+        ----------
+        value : NDArray[np.float64]
+            Hardware value of each registered magnet, in registration order. A scalar is applied to every magnet.
+
+        Raises
+        ------
+        PyAMLException
+            If a value to write is outside the range of its device. Nothing is written.
+        """
+        self._devs.set(self.__device_values(value))
+
+    def set_and_wait(self, value: NDArray[np.float64]):
+        """
+        Set the hardware values and wait for hardware readback.
+
+        Parameters
+        ----------
+        value : NDArray[np.float64]
+            Hardware value of each registered magnet, in registration order.
+        """
+        self._devs.set_and_wait(self.__device_values(value))
+
+    def get(self) -> NDArray[np.float64]:
+        """Return the hardware value of every registered magnet."""
+        return np.asarray(self._devs.get())[self.__slotToDevice]
+
+    def readback(self) -> np.array:
+        """Return the hardware readback of every registered magnet."""
+        return np.asarray(self._devs.readback())[self.__slotToDevice]
+
+    def unit(self) -> str | list[str] | None:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        units = self._devs.unit()
+        return common_unit([units[device] for device in self.__slotToDevice])
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        units = self._devs.control_system_unit()
+        return common_unit([units[device] for device in self.__slotToDevice])
+
+    def nb_device(self) -> int:
+        """Return the number of registered magnets."""
+        return len(self.__slotToDevice)
 
 
 # ------------------------------------------------------------------------------
@@ -584,7 +765,9 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the hardware value and wait for readback confirmation.
     unit()
-        Return the hardware unit defined by the magnet model.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     set_magnet_rigidity(brho)
         Set the beam rigidity used by the magnet model.
     """
@@ -636,8 +819,12 @@ class RWHardwareScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the hardware unit defined by the magnet model."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self.__model.get_hardware_units()[0]
+
+    def control_system_unit(self) -> str | None:
+        """Return the control-system unit for this quantity."""
+        return control_system_unit_of(self.__dev)
 
     def set_magnet_rigidity(self, brho: np.double):
         """
@@ -674,7 +861,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set a magnet strength and wait for readback confirmation.
     unit()
-        Return the strength unit defined by the magnet model.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     set_magnet_rigidity(brho)
         Set the beam rigidity used by the magnet model.
     """
@@ -733,7 +920,7 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the strength unit defined by the magnet model."""
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
         return self.__model.get_strength_units()[0]
 
     def set_magnet_rigidity(self, brho: np.double):
@@ -753,35 +940,65 @@ class RWSerializedStrengthScalar(RWStrengthScalar):
     Expose the strength of one magnet of a serialized group.
 
     All magnets of a serialized group share one power supply. This accessor
-    converts with the magnet's own sub-model and remembers the magnet position
-    in the group so that aggregators can map it to the right strength of the
-    serialized model.
+    reads with the magnet's own sub-model, writes through the model of the
+    series, and remembers the magnet position in the group so that aggregators
+    can map it to the right strength of the serialized model.
 
     Parameters
     ----------
     model : MagnetModel
-        Sub-model of the magnet, used for strength conversion and units.
+        Sub-model of the magnet, used for strength reading and units.
     dev : DeviceAccess
         Power-supply device shared by the serialized group.
     idx : int
         Zero-based position of the magnet in the serialized group.
+    series_model : MagnetModel
+        Model of the series, used to convert the strength of the magnet to the shared hardware value.
 
     Methods
     -------
     index()
         Return the position of the magnet in the serialized group.
+    set(value)
+        Set the shared hardware value giving the requested strength of the magnet.
     """
 
-    def __init__(self, model: MagnetModel, dev: DeviceAccess, idx: int):
+    def __init__(self, model: MagnetModel, dev: DeviceAccess, idx: int, series_model: MagnetModel):
         """
         Initialize the RWSerializedStrengthScalar.
         """
         super().__init__(model, dev)
+        self.__dev = dev
         self.__idx = idx
+        self.__series_model = series_model
 
     def index(self) -> int:
         """Return the position of the magnet in the serialized group."""
         return self.__idx
+
+    def set(self, value: float):
+        """
+        Set the shared hardware value giving the requested strength of the magnet.
+
+        The model of the series solves for the hardware value from the present one, so that the power supply does not
+        move when it already gives the requested strength (for example on a plateau of the excitation curve).
+
+        Parameters
+        ----------
+        value : float
+            Strength of the magnet.
+
+        Raises
+        ------
+        PyAMLException
+            If the converted hardware value is outside the device's configured range.
+        """
+        current_hardware = np.array([self.__dev.get()])
+        current = self.__series_model.compute_hardware_values_partial(current_hardware, {self.__idx: value})[0]
+        dev_range = self.__dev.get_range()
+        if not check_range(current, dev_range):
+            raise PyAMLException(format_out_of_range_message(current, self.__dev))
+        self.__dev.set(current)
 
 
 # ------------------------------------------------------------------------------
@@ -807,7 +1024,9 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
     set_and_wait(value)
         Set hardware values and wait for readback confirmation.
     unit()
-        Return the hardware units defined by the magnet model.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, model: MagnetModel, devs: list[DeviceAccess]):
@@ -861,9 +1080,13 @@ class RWHardwareArray(abstract.ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
-    def unit(self) -> list[str]:
-        """Return the hardware units defined by the magnet model."""
-        return self.__model.get_hardware_units()
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit(self.__model.get_hardware_units())
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        return common_unit([control_system_unit_of(d) for d in self.__devs])
 
 
 # ------------------------------------------------------------------------------
@@ -889,7 +1112,7 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
     set_and_wait(value)
         Set magnet strengths and wait for readback confirmation.
     unit()
-        Return the strength units defined by the magnet model.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
     """
 
     def __init__(self, model: MagnetModel, devs: list[DeviceAccess]):
@@ -943,9 +1166,9 @@ class RWStrengthArray(abstract.ReadWriteFloatArray):
         raise NotImplementedError("Not implemented yet.")
 
     # Gets the unit of the value
-    def unit(self) -> list[str]:
-        """Return the strength units defined by the magnet model."""
-        return self.__model.get_strength_units()
+    def unit(self) -> str | list[str]:
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return common_unit(self.__model.get_strength_units())
 
 
 # ------------------------------------------------------------------------------
@@ -969,7 +1192,9 @@ class RBpmArray(abstract.ReadFloatArray):
     get()
         Return horizontal and vertical BPM positions (NaN for a missing plane).
     unit()
-        Return the unit reported by the BPM device.
+        Return the pyAML unit for this quantity, i.e. returned by get().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, hDev: DeviceAccess | None, vDev: DeviceAccess | None):
@@ -983,11 +1208,13 @@ class RBpmArray(abstract.ReadFloatArray):
         """Return horizontal and vertical BPM positions (NaN for a missing plane)."""
         return np.array([d.get() if d is not None else np.nan for d in (self._hDev, self._vDev)], dtype=float)
 
-    # Gets the unit of the value Assume that x and y, offsets and positions
-    # have the same unit
     def unit(self) -> str:
-        """Return the unit reported by the BPM device."""
-        return (self._hDev if self._hDev is not None else self._vDev).unit()
+        """Return the pyAML unit for this quantity, i.e. returned by get()."""
+        return SI_POSITION
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        return common_unit([control_system_unit_of(d) for d in (self._hDev, self._vDev)])
 
 
 # ------------------------------------------------------------------------------
@@ -1011,7 +1238,9 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
     set_and_wait(value)
         Set the BPM tilt and wait for readback confirmation.
     unit()
-        Return the unit shared by the BPM devices.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, dev: DeviceAccess):
@@ -1031,7 +1260,7 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
         Parameters
         ----------
         value : float
-            BPM tilt value in the device's configured units.
+            BPM tilt in rad.
         """
         self._dev.set(value)
 
@@ -1053,8 +1282,12 @@ class RWBpmTiltScalar(abstract.ReadFloatScalar):
 
     # Gets the unit of the value
     def unit(self) -> str:
-        """Return the unit shared by the BPM devices."""
-        return self._dev.unit()
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_ANGLE
+
+    def control_system_unit(self) -> str | None:
+        """Return the control-system unit for this quantity."""
+        return control_system_unit_of(self._dev)
 
 
 # ------------------------------------------------------------------------------
@@ -1080,7 +1313,9 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
     set_and_wait(value)
         Set BPM offsets and wait for readback confirmation.
     unit()
-        Return the unit shared by the BPM offset devices.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, hDev: DeviceAccess, vDev: DeviceAccess):
@@ -1122,11 +1357,13 @@ class RWBpmOffsetArray(abstract.ReadWriteFloatArray):
         """
         raise NotImplementedError("Not implemented yet.")
 
-    # Gets the unit of the value Assume that x and y, offsets and positions
-    # have the same unit
     def unit(self) -> str:
-        """Return the unit shared by the BPM offset devices."""
-        return self._hDev.unit()
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_POSITION
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        return common_unit([control_system_unit_of(d) for d in (self._hDev, self._vDev)])
 
 
 # ------------------------------------------------------------------------------
@@ -1153,7 +1390,9 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the cavity voltage and wait for readback confirmation.
     unit()
-        Return the configured cavity-voltage unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, transmitter: RFTransmitter, dev: DeviceAccess):
@@ -1174,7 +1413,7 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Cavity-voltage setpoint in the configured voltage unit.
+            Cavity-voltage setpoint in V.
         """
         self.__dev.set(value)
 
@@ -1195,8 +1434,12 @@ class RWRFVoltageScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the configured cavity-voltage unit."""
-        return self.__transmitter._cfg.voltage.unit()
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_VOLTAGE
+
+    def control_system_unit(self) -> str | None:
+        """Return the control-system unit for this quantity."""
+        return control_system_unit_of(self.__dev)
 
 
 # ------------------------------------------------------------------------------
@@ -1223,7 +1466,9 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the cavity phase and wait for readback confirmation.
     unit()
-        Return the configured cavity-phase unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, transmitter: RFTransmitter, dev: DeviceAccess):
@@ -1244,7 +1489,7 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            Cavity-phase setpoint in the configured phase unit.
+            Cavity-phase setpoint in rad.
         """
         self.__dev.set(value)
 
@@ -1265,8 +1510,12 @@ class RWRFPhaseScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the configured cavity-phase unit."""
-        return self.__transmitter._cfg.phase.unit()
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_ANGLE
+
+    def control_system_unit(self) -> str | None:
+        """Return the control-system unit for this quantity."""
+        return control_system_unit_of(self.__dev)
 
 
 # ------------------------------------------------------------------------------
@@ -1292,7 +1541,9 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
     set_and_wait(value)
         Set the RF frequency and wait for readback confirmation.
     unit()
-        Return the configured RF-frequency unit.
+        Return the pyAML unit for this quantity, i.e. returned by get() and expected by set().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
     def __init__(self, rf: RFPlant, dev: DeviceAccess):
@@ -1314,7 +1565,7 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
         Parameters
         ----------
         value : float
-            RF-frequency setpoint in the configured frequency unit.
+            RF-frequency setpoint in Hz.
         """
         self.__dev.set(value)
 
@@ -1335,8 +1586,12 @@ class RWRFFrequencyScalar(abstract.ReadWriteFloatScalar):
         raise NotImplementedError("Not implemented yet.")
 
     def unit(self) -> str:
-        """Return the configured RF-frequency unit."""
-        return self.__rf._cfg.masterclock.unit()
+        """Return the pyAML unit for this quantity, i.e. returned by get() and expected by set()."""
+        return SI_FREQUENCY
+
+    def control_system_unit(self) -> str | None:
+        """Return the control-system unit for this quantity."""
+        return control_system_unit_of(self.__dev)
 
 
 # ------------------------------------------------------------------------------
@@ -1346,41 +1601,67 @@ class RBetatronTuneArray(abstract.ReadFloatArray):
     """
     Expose horizontal and vertical betatron tunes as a read-only array.
 
+    A plane whose device reports a frequency ``f`` is converted to the
+    fractional tune.
+
     Parameters
     ----------
-    tune_monitor : object
-        Tune monitor configuration supplying the tune unit.
     devs : list[DeviceAccess]
-        Devices providing horizontal and vertical tune measurements.
+        Devices providing horizontal and vertical tune measurements, in tune
+        units or in Hz.
+    is_frequency : list[bool] or None, optional
+        ``[horizontal, vertical]`` flags, ``True`` for a device read in Hz.
+    above_half : list[bool] or None, optional
+        ``[horizontal, vertical]`` flags, ``True`` when the fractional tune of
+        a plane read in Hz is above the half-integer.
+    revolution_frequency : callable or None, optional
+        Returns the revolution frequency in Hz, called on every ``get()``
+        when a plane is read in Hz.
 
     Methods
     -------
     get()
         Return horizontal and vertical betatron tunes.
     unit()
-        Return the configured betatron-tune unit.
+        Return the pyAML unit for this quantity, i.e. returned by get().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     """
 
-    def __init__(self, tune_monitor, devs: list[DeviceAccess]):
+    def __init__(
+        self,
+        devs: list[DeviceAccess],
+        is_frequency: list[bool] | None = None,
+        above_half: list[bool] | None = None,
+        revolution_frequency=None,
+    ):
         """
         Initialize the RBetatronTuneArray.
         """
-        self.__tune_monitor = tune_monitor
         self.__devs = devs
+        self.__is_frequency = np.array(is_frequency if is_frequency is not None else [False, False], dtype=bool)
+        self.__above_half = np.array(above_half if above_half is not None else [False, False], dtype=bool)
+        self.__revolution_frequency = revolution_frequency
 
     def get(self) -> NDArray:
-        # Return horizontal and vertical betatron tunes as a NumPy array
         """Return horizontal and vertical betatron tunes."""
-        return np.array(
-            [
-                self.__devs[0].get(),
-                self.__devs[1].get(),
-            ]
-        )
+        values = np.array([d.get() for d in self.__devs], dtype=float)
+        if self.__is_frequency.any():
+            if self.__revolution_frequency is None:
+                raise PyAMLException("Tune devices read in Hz need a revolution frequency")
+            q = np.mod(values / self.__revolution_frequency(), 1.0)  # Sidebands (n ± q) f_rev
+            q = np.minimum(q, 1.0 - q)  # Fold into [0, 0.5]
+            q = np.where(self.__above_half, 1.0 - q, q)
+            values = np.where(self.__is_frequency, q, values)
+        return values
 
     def unit(self) -> str:
-        """Return the configured betatron-tune unit."""
-        return self.__tune_monitor._cfg.tune_v.unit()
+        """Return the pyAML unit for this quantity, i.e. returned by get()."""
+        return SI_TUNE
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        return common_unit([control_system_unit_of(d) for d in self.__devs])
 
 
 # ------------------------------------------------------------------------------

@@ -9,6 +9,7 @@ import numpy as np
 from pyaml.diagnostics.bpm import BPM
 
 from ..common.abstract import ReadFloatArray
+from ..common.units import common_unit, per_value_units
 from ..control.deviceaccesslist import DeviceAccessList
 from .element_array import ElementArray
 
@@ -33,7 +34,9 @@ class RWBPMPosition(ReadFloatArray):
     get()
         Get BPM positions.
     unit()
-        Get the units for BPM positions.
+        Return the pyAML unit for this quantity, i.e. returned by get().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     set_aggregator(agg)
         Set the device access list aggregator for improved performance.
     """
@@ -63,16 +66,20 @@ class RWBPMPosition(ReadFloatArray):
             return self.__aggregator.get().reshape(len(self.__bpms), 2)
 
     # Gets the unit of the values
-    def unit(self) -> list[str]:
+    def unit(self) -> str | list[list[str]]:
         """
-        Get the units for BPM positions.
+        Return the pyAML unit for this quantity, i.e. returned by get().
 
         Returns
         -------
-        list[str]
-            List of unit strings for each BPM
+        str or list[list[str]]
+            Unit label, or one per value (shaped like get()) if they differ.
         """
-        return [b.positions.unit() for b in self.__bpms]
+        return common_unit([per_value_units(b.positions.unit(), 2) for b in self.__bpms])
+
+    def control_system_unit(self) -> str | list[list[str | None]] | None:
+        """Return the control-system unit for this quantity."""
+        return common_unit([per_value_units(b.positions.control_system_unit(), 2) for b in self.__bpms])
 
     # Set the aggregator (Control system only)
     def set_aggregator(self, agg: DeviceAccessList):
@@ -109,7 +116,9 @@ class RWBPMSinglePosition(ReadFloatArray):
     get()
         Get single axis BPM positions.
     unit()
-        Get the units for BPM positions.
+        Return the pyAML unit for this quantity, i.e. returned by get().
+    control_system_unit()
+        Return the control-system unit for this quantity.
     set_aggregator(agg)
         Set the device access list aggregator for improved performance.
     """
@@ -139,16 +148,20 @@ class RWBPMSinglePosition(ReadFloatArray):
             return self.__aggregator.get()
 
     # Gets the unit of the values
-    def unit(self) -> list[str]:
+    def unit(self) -> str | list[str]:
         """
-        Get the units for BPM positions.
+        Return the pyAML unit for this quantity, i.e. returned by get().
 
         Returns
         -------
-        list[str]
-            List of unit strings for each BPM
+        str or list[str]
+            Unit label, or one per value if they differ.
         """
-        return [b.positions.unit() for b in self.__bpms]
+        return common_unit([per_value_units(b.positions.unit(), 2)[self.__idx] for b in self.__bpms])
+
+    def control_system_unit(self) -> str | list[str | None] | None:
+        """Return the control-system unit for this quantity."""
+        return common_unit([per_value_units(b.positions.control_system_unit(), 2)[self.__idx] for b in self.__bpms])
 
     # Set the aggregator (Control system only)
     def set_aggregator(self, agg: DeviceAccessList):

@@ -14,11 +14,13 @@ from pyaml.diagnostics.bpm import BPM
 
 from ..common.abstract import RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
-from ..common.exception import PyAMLException
+from ..common.exception import PyAMLConfigException, PyAMLException
 from ..common.holders.element_holder import ElementHolder
 from ..common.switch_element import SwitchElement
+from ..common.units import SI_ANGLE, SI_FREQUENCY, SI_POSITION, SI_TUNE, SI_VOLTAGE, is_frequency_unit
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
+    CSHardwareScalarAggregator,
     CSScalarAggregator,
     CSSparseScalarAggregator,
     CSStrengthScalarAggregator,
@@ -47,6 +49,19 @@ from ..tuning_tools.measurement_tool import MeasurementTool
 from ..tuning_tools.tuning_tool import TuningTool
 from .deviceaccess import DeviceAccess
 from .deviceaccesslist import DeviceAccessList
+from .si_deviceaccess import SIDeviceAccessList, wrap_si
+
+
+def _hardware_unit(model, index: int = 0) -> str:
+    """Return the hardware unit of device ``index`` of a magnet model ('' if unknown)."""
+    units = model.get_hardware_units()
+    if not units:
+        return ""
+    if len(units) == 1:  # One unit shared by all devices of the model
+        return units[0] or ""
+    if index >= len(units):
+        raise PyAMLConfigException(f"Magnet model declares {len(units)} hardware units but has no unit for device {index}")
+    return units[index] or ""
 
 
 class ControlSystem(ElementHolder, metaclass=ABCMeta):
@@ -69,8 +84,10 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         Return a device reference for this control system. YAML element configuration passes opaque strings. Public
         Python APIs may also pass backend ConfigModel instances. Concrete backends own all lookup, parsing and
         DeviceAccess construction.
-    get_devices_access(refs)
-        Resolve a list of backend references into device access objects.
+    get_si_device_access(ref, si_unit)
+        Resolve a backend reference into a device read and written in ``si_unit``.
+    get_si_devices_access(refs, si_units)
+        Resolve backend references into devices read and written in SI units.
     create_magnet_strength_aggregator(magnets)
         Create an aggregator that exposes magnet strengths.
     create_magnet_hardware_aggregator(magnets)
@@ -107,32 +124,79 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         """
         pass
 
-    def get_devices_access(self, refs: list[str | BaseModel | None]) -> list[DeviceAccess]:
+    def get_si_device_access(self, ref: str | BaseModel | None, si_unit: str | None) -> DeviceAccess | None:
         """
-        Resolve a list of backend references into device access objects.
+        Resolve a backend reference into a device read and written in ``si_unit``.
+
+        The backend device unit (``DeviceAccess.unit()``) is converted to
+        ``si_unit`` with pint. A device without unit is assumed to already be
+        expressed in ``si_unit``.
+
+        Parameters
+        ----------
+        ref : str or BaseModel or None
+            Backend-specific device reference.
+        si_unit : str or None
+            Unit expected by PyAML for this device.
+
+        Returns
+        -------
+        DeviceAccess or None
+            The backend device wrapped in a
+            :class:`~pyaml.control.si_deviceaccess.SIDeviceAccess` (factor 1
+            when no conversion is needed), or the raw backend device when
+            ``si_unit`` is empty.
+
+        Raises
+        ------
+        PyAMLConfigException
+            If the device unit cannot be converted to ``si_unit``.
+        """
+        return wrap_si(self.get_device_access(ref), si_unit)
+
+    def get_si_devices_access(
+        self, refs: list[str | BaseModel | None], si_units: str | list[str] | None
+    ) -> list[DeviceAccess | None]:
+        """
+        Resolve backend references into devices read and written in SI units.
 
         Parameters
         ----------
         refs : list of str or BaseModel or None
-            Backend-specific device references from the configuration.
+            Backend-specific device references.
+        si_units : str or list of str or None
+            Unit expected by PyAML, either one for all devices or one per device.
 
         Returns
         -------
-        list of DeviceAccess
-            Device access objects in the same order as ``refs``.
+        list of DeviceAccess or None
+            Devices in the same order as ``refs``.
 
         Raises
         ------
         PyAMLException
             If ``refs`` is not a list.
+        PyAMLConfigException
+            If a device unit cannot be converted to its SI unit.
         """
         if not isinstance(refs, list):
-            raise PyAMLException(f"get_devices() expect a list as input arguments but got {str(type(refs))}")
-        return [self.get_device_access(ref) for ref in refs]
+            raise PyAMLException(f"get_si_devices_access() expects a list as input arguments but got {type(refs)}")
+        units = si_units if isinstance(si_units, list) else [si_units] * len(refs)
+        return [self.get_si_device_access(ref, unit) for ref, unit in zip(refs, units, strict=True)]
+
+    def _get_magnet_devices(self, model) -> list[DeviceAccess | None]:
+        """Resolve all devices of a magnet model, each read and written in its model hardware unit."""
+        names = model.get_device_names()
+        return self.get_si_devices_access(names, [_hardware_unit(model, i) for i in range(len(names))])
+
+    def _get_si_aggregator(self) -> SIDeviceAccessList | None:
+        """Return an empty backend aggregator wrapped for SI conversion, or ``None``."""
+        agg = self.get_aggregator()
+        return None if agg is None else SIDeviceAccessList(agg)
 
     def _create_scalar_aggregator(self) -> ScalarAggregator | None:
         """Create an empty scalar aggregator for this control-system backend."""
-        agg = self.get_aggregator()
+        agg = self._get_si_aggregator()
         if agg is None:
             return None
         return CSScalarAggregator(agg)
@@ -157,8 +221,7 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             return None
         magg = CSStrengthScalarAggregator(agg)
         for m in magnets:
-            devs = self.get_devices_access(m.model.get_device_names())
-            magg.add_magnet(m, devs)
+            magg.add_magnet(m, self._get_magnet_devices(m.model))
         return magg
 
     def create_magnet_hardware_aggregator(self, magnets: list[Magnet]) -> ScalarAggregator | None:
@@ -182,12 +245,14 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         agg = self._create_scalar_aggregator()
         if agg is None:
             return None
+        hagg = CSHardwareScalarAggregator(agg)
         for m in magnets:
             if not m.model.has_hardware():
                 return None
             psIndex = m.hardware.index() if isinstance(m.hardware, RWMapper) else 0
-            agg.add_devices(self.get_devices_access([m.model.get_device_names()[psIndex]])[0])
-        return agg
+            ref = m.model.get_device_names()[psIndex]
+            hagg.add_magnet(m, self.get_si_device_access(ref, _hardware_unit(m.model, psIndex)))
+        return hagg
 
     def create_bpm_aggregators(self, bpms: list[BPM]) -> list[ScalarAggregator | None]:
         """
@@ -206,25 +271,25 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
             vertical-only XBPM) reads NaN, the other devices are still read
             in one grouped call.
         """
-        aggs = [self.get_aggregator() for _ in range(3)]
+        aggs = [self._get_si_aggregator() for _ in range(3)]
         if any(a is None for a in aggs):
             return [None, None, None]
         agg, aggh, aggv = (CSSparseScalarAggregator(a) for a in aggs)
         for b in bpms:
-            devs = self.get_devices_access(b.get_pos_devices())
+            devs = self.get_si_devices_access(b.get_pos_devices(), SI_POSITION)
             agg.add_devices(devs)
             aggh.add_devices(devs[0])
             aggv.add_devices(devs[1])
         return [agg, aggh, aggv]
 
     def _fill_magnet(self, magnet: Magnet) -> None:
-        device = self.get_device_access(magnet.model.get_device_names()[0])
+        device = self.get_si_device_access(magnet.model.get_device_names()[0], _hardware_unit(magnet.model))
         current = RWHardwareScalar(magnet.model, device) if magnet.model.has_hardware() else None
         strength = RWStrengthScalar(magnet.model, device) if magnet.model.has_physics() else None
         self.magnet.add(magnet.attach(self, strength, current))
 
     def _fill_combined_function_magnet(self, magnet: CombinedFunctionMagnet) -> None:
-        devices = self.get_devices_access(magnet.model.get_device_names())
+        devices = self._get_magnet_devices(magnet.model)
         currents = RWHardwareArray(magnet.model, devices)
         strengths = RWStrengthArray(magnet.model, devices)
         attached_magnets = magnet.attach(self, strengths, currents)
@@ -234,22 +299,24 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
     def _fill_serialized_magnets(self, magnets: SerializedMagnets) -> None:
         # All magnets of the group share the same power supply
-        device = self.get_device_access(magnets.model.get_device_names()[0])
+        device = self.get_si_device_access(magnets.model.get_device_names()[0], _hardware_unit(magnets.model))
         currents = []
         strengths = []
         for index in range(magnets.get_nb_magnets()):
             sub_model = magnets.model.get_sub_model(index)
             currents.append(RWHardwareScalar(sub_model, device) if magnets.model.has_hardware() else None)
-            strengths.append(RWSerializedStrengthScalar(sub_model, device, index) if magnets.model.has_physics() else None)
+            strengths.append(
+                RWSerializedStrengthScalar(sub_model, device, index, magnets.model) if magnets.model.has_physics() else None
+            )
         attached_magnets = magnets.attach(self, strengths, currents)
         self.serialized_magnet.add(attached_magnets[0])
         for magnet in attached_magnets[1:]:
             self.magnet.add(magnet)
 
     def _fill_bpm(self, bpm: BPM) -> None:
-        position_devices = self.get_devices_access(bpm.get_pos_devices())
-        tilt_devices = self.get_devices_access([bpm.get_tilt_device()])
-        offset_devices = self.get_devices_access(bpm.get_offset_devices())
+        position_devices = self.get_si_devices_access(bpm.get_pos_devices(), SI_POSITION)
+        tilt_devices = self.get_si_devices_access([bpm.get_tilt_device()], SI_ANGLE)
+        offset_devices = self.get_si_devices_access(bpm.get_offset_devices(), SI_POSITION)
         positions = RBpmArray(position_devices[0], position_devices[1])
         tilt = RWBpmTiltScalar(tilt_devices[0])
         offsets = RWBpmOffsetArray(offset_devices[0], offset_devices[1])
@@ -259,21 +326,38 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         attached_transmitters: list[RFTransmitter] = []
         if rf_plant.transmitters:
             for transmitter in rf_plant.transmitters:
-                voltage_device = self.get_device_access(transmitter.voltage_name)
-                phase_device = self.get_device_access(transmitter.phase_name)
+                voltage_device = self.get_si_device_access(transmitter.voltage_name, SI_VOLTAGE)
+                phase_device = self.get_si_device_access(transmitter.phase_name, SI_ANGLE)
                 voltage = RWRFVoltageScalar(transmitter, voltage_device)
                 phase = RWRFPhaseScalar(transmitter, phase_device)
                 attached_transmitter = transmitter.attach(self, voltage, phase)
                 self.rf.transmitter.add(attached_transmitter)
                 attached_transmitters.append(attached_transmitter)
-        frequency_device = self.get_device_access(rf_plant.masterclock)
+        frequency_device = self.get_si_device_access(rf_plant.masterclock, SI_FREQUENCY)
         frequency = RWRFFrequencyScalar(rf_plant, frequency_device)
         voltage = RWTotalVoltage(attached_transmitters) if rf_plant.transmitters else None
         self.rf.add(rf_plant.attach(self, frequency, voltage))
 
     def _fill_betatron_tune_monitor(self, monitor: BetatronTuneMonitor) -> None:
-        devices = self.get_devices_access([monitor.tune_h, monitor.tune_v])
-        self.add_betatron_tune_monitor(monitor.attach(self, RBetatronTuneArray(monitor, devices)))
+        # A tune device may report the betatron frequency: it is then read in Hz
+        # and converted to a tune with the revolution frequency on every read.
+        devices, is_frequency = [], []
+        for ref in (monitor.tune_h, monitor.tune_v):
+            dev = self.get_device_access(ref)
+            in_hz = dev is not None and is_frequency_unit(dev.unit())
+            devices.append(wrap_si(dev, SI_FREQUENCY if in_hz else SI_TUNE))
+            is_frequency.append(in_hz)
+        if any(is_frequency) and monitor.rf_plant_name is None:
+            raise PyAMLConfigException(
+                f"{monitor.get_name()}: tune devices in a frequency unit need rf_plant_name to be converted to tunes"
+            )
+        tune = RBetatronTuneArray(
+            devices,
+            is_frequency,
+            monitor.tune_above_half,
+            revolution_frequency=lambda: self.rf.get(monitor.rf_plant_name).revolution_frequency(),
+        )
+        self.add_betatron_tune_monitor(monitor.attach(self, tune))
 
     def _fill_tool(self, tool: TuningTool | MeasurementTool) -> None:
         self.add_tool(tool.attach(self))

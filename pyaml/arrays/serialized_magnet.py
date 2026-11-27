@@ -1,21 +1,27 @@
 """
 Serialized Magnet module.
 
-This module provides serialized magnet functionality.
+This module provides the deprecated serialized magnet array configuration.
 """
 
-from ..common.holders.element_holder import ElementHolder
+import warnings
+
 from ..validation import DynamicValidation, register_schema
-from .array import ArrayConfig
+from .magnet import Magnet
 
 # Define the main class name for this module
 PYAMLCLASS = "SerializedMagnets"
 
 
 @register_schema
-class SerializedMagnets(ArrayConfig, DynamicValidation):
+class SerializedMagnets(Magnet, DynamicValidation):
     """
     Serialized magnets array configuration.
+
+    .. deprecated::
+        A serialized family is a magnet: use :py:class:`pyaml.arrays.magnet.Magnet`
+        (``type: pyaml.arrays.magnet``). This configuration builds the same
+        :py:class:`.MagnetArray`, registered with the magnet arrays.
 
     Parameters
     ----------
@@ -28,34 +34,16 @@ class SerializedMagnets(ArrayConfig, DynamicValidation):
     Methods
     -------
     fill_array(holder)
-        Fill the serialized magnet array in the element holder.
-
-    Examples
-    --------
-
-    A magnet array configuration can also be created by code using
-    the following example::
-
-        from pyaml.arrays.serialized_magnet import SerializedMagnets
-        from pyaml.arrays.serialized_magnet import ConfigModel as SerializedMagnetConfigModel
-        magArray = SerializedMagnets(
-                     SerializedMagnetConfigModel(name="mySerializedMagnets", elements=["mag1","mag2"])
-                   )
+        Fill the magnet array in the element holder.
     """
 
     def __init__(self, name: str, elements: list[str]):
         """
         Initialize the SerializedMagnets.
         """
+        warnings.warn(
+            f"{name}: pyaml.arrays.serialized_magnet is deprecated, a serialized family is a magnet: use pyaml.arrays.magnet",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         super().__init__(name, elements)
-
-    def fill_array(self, holder: ElementHolder):
-        """
-        Fill the serialized magnet array in the element holder.
-
-        Parameters
-        ----------
-        holder : ElementHolder
-            The element holder to populate with serialized magnet array
-        """
-        holder.serialized_magnets.add(self._name, self._elements)
