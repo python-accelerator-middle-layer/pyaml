@@ -35,12 +35,15 @@ from ..control.abstract_impl import (
     RWSerializedStrengthScalar,
     RWStrengthArray,
     RWStrengthScalar,
+    RWStrengthTrim,
 )
 from ..diagnostics.atune_monitor import ABetatronTuneMonitor
 from ..diagnostics.tune_monitor import BetatronTuneMonitor
 from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..magnet.serialized_magnet import SerializedMagnets
+from ..magnet.serialized_magnet_trims import SerializedMagnetsWithTrims
+from ..magnet.trim_coil_model import TrimCoilModel
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.measurement_tool import MeasurementTool
@@ -212,8 +215,11 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         -------
         ScalarAggregator | None
             Strength aggregator, or ``None`` when the backend does not use
-            aggregators.
+            aggregators or the array contains trims requiring the main current.
         """
+        # Scalar access handles the main-current dependency and writes mains before trims.
+        if any(isinstance(m.model, TrimCoilModel) for m in magnets):
+            return None
         agg = self._create_scalar_aggregator()
         if agg is None:
             return None
@@ -311,9 +317,26 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         for magnet in attached_magnets[1:]:
             self.magnet.add(magnet)
 
-    def _fill_serialized_magnets_with_trims(self, magnets: SerializedMagnets) -> None:
-        # To be implemented in next PR, now it is dummy for test not to fail.
-        pass
+    def _fill_serialized_magnets_with_trims(self, magnets: SerializedMagnetsWithTrims) -> None:
+        """Bind the shared main supply and each independent trim supply."""
+        main_device = self.get_device_access(magnets.model.get_device_names()[0])
+        currents, strengths = [], []
+        for index in range(magnets.get_nb_magnets()):
+            sub_model = magnets.model.get_sub_model(index)
+            currents.append(RWHardwareScalar(sub_model, main_device))
+            strengths.append(RWSerializedStrengthScalar(sub_model, main_device, index, magnets.model))
+
+        trim_currents, trim_strengths = [], []
+        for trim, magnet in zip(magnets.model.trims, magnets.get_trim_magnets(), strict=True):
+            device = self.get_device_access(trim.powerconverter)
+            sub_model = magnets.model.get_sub_model(magnets.names().index(trim.element))
+            trim_currents.append(RWHardwareScalar(magnet.model, device))
+            trim_strengths.append(RWStrengthTrim(sub_model, main_device, device, trim.trim_factor))
+
+        attached = magnets.attach(self, strengths, currents, trim_strengths, trim_currents)
+        self.serialized_magnet.add(attached[0])
+        for magnet in attached[1:]:
+            self.magnet.add(magnet)
 
     def _fill_bpm(self, bpm: BPM) -> None:
         position_devices = self.get_si_devices_access(bpm.get_pos_devices(), SI_POSITION)
