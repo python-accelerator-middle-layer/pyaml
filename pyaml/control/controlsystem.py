@@ -42,6 +42,7 @@ from ..magnet.cfm_magnet import CombinedFunctionMagnet
 from ..magnet.magnet import Magnet
 from ..magnet.serialized_magnet import SerializedMagnets
 from ..magnet.serialized_magnet_trims import SerializedMagnetsWithTrims
+from ..magnet.trim_coil_model import TrimCoilModel
 from ..rf.rf_plant import RFPlant, RWTotalVoltage
 from ..rf.rf_transmitter import RFTransmitter
 from ..tuning_tools.measurement_tool import MeasurementTool
@@ -151,8 +152,11 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         -------
         ScalarAggregator | None
             Strength aggregator, or ``None`` when the backend does not use
-            aggregators.
+            aggregators or the array contains trims requiring the main current.
         """
+        # Scalar access handles the main-current dependency and writes mains before trims.
+        if any(isinstance(m.model, TrimCoilModel) for m in magnets):
+            return None
         agg = self._create_scalar_aggregator()
         if agg is None:
             return None

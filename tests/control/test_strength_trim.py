@@ -4,9 +4,11 @@ import numpy as np
 import pytest
 
 from pyaml import PyAMLException
+from pyaml.arrays.magnet_array import MagnetArray
 from pyaml.control.abstract_impl import RWStrengthTrim
 from pyaml.control.controlsystem import ControlSystemAdapter
 from pyaml.control.deviceaccess import DeviceAccess
+from pyaml.control.deviceaccesslist import DeviceAccessList
 from pyaml.magnet.inline_curve import InlineCurve
 from pyaml.magnet.linear_serialized_with_trims_model import LinearSerializedMagnetWithTrimsModel
 from pyaml.magnet.model import MagnetModel
@@ -72,7 +74,8 @@ def test_zero_factor_is_rejected(trim_setup):
         RWStrengthTrim(model, main, trim, 0.0)
 
 
-def test_control_attachment_and_independent_trim_supply(trim_setup, monkeypatch):
+@pytest.fixture
+def attached_trim_controls(trim_setup, monkeypatch):
     _, main_device, trim_device = trim_setup
     main_device.get.return_value = 1.0
     main_device.get_range.return_value = [0.0, 3.0]
@@ -91,6 +94,11 @@ def test_control_attachment_and_independent_trim_supply(trim_setup, monkeypatch)
     family = SerializedMagnetsWithTrims("series", "B0", ["D1", "D2"], model)
     model.set_magnet_rigidity(1.0)
     controls.fill_device([family])
+    return controls, model, main_device, trim_device
+
+
+def test_control_attachment_and_independent_trim_supply(attached_trim_controls):
+    controls, model, main_device, trim_device = attached_trim_controls
     attached = controls.serialized_magnet["series"]
     trim = controls.magnet["T2"]
 
@@ -115,3 +123,24 @@ def test_control_attachment_and_independent_trim_supply(trim_setup, monkeypatch)
     trim.hardware.set(-0.25)
     assert trim.strength.get() == pytest.approx(2.5)
     main_device.set.assert_not_called()
+
+
+@pytest.mark.parametrize("use_family", [True, False])
+def test_control_array_with_trim_uses_scalar_strengths(attached_trim_controls, monkeypatch, use_family):
+    controls, model, main_device, trim_device = attached_trim_controls
+    monkeypatch.setattr(controls, "get_aggregator", lambda: Mock(spec=DeviceAccessList))
+    family = controls.serialized_magnet["series"]
+    trim = controls.magnet["T2"]
+    main = family if use_family else family[1]
+    magnets = [trim, main]
+    assert controls.create_magnet_strength_aggregator(magnets) is None
+    assert controls.create_magnet_strength_aggregator([main]) is not None
+    assert controls.create_magnet_hardware_aggregator(magnets) is not None
+    array = MagnetArray("mixed", magnets)
+    main_strength = model.compute_mean_strength(2.0) if use_family else model.compute_strengths([2.0])[1]
+
+    array.strengths.set([1.0, main_strength])
+
+    np.testing.assert_allclose(array.strengths.get(), [1.0, main_strength])
+    main_device.set.assert_called_once_with(pytest.approx(2.0))
+    trim_device.set.assert_called_once_with(pytest.approx(-0.1))
