@@ -295,6 +295,183 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
 # ------------------------------------------------------------------------------
 
 
+class RWStrengthTuple:
+    """Control two contributions whose sum is written to one scalar strength.
+
+    Parameters
+    ----------
+    total_accessor : abstract.ReadWriteFloatScalar
+        Accessor for the total integrated strength. It owns the conversion to
+        lattice coefficients, including signs, lengths, and bending angles.
+    initial : tuple[float, float]
+        Initial contributions in the underlying accessor's unit. Construction
+        writes their sum to the underlying accessor once.
+
+    Notes
+    -----
+    ``get()`` returns their stored values, not a decomposition of lattice readback.
+    All writes must go through this tuple: direct writes to the underlying
+    accessor are unsupported. ``set(pair)`` reapplies the authoritative total.
+
+    A successful write stores the new pair only after the underlying write
+    returns. On failure the stored pair is unchanged; any partial effects of a
+    failing underlying accessor cannot be rolled back here.
+    """
+
+    def __init__(self, total_accessor: abstract.ReadWriteFloatScalar, initial: tuple[float, float]):
+        self._total_accessor = total_accessor
+        self.set(initial)
+
+    def get(self) -> tuple[float, float]:
+        """Return an immutable pair of the stored contributions."""
+        return self._values
+
+    def set(self, values: tuple[float, float]):
+        """Write the sum of the supplied pair, then store its contributions."""
+        main, trim = values
+        self._total_accessor.set(main + trim)
+        self._values = values
+
+    def unit(self) -> str:
+        """Return the shared physical unit of both contributions."""
+        return self._total_accessor.unit()
+
+    def set_and_wait(self, values: tuple[float, float]):
+        """Waiting for lattice strength convergence is not implemented."""
+        raise NotImplementedError("Not implemented yet.")
+
+
+# ------------------------------------------------------------------------------
+
+
+class RWStrengthTrim(abstract.ReadWriteFloatScalar):
+    """Expose the trim contribution of a simulated main/trim strength pair.
+
+    Reads and writes address only the second contribution of ``strengths``.
+    No current conversion is performed; the tuple writes the summed strength
+    through its underlying lattice accessor.
+    """
+
+    def __init__(self, strengths: RWStrengthTuple):
+        self._strengths = strengths
+
+    def get(self) -> float:
+        """Return the stored trim strength."""
+        return self._strengths.get()[1]
+
+    def set(self, value: float):
+        """Update the trim strength while preserving the main contribution."""
+        main, _ = self._strengths.get()
+        self._strengths.set((main, value))
+
+    def unit(self) -> str:
+        return self._strengths.unit()
+
+    def set_and_wait(self, value: float):
+        raise NotImplementedError("Not implemented yet.")
+
+
+class RWStrengthMain(RWStrengthTrim):
+    """Expose the main contribution of a simulated main/trim pair."""
+
+    def get(self) -> float:
+        return self._strengths.get()[0]
+
+    def set(self, value: float):
+        _, trim = self._strengths.get()
+        self._strengths.set((value, trim))
+
+
+class RWHardwareTrim(abstract.ReadWriteFloatScalar):
+    """Expose physical trim current for a simulated main/trim strength pair.
+
+    Parameters
+    ----------
+    strengths : RWStrengthTuple
+        Main and incremental trim strengths sharing one lattice component.
+    model : MagnetModel
+        Single-magnet excitation model, including its inverse conversion.
+    trim_factor : float
+        Nonzero signed factor converting physical trim current to equivalent
+        main-coil current. Defaults to 1.0.
+    hardware_unit : str or None
+        Trim supply unit, defaulting to the main member's hardware unit.
+
+    Notes
+    -----
+    For excitation curve ``f``, readback is
+    ``(inverse_f(main + trim) - inverse_f(main)) / trim_factor``.
+    Writes preserve the main strength and set the trim contribution to
+    ``f(inverse_f(main) + trim_factor * current) - main``.
+    Like RWHardwareScalar, readback follows the model's inverse convention;
+    currents are not independently retained for non-unique inverses.
+
+    The family must preserve trim currents explicitly when changing the shared
+    main supply: read the trim currents before updating the main contributions,
+    then reapply them at the new operating point.
+    """
+
+    def __init__(
+        self, strengths: RWStrengthTuple, model: MagnetModel, trim_factor: float = 1.0, hardware_unit: str | None = None
+    ):
+        if trim_factor == 0:
+            raise ValueError("trim_factor must be nonzero")
+        self._strengths = strengths
+        self._model = model
+        self._trim_factor = trim_factor
+        self._hardware_unit = hardware_unit
+
+    def get(self) -> float:
+        main, trim = self._strengths.get()
+        main_current = self._model.compute_hardware_values([main])[0]
+        total_current = self._model.compute_hardware_values([main + trim])[0]
+        return (total_current - main_current) / self._trim_factor
+
+    def set(self, value: float):
+        main, _ = self._strengths.get()
+        main_current = self._model.compute_hardware_values([main])[0]
+        total = self._model.compute_strengths([main_current + self._trim_factor * value])[0]
+        self._strengths.set((main, total - main))
+
+    def unit(self) -> str:
+        return self._model.get_hardware_units()[0] if self._hardware_unit is None else self._hardware_unit
+
+    def get_model(self) -> MagnetModel:
+        return self._model
+
+    def set_and_wait(self, value: float):
+        raise NotImplementedError("Not implemented yet.")
+
+
+class RWHardwareMainWithTrim(abstract.ReadWriteFloatScalar):
+    """Convert main strength to current, preserving trim current on writes."""
+
+    def __init__(self, strength: RWStrengthMain, trim_hardware: RWHardwareTrim, model: MagnetModel):
+        self._strength = strength
+        self._trim_hardware = trim_hardware
+        self._model = model
+
+    def get(self) -> float:
+        return self._model.compute_hardware_values([self._strength.get()])[0]
+
+    def set(self, value: float):
+        trim_current = self._trim_hardware.get()
+        self._strength.set(self._model.compute_strengths([value])[0])
+        self._trim_hardware.set(trim_current)
+
+    def unit(self) -> str:
+        return self._model.get_hardware_units()[0]
+
+    def get_model(self) -> MagnetModel:
+        return self._model
+
+    def set_and_wait(self, value: float):
+        raise NotImplementedError("Not implemented yet.")
+
+
+# ------------------------------------------------------------------------------
+
+
 class RWSerializedHardware(abstract.ReadWriteFloatScalar):
     """
     Hardware value of one magnet of a serialized group.

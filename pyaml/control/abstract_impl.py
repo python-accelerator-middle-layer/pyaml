@@ -901,6 +901,64 @@ class RWStrengthScalar(abstract.ReadWriteFloatScalar):
         self.__model.set_magnet_rigidity(brho)
 
 
+class RWStrengthTrim(RWStrengthScalar):
+    """Expose the incremental strength produced by a trim power supply.
+
+    For the member magnet's excitation model ``f``, the trim strength is
+    ``f(I + trim_factor * I_trim) - f(I)``. Setting that strength changes only
+    the trim supply; the main current is read once per operation.
+
+    Parameters
+    ----------
+    model : MagnetModel
+        Single-magnet model converting equivalent main-coil current to strength.
+    main_dev : DeviceAccess
+        Main power-supply current device, used only for reading.
+    trim_dev : DeviceAccess
+        Physical trim-current device, used for reading and writing.
+    trim_factor : float
+        Nonzero signed factor converting physical trim current to equivalent
+        main-coil current. Defaults to 1.0.
+
+    Notes
+    -----
+    Conversion and inversion use the supplied model's existing behavior.
+    Device limits apply to the physical trim current. Hardware access can use
+    the existing ``RWHardwareScalar`` bound to ``trim_dev``.
+    """
+
+    def __init__(self, model: MagnetModel, main_dev: DeviceAccess, trim_dev: DeviceAccess, trim_factor: float = 1.0):
+        if trim_factor == 0:
+            raise ValueError("trim_factor must be nonzero")
+        super().__init__(model, trim_dev)
+        self.__model = model
+        self.__main_dev = main_dev
+        self.__trim_dev = trim_dev
+        self.__trim_factor = trim_factor
+
+    def get(self) -> float:
+        """Return the trim contribution at the current main-supply setpoint."""
+        main_current = self.__main_dev.get()
+        trim_current = self.__trim_dev.get()
+        main_strength = self.__model.compute_strengths([main_current])[0]
+        total_strength = self.__model.compute_strengths([main_current + self.__trim_factor * trim_current])[0]
+        return total_strength - main_strength
+
+    def set(self, value: float):
+        """Convert incremental strength and write only the trim supply.
+
+        Raise PyAMLException when the calculated physical trim current is
+        outside the trim device's configured range.
+        """
+        main_current = self.__main_dev.get()
+        main_strength = self.__model.compute_strengths([main_current])[0]
+        total_current = self.__model.compute_hardware_values([main_strength + value])[0]
+        trim_current = (total_current - main_current) / self.__trim_factor
+        if not check_range(trim_current, self.__trim_dev.get_range()):
+            raise PyAMLException(format_out_of_range_message(trim_current, self.__trim_dev))
+        self.__trim_dev.set(trim_current)
+
+
 class RWSerializedStrengthScalar(RWStrengthScalar):
     """
     Expose the strength of one magnet of a serialized group.
