@@ -39,7 +39,7 @@ modules = [
     "pyaml.control.deviceaccesslist",
     "pyaml.control.readback_value",
     "pyaml.diagnostics.atune_monitor",
-    "pyaml.diagnostics.bpm.bpm",
+    "pyaml.diagnostics.bpm",
     "pyaml.diagnostics.tune_monitor",
     "pyaml.external.pySC_interface",
     "pyaml.lattice.abstract_impl",

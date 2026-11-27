@@ -50,12 +50,12 @@ def test_tune(install_test_package):
 def test_duplicate_error_reports_source_line_and_column_across_files(tmp_path):
     devices_a = tmp_path / "devices_a.yaml"
     devices_a.write_text(
-        "- type: pyaml.diagnostics.bpm.bpm\n  name: BPM_DUPLICATE\n",
+        "- type: pyaml.diagnostics.bpm\n  name: BPM_DUPLICATE\n",
         encoding="utf-8",
     )
     devices_b = tmp_path / "devices_b.yaml"
     devices_b.write_text(
-        "- type: pyaml.diagnostics.bpm.bpm\n  name: BPM_UNIQUE\n- type: pyaml.diagnostics.bpm.bpm\n  name: BPM_DUPLICATE\n",
+        "- type: pyaml.diagnostics.bpm\n  name: BPM_UNIQUE\n- type: pyaml.diagnostics.bpm\n  name: BPM_DUPLICATE\n",
         encoding="utf-8",
     )
     root = tmp_path / "root.yaml"
@@ -76,7 +76,7 @@ def test_duplicate_error_reports_source_line_and_column_across_files(tmp_path):
 def test_malformed_local_included_yaml_reports_source_line_and_column(tmp_path):
     broken_devices = tmp_path / "broken_devices.yaml"
     broken_devices.write_text(
-        "- type: pyaml.diagnostics.bpm.bpm\n  name: BPM_BROKEN\n  model:\n    type: [oops\n",
+        "- type: pyaml.diagnostics.bpm\n  name: BPM_BROKEN\n  model:\n    type: [oops\n",
         encoding="utf-8",
     )
     root = tmp_path / "root.yaml"
@@ -101,7 +101,7 @@ def test_malformed_local_included_yaml_reports_source_line_and_column(tmp_path):
 def test_truncated_local_included_json_reports_source_and_position(tmp_path):
     broken_devices = tmp_path / "broken_devices.json"
     broken_devices.write_text(
-        '{"type": "pyaml.diagnostics.bpm.bpm", "name": "BPM_BROKEN", "model": ',
+        '{"type": "pyaml.diagnostics.bpm", "name": "BPM_BROKEN", "model": ',
         encoding="utf-8",
     )
     root = tmp_path / "root.yaml"
@@ -134,7 +134,7 @@ def test_malformed_remote_included_yaml_reports_source_line_and_column(http_conf
             "devices: ${include:fragments/broken_devices.yaml}\n"
         ),
         "/configs/fragments/broken_devices.yaml": (
-            "- type: pyaml.diagnostics.bpm.bpm\n  name: BPM_BROKEN\n  model:\n    type: [oops\n"
+            "- type: pyaml.diagnostics.bpm\n  name: BPM_BROKEN\n  model:\n    type: [oops\n"
         ),
     }
 
@@ -158,7 +158,7 @@ def test_truncated_remote_included_json_reports_source_and_position(http_config_
             "devices: ${include:fragments/broken_devices.json}\n"
         ),
         "/configs/fragments/broken_devices.json": (
-            '{"type": "pyaml.diagnostics.bpm.bpm", "name": "BPM_BROKEN", "model": ',
+            '{"type": "pyaml.diagnostics.bpm", "name": "BPM_BROKEN", "model": ',
             "application/json",
             200,
         ),

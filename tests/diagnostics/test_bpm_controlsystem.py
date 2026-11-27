@@ -123,9 +123,9 @@ def _single_plane_bpm_config() -> dict:
         ],
         "arrays": [{"type": "pyaml.arrays.bpm", "name": "BPM", "elements": ["BPM_1", "BPM_2", "XBPM"]}],
         "devices": [
-            {"type": "pyaml.diagnostics.bpm.bpm", "name": "BPM_1", "x_pos": "c01-01/H", "y_pos": "c01-01/V"},
-            {"type": "pyaml.diagnostics.bpm.bpm", "name": "BPM_2", "x_pos": "c01-02/H", "y_pos": "c01-02/V"},
-            {"type": "pyaml.diagnostics.bpm.bpm", "name": "XBPM", "y_pos": "xbpm/V"},
+            {"type": "pyaml.diagnostics.bpm", "name": "BPM_1", "x_pos": "c01-01/H", "y_pos": "c01-01/V"},
+            {"type": "pyaml.diagnostics.bpm", "name": "BPM_2", "x_pos": "c01-02/H", "y_pos": "c01-02/V"},
+            {"type": "pyaml.diagnostics.bpm", "name": "XBPM", "y_pos": "xbpm/V"},
         ],
     }
 

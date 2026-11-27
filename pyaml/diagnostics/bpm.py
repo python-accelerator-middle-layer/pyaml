@@ -66,7 +66,7 @@ class BPM(Element, DynamicValidation):
     -------------
     .. code-block:: yaml
 
-        - type: pyaml.diagnostics.bpm.bpm
+        - type: pyaml.diagnostics.bpm
           name: BPM_NAME
           lattice_names: LATTICE_BPM_NAME
           x_pos: DEVICE/X_POSITION

@@ -47,39 +47,39 @@ devices:
     corrector_delta: 1e-6
     name: DEFAULT_ORBIT_RESPONSE_MATRIX
 
-  - class: pyaml.diagnostics.bpm.bpm.BPM
+  - class: pyaml.diagnostics.bpm.BPM
     name: BPM_CV1
     x_pos: tl2/d-bpm/cv1/X_Position
     y_pos: tl2/d-bpm/cv1/Z_Position
-  - class: pyaml.diagnostics.bpm.bpm.BPM
+  - class: pyaml.diagnostics.bpm.BPM
     name: BPM_CH3
     x_pos: tl2/d-bpm/d2/X_Position
     y_pos: tl2/d-bpm/d2/Z_Position
-  - class: pyaml.diagnostics.bpm.bpm.BPM
+  - class: pyaml.diagnostics.bpm.BPM
     name: BPM_QD5
     x_pos: tl2/d-bpm/q5/X_Position
     y_pos: tl2/d-bpm/q5/Z_Position
-  - class: pyaml.diagnostics.bpm.bpm.BPM
+  - class: pyaml.diagnostics.bpm.BPM
     name: BPM_QF6
     x_pos: tl2/d-bpm/q6/X_Position
     y_pos: tl2/d-bpm/q6/Z_Position
-  - class: pyaml.diagnostics.bpm.bpm.BPM
+  - class: pyaml.diagnostics.bpm.BPM
     name: BPM_SX
     x_pos: tl2/d-bpm/sx/X_Position
     y_pos: tl2/d-bpm/sx/Z_Position
-  - class: pyaml.diagnostics.bpm.bpm.BPM
+  - class: pyaml.diagnostics.bpm.BPM
     name: BPM_QD8
     x_pos: tl2/d-bpm/q8/X_Position
     y_pos: tl2/d-bpm/q8/Z_Position
-  - class: pyaml.diagnostics.bpm.bpm.BPM
+  - class: pyaml.diagnostics.bpm.BPM
     name: BPM_QD12
     x_pos: tl2/d-bpm/q12/X_Position
     y_pos: tl2/d-bpm/q12/Z_Position
-  - class: pyaml.diagnostics.bpm.bpm.BPM
+  - class: pyaml.diagnostics.bpm.BPM
     name: BPM_QF14
     x_pos: tl2/d-bpm/q14/X_Position
     y_pos: tl2/d-bpm/q14/Z_Position
-  - class: pyaml.diagnostics.bpm.bpm.BPM
+  - class: pyaml.diagnostics.bpm.BPM
     name: BPM_S1PM
     x_pos: tl2/d-bpm/s1pm/X_Position
     y_pos: tl2/d-bpm/s1pm/Z_Position
