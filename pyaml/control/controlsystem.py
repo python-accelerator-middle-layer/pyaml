@@ -16,6 +16,7 @@ from ..common.abstract import RWMapper
 from ..common.abstract_aggregator import ScalarAggregator
 from ..common.exception import PyAMLConfigException, PyAMLException
 from ..common.holders.element_holder import ElementHolder
+from ..common.switch_element import SwitchElement
 from ..common.units import SI_ANGLE, SI_FREQUENCY, SI_POSITION, SI_TUNE, SI_VOLTAGE, is_frequency_unit
 from ..configuration.unbound_element import UnboundElement
 from ..control.abstract_impl import (
@@ -25,6 +26,7 @@ from ..control.abstract_impl import (
     CSStrengthScalarAggregator,
     RBetatronTuneArray,
     RBpmArray,
+    RWBooleanScalar,
     RWBpmOffsetArray,
     RWBpmTiltScalar,
     RWHardwareArray,
@@ -359,6 +361,11 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
     def _fill_tool(self, tool: TuningTool | MeasurementTool) -> None:
         self.add_tool(tool.attach(self))
+
+    def _fill_switch_element(self, element: SwitchElement) -> None:
+        device = self.get_device_access(element.device)
+        enabled = RWBooleanScalar(device, name=f"{element.name}: switch channel {element.device!r}")
+        self._add(self._ALL, element.attach(self, enabled))
 
     def _fill_unbound_element(self, element: UnboundElement) -> None:
         if self.name() not in element._control_modes:

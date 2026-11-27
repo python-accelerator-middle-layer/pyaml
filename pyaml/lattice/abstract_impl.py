@@ -28,6 +28,24 @@ from .polynom_info import PolynomInfo
 # ------------------------------------------------------------------------------
 
 
+class RWBooleanScalar(abstract.RWBooleanScalar):
+    """Maintain an initially disabled boolean state independent of the lattice."""
+
+    def __init__(self, name: str):
+        self._name = name
+        self._enabled = False
+
+    def get(self) -> bool:
+        """Return the simulated boolean state."""
+        return self._enabled
+
+    def set(self, value: bool) -> None:
+        """Store a boolean without accessing the lattice."""
+        if not isinstance(value, bool):
+            raise PyAMLException(f"{self._name}: expected a boolean flag, got {value!r}")
+        self._enabled = value
+
+
 def _effective_lengths(elements: list[at.Element]) -> list[float]:
     """
     Return the lengths used to convert between integrated strengths and polynom coefficients.

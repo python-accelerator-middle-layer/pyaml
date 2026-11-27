@@ -23,8 +23,42 @@ from ..magnet.magnet import Magnet
 from ..magnet.model import MagnetModel
 from ..rf.rf_plant import RFPlant
 from ..rf.rf_transmitter import RFTransmitter
+from .readback_value import Value
 
 # ------------------------------------------------------------------------------
+
+
+class RWBooleanScalar(abstract.RWBooleanScalar):
+    """
+    Expose a backend boolean through reusable get/set accessors.
+
+    An unavailable device is reported only when read or written. ``name`` gives
+    diagnostic context when there is no device to supply its own name.
+    """
+
+    def __init__(self, device: DeviceAccess | None, name: str = "Boolean channel"):
+        self._device = device
+        self._name = name
+
+    def get(self) -> bool:
+        device = self._require_device()
+        value = device.readback()
+        if isinstance(value, Value):
+            value = value.value
+        if value not in (False, True):
+            raise PyAMLException(f"{device.name()}: expected a boolean flag, got {value!r}")
+        return bool(value)
+
+    def set(self, value: bool) -> None:
+        device = self._require_device()
+        if not isinstance(value, bool):
+            raise PyAMLException(f"{device.name()}: expected a boolean flag, got {value!r}")
+        device.set(value)
+
+    def _require_device(self) -> DeviceAccess:
+        if self._device is None:
+            raise PyAMLException(f"{self._name} is unavailable")
+        return self._device
 
 
 def check_range(values: Any, dev_range: Any) -> bool:

@@ -12,6 +12,21 @@ from numpy import array, double
 
 from .units import AcceptsQuantity
 
+
+class RWBooleanScalar(metaclass=ABCMeta):
+    """Define backend-independent boolean get/set access."""
+
+    @abstractmethod
+    def get(self) -> bool:
+        """Return the boolean state."""
+        pass
+
+    @abstractmethod
+    def set(self, value: bool) -> None:
+        """Write the boolean state."""
+        pass
+
+
 # Float ----------------------------------------------------------------
 
 

@@ -28,6 +28,7 @@ modules = [
     "pyaml.common.holders.element_holder",
     "pyaml.common.holders.sub_holders",
     "pyaml.common.holders.rf_holder",
+    "pyaml.common.switch_element",
     "pyaml.configuration.factory",
     "pyaml.configuration.fileloader",
     "pyaml.configuration.manager",

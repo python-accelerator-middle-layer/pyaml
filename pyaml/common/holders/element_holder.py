@@ -34,6 +34,7 @@ if TYPE_CHECKING:
     from ...configuration.unbound_element import UnboundElement
     from ...tuning_tools.measurement_tool import MeasurementTool
     from ...tuning_tools.tuning_tool import TuningTool
+    from ..switch_element import SwitchElement
 
 
 class ElementHolder(metaclass=ABCMeta):
@@ -196,6 +197,10 @@ class ElementHolder(metaclass=ABCMeta):
     def fill_device(self, elements: list[Element]):
         for element in elements:
             element._fill_device(self)
+
+    def _fill_switch_element(self, element: "SwitchElement") -> None:
+        """Reject switches unless the backend supports their binding."""
+        raise PyAMLException(f"{self.__class__.__name__} does not support switch element {element.name}")
 
     @abstractmethod
     def _fill_magnet(self, magnet: Magnet) -> None:
