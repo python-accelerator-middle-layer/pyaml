@@ -311,6 +311,10 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
         for magnet in attached_magnets[1:]:
             self.magnet.add(magnet)
 
+    def _fill_serialized_magnets_with_trims(self, magnets: SerializedMagnets) -> None:
+        # To be implemented in next PR, now it is dummy for test not to fail.
+        pass
+
     def _fill_bpm(self, bpm: BPM) -> None:
         position_devices = self.get_si_devices_access(bpm.get_pos_devices(), SI_POSITION)
         tilt_devices = self.get_si_devices_access([bpm.get_tilt_device()], SI_ANGLE)

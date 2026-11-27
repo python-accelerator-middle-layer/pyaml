@@ -13,6 +13,7 @@ from ..common.abstract_aggregator import ScalarAggregator
 from ..common.exception import PyAMLException
 from ..common.units import common_unit
 from ..magnet.magnet import Magnet
+from ..magnet.trim_coil_model import TrimCoilModel
 from .element_array import ElementArray
 
 
@@ -109,15 +110,21 @@ class RWMagnetStrength(ReadWriteFloatArray):
             # magnets of the series present in the array, the others following the resulting hardware value.
             # A serialized family has no series index: its own strength accessor writes its power supply.
             series: dict[int, tuple[Magnet, dict[int, float]]] = {}
+            trims: list[tuple[Magnet, float]] = []
             for idx, m in enumerate(self.__magnets):
                 series_index = m.series_index
-                if series_index is not None:
+                if isinstance(m.model, TrimCoilModel):
+                    trims.append((m, nvalue[idx]))
+                elif series_index is not None:
                     series.setdefault(id(m.model), (m, {}))[1][series_index] = nvalue[idx]
                 else:
                     m.strength.set(nvalue[idx])
             for m, requested in series.values():
                 current_hardware = np.array([m.hardware.get()])
                 m.hardware.set(m.model.compute_hardware_values_partial(current_hardware, requested)[0])
+            # Set trims at the final main current, after family and grouped member writes.
+            for m, strength in trims:
+                m.strength.set(strength)
         else:
             self.__aggregator.set(nvalue)
 

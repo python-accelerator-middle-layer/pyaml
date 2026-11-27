@@ -30,6 +30,9 @@ class DispatchHolder(ElementHolder):
     def _fill_serialized_magnets(self, magnets) -> None:
         raise AssertionError("Unexpected serialized magnet dispatch")
 
+    def _fill_serialized_magnets_with_trims(self, magnets) -> None:
+        raise AssertionError("Unexpected serialized magnet with trims dispatch")
+
     def _fill_bpm(self, bpm) -> None:
         raise AssertionError("Unexpected BPM dispatch")
 

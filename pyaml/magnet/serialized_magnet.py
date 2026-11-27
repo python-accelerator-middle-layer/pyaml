@@ -708,7 +708,8 @@ class SerializedMagnets(Magnet, DynamicValidation):
             Virtual magnets of the group, each bound to ``peer``.
         """
         l = []
-        n_ser_mag = SerializedMagnets(self._name, self.functions, self.__elements, self.model, self.description, peer)
+        # Use type(self) instead of SerializedMagnets for using the attach method in SerializedMagnetsWithTrims
+        n_ser_mag = type(self)(self._name, self.functions, self.__elements, self.model, self.description, peer)
         if self.model.has_hardware():
             n_ser_mag.__hardwares = ReadWriteSerializedHardware(hardwares, self.model)
             n_ser_mag.__hardwares_array = ReadWriteSerializedHardwareArray(hardwares, self.model)
