@@ -92,7 +92,10 @@ def test_duplicate_registration_does_not_replace_simulated_switch(design):
     assert design["SOFB"] is original
 
 
-def test_accelerator_configuration_keeps_live_and_simulated_state_separate(tmp_path, ebs_lattice_file, monkeypatch):
+@pytest.mark.parametrize("missing_live_channel", [False, True], ids=["available-live-channel", "missing-live-channel"])
+def test_accelerator_configuration_keeps_live_and_simulated_state_separate(
+    tmp_path, ebs_lattice_file, monkeypatch, missing_live_channel
+):
     from tango.pyaml.attribute import Attribute
     from tango.pyaml.attribute import ConfigModel as AttributeConfigModel
     from tango.pyaml.attribute_store import get_attribute, set_attribute
@@ -102,7 +105,11 @@ def test_accelerator_configuration_keeps_live_and_simulated_state_separate(tmp_p
     monkeypatch.setattr(
         ControlSystemAdapter,
         "get_device_access",
-        lambda self, ref: None if ref is None else Attribute(AttributeConfigModel(attribute=ref)),
+        lambda self, ref: (
+            None
+            if ref is None or (missing_live_channel and ref == device_name)
+            else Attribute(AttributeConfigModel(attribute=ref))
+        ),
     )
     for cls in (SwitchElement, SwitchTestControlSystem, Simulator, Accelerator):
         generate_configuration_schema(cls)
@@ -128,17 +135,25 @@ def test_accelerator_configuration_keeps_live_and_simulated_state_separate(tmp_p
     set_spy.assert_not_called()
     assert sr.live["SOFB"].peer is sr.live
     assert sr.design["SOFB"].peer is sr.design
-    assert sr.live["SOFB"].enabled.get() is True
     assert sr.design["SOFB"].enabled.get() is False
     assert sr.design.diagnostic.bpm["BPM_C04-01"] is not None
     sr.design["SOFB"].enabled.set(True)
     sr.design["SOFB"].disable()
     assert get_attribute(device_name) is True
 
-    sr.live["SOFB"].enabled.set(False)
-    assert sr.live["SOFB"].enabled.get() is False
-    sr.design["SOFB"].enable()
-    assert sr.live["SOFB"].is_enabled() is False
-    sr.live["SOFB"].enable()
-    assert sr.live["SOFB"].is_enabled() is True
-    assert sr.design["SOFB"].is_enabled() is True
+    if missing_live_channel:
+        with pytest.raises(PyAMLException, match="switch channel .* is unavailable"):
+            sr.live["SOFB"].enabled.get()
+        with pytest.raises(PyAMLException, match="switch channel .* is unavailable"):
+            sr.live["SOFB"].enable()
+        sr.design["SOFB"].enable()
+        assert sr.design["SOFB"].is_enabled() is True
+    else:
+        assert sr.live["SOFB"].enabled.get() is True
+        sr.live["SOFB"].enabled.set(False)
+        assert sr.live["SOFB"].enabled.get() is False
+        sr.design["SOFB"].enable()
+        assert sr.live["SOFB"].is_enabled() is False
+        sr.live["SOFB"].enable()
+        assert sr.live["SOFB"].is_enabled() is True
+        assert sr.design["SOFB"].is_enabled() is True

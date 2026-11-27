@@ -35,6 +35,17 @@ class SwitchElement(Element, DynamicValidation):
     enabled
         Boolean get/set accessor, shared by control-system and simulator modes.
 
+    Methods
+    -------
+    attach(peer, enabled)
+        Return a copy bound to a peer and its boolean accessor.
+    enable()
+        Write True through the boolean accessor.
+    disable()
+        Write False through the boolean accessor.
+    is_enabled()
+        Return actual boolean readback, not the commanded state.
+
     Notes
     -----
     Control-system access uses the reusable RWBooleanScalar adapter: get()
@@ -42,6 +53,8 @@ class SwitchElement(Element, DynamicValidation):
     a Python boolean through DeviceAccess.set(). Value metadata is unwrapped;
     this interface adds no quality, waiting, or completion policy. Backend
     errors propagate. Construction and attachment never initialize hardware.
+    A missing control-system channel does not prevent configuration loading;
+    reading or writing its accessor raises an explicit error instead.
 
     Each simulator attachment starts disabled and maintains independent state
     without looking up or modifying a lattice element. This element does not

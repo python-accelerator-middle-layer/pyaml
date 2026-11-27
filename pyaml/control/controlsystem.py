@@ -280,9 +280,8 @@ class ControlSystem(ElementHolder, metaclass=ABCMeta):
 
     def _fill_switch_element(self, element: SwitchElement) -> None:
         device = self.get_device_access(element.device)
-        if device is None:
-            raise PyAMLException(f"{element.name}: switch channel {element.device!r} is unavailable")
-        self._add(self._ALL, element.attach(self, RWBooleanScalar(device)))
+        enabled = RWBooleanScalar(device, name=f"{element.name}: switch channel {element.device!r}")
+        self._add(self._ALL, element.attach(self, enabled))
 
     def _fill_unbound_element(self, element: UnboundElement) -> None:
         if self.name() not in element._control_modes:

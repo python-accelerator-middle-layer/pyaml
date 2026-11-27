@@ -118,14 +118,22 @@ def test_readback_errors_propagate(live, device):
     assert exc.value is error
 
 
-def test_missing_device_is_rejected(monkeypatch):
+@pytest.mark.parametrize("operation,args", [("get", ()), ("set", (True,))])
+def test_missing_device_is_rejected_only_on_access(monkeypatch, operation, args):
     holder = ControlSystemAdapter()
-    monkeypatch.setattr(holder, "get_device_access", lambda ref: None)
+    resolver = create_autospec(holder.get_device_access, return_value=None)
+    monkeypatch.setattr(holder, "get_device_access", resolver)
+    holder.fill_device([SwitchElement("SOFB", "MISSING")])
+    switch = holder["SOFB"]
+
+    assert switch.peer is holder
+    repr(switch)
+    holder.post_init()
 
     with pytest.raises(PyAMLException, match="SOFB: switch channel 'MISSING' is unavailable"):
-        holder.fill_device([SwitchElement("SOFB", "MISSING")])
+        getattr(switch.enabled, operation)(*args)
 
-    assert holder.get().names() == []
+    resolver.assert_called_once_with("MISSING")
 
 
 def test_device_resolution_errors_propagate(monkeypatch):
