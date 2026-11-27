@@ -26,6 +26,8 @@ class RFTransmitterHolder:
     -------
     get(name)
         Return a transmitter by name.
+    get_array()
+        Return every RF transmitter.
     add(rf)
         Add an RF transmitter to the holder.
     """
@@ -51,6 +53,17 @@ class RFTransmitterHolder:
             Matching RF transmitter.
         """
         return self._peer._get("RFTransmitter", name, self._peer._RFTRANSMITTER)
+
+    def get_array(self) -> ElementArray:
+        """
+        Return every RF transmitter.
+
+        Returns
+        -------
+        ElementArray
+            New unnamed array holding every RF transmitter, in insertion order.
+        """
+        return ElementArray("", list(self._peer._RFTRANSMITTER.values()))
 
     def __getitem__(self, key: str | list[str] | tuple[str, ...]) -> "RFTransmitter | ElementArray":
         """
@@ -125,6 +138,8 @@ class RFHolder:
     -------
     get(name)
         Return an RF plant by name.
+    get_array()
+        Return every RF plant.
     add(rf)
         Add an RF plant to the holder.
     """
@@ -166,6 +181,17 @@ class RFHolder:
             RF plant registered under ``name``.
         """
         return self._peer._get("RFPlant", name, self._peer._RFPLANT)
+
+    def get_array(self) -> ElementArray:
+        """
+        Return every RF plant.
+
+        Returns
+        -------
+        ElementArray
+            New unnamed array holding every RF plant, in insertion order.
+        """
+        return ElementArray("", list(self._peer._RFPLANT.values()))
 
     def __getitem__(self, key: str | list[str] | tuple[str, ...]) -> "RFPlant | ElementArray":
         """

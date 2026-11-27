@@ -148,7 +148,7 @@ class TuneResponseMatrix(MeasurementTool, DynamicValidation):
     def quadrupoles(self) -> "MagnetArray":
         """Return the quadrupole array used for the measurement."""
         self.check_peer()
-        return self.peer.magnets.get(self.quad_array_name)
+        return self.peer.magnet.get_array(self.quad_array_name)
 
     @property
     def tune_monitor(self) -> "BetatronTuneMonitor":

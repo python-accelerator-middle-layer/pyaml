@@ -17,15 +17,19 @@ def test_diagnostic_get_returns_named_monitor():
     assert design.diagnostic.get("BETATRON_TUNE") is design._DIAG["BETATRON_TUNE"]
 
 
-def test_diagnostic_get_with_no_name_returns_all_configured_diagnostics():
+def test_diagnostic_get_array_returns_all_configured_diagnostics():
     design = Accelerator.load(
         "tests/config/EBSOrbit.yaml",
         ignore_external=True,
         include_locations=False,
     ).design
 
-    all_diagnostics = design.diagnostic.get()
+    all_diagnostics = design.diagnostic.get_array()
     assert design.diagnostic.get("BETATRON_TUNE") in all_diagnostics
+
+    # get() always needs a name, it returns one diagnostic
+    with pytest.raises(TypeError):
+        design.diagnostic.get()
 
 
 def test_diagnostic_betatron_tune_returns_default_monitor():
@@ -79,7 +83,7 @@ def test_diagnostic_bpms_returns_named_array():
         include_locations=False,
     ).design
 
-    bpms = design.diagnostic.bpms.get("BPM")
+    bpms = design.diagnostic.bpm.get_array("BPM")
     assert design.diagnostic.bpm.get("BPM_C04-04") in bpms
 
 

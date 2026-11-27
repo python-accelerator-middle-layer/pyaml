@@ -129,7 +129,7 @@ def test_add_binds_tune_tools_to_each_modes_devices(tool_type, config_root_path)
         assert attached is holder["ALTUNE"]
         assert attached.peer is holder
         assert attached.tune_monitor is holder.diagnostic.get("BETATRON_TUNE")
-        assert attached.quadrupoles is holder.magnets.get("QForTune")
+        assert attached.quadrupoles is holder.magnet.get_array("QForTune")
     assert tool.peer is None
     assert accelerator.design.tool.get("ALTUNE") is not accelerator.live.tool.get("ALTUNE")
     assert accelerator.yellow_pages.availability("ALTUNE") == {"design", "live"}
@@ -151,7 +151,9 @@ def test_add_initializes_orbit_handles(config_root_path):
 
     for holder in accelerator.modes().values():
         attached = holder.tool.get(tool.name)
-        assert attached.correctors.names() == holder.magnets.get("HCorr").names() + holder.magnets.get("VCorr").names()
+        assert (
+            attached.correctors.names() == holder.magnet.get_array("HCorr").names() + holder.magnet.get_array("VCorr").names()
+        )
         assert all(corrector.peer is holder for corrector in attached.correctors)
         assert attached.rf_plant is holder.rf.get("DEFAULT_RF_PLANT")
     assert tool.peer is None
@@ -198,7 +200,7 @@ def test_add_rejects_duplicate_names_before_registering_any_instances(accelerato
 
     assert accelerator.control["DUPLICATE"] is existing_element
     for holder in (accelerator.design, accelerator.simulation, accelerator.live):
-        assert "DUPLICATE" not in holder.get().names()
+        assert "DUPLICATE" not in holder.get_array().names()
     assert accelerator._devices == []
 
 

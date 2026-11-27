@@ -12,7 +12,7 @@ def design(accelerator_from_fragments, sr_configuration_fragments):
 
 
 def test_slices_keep_the_common_magnet_type(design):
-    magnets = design.magnets.get()
+    magnets = design.magnet.get_array()
     assert len({type(magnet) for magnet in magnets}) > 1
 
     assert type(magnets[:]) is MagnetArray
@@ -24,7 +24,7 @@ def test_slices_keep_the_common_magnet_type(design):
 
 
 def test_filters_keep_the_common_magnet_type(design):
-    magnets = design.magnets.get()
+    magnets = design.magnet.get_array()
     expected = ["SH1A-C01-H", "SH1A-C01-V", "SH1A-C01-SQ"]
 
     selected = magnets["SH1A-C01*"]
@@ -38,13 +38,13 @@ def test_filters_keep_the_common_magnet_type(design):
 
 
 def test_magnet_holder_selection_uses_the_same_typing(design):
-    assert type(design.magnets[:]) is MagnetArray
-    assert type(design.magnets["SH*"]) is MagnetArray
-    assert design.magnets[:].names() == design.magnets.get().names()
+    assert type(design.magnet[:]) is MagnetArray
+    assert type(design.magnet["SH*"]) is MagnetArray
+    assert design.magnet[:].names() == design.magnet.get_array().names()
 
 
 def test_mixed_array_stays_generic_until_only_magnets_are_selected(design):
-    mixed = design.get("ElArray")
+    mixed = design.get_array("ElArray")
 
     assert type(mixed[:]) is ElementArray
     assert mixed[:].names() == mixed.names()
@@ -53,7 +53,7 @@ def test_mixed_array_stays_generic_until_only_magnets_are_selected(design):
 
 
 def test_empty_selections_and_integer_indexing_keep_their_behavior(design):
-    magnets = design.magnets.get()
+    magnets = design.magnet.get_array()
 
     assert type(magnets[0:0]) is ElementArray
     assert magnets[0:0] == []
@@ -64,16 +64,16 @@ def test_empty_selections_and_integer_indexing_keep_their_behavior(design):
 
 
 def test_literal_name_miss_raises(design):
-    magnets = design.magnets.get()
+    magnets = design.magnet.get_array()
 
     with pytest.raises(PyAMLException):
         magnets["UNKNOWN"]
     with pytest.raises(PyAMLException):
-        design.magnets["UNKNOWN"]
+        design.magnet["UNKNOWN"]
 
 
 def test_literal_name_hit_still_returns_a_single_element_array(design):
-    magnets = design.magnets.get()
+    magnets = design.magnet.get_array()
 
     selected = magnets["SH1A-C01-H"]
     assert type(selected) is MagnetArray
@@ -81,21 +81,21 @@ def test_literal_name_hit_still_returns_a_single_element_array(design):
 
 
 def test_bracket_only_pattern_is_a_wildcard(design):
-    magnets = design.magnets.get()
+    magnets = design.magnet.get_array()
     assert sorted(magnets["SH1A-C0[12]-H"].names()) == ["SH1A-C01-H", "SH1A-C02-H"]
 
 
 def test_regex_pattern_is_supported(design):
-    magnets = design.magnets.get()
+    magnets = design.magnet.get_array()
     assert sorted(magnets["re:^SH1A-C0[12]-H$"].names()) == ["SH1A-C01-H", "SH1A-C02-H"]
 
 
 def test_list_of_patterns_is_supported(design):
-    magnets = design.magnets.get()
+    magnets = design.magnet.get_array()
     selected = magnets[["SH1A-C01-H", "SH1A-C02-H"]]
     assert selected.names() == ["SH1A-C01-H", "SH1A-C02-H"]
 
 
 def test_wildcard_matching_is_case_sensitive(design):
-    magnets = design.magnets.get()
+    magnets = design.magnet.get_array()
     assert magnets["sh1a*"] == []

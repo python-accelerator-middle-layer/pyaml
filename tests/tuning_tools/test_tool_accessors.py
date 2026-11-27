@@ -14,20 +14,20 @@ def test_tuning_tools_expose_configured_elements():
     design = sr.design
 
     tune_monitor = design.diagnostic.get("BETATRON_TUNE")
-    quadrupoles = design.magnets.get("QForTune")
+    quadrupoles = design.magnet.get_array("QForTune")
     assert design.tool.tune.tune_monitor is tune_monitor
     assert design.tool.tune.quadrupoles is quadrupoles
     assert design.tool.trm.tune_monitor is tune_monitor
     assert design.tool.trm.quadrupoles is quadrupoles
 
     chromaticity_monitor = design.tool.get("CHROMATICITY_MONITOR")
-    sextupoles = design.magnets.get("Sext")
+    sextupoles = design.magnet.get_array("Sext")
     assert design.tool.chromaticity.chromaticity_monitor is chromaticity_monitor
     assert design.tool.chromaticity.sextupoles is sextupoles
     assert design.tool.crm.chromaticity_monitor is chromaticity_monitor
     assert design.tool.crm.sextupoles is sextupoles
 
-    bpms = design.diagnostic.bpms.get("BPM")
+    bpms = design.diagnostic.bpm.get_array("BPM")
     rf_plant = design.rf.get("DEFAULT_RF_PLANT")
     assert chromaticity_monitor.tune_monitor is tune_monitor
     assert chromaticity_monitor.bpms is bpms
@@ -35,8 +35,8 @@ def test_tuning_tools_expose_configured_elements():
     assert design.tool.dispersion.bpms is bpms
     assert design.tool.dispersion.rf_plant is rf_plant
 
-    hcorrectors = design.magnets.get("HCorr")
-    vcorrectors = design.magnets.get("VCorr")
+    hcorrectors = design.magnet.get_array("HCorr")
+    vcorrectors = design.magnet.get_array("VCorr")
     assert design.tool.orbit.bpms is bpms
     assert design.tool.orbit.hcorrectors is hcorrectors
     assert design.tool.orbit.vcorrectors is vcorrectors
@@ -68,14 +68,14 @@ def test_tool_get_returns_named_tool():
     assert design.tool.get("DEFAULT_ORBIT_RESPONSE_MATRIX") is design.tool.orm
 
 
-def test_tool_get_with_no_name_returns_all_configured_tools():
+def test_tool_get_array_returns_all_configured_tools():
     design = Accelerator.load(
         "tests/config/EBSOrbit.yaml",
         ignore_external=True,
         include_locations=False,
     ).design
 
-    all_tools = design.tool.get()
+    all_tools = design.tool.get_array()
     assert design.tool.tune in all_tools
     assert design.tool.trm in all_tools
     assert design.tool.orbit in all_tools
@@ -83,6 +83,10 @@ def test_tool_get_with_no_name_returns_all_configured_tools():
     assert design.tool.chromaticity in all_tools
     assert design.tool.crm in all_tools
     assert design.tool.dispersion in all_tools
+
+    # get() always needs a name, it returns one tool
+    with pytest.raises(TypeError):
+        design.tool.get()
 
 
 def test_tool_raises_when_default_missing(ebs_lattice_file):

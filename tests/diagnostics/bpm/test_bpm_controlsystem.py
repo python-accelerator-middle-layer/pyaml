@@ -159,7 +159,7 @@ def test_controlsystem_bpm_array_with_single_plane_bpm(install_test_package):
     for name, value in [("c01-01/H", 0.1), ("c01-01/V", -0.1), ("c01-02/H", 0.2), ("c01-02/V", -0.2), ("xbpm/V", 0.3)]:
         set_attribute(f"sr/bpm/{name}", value, unit="mm")
     sr = Accelerator.from_dict(_single_plane_bpm_config())
-    bpms = sr.live.diagnostic.bpms.get("BPM")
+    bpms = sr.live.diagnostic.bpm.get_array("BPM")
 
     pos = bpms.positions.get()
     assert pos.shape == (3, 2)
@@ -192,7 +192,7 @@ def test_controlsystem_bpm_array_without_horizontal_plane(install_test_package):
     config = _single_plane_bpm_config()
     config["arrays"][0]["elements"] = ["XBPM"]
     sr = Accelerator.from_dict(config)
-    bpms = sr.live.diagnostic.bpms.get("BPM")
+    bpms = sr.live.diagnostic.bpm.get_array("BPM")
 
     assert np.isnan(bpms.h.get()).all()
     assert np.allclose(bpms.v.get(), [0.3e-3])

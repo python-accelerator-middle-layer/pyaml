@@ -41,8 +41,8 @@ def test_arrays(install_test_package):
     assert np.abs(o[2] - 3.62695844e-05) < 1e-10
     assert np.abs(o[3] + 5.97692290e-06) < 1e-10
 
-    sr.design.magnets.get("HCORR").strengths.set([0.000010, -0.000008])
-    sr.design.magnets.get("VCORR").strengths.set([0.000015, -0.000017])
+    sr.design.magnet.get_array("HCORR").strengths.set([0.000010, -0.000008])
+    sr.design.magnet.get_array("VCORR").strengths.set([0.000015, -0.000017])
 
     o, _ = sr.design.get_lattice().find_orbit()
     assert np.abs(o[0] - 1.60555804e-04) < 1e-10
@@ -71,7 +71,7 @@ def test_arrays(install_test_package):
     assert sr.live.magnet.get("SH1A-C02-H").model == sr.live.magnet.get("SH1A-C02-V").model
 
     # Using aggregators
-    sr.live.magnets.get("HCORR").strengths.set([0.000010, -0.000008])
+    sr.live.magnet.get_array("HCORR").strengths.set([0.000010, -0.000008])
     ps1 = sr.live.combined_function_magnet.get("SH1A-C01").hardwares.get()
     ps2 = sr.live.combined_function_magnet.get("SH1A-C02").hardwares.get()
     assert np.abs(ps1[0] - 0.02956737880874648) < 1e-10
@@ -80,7 +80,7 @@ def test_arrays(install_test_package):
     assert np.abs(ps2[0] + 0.02365390304699716) < 1e-10
     assert np.abs(ps2[1] - 0) < 1e-10
     assert np.abs(ps2[2] - 0) < 1e-10
-    sr.live.magnets.get("VCORR").strengths.set([0.000015, -0.000017])
+    sr.live.magnet.get_array("VCORR").strengths.set([0.000015, -0.000017])
     ps1 = sr.live.combined_function_magnet.get("SH1A-C01").hardwares.get()
     ps2 = sr.live.combined_function_magnet.get("SH1A-C02").hardwares.get()
     assert np.abs(ps1[0] - 0.02956737880874648) < 1e-10
@@ -90,7 +90,7 @@ def test_arrays(install_test_package):
     assert np.abs(ps2[1] - 0.06600571179092833) < 1e-10
     assert np.abs(ps2[2] + 0.0634854407797858) < 1e-10
 
-    strHV = sr.live.magnets.get("HVCORR").strengths.get()
+    strHV = sr.live.magnet.get_array("HVCORR").strengths.get()
     assert np.abs(strHV[0] - 0.000010) < 1e-10
     assert np.abs(strHV[1] + 0.000008) < 1e-10
     assert np.abs(strHV[2] - 0.000015) < 1e-10
@@ -99,7 +99,7 @@ def test_arrays(install_test_package):
     # Reset to 0
     ma = importlib.import_module("tango.pyaml.multi_attribute")
     ma.LAST_NB_WRITTEN = 0  # Total number of setpoints done by multi_attribute
-    sr.live.magnets.get("HVCORR").strengths.set(0.0)
+    sr.live.magnet.get_array("HVCORR").strengths.set(0.0)
     assert ma.LAST_NB_WRITTEN == 6  # 6 power supply setpoints are needed
     ps1 = sr.live.combined_function_magnet.get("SH1A-C01").hardwares.get()
     ps2 = sr.live.combined_function_magnet.get("SH1A-C02").hardwares.get()
@@ -112,7 +112,7 @@ def test_arrays(install_test_package):
 
     # Check that the behavior is the same without aggregator
     mags = []
-    for m in sr.live.magnets.get("HVCORR"):
+    for m in sr.live.magnet.get_array("HVCORR"):
         mags.append(m)
     array = MagnetArray("HVCOOR_noagg", mags, use_aggregator=False)
     array.strengths.set([0.000010, -0.000008, 0.000015, -0.000017])
@@ -128,22 +128,22 @@ def test_arrays(install_test_package):
     # Test BPMs array
 
     # Using aggregator
-    pos = sr.design.diagnostic.bpms.get("BPMS").positions.get()
+    pos = sr.design.diagnostic.bpm.get_array("BPMS").positions.get()
     assert np.abs(pos[0][0] - 7.22262850488348e-05) < 1e-10
     assert np.abs(pos[0][1] - 3.4291613955705856e-05) < 1e-10
     assert np.abs(pos[1][0] + 1.1696152238807462e-04) < 1e-10
     assert np.abs(pos[1][1] - 7.4265634524358045e-06) < 1e-10
 
     # Using aggregator (h and v)
-    pos_h = sr.design.diagnostic.bpms.get("BPMS").h.get()
-    pos_v = sr.design.diagnostic.bpms.get("BPMS").v.get()
+    pos_h = sr.design.diagnostic.bpm.get_array("BPMS").h.get()
+    pos_v = sr.design.diagnostic.bpm.get_array("BPMS").v.get()
     assert np.all(np.isclose(pos[:, 0], pos_h, rtol=1e-15, atol=1e-15))
     assert np.all(np.isclose(pos[:, 1], pos_v, rtol=1e-15, atol=1e-15))
 
     # Test BPM transformation matrices
     sr.design.diagnostic.bpm.get("BPM_C04-01").offset.set([0.1, 0.2])
     sr.design.diagnostic.bpm.get("BPM_C04-02").offset.set([0.3, 0.4])
-    pos = sr.design.diagnostic.bpms.get("BPMS").positions.get()
+    pos = sr.design.diagnostic.bpm.get_array("BPMS").positions.get()
     assert np.abs(pos[0][0] - 7.22262850488348e-05 - 0.1) < 1e-10
     assert np.abs(pos[0][1] - 3.4291613955705856e-05 - 0.2) < 1e-10
     assert np.abs(pos[1][0] + 1.1696152238807462e-04 - 0.3) < 1e-10
@@ -153,7 +153,7 @@ def test_arrays(install_test_package):
 
     # No aggregator
     bpms = []
-    for b in sr.design.diagnostic.bpms.get("BPMS"):
+    for b in sr.design.diagnostic.bpm.get_array("BPMS"):
         bpms.append(b)
 
     bpms = BPMArray("BPM_noagg", bpms, use_aggregator=False)
@@ -164,21 +164,21 @@ def test_arrays(install_test_package):
     assert np.abs(pos[1][1] - 7.4265634524358045e-06) < 1e-10
 
     # Radom array
-    elts = sr.design.get("ElArray")
+    elts = sr.design.get_array("ElArray")
 
     # Create an array that contains all elements
-    allElts = ElementArray("AllElements", sr.design.get())
+    allElts = ElementArray("AllElements", sr.design.get_array())
     assert len(allElts) == 11
 
     # Create an array that contains all elements
-    allMags = MagnetArray("AllMagnets", sr.design.magnets.get())
+    allMags = MagnetArray("AllMagnets", sr.design.magnet.get_array())
     assert len(allMags) == 7
 
     # Create an array that contains all BPM
-    allBpms = BPMArray("AllBPMs", sr.design.diagnostic.bpm.all())
+    allBpms = BPMArray("AllBPMs", sr.design.diagnostic.bpm.get_array())
     assert len(allBpms) == 2
 
-    cfm = sr.design.combined_function_magnets.get("CFM")
+    cfm = sr.design.combined_function_magnet.get_array("CFM")
     strHVSQ = cfm.strengths.get()
     assert np.abs(strHVSQ[0] - 0.000010) < 1e-10  # H
     assert np.abs(strHVSQ[1] - 0.000015) < 1e-10  # V
@@ -204,14 +204,14 @@ def test_arrays(install_test_package):
     assert np.abs(strHVSQ[4] + 0.000017) < 1e-10  # V
     assert np.abs(strHVSQ[5] - 1e-6) < 1e-10  # SQ
 
-    bpmsLive = BPMArray("", sr.live.diagnostic.bpm.all())
+    bpmsLive = BPMArray("", sr.live.diagnostic.bpm.get_array())
     bpmsLive.positions.get()
 
     # Test dynamic arrays
 
     sr: Accelerator = Accelerator.load("tests/config/EBSOrbit.yaml", include_locations=False)
-    ae = ElementArray("All", sr.design.get())
-    acfm = ElementArray("AllCFM", sr.design.combined_function_magnet.all(), use_aggregator=False)
+    ae = ElementArray("All", sr.design.get_array())
+    acfm = ElementArray("AllCFM", sr.design.combined_function_magnet.get_array(), use_aggregator=False)
 
     bpmC5 = ae["BPM*"][10:20]  # All BPM C5
     assert isinstance(bpmC5, BPMArray) and len(bpmC5) == 10
@@ -227,17 +227,17 @@ def test_arrays(install_test_package):
     # Empty arrays
     emptyMag = Magnet(name="EmptyMag", elements=[])
     emptyMag.fill_array(sr.design)  # Attach the array
-    v = sr.design.magnets.get("EmptyMag").strengths.get()  # Ensure good attach
+    v = sr.design.magnet.get_array("EmptyMag").strengths.get()  # Ensure good attach
     assert np.shape(v) == (0,)
 
     emptyBPM = BPM(name="emptyBPM", elements=[])
     emptyBPM.fill_array(sr.design)  # Attach the array
-    v = sr.design.diagnostic.bpms.get("emptyBPM").positions.get()  # Ensure good attach
+    v = sr.design.diagnostic.bpm.get_array("emptyBPM").positions.get()  # Ensure good attach
     assert np.shape(v) == (0,)
 
     emptyCFM = CombinedFunctionMagnet(name="emptyCFM", elements=[])
     emptyCFM.fill_array(sr.design)  # Attach the array
-    v = sr.design.combined_function_magnets.get("emptyCFM").strengths.get()  # Ensure good attach
+    v = sr.design.combined_function_magnet.get_array("emptyCFM").strengths.get()  # Ensure good attach
     assert np.shape(v) == (0,)
 
 
@@ -251,7 +251,7 @@ def test_deprecated_serialized_magnet_array_config_builds_a_magnet_array(sr_file
     # "series" is declared with the deprecated type pyaml.arrays.serialized_magnet
     with pytest.warns(DeprecationWarning, match="pyaml.arrays.serialized_magnet is deprecated"):
         sr: Accelerator = Accelerator.load(sr_file, include_locations=False, ignore_external=True)
-    the_serie = sr.design.magnets.get("series")
+    the_serie = sr.design.magnet.get_array("series")
     assert isinstance(the_serie, MagnetArray)
     strength = the_serie.strengths.get()
     assert len(strength) == 1

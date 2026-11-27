@@ -53,8 +53,8 @@ def test_epics_twin_reads_all_declared_magnetic_strengths():
     # Build the accelerator and collect the single-function magnets and the combined function magnets.
     # Magnets created by a combined function magnet (COR_001.hcorrector, ...) are read through their parent.
     accelerator = _build_accelerator()
-    magnets = [magnet for magnet in accelerator.live.magnets.get() if magnet.get_model_name() == magnet.get_name()]
-    combined_function_magnets = accelerator.live.combined_function_magnet.all()
+    magnets = [magnet for magnet in accelerator.live.magnet.get_array() if magnet.get_model_name() == magnet.get_name()]
+    combined_function_magnets = accelerator.live.combined_function_magnet.get_array()
 
     assert magnets
     assert combined_function_magnets
@@ -87,7 +87,7 @@ def test_epics_twin_reads_all_declared_magnetic_strengths():
 def test_epics_twin_reads_bpm_positions():
     # Build the accelerator and collect every declared BPM.
     accelerator = _build_accelerator()
-    bpms = accelerator.live.diagnostic.bpm.all()
+    bpms = accelerator.live.diagnostic.bpm.get_array()
 
     assert bpms
 

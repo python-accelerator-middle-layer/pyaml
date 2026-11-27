@@ -22,32 +22,32 @@ def test_exact_name_returns_the_element_or_raises(holder):
 
 
 def test_get_and_full_slice_keep_registration_order(holder):
-    names = [element.get_name() for element in holder.get()]
+    names = [element.get_name() for element in holder.get_array()]
 
-    assert type(holder.get()) is ElementArray
+    assert type(holder.get_array()) is ElementArray
     assert type(holder[:]) is ElementArray
-    assert holder.get().names() == names
+    assert holder.get_array().names() == names
     assert holder[:].names() == names
     assert names != sorted(names)
 
 
 def test_collections_are_independent_but_share_elements(holder):
-    collection = holder.get()
+    collection = holder.get_array()
     first = holder[0]
     original_names = collection.names()
 
     assert collection[0] is first
     collection.clear()
     assert holder[0] is first
-    assert holder.get().names() == original_names
+    assert holder.get_array().names() == original_names
 
 
 def test_new_calls_reflect_registry_additions(holder):
-    previous = holder.get()
+    previous = holder.get_array()
     holder.fill_device([BPM("EXTRA_BPM", lattice_names="list(BPM_C04-01)")])
 
     assert "EXTRA_BPM" not in previous.names()
-    assert holder.get().names() == previous.names() + ["EXTRA_BPM"]
+    assert holder.get_array().names() == previous.names() + ["EXTRA_BPM"]
     assert holder["EXTRA_BPM"] is holder.diagnostic.bpm.get("EXTRA_BPM")
 
 
@@ -79,7 +79,7 @@ def test_colons_are_part_of_names(holder):
 def test_magnet_subclasses_share_a_typed_array_in_either_order(holder):
     horizontal = holder.magnet.get("SH1A-C01-H")
     vertical = holder.magnet.get("SH1A-C01-V")
-    start = holder.get().index(horizontal)
+    start = holder.get_array().index(horizontal)
 
     assert type(horizontal) is not type(vertical)
     assert isinstance(holder["SH1A-C01-[HV]"], MagnetArray)
@@ -97,7 +97,7 @@ def test_mixed_selection_returns_a_generic_array(holder):
 
 
 def test_indices_and_slices_follow_insertion_order(holder):
-    registered = holder.get()
+    registered = holder.get_array()
 
     assert holder[0] is registered[0]
     assert holder[-1] is registered[-1]
@@ -111,7 +111,7 @@ def test_indices_and_slices_follow_insertion_order(holder):
 def test_empty_holder_returns_empty_collections(ebs_lattice_file):
     holder = Simulator(name="empty", lattice=str(ebs_lattice_file))
 
-    assert type(holder.get()) is ElementArray
+    assert type(holder.get_array()) is ElementArray
     assert holder[:].names() == []
     assert holder["BPM*"].names() == []
     with pytest.raises(PyAMLException):
@@ -119,7 +119,7 @@ def test_empty_holder_returns_empty_collections(ebs_lattice_file):
 
 
 def test_invalid_indices_and_keys_raise_clear_errors(holder):
-    size = len(holder.get())
+    size = len(holder.get_array())
 
     with pytest.raises(IndexError):
         holder[size]
@@ -132,21 +132,35 @@ def test_invalid_indices_and_keys_raise_clear_errors(holder):
 
 
 def test_selection_intersects_with_a_configured_family(holder):
-    selected = holder["SH1A-C0?-H"] & holder.get("ElArray")
+    selected = holder["SH1A-C0?-H"] & holder.get_array("ElArray")
 
     assert isinstance(selected, MagnetArray)
     assert selected.names() == ["SH1A-C02-H"]
 
 
-def test_get_resolves_a_named_array_regardless_of_its_concrete_family(holder):
-    """`get(name)` must not be limited to generic element arrays, unlike the old `get_elements`."""
-    assert isinstance(holder.get("HCORR"), MagnetArray)
-    assert holder.get("HCORR").names() == ["SH1A-C01-H", "SH1A-C02-H"]
-    assert isinstance(holder.get("BPMS"), BPMArray)
-    assert holder.get("BPMS").names() == ["BPM_C04-01", "BPM_C04-02"]
-    assert holder.get("ElArray").names() == ["BPM_C04-01", "BPM_C04-02", "SH1A-C01-V", "SH1A-C02-H"]
+def test_get_returns_one_element_whatever_its_family(holder):
+    # get() takes an element name and returns that element
+    assert holder.get("BPM_C04-01") is holder.diagnostic.bpm.get("BPM_C04-01")
+    assert holder.get("SH1A-C01-H") is holder.magnet.get("SH1A-C01-H")
+
+    # An array name is not an element name
     with pytest.raises(PyAMLException):
-        holder.get("UNKNOWN")
+        holder.get("HCORR")
+
+    # A name is required, every element is obtained with get_array()
+    with pytest.raises(TypeError):
+        holder.get()
+
+
+def test_get_array_resolves_a_named_array_regardless_of_its_concrete_family(holder):
+    """`get_array(name)` is not limited to generic element arrays."""
+    assert isinstance(holder.get_array("HCORR"), MagnetArray)
+    assert holder.get_array("HCORR").names() == ["SH1A-C01-H", "SH1A-C02-H"]
+    assert isinstance(holder.get_array("BPMS"), BPMArray)
+    assert holder.get_array("BPMS").names() == ["BPM_C04-01", "BPM_C04-02"]
+    assert holder.get_array("ElArray").names() == ["BPM_C04-01", "BPM_C04-02", "SH1A-C01-V", "SH1A-C02-H"]
+    with pytest.raises(PyAMLException):
+        holder.get_array("UNKNOWN")
 
 
 def test_existing_array_field_filters_still_work(holder):
@@ -211,7 +225,7 @@ def test_disjoint_regex_and_list_selections_produce_a_plain_list(holder):
 
 def test_selection_combined_with_a_configured_family_via_regex_and_list(holder):
     """`re:` and list-of-patterns selections intersect with a configured family, same as wildcards."""
-    el_array = holder.get("ElArray")  # BPM_C04-01, BPM_C04-02, SH1A-C01-V, SH1A-C02-H
+    el_array = holder.get_array("ElArray")  # BPM_C04-01, BPM_C04-02, SH1A-C01-V, SH1A-C02-H
 
     by_regex = holder["re:^SH1A-C0[12]-H$"] & el_array
     assert isinstance(by_regex, MagnetArray)
@@ -279,7 +293,7 @@ def test_getitem_supports_an_exclusion_in_a_list(holder):
 
 
 def test_getitem_lone_exclusion_pattern_means_everything_except(holder):
-    all_names = holder.get()
+    all_names = holder.get_array()
     selected = holder["~QF1A-C01"]
 
     assert "QF1A-C01" not in selected.names()

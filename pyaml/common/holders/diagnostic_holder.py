@@ -7,7 +7,7 @@ from ...diagnostics.tune_monitor import BetatronTuneMonitor
 from ..element import Element, __pyaml_repr__
 from ..exception import PyAMLException
 from ..name_matching import is_wildcard, resolve_names
-from .sub_holders import BPMHolder, BPMsHolder
+from .sub_holders import BPMHolder
 
 if TYPE_CHECKING:
     from .element_holder import ElementHolder
@@ -24,25 +24,27 @@ class DiagnosticHolder:
 
     Attributes
     ----------
-    bpm, bpms
-        Single BPM by name, or a named BPM array.
+    bpm
+        BPMs: ``bpm.get(name)`` for one BPM, ``bpm.get_array(name)`` for a configured BPM array.
     betatron_tune
         Betatron tune monitor configured as ``BETATRON_TUNE``, the default, validated
         against its expected class.
 
     Methods
     -------
-    get(name=None)
-        Return a named diagnostic, or all configured diagnostics when no name is given.
+    get(name)
+        Return the diagnostic registered under a name.
+    get_array()
+        Return every configured diagnostic.
 
     Examples
     --------
     >>> default_tune_monitor = sr.live.diagnostic.betatron_tune
     >>> measured_tune = default_tune_monitor.tune.get()
     >>> spare_tune_monitor = sr.live.diagnostic.get("SPARE_BETATRON_TUNE_MONITOR")
-    >>> all_diagnostics = sr.live.diagnostic.get()
+    >>> all_diagnostics = sr.live.diagnostic.get_array()
     >>> bpm = sr.live.diagnostic.bpm.get("BPM01")
-    >>> bpms = sr.live.diagnostic.bpms.get("BPMS")
+    >>> bpms = sr.live.diagnostic.bpm.get_array("BPMS")
     """
 
     def __init__(self, peer: "ElementHolder"):
@@ -51,43 +53,43 @@ class DiagnosticHolder:
         """
         self._peer = peer
         self._bpm_holder = BPMHolder(peer)
-        self._bpms_holder = BPMsHolder(peer)
 
     @property
     def bpm(self) -> BPMHolder:
-        """Return the bpm."""
+        """Return the BPM holder (BPMs and configured BPM arrays)."""
         return self._bpm_holder
 
-    @property
-    def bpms(self) -> BPMsHolder:
-        """Return the bpms."""
-        return self._bpms_holder
-
-    def get(self, name: str = None) -> "Element | ElementArray":
+    def get(self, name: str) -> Element:
         """
-        Return a named diagnostic, or all configured diagnostics when no name is given.
+        Return the diagnostic registered under a name.
 
         Parameters
         ----------
-        name : str, optional
-            Name of the diagnostic to look up, as declared in the configuration. When
-            omitted, every configured diagnostic is returned instead.
+        name : str
+            Name of the diagnostic to look up, as declared in the configuration.
 
         Returns
         -------
-        Element or ElementArray
-            The diagnostic registered under ``name``, or an
-            :class:`~pyaml.arrays.element_array.ElementArray` holding every configured
-            diagnostic, in insertion order, when ``name`` is omitted.
+        Element
+            The diagnostic registered under ``name``.
 
         Raises
         ------
         PyAMLException
-            If ``name`` is given and no diagnostic is registered under it.
+            If no diagnostic is registered under ``name``.
         """
-        if name is None:
-            return ElementArray("", list(self._peer._DIAG.values()))
         return self._peer._get_diagnostic(name)
+
+    def get_array(self) -> ElementArray:
+        """
+        Return every configured diagnostic.
+
+        Returns
+        -------
+        ElementArray
+            New unnamed array holding every configured diagnostic, in insertion order.
+        """
+        return ElementArray("", list(self._peer._DIAG.values()))
 
     def __getitem__(self, key: str | list[str] | tuple[str, ...]) -> "Element | ElementArray":
         """

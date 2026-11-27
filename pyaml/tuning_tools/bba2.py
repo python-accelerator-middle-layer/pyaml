@@ -245,7 +245,7 @@ class BBA2(MeasurementTool, DynamicValidation):
     def bpms(self) -> "BPMArray":
         """Return the BPM array used for the measurement."""
         self.check_peer()
-        return self.peer.diagnostic.bpms.get(self.bpm_array_name)
+        return self.peer.diagnostic.bpm.get_array(self.bpm_array_name)
 
     @property
     def bpm(self) -> "BPM":
@@ -360,7 +360,7 @@ class BBA2(MeasurementTool, DynamicValidation):
         quad = design.magnet.get(quadname)
         sth = design.magnet.get(steererhname)
         stv = design.magnet.get(steerervname)
-        orbit = design.diagnostic.bpms.get(bpmname).positions
+        orbit = design.diagnostic.bpm.get_array(bpmname).positions
         tune_design = design.tool.get(tunename)
         tune_live = self._peer.tool.get(tunename)
 

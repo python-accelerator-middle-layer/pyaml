@@ -18,9 +18,9 @@ def test_tuning_orm():
 
     orm = element_holder.tool.orm
 
-    bpms = element_holder.diagnostic.bpms.get("BPM")
-    hcorr_names = element_holder.magnets.get("HCorr").names()[:4]
-    vcorr_names = element_holder.magnets.get("VCorr").names()[:4]
+    bpms = element_holder.diagnostic.bpm.get_array("BPM")
+    hcorr_names = element_holder.magnet.get_array("HCorr").names()[:4]
+    vcorr_names = element_holder.magnet.get_array("VCorr").names()[:4]
 
     # for callback testing
     actions = []

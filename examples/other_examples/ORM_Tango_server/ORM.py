@@ -57,11 +57,11 @@ class ORM(Device):
 
         self.SR = Accelerator.load(self.ConfigFileName)
         self.orm_data = None
-        nb_hsteer = len(self.SR.design.magnets.get("HCorr"))
-        nb_vsteer = len(self.SR.design.magnets.get("VCorr"))
-        nb_skew = len(self.SR.design.magnets.get("Skews"))
+        nb_hsteer = len(self.SR.design.magnet.get_array("HCorr"))
+        nb_vsteer = len(self.SR.design.magnet.get_array("VCorr"))
+        nb_skew = len(self.SR.design.magnet.get_array("Skews"))
         skewErr = 1e-3 * np.random.normal(size=nb_skew)
-        self.SR.design.magnets.get("Skews").strengths.set(skewErr)
+        self.SR.design.magnet.get_array("Skews").strengths.set(skewErr)
         self.progress_data = [0] * 2 * (nb_hsteer + nb_vsteer)
         self.set_status(f"Ready to scan: {self.ConfigFileName}")
         self.set_state(DevState.ON)

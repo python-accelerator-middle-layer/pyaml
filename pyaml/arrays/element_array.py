@@ -61,7 +61,7 @@ class ElementArray(list[Element]):
     .. code-block:: python
 
         >>> sr = Accelerator.load("acc.yaml")
-        >>> elements = sr.design.get("QuadForTune")
+        >>> elements = sr.design.get_array("QuadForTune")
     """
 
     def __init__(self, array_name: str, elements: list[Element], use_aggregator=True):
@@ -276,7 +276,7 @@ class ElementArray(list[Element]):
 
            .. code-block:: python
 
-               >>> cell1 = sr.live.get("C01")
+               >>> cell1 = sr.live.get_array("C01")
                >>> sexts = sr.live.get_magnets("SEXT")
                >>> cell1_sext = cell1 & sexts
 
@@ -588,7 +588,7 @@ class ElementArray(list[Element]):
 
         Examples
         --------
-        >>> magnets = sr.design.magnets.get()
+        >>> magnets = sr.design.magnet.get_array()
         >>> subset = magnets[:]  # MagnetArray, including mixed magnet classes
         >>> correctors = magnets["SH*"]  # MagnetArray
         >>> correctors = magnets["re:^SH1A-C0[12]-H$"]  # MagnetArray

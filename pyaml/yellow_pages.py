@@ -130,9 +130,9 @@ class YellowPages:
 
     .. code-block:: python
 
-        >>> sr.design.magnets.get("QForTune")
-        >>> sr.design.diagnostic.bpms.get("BPM")
-        >>> sr.design.get("Cell1")
+        >>> sr.design.magnet.get_array("QForTune")
+        >>> sr.design.diagnostic.bpm.get_array("BPM")
+        >>> sr.design.get_array("Cell1")
 
     Search identifiers using wildcards:
 
@@ -406,7 +406,7 @@ class YellowPages:
                 raise YellowPagesError(f"Unknown mode '{mode}'.")
 
             if query in holder._list_arrays():
-                return self._object_to_ids(holder._get_array(query))
+                return self._object_to_ids(holder.get_array(query))
             else:
                 ids = self._ids_from_holder(holder)
         else:
@@ -472,18 +472,18 @@ class YellowPages:
 
             Use <mode> from Controls or Simulators and <name> from the relevant group.
 
-            diagnostic.bpms:
-                Access: accelerator.<mode>.diagnostic.bpms.get("<name>")
+            diagnostic.bpm:
+                Access: accelerator.<mode>.diagnostic.bpm.get_array("<name>")
                 BPM (pyaml.arrays.bpm_array) size=224
                 .
 
-            magnets:
-                Access: accelerator.<mode>.magnets.get("<name>")
+            magnet:
+                Access: accelerator.<mode>.magnet.get_array("<name>")
                 HCORR (pyaml.arrays.magnet_array) size=96
                 .
 
             Named element arrays:
-                Access: accelerator.<mode>.get("<name>")
+                Access: accelerator.<mode>.get_array("<name>")
                 Cell1 (pyaml.arrays.element_array) size=4
                 .
 
@@ -523,7 +523,8 @@ class YellowPages:
         for path, category, entries in discovered:
             lines.append(f"{path or 'Named element arrays'}:")
             accessor = f".{path}" if path else ""
-            lines.append(f'    Access: accelerator.<mode>{accessor}.get("<name>")')
+            method = "get_array" if category == YellowPagesCategory.ARRAYS else "get"
+            lines.append(f'    Access: accelerator.<mode>{accessor}.{method}("<name>")')
             for key, resolved in entries.items():
                 lines.append(self._format_key(category, key, resolved))
             lines.append("    .")
@@ -545,9 +546,9 @@ class YellowPages:
     def _discover_overview(self) -> list[tuple[str, YellowPagesCategory, dict[str, dict[str, Any]]]]:
         """Group registered objects by access path, retaining their per-mode values."""
         groups = (
-            ("diagnostic.bpms", "_BPM_ARRAYS", YellowPagesCategory.ARRAYS),
-            ("magnets", "_MAGNET_ARRAYS", YellowPagesCategory.ARRAYS),
-            ("combined_function_magnets", "_CFM_MAGNET_ARRAYS", YellowPagesCategory.ARRAYS),
+            ("diagnostic.bpm", "_BPM_ARRAYS", YellowPagesCategory.ARRAYS),
+            ("magnet", "_MAGNET_ARRAYS", YellowPagesCategory.ARRAYS),
+            ("combined_function_magnet", "_CFM_MAGNET_ARRAYS", YellowPagesCategory.ARRAYS),
             ("", "_ELEMENT_ARRAYS", YellowPagesCategory.ARRAYS),
             ("tool", "_TOOLS", YellowPagesCategory.TOOLS),
             ("diagnostic", "_DIAG", YellowPagesCategory.DIAGNOSTICS),
@@ -559,7 +560,7 @@ class YellowPages:
             for mode_name, holder in modes.items():
                 for key, obj in getattr(holder, store_name).items():
                     # Root lookup gives typed arrays precedence over generic arrays.
-                    if not path and holder._get_array(key) is not obj:
+                    if not path and holder.get_array(key) is not obj:
                         continue
                     entries.setdefault(key, {})[mode_name] = obj
             if entries:
@@ -653,7 +654,7 @@ class YellowPages:
         """
         try:
             if key in holder._list_arrays():
-                return holder._get_array(key)
+                return holder.get_array(key)
         except Exception:
             pass
 
@@ -805,7 +806,7 @@ class YellowPages:
 
         try:
             for name in holder._list_arrays():
-                arr = holder._get_array(name)
+                arr = holder.get_array(name)
                 self._extend_unique(ids, self._object_to_ids(arr))
         except Exception:
             pass

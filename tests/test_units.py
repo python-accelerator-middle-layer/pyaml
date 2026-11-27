@@ -250,7 +250,7 @@ def test_bpm_positions_are_converted_to_si(install_test_package):
     assert bpm.positions.unit() == "m"
 
     # The grouped read gives the same values as the per-element reads
-    bpms = sr.live.diagnostic.bpms.get("BPM")
+    bpms = sr.live.diagnostic.bpm.get_array("BPM")
     assert np.allclose(bpms.positions.get(), [[0.1e-3, -0.2e-3], [0.3e-3, -0.4e-3]])
     assert np.allclose(bpms.h.get(), [0.1e-3, 0.3e-3])
     assert np.allclose(bpms.v.get(), [-0.2e-3, -0.4e-3])
@@ -306,11 +306,11 @@ def test_quantities_on_control_system(install_test_package):
     # get(quantity=True) returns a quantity in unit(), get() still a float
     assert rf.frequency.get(quantity=True).to("MHz").magnitude == pytest.approx(352.3)
     assert isinstance(rf.frequency.get(), float)
-    q = sr.live.diagnostic.bpms.get("BPM").positions.get(quantity=True)
+    q = sr.live.diagnostic.bpm.get_array("BPM").positions.get(quantity=True)
     assert q.shape == (2, 2) and np.allclose(q.to("mm").magnitude, [[0.1, -0.2], [0.3, -0.4]])
 
     # Arrays and aggregators
-    quads = sr.live.magnets.get("QUADS")
+    quads = sr.live.magnet.get_array("QUADS")
     quads.hardwares.set(np.array([1.0, 3.0]) * ureg.A)
     assert [get_attribute("sr/test/ps/q1"), get_attribute("sr/test/ps/q2")] == pytest.approx([1000.0, 3000.0])
     assert np.allclose(quads.hardwares.get(quantity=True).to("mA").magnitude, [1000.0, 3000.0])
@@ -348,7 +348,7 @@ def test_magnet_device_unit_is_converted_to_model_hardware_unit(install_test_pac
     set_attribute("sr/test/ps/q1", 5000.0)
 
     # Strength aggregator (grouped access) is consistent with element access
-    quads = sr.live.magnets.get("QUADS")
+    quads = sr.live.magnet.get_array("QUADS")
     strengths = quads.strengths.get()
     assert strengths[0] == pytest.approx(q1.strength.get())
     quads.strengths.set(strengths * 2)
@@ -436,9 +436,9 @@ def test_device_without_unit_is_passthrough(install_test_package, no_unit):
     assert dev.control_system_unit() == no_unit
 
     # Grouped accessors report the SI unit, not the raw device unit
-    quads = list(sr.live.magnets.get("QUADS"))
+    quads = list(sr.live.magnet.get_array("QUADS"))
     assert sr.live.create_magnet_hardware_aggregator(quads).unit() == "A"
-    _, aggh, _ = sr.live.create_bpm_aggregators(list(sr.live.diagnostic.bpms.get("BPM")))
+    _, aggh, _ = sr.live.create_bpm_aggregators(list(sr.live.diagnostic.bpm.get_array("BPM")))
     assert aggh.unit() == "m"
 
 
@@ -464,11 +464,11 @@ def test_accessors_report_control_system_unit(install_test_package):
     assert q1.hardware.control_system_unit() == "mA"
     assert q1.strength.control_system_unit() == q1.strength.unit()  # No device holds a strength
 
-    quads = sr.live.magnets.get("QUADS")
+    quads = sr.live.magnet.get_array("QUADS")
     assert quads.hardwares.control_system_unit() == "mA"
     assert quads.strengths.control_system_unit() == quads.strengths.unit()
 
-    bpms = sr.live.diagnostic.bpms.get("BPM")
+    bpms = sr.live.diagnostic.bpm.get_array("BPM")
     assert bpms.positions.control_system_unit() == "mm"
     assert bpms.h.control_system_unit() == "mm"
 
@@ -509,13 +509,13 @@ def _check_units(acc):
 
 def test_units_of_simulator_accessors():
     sr = Accelerator.load("tests/config/sr_serialized_magnets.yaml", ignore_external=True)
-    series = sr.design.serialized_magnets.get("QForTune")
+    series = sr.design.magnet.get_array("QForTune")
     _check_units(series.strengths)
     _check_units(series.hardwares)
     assert series.strengths.unit() == "1/m"  # Declared as m-1, reported in canonical form
 
     sr = Accelerator.load("tests/config/EBSOrbit.yaml", ignore_external=True)
-    bpms = sr.design.diagnostic.bpms.get("BPM")
+    bpms = sr.design.diagnostic.bpm.get_array("BPM")
     bpm = sr.design.diagnostic.bpm.get(bpms.names()[0])
     for acc in (bpms.positions, bpms.h, bpms.v, bpm.positions, bpm.offset):
         _check_units(acc)
@@ -524,8 +524,8 @@ def test_units_of_simulator_accessors():
 @TANGO
 def test_units_of_control_system_accessors(install_test_package):
     sr = Accelerator.from_dict(_config())
-    bpms = sr.live.diagnostic.bpms.get("BPM")
-    quads = sr.live.magnets.get("QUADS")
+    bpms = sr.live.diagnostic.bpm.get_array("BPM")
+    quads = sr.live.magnet.get_array("QUADS")
     assert quads.strengths.unit() == "1/m"  # Q1 in 1/m and Q2 in m-1 share one unit
     accessors = [bpms.positions, bpms.h, bpms.v, quads.hardwares, quads.strengths]
     accessors += [sr.live.create_magnet_strength_aggregator(list(quads))]

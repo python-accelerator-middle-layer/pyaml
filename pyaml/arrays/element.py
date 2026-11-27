@@ -65,7 +65,7 @@ class Element(ArrayConfig, DynamicValidation):
         .. code-block:: python
 
             >>> elt_cfg.fill_array(sr.design)
-            >>> names = sr.design.get("MyArray").names()
+            >>> names = sr.design.get_array("MyArray").names()
             >>> print(names)
             ['BPM_C04-01', 'SH1A-C04-H']
 

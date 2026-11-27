@@ -59,8 +59,8 @@ def test_dt4acc_twin_accelerator_instantiates_and_reads_live_values(config_key: 
 @pytest.mark.parametrize("config_key", FODO_1GEV_6D_CONFIGS, ids=["tango-pyaml", "pyaml-cs-oa"])
 def test_dt4acc_twin_reads_all_declared_magnetic_strengths(config_key: str):
     accelerator = _build_accelerator(config_key)
-    magnets = [magnet for magnet in accelerator.live.magnets.get() if magnet.get_model_name() == magnet.get_name()]
-    combined_function_magnets = accelerator.live.combined_function_magnet.all()
+    magnets = [magnet for magnet in accelerator.live.magnet.get_array() if magnet.get_model_name() == magnet.get_name()]
+    combined_function_magnets = accelerator.live.combined_function_magnet.get_array()
 
     assert magnets or combined_function_magnets
 
@@ -106,7 +106,7 @@ def deactivated_test_orbit_correction(config_key: str):
     try:
         accelerator = _build_accelerator(config_key)
         control_mode = accelerator.live
-        bpms = control_mode.diagnostic.bpms.get("bpms")
+        bpms = control_mode.diagnostic.bpm.get_array("bpms")
         orbit_response_matrix = control_mode.tool.get("DEFAULT_ORBIT_RESPONSE_MATRIX")
         orbit_correction = control_mode.tool.get("DEFAULT_ORBIT_CORRECTION")
         orbit_response_matrix.measure()
@@ -114,8 +114,8 @@ def deactivated_test_orbit_correction(config_key: str):
         orbit_response_matrix.save("orm.json")
         orbit_correction.load("orm.json")
         std_kick = 1e-6
-        hcorr = control_mode.magnets.get("hcorrectors")
-        vcorr = control_mode.magnets.get("vcorrectors")
+        hcorr = control_mode.magnet.get_array("hcorrectors")
+        vcorr = control_mode.magnet.get_array("vcorrectors")
         print(f"HCORR={hcorr.strengths.get()}")
         print(f"VCORR={vcorr.strengths.get()}")
         ref_h, ref_v = bpms.positions.get().T
