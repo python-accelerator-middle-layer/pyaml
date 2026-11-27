@@ -394,7 +394,7 @@ def test_every_accessor_keeps_the_current_when_writing_back_on_a_plateau(
         magnet = sr.live.magnet.get("QF4A-C10")
         magnet.strength.set(magnet.strength.get())
     else:
-        array = sr.live.magnets.get("PLATEAU_MAGNETS")
+        array = sr.live.magnet.get_array("PLATEAU_MAGNETS")
         array.strengths.set(array.strengths.get())
 
     # Expected: the power supply stays at 85 A whatever the accessor: every accessor follows the same rule.

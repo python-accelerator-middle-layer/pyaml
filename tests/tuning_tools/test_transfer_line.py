@@ -29,14 +29,14 @@ def test_transfer_line():
     tl2.design.tool.orbit.load("tl2.json")
 
     # Mangle the orbit
-    hcorr = tl2.design.magnets.get("HCORR")
-    vcorr = tl2.design.magnets.get("VCORR")
+    hcorr = tl2.design.magnet.get_array("HCORR")
+    vcorr = tl2.design.magnet.get_array("VCORR")
     numpy.random.seed(1)
     std_kick = 1e-6  # rad
     hcorr.strengths.set(hcorr.strengths.get() + std_kick * numpy.random.normal(size=len(hcorr)))
     vcorr.strengths.set(vcorr.strengths.get() + std_kick * numpy.random.normal(size=len(vcorr)))
 
-    orbit = tl2.design.diagnostic.bpms.get("BPMS").positions
+    orbit = tl2.design.diagnostic.bpm.get_array("BPMS").positions
     assert numpy.allclose(numpy.std(orbit.get(), axis=0), [1.78288459e-05, 3.57986943e-05])
 
     tl2.design.tool.orbit.correct()

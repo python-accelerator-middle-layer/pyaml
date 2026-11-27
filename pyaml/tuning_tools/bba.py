@@ -172,7 +172,7 @@ class BBA(MeasurementTool, DynamicValidation):
     def bpms(self) -> "BPMArray":
         """Return the BPM array used for the measurement."""
         self.check_peer()
-        return self.peer.diagnostic.bpms.get(self.bpm_array_name)
+        return self.peer.diagnostic.bpm.get_array(self.bpm_array_name)
 
     @property
     def bpm(self) -> "BPM":

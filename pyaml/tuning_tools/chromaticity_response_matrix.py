@@ -109,7 +109,7 @@ class ChromaticityResponseMatrix(MeasurementTool, DynamicValidation):
     def sextupoles(self) -> "MagnetArray":
         """Return the sextupole array used for the measurement."""
         self.check_peer()
-        return self.peer.magnets.get(self.sextu_array_name)
+        return self.peer.magnet.get_array(self.sextu_array_name)
 
     @property
     def chromaticity_monitor(self) -> "ChromaticityMonitor":

@@ -18,8 +18,8 @@ def test_element_array_and_array_intersection_is_autotyped(
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    hcorr = sr.live.magnets.get("HCORR")
-    hvcorr = sr.live.magnets.get("HVCORR")
+    hcorr = sr.live.magnet.get_array("HCORR")
+    hvcorr = sr.live.magnet.get_array("HVCORR")
 
     inter = hvcorr & hcorr
 
@@ -43,7 +43,7 @@ def test_element_array_and_mask_filters_and_is_autotyped_list_mask(
     sr.design.get_lattice().disable_6d()
 
     # "ElArray" is a mixed ElementArray in the dummy config (see existing tests)
-    elts = sr.design.get("ElArray")
+    elts = sr.design.get_array("ElArray")
     assert isinstance(elts, ElementArray)
     assert len(elts) > 0
 
@@ -71,7 +71,7 @@ def test_element_array_and_mask_filters_and_is_autotyped_numpy_mask(
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    elts = sr.design.get("ElArray")
+    elts = sr.design.get_array("ElArray")
     assert len(elts) > 0
 
     mask_list = [isinstance(e, Magnet) for e in elts]
@@ -97,7 +97,7 @@ def test_element_array_sub_mask_removes_true_inverse_of_and(
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    elts = sr.design.get("ElArray")
+    elts = sr.design.get_array("ElArray")
     assert len(elts) > 0
 
     # Keep only magnets with '& mask'
@@ -134,7 +134,7 @@ def test_element_array_mask_length_mismatch_raises_for_and_and_sub(
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    elts = sr.design.get("ElArray")
+    elts = sr.design.get_array("ElArray")
     assert len(elts) > 0
 
     bad_mask = [True] * (len(elts) - 1)
@@ -159,7 +159,7 @@ def test_mask_by_type_returns_correct_boolean_mask(
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    elts = sr.design.get("ElArray")
+    elts = sr.design.get_array("ElArray")
     mask = elts.mask_by_type(Magnet)
 
     assert isinstance(mask, list)
@@ -182,7 +182,7 @@ def test_filter_by_type_returns_autotyped_array(install_test_package, accelerato
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    elts = sr.design.get("ElArray")
+    elts = sr.design.get_array("ElArray")
     filtered = elts.of_type(Magnet)
 
     if len(filtered) == 0:
@@ -203,8 +203,8 @@ def test_element_array_or_union_is_unique_stable_and_autotyped(
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    hcorr = sr.live.magnets.get("HCORR")
-    vcorr = sr.live.magnets.get("VCORR")
+    hcorr = sr.live.magnet.get_array("HCORR")
+    vcorr = sr.live.magnet.get_array("VCORR")
 
     u = hcorr | vcorr
 
@@ -230,8 +230,8 @@ def test_element_array_add_is_alias_of_union(install_test_package, accelerator_f
     sr = accelerator_from_fragments(*sr_configuration_fragments)
     sr.design.get_lattice().disable_6d()
 
-    hcorr = sr.live.magnets.get("HCORR")
-    vcorr = sr.live.magnets.get("VCORR")
+    hcorr = sr.live.magnet.get_array("HCORR")
+    vcorr = sr.live.magnet.get_array("VCORR")
 
     u1 = hcorr | vcorr
     u2 = hcorr + vcorr

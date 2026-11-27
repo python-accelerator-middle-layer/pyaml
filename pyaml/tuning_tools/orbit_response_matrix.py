@@ -141,19 +141,19 @@ class OrbitResponseMatrix(MeasurementTool, DynamicValidation):
     def bpms(self) -> "BPMArray":
         """Return the BPM array used for orbit readback."""
         self.check_peer()
-        return self.peer.diagnostic.bpms.get(self.bpm_array_name)
+        return self.peer.diagnostic.bpm.get_array(self.bpm_array_name)
 
     @property
     def hcorrectors(self) -> "MagnetArray":
         """Return the horizontal corrector array used for the measurement."""
         self.check_peer()
-        return self.peer.magnets.get(self.hcorr_array_name)
+        return self.peer.magnet.get_array(self.hcorr_array_name)
 
     @property
     def vcorrectors(self) -> "MagnetArray":
         """Return the vertical corrector array used for the measurement."""
         self.check_peer()
-        return self.peer.magnets.get(self.vcorr_array_name)
+        return self.peer.magnet.get_array(self.vcorr_array_name)
 
     def measure(
         self,

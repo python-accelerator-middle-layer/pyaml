@@ -13,13 +13,13 @@ Simulators:
 
 Use <mode> from Controls or Simulators and <name> from the relevant group.
 
-diagnostic.bpms:
-    Access: accelerator.<mode>.diagnostic.bpms.get("<name>")
+diagnostic.bpm:
+    Access: accelerator.<mode>.diagnostic.bpm.get_array("<name>")
     BPM                   (pyaml.arrays.bpm_array)                size=320
     .
 
-magnets:
-    Access: accelerator.<mode>.magnets.get("<name>")
+magnet:
+    Access: accelerator.<mode>.magnet.get_array("<name>")
     HCorr                 (pyaml.arrays.magnet_array)             size=288
     VCorr                 (pyaml.arrays.magnet_array)             size=288
     Skews                 (pyaml.arrays.magnet_array)             size=288

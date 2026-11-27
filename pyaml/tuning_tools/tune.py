@@ -159,7 +159,7 @@ class Tune(TuningTool, DynamicValidation):
     def quadrupoles(self) -> "MagnetArray":
         """Return the quadrupole array used by the correction."""
         self.check_peer()
-        return self.peer.magnets.get(self.quad_array_name)
+        return self.peer.magnet.get_array(self.quad_array_name)
 
     def get(self):
         """Return the requested dimensionless horizontal and vertical tune setpoint."""

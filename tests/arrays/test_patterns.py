@@ -8,10 +8,10 @@ def test_tune():
     sr: Accelerator = Accelerator.load("tests/config/EBSTune-patterns.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
 
-    quadForTune = sr.design.magnets.get("QForTune")
+    quadForTune = sr.design.magnet.get_array("QForTune")
     assert len(quadForTune.names()) == 124
 
-    quadForTest = sr.design.magnets.get("QForTest")
+    quadForTest = sr.design.magnet.get_array("QForTest")
     assert sr.design.magnet.get("QF1E-C06") is not None
     assert sr.design.magnet.get("QF1E-C05") is not None
     assert "QF1E-C05" not in quadForTest.names()

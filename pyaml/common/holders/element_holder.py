@@ -1,6 +1,5 @@
 """Store, resolve, and group elements shared by runtime backends."""
 
-import warnings
 from abc import ABCMeta, abstractmethod
 from typing import TYPE_CHECKING, overload
 
@@ -21,11 +20,8 @@ from .diagnostic_holder import DiagnosticHolder
 from .rf_holder import RFHolder
 from .sub_holders import (
     CombinedFunctionMagnetHolder,
-    CombinedFunctionMagnetsHolder,
     MagnetHolder,
-    MagnetsHolder,
     SerializedMagnetHolder,
-    SerializedMagnetsHolder,
 )
 from .tool_holder import ToolHolder
 
@@ -45,15 +41,18 @@ class ElementHolder(metaclass=ABCMeta):
     and :class:`~pyaml.lattice.simulator.Simulator` both derive from it, so the same
     API drives a live machine and a simulation.
 
+    The same convention applies at every level: ``get(name)`` returns one element and
+    ``get_array(name)`` returns an array.
+
     Attributes
     ----------
-    magnet, magnets
-        Single magnet by name, or a named magnet array.
-    combined_function_magnet, combined_function_magnets
-        Single combined-function magnet by name, or a named array.
+    magnet
+        Magnets: ``get(name)`` for one magnet, ``get_array(name)`` for a configured magnet array.
+    combined_function_magnet
+        Combined-function magnets, with the same ``get`` / ``get_array`` methods.
     serialized_magnet
-        Single serialized magnet group by name. A serialized group is also a magnet and can be used in
-        ``magnets`` arrays. ``serialized_magnets`` is a deprecated alias of ``magnets`` arrays.
+        Serialized magnet families. A family is also a magnet and can be listed in configured
+        magnet arrays.
     rf
         RF plant and transmitters of this mode.
     diagnostic
@@ -79,8 +78,10 @@ class ElementHolder(metaclass=ABCMeta):
         Create and register a generic element array.
     add_element(element)
         Add an element to the global element store.
-    get(name=None)
-        Return a named element array, or every registered element when no name is given.
+    get(name)
+        Return the element registered under a name.
+    get_array(name=None)
+        Return a configured array of any type, or every registered element when no name is given.
     add_betatron_tune_monitor(tune_monitor)
         Add a betatron tune monitor to the diagnostics store.
     add_tool(tool)
@@ -117,11 +118,8 @@ class ElementHolder(metaclass=ABCMeta):
 
         # Sub holders
         self._magnet_holder = MagnetHolder(self)
-        self._magnets_holder = MagnetsHolder(self)
         self._serialized_magnet_holder = SerializedMagnetHolder(self)
-        self._serialized_magnets_holder = SerializedMagnetsHolder(self)
         self._combined_function_magnet_holder = CombinedFunctionMagnetHolder(self)
-        self._combined_function_magnets_holder = CombinedFunctionMagnetsHolder(self)
         self._rf_holder = RFHolder(self)
         self._diagnostic_holder = DiagnosticHolder(self)
         self._tool_holder = ToolHolder(self)
@@ -135,43 +133,18 @@ class ElementHolder(metaclass=ABCMeta):
 
     @property
     def magnet(self) -> MagnetHolder:
-        """Return the magnet."""
+        """Return the magnet holder (magnets and configured magnet arrays)."""
         return self._magnet_holder
 
     @property
-    def magnets(self) -> MagnetsHolder:
-        """Return the magnets."""
-        return self._magnets_holder
-
-    @property
     def serialized_magnet(self) -> SerializedMagnetHolder:
-        """Return the serialized magnet."""
+        """Return the serialized magnet holder (serialized families)."""
         return self._serialized_magnet_holder
 
     @property
-    def serialized_magnets(self) -> SerializedMagnetsHolder:
-        """
-        Return the serialized magnet arrays.
-
-        .. deprecated::
-            A serialized family is a magnet: use :attr:`magnets`, which shares the same arrays.
-        """
-        warnings.warn(
-            "holder.serialized_magnets is deprecated, a serialized family is a magnet: use holder.magnets",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self._serialized_magnets_holder
-
-    @property
     def combined_function_magnet(self) -> CombinedFunctionMagnetHolder:
-        """Return the combined function magnet."""
+        """Return the combined-function magnet holder (magnets and configured arrays)."""
         return self._combined_function_magnet_holder
-
-    @property
-    def combined_function_magnets(self) -> CombinedFunctionMagnetsHolder:
-        """Return the combined function magnets."""
-        return self._combined_function_magnets_holder
 
     @property
     def rf(self) -> RFHolder:
@@ -425,22 +398,46 @@ class ElementHolder(metaclass=ABCMeta):
         return array[name]
 
     # Generic elements
-    def get(self, name: str | None = None) -> ElementArray:
-        """Return a named element array, or every registered element when no name is given.
+    def get(self, name: str) -> Element:
+        """Return the element registered under a name.
+
+        Parameters
+        ----------
+        name : str
+            Element name, matched literally.
+
+        Returns
+        -------
+        Element
+            The element registered under ``name``, whatever its family.
+
+        Raises
+        ------
+        PyAMLException
+            If no element is registered under ``name``.
+
+        Examples
+        --------
+        >>> quad = sr.live.get("QF1E-C04")
+        """
+        return self._get_element(name)
+
+    def get_array(self, name: str | None = None) -> ElementArray:
+        """Return a configured array of any type, or every registered element when no name is given.
 
         Parameters
         ----------
         name : str, optional
-            Name of the element array to look up, as declared in the configuration.
+            Name of the array to look up, as declared in the configuration.
             When omitted, every registered element is returned instead.
 
         Returns
         -------
         ElementArray
-            The element array registered under ``name``, regardless of its concrete
-            family (magnet, BPM, combined-function magnet, serialized-magnet, or
-            generic element array), or a new unnamed container of every registered
-            element, in insertion order, when ``name`` is omitted.
+            The array registered under ``name``, regardless of its concrete
+            family (magnet, BPM, combined-function magnet or generic element
+            array), or a new unnamed ElementArray of every registered element,
+            in insertion order, when ``name`` is omitted.
 
         Raises
         ------
@@ -455,13 +452,21 @@ class ElementHolder(metaclass=ABCMeta):
 
         Examples
         --------
-        >>> elements = sr.live.get()
+        >>> elements = sr.live.get_array()
         >>> names = elements.names()
-        >>> cell08 = sr.live.get("CELL08")
+        >>> cell08 = sr.live.get_array("CELL08")
         """
         if name is None:
             return ElementArray("", list(self._ALL.values()))
-        return self._get_array(name)
+        if name in self._BPM_ARRAYS:
+            return self._BPM_ARRAYS[name]
+        if name in self._MAGNET_ARRAYS:
+            return self._MAGNET_ARRAYS[name]
+        if name in self._CFM_MAGNET_ARRAYS:
+            return self._CFM_MAGNET_ARRAYS[name]
+        if name in self._ELEMENT_ARRAYS:
+            return self._ELEMENT_ARRAYS[name]
+        raise PyAMLException(f"Array {name} not defined")
 
     @overload
     def __getitem__(self, key: int) -> Element: ...
@@ -497,7 +502,7 @@ class ElementHolder(metaclass=ABCMeta):
             An index or an exact literal name returns its element. Patterns,
             lists/tuples of patterns, and slices return the most specific
             compatible array, or an empty ElementArray when nothing matches.
-            The full slice ``[:]`` returns a generic ElementArray, like get().
+            The full slice ``[:]`` returns a generic ElementArray, like get_array().
 
         Raises
         ------
@@ -539,17 +544,17 @@ class ElementHolder(metaclass=ABCMeta):
         if isinstance(key, str):
             if key.startswith("re:") or key.startswith("~") or is_wildcard(key):
                 matched = set(resolve_names(self._ALL.keys(), key))
-                return self.get()._typed_array([v for n, v in self._ALL.items() if n in matched])
+                return self.get_array()._typed_array([v for n, v in self._ALL.items() if n in matched])
             if key not in self._ALL:
                 raise PyAMLException(f"Element {key} not defined")
             return self._ALL[key]
         if isinstance(key, (list, tuple)):
             matched = set(resolve_names(self._ALL.keys(), key))
-            return self.get()._typed_array([v for n, v in self._ALL.items() if n in matched])
+            return self.get_array()._typed_array([v for n, v in self._ALL.items() if n in matched])
         if isinstance(key, int):
             return list(self._ALL.values())[key]
         if isinstance(key, slice):
-            elements = self.get()
+            elements = self.get_array()
             if key == slice(None):
                 return elements
             return elements._typed_array(list(elements)[key])
@@ -616,24 +621,6 @@ class ElementHolder(metaclass=ABCMeta):
             Tuning or measurement tool to register, keyed by its own name.
         """
         self._add(self._TOOLS, tool)
-
-    def _get_array(self, name: str):
-        """
-        Generic array resolver used by YellowPages.
-
-        The method returns the array object referenced by 'name', regardless of its
-        concrete type.
-        """
-        if name in self._BPM_ARRAYS:
-            return self._BPM_ARRAYS[name]
-        if name in self._MAGNET_ARRAYS:
-            return self._MAGNET_ARRAYS[name]
-        if name in self._CFM_MAGNET_ARRAYS:
-            return self._CFM_MAGNET_ARRAYS[name]
-        if name in self._ELEMENT_ARRAYS:
-            return self._ELEMENT_ARRAYS[name]
-
-        raise PyAMLException(f"Array {name} not defined")
 
     def _get_tool(self, name: str):
         """

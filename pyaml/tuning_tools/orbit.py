@@ -212,14 +212,14 @@ class Orbit(TuningTool, DynamicValidation):
     def bpms(self) -> BPMArray:
         """Return the BPM array used for orbit readback."""
         self.check_peer()
-        return self.peer.diagnostic.bpms.get(self.bpm_array_name)
+        return self.peer.diagnostic.bpm.get_array(self.bpm_array_name)
 
     @property
     def hcorrectors(self) -> MagnetArray:
         """Return the horizontal corrector array used for correction."""
         self.check_peer()
         if self._hcorr is None:
-            return self.peer.magnets.get(self.hcorr_array_name)
+            return self.peer.magnet.get_array(self.hcorr_array_name)
         return self._hcorr
 
     @property
@@ -227,7 +227,7 @@ class Orbit(TuningTool, DynamicValidation):
         """Return the vertical corrector array used for correction."""
         self.check_peer()
         if self._vcorr is None:
-            return self.peer.magnets.get(self.vcorr_array_name)
+            return self.peer.magnet.get_array(self.vcorr_array_name)
         return self._vcorr
 
     @property
@@ -539,8 +539,8 @@ class Orbit(TuningTool, DynamicValidation):
 
     def post_init(self):
         """Bind orbit corrector and RF handles after attachment."""
-        self._hcorr = self.peer.magnets.get(self.hcorr_array_name)
-        self._vcorr = self.peer.magnets.get(self.vcorr_array_name)
+        self._hcorr = self.peer.magnet.get_array(self.hcorr_array_name)
+        self._vcorr = self.peer.magnet.get_array(self.vcorr_array_name)
         hv_elements = []
         hv_elements.extend(self._hcorr)
         hv_elements.extend(self._vcorr)

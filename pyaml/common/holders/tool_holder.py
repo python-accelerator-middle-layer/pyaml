@@ -37,8 +37,10 @@ class ToolHolder:
 
     Methods
     -------
-    get(name=None)
-        Return a named tool, or all configured tools when no name is given.
+    get(name)
+        Return the tool registered under a name.
+    get_array()
+        Return every configured tool.
 
     Examples
     --------
@@ -47,7 +49,7 @@ class ToolHolder:
     >>> tune_response = sr.live.tool.trm
     >>> tune_response.measure()
     >>> other_tool = sr.live.tool.get("OTHER_TUNE_CORRECTION")
-    >>> all_tools = sr.live.tool.get()
+    >>> all_tools = sr.live.tool.get_array()
     """
 
     def __init__(self, peer: "ElementHolder"):
@@ -56,30 +58,38 @@ class ToolHolder:
         """
         self._peer = peer
 
-    def get(self, name: str = None) -> "Element | ElementArray":
+    def get(self, name: str) -> Element:
         """
-        Return a named tool, or all configured tools when no name is given.
+        Return the tool registered under a name.
 
         Parameters
         ----------
-        name : str, optional
+        name : str
             Name of the tuning or measurement tool to look up, as declared in the
-            configuration. When omitted, every configured tool is returned instead.
+            configuration.
 
         Returns
         -------
-        Element or ElementArray
-            The tool registered under ``name``, or an :class:`~pyaml.arrays.element_array.ElementArray`
-            holding every configured tool, in insertion order, when ``name`` is omitted.
+        Element
+            The tool registered under ``name``.
 
         Raises
         ------
         PyAMLException
-            If ``name`` is given and no tool is registered under it.
+            If no tool is registered under ``name``.
         """
-        if name is None:
-            return ElementArray("", list(self._peer._TOOLS.values()))
         return self._peer._get_tool(name)
+
+    def get_array(self) -> ElementArray:
+        """
+        Return every configured tool.
+
+        Returns
+        -------
+        ElementArray
+            New unnamed array holding every configured tool, in insertion order.
+        """
+        return ElementArray("", list(self._peer._TOOLS.values()))
 
     def __getitem__(self, key: str | list[str] | tuple[str, ...]) -> "Element | ElementArray":
         """

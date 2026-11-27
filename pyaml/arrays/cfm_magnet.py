@@ -58,4 +58,4 @@ class CombinedFunctionMagnet(ArrayConfig, DynamicValidation):
         holder : ElementHolder
             The element holder to populate with combined function magnet array
         """
-        holder.combined_function_magnets.add(self._name, self._elements)
+        holder.combined_function_magnet.add_array(self._name, self._elements)

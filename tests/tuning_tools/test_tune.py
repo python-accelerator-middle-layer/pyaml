@@ -13,7 +13,7 @@ def test_tune():
 
     sr.design.get_lattice().disable_6d()
 
-    quadForTuneDesign = sr.design.magnets.get("QForTune")
+    quadForTuneDesign = sr.design.magnet.get_array("QForTune")
     tune_monitor = sr.design.diagnostic.get("BETATRON_TUNE")
     # Build tune response matrix
     tune = tune_monitor.tune.get()
@@ -47,7 +47,7 @@ def test_tune():
 
     if False:
         # Correct the tune on live (need a Virutal Accelerator)
-        quadForTuneLive = sr.live.magnets.get("QForTune")
+        quadForTuneLive = sr.live.magnet.get_array("QForTune")
         strs = quadForTuneLive.strengths.get()
         strs += np.matmul(correctionmat, [0.1, 0.05])  # Ask for correction [dqx,dqy]
         quadForTuneLive.strengths.set(strs)

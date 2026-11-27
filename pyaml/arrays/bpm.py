@@ -88,4 +88,4 @@ class BPM(ArrayConfig, DynamicValidation):
         holder : ElementHolder
             The element holder to populate the :py:class:`.BPMArray` with.
         """
-        holder.diagnostic.bpms.add(self._name, self._elements)
+        holder.diagnostic.bpm.add_array(self._name, self._elements)

@@ -1,6 +1,7 @@
 import pytest
 
 from pyaml.accelerator import Accelerator
+from pyaml.arrays.bpm_array import BPMArray
 from pyaml.arrays.cfm_magnet_array import CombinedFunctionMagnetArray
 from pyaml.arrays.magnet_array import MagnetArray
 from pyaml.common.exception import PyAMLException
@@ -21,88 +22,119 @@ def serialized_holder():
 
 
 def test_dynamic_attribute_returns_named_magnet_array(holder):
-    assert holder.magnets.HCORR is holder.magnets.get("HCORR")
-    assert holder.magnets.VCORR is holder.magnets.get("VCORR")
-    assert holder.magnets.HVCORR is holder.magnets.get("HVCORR")
+    assert holder.magnet.HCORR is holder.magnet.get_array("HCORR")
+    assert holder.magnet.VCORR is holder.magnet.get_array("VCORR")
+    assert holder.magnet.HVCORR is holder.magnet.get_array("HVCORR")
 
 
 def test_dynamic_attribute_returns_named_combined_function_magnet_array(holder):
-    assert holder.combined_function_magnets.CFM is holder.combined_function_magnets.get("CFM")
+    assert holder.combined_function_magnet.CFM is holder.combined_function_magnet.get_array("CFM")
 
 
 def test_dynamic_attribute_returns_named_bpm_array(holder):
-    assert holder.diagnostic.bpms.BPMS is holder.diagnostic.bpms.get("BPMS")
+    assert holder.diagnostic.bpm.BPMS is holder.diagnostic.bpm.get_array("BPMS")
 
 
 def test_dynamic_attribute_returns_named_array_of_serialized_families(serialized_holder):
-    assert serialized_holder.magnets.QForTune is serialized_holder.magnets.get("QForTune")
-    assert serialized_holder.magnets.series is serialized_holder.magnets.get("series")
+    assert serialized_holder.magnet.QForTune is serialized_holder.magnet.get_array("QForTune")
+    assert serialized_holder.magnet.series is serialized_holder.magnet.get_array("series")
 
 
-def test_deprecated_serialized_magnets_holder_shares_the_magnet_arrays(serialized_holder):
-    with pytest.warns(DeprecationWarning, match="holder.serialized_magnets is deprecated"):
-        assert serialized_holder.serialized_magnets.series is serialized_holder.magnets.get("series")
+def test_serialized_magnet_holder_shares_the_magnet_arrays(serialized_holder):
+    assert serialized_holder.serialized_magnet.get_array("series") is serialized_holder.magnet.get_array("series")
 
 
 def test_dynamic_attribute_unknown_name_raises_attribute_error(holder):
     with pytest.raises(AttributeError):
-        _ = holder.magnets.UNKNOWN
+        _ = holder.magnet.UNKNOWN
 
 
 def test_dynamic_attribute_does_not_shadow_existing_methods(holder):
-    holder.magnets._array_store["get"] = holder.magnets.get("HCORR")
-    holder.magnets._array_store["add"] = holder.magnets.get("HCORR")
+    holder.magnet._array_store["get"] = holder.magnet.get_array("HCORR")
+    holder.magnet._array_store["get_array"] = holder.magnet.get_array("HCORR")
+    holder.magnet._array_store["add"] = holder.magnet.get_array("HCORR")
 
-    assert callable(holder.magnets.get)
-    assert callable(holder.magnets.add)
-    assert holder.magnets.get("HCORR").names() == ["SH1A-C01-H", "SH1A-C02-H"]
+    assert callable(holder.magnet.get)
+    assert callable(holder.magnet.get_array)
+    assert callable(holder.magnet.add)
+    assert holder.magnet.get_array("HCORR").names() == ["SH1A-C01-H", "SH1A-C02-H"]
 
 
 def test_dynamic_attribute_rejects_non_identifier_names(holder):
-    holder.magnets._array_store["not-an-id"] = holder.magnets.get("HCORR")
+    holder.magnet._array_store["not-an-id"] = holder.magnet.get_array("HCORR")
 
     with pytest.raises(AttributeError):
-        getattr(holder.magnets, "not-an-id")
+        getattr(holder.magnet, "not-an-id")
 
 
 def test_dir_includes_configured_array_names(holder):
-    assert {"HCORR", "VCORR", "HVCORR"} <= set(dir(holder.magnets))
-    assert "CFM" in dir(holder.combined_function_magnets)
-    assert "BPMS" in dir(holder.diagnostic.bpms)
+    assert {"HCORR", "VCORR", "HVCORR"} <= set(dir(holder.magnet))
+    assert "CFM" in dir(holder.combined_function_magnet)
+    assert "BPMS" in dir(holder.diagnostic.bpm)
 
 
 def test_dir_excludes_non_identifier_array_names(holder):
-    holder.magnets._array_store["not-an-id"] = holder.magnets.get("HCORR")
+    holder.magnet._array_store["not-an-id"] = holder.magnet.get_array("HCORR")
 
-    assert "not-an-id" not in dir(holder.magnets)
-
-
-def test_get_cfm_returns_all_combined_function_magnets(holder):
-    combined_function_magnets = holder.magnets.get_cfm()
-
-    assert type(combined_function_magnets) is CombinedFunctionMagnetArray
-    assert combined_function_magnets.names() == holder.combined_function_magnets.get().names()
+    assert "not-an-id" not in dir(holder.magnet)
 
 
-def test_issue_373_example():
-    """Reproduce the #373 example verbatim, against real test lattice data."""
+def test_get_returns_one_element_and_get_array_returns_a_configured_array(holder):
+    # get() looks up an element name and returns that element
+    magnet = holder.magnet.get("SH1A-C01-H")
+    assert magnet.get_name() == "SH1A-C01-H"
+
+    # get_array() looks up an array name and returns the configured array
+    correctors = holder.magnet.get_array("HCORR")
+    assert type(correctors) is MagnetArray
+    assert correctors.names() == ["SH1A-C01-H", "SH1A-C02-H"]
+
+
+def test_element_names_and_array_names_live_in_separate_namespaces(holder):
+    # An array name is not an element name
+    with pytest.raises(PyAMLException):
+        holder.magnet.get("HCORR")
+
+    # An element name is not an array name
+    with pytest.raises(PyAMLException):
+        holder.magnet.get_array("SH1A-C01-H")
+
+
+def test_get_array_without_name_returns_every_element_of_the_family(holder):
+    # Each family holder returns its whole store, typed with the family array type
+    magnets = holder.magnet.get_array()
+    assert type(magnets) is MagnetArray
+    assert magnets.names() == list(holder._MAGNETS)
+
+    cfms = holder.combined_function_magnet.get_array()
+    assert type(cfms) is CombinedFunctionMagnetArray
+    assert cfms.names() == ["SH1A-C01", "SH1A-C02"]
+
+    bpms = holder.diagnostic.bpm.get_array()
+    assert type(bpms) is BPMArray
+    assert bpms.names() == list(holder._BPMS)
+
+
+def test_magnet_holder_navigation_on_a_real_lattice():
     sr = Accelerator.load("tests/config/EBSTune-patterns.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
 
-    all_magnets = sr.design.magnets[:]
-    quad_family = sr.design.magnets.get("QForTune")
-    same_quad_family = sr.design.magnets.QForTune
+    # Configured family, by method and by attribute
+    all_magnets = sr.design.magnet[:]
+    quad_family = sr.design.magnet.get_array("QForTune")
+    same_quad_family = sr.design.magnet.QForTune
     assert same_quad_family.names() == quad_family.names()
     assert len(quad_family) == 124
     assert len(all_magnets) >= len(quad_family)
 
-    combined_function_magnets = sr.design.magnets.get_cfm()
-    assert len(combined_function_magnets) == 0
+    # No combined-function magnet in this lattice
+    assert len(sr.design.combined_function_magnet.get_array()) == 0
 
-    matching_quadrupoles = sr.design.magnets["QF1*"]
-    assert matching_quadrupoles.names() == sr.design.magnets["QF1*"].names()
-
-    one_magnet = sr.design.magnet.get("QF1E-C04")
+    # A wildcard gives an array, a literal name gives the magnet itself
+    matching_quadrupoles = sr.design.magnet["QF1*"]
+    assert type(matching_quadrupoles) is MagnetArray
+    one_magnet = sr.design.magnet["QF1E-C04"]
+    assert one_magnet is sr.design.magnet.get("QF1E-C04")
     one_magnet.strength.set(0.8)
     assert one_magnet.strength.get() == pytest.approx(0.8)
 
@@ -112,10 +144,10 @@ def test_configured_exclusion_family_reproduced_with_selection_and_difference():
     sr = Accelerator.load("tests/config/EBSTune-patterns.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
 
-    q_for_tune = sr.design.magnets.get("QForTune")
-    q_for_test = sr.design.magnets.get("QForTest")  # QForTune, minus ~QF1E-C05 and ~Q???-C06
+    q_for_tune = sr.design.magnet.get_array("QForTune")
+    q_for_test = sr.design.magnet.get_array("QForTest")  # QForTune, minus ~QF1E-C05 and ~Q???-C06
 
-    reproduced = q_for_tune - sr.design.magnets["QF1E-C05"] - sr.design.magnets["Q???-C06"]
+    reproduced = q_for_tune - sr.design.magnet[["QF1E-C05"]] - sr.design.magnet["Q???-C06"]
 
     assert reproduced == q_for_test
 
@@ -124,7 +156,7 @@ def test_configured_exclusion_family_reproduced_in_a_single_getitem_call():
     """The YAML `elements:` selector list (`[QD2*, QF1*, ~QF1E-C05, ~Q???-C06]`) selects the
     same *family* of elements through `[]` as declared for `QForTest`.
 
-    Selection goes through the top-level holder, not `.magnets`, so it resolves patterns
+    Selection goes through the top-level holder, not `.magnet`, so it resolves patterns
     against the same global element pool `find_elements()`/`_fill_array` use to build
     `QForTest` in the YAML. The two therefore agree on *which* elements are selected, but not
     necessarily on their order: `_fill_array` concatenates matches pattern by pattern (all
@@ -136,12 +168,12 @@ def test_configured_exclusion_family_reproduced_in_a_single_getitem_call():
     sr = Accelerator.load("tests/config/EBSTune-patterns.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
 
-    q_for_test = sr.design.magnets.get("QForTest")
+    q_for_test = sr.design.magnet.get_array("QForTest")
     reproduced = sr.design[["QD2*", "QF1*", "~QF1E-C05", "~Q???-C06"]]
 
     assert type(reproduced) is type(q_for_test)
     assert set(reproduced.names()) == set(q_for_test.names())
-    assert reproduced.names() == [n for n in sr.design.get().names() if n in set(q_for_test.names())]
+    assert reproduced.names() == [n for n in sr.design.get_array().names() if n in set(q_for_test.names())]
 
 
 def test_array_getitem_supports_a_negated_regex_pattern():
@@ -149,7 +181,7 @@ def test_array_getitem_supports_a_negated_regex_pattern():
     sr = Accelerator.load("tests/config/EBSTune-patterns.yaml", ignore_external=True)
     sr.design.get_lattice().disable_6d()
 
-    magnets = sr.design.magnets[:]
+    magnets = sr.design.magnet[:]
     wildcard_exclusion = magnets["~QF1*"]
     regex_exclusion = magnets["~re:^QF1.*$"]
 
@@ -172,7 +204,7 @@ def test_fill_array_supports_an_exclusion_outside_a_single_getitem_call_shape():
     sr = manager.build(ignore_external=True)
     sr.design.get_lattice().disable_6d()
 
-    qd2_family = sr.design.magnets.get("QD2Family")
+    qd2_family = sr.design.magnet.get_array("QD2Family")
 
     assert qd2_family.names() == sr.design.find_elements(["QD2*", "~QF1E-C05"])
 
@@ -197,24 +229,19 @@ def test_magnet_holder_getitem_wildcard_and_list_return_an_array(holder):
 
 def test_magnet_holder_getitem_wildcard_returns_a_magnet_array(holder):
     """A wildcard restricted to the .magnet store is auto-typed as MagnetArray, like the
-    top-level and .magnets holders, instead of falling back to a generic ElementArray."""
+    top-level holder, instead of falling back to a generic ElementArray."""
     wildcard = holder.magnet["SH1A-C0[12]-[HVQ]*"]
     assert type(wildcard) is MagnetArray
 
 
-def test_magnet_and_magnets_holder_getitem_agree_on_order(holder):
-    """.magnet (singular) and .magnets (plural) must return the same elements in the same
-    order for the same name list, regardless of the order the names were requested in. The
-    reference order is the configuration order, not the order of the requested names. This
-    must also hold for the top-level holder itself (`[]` and `find_elements`), not just its
-    typed sub-holders."""
+def test_magnet_holder_and_top_level_holder_getitem_agree_on_order(holder):
+    """.magnet and the top-level holder (`[]` and `find_elements`) must return the same
+    elements in the same order for the same name list, regardless of the order the names were
+    requested in. The reference order is the configuration order, not the order of the
+    requested names."""
     forward = holder.magnet[["SH1A-C01-H", "SH1A-C01-V"]]
     backward = holder.magnet[["SH1A-C01-V", "SH1A-C01-H"]]
     assert forward.names() == backward.names() == ["SH1A-C01-H", "SH1A-C01-V"]
-
-    forward_plural = holder.magnets[["SH1A-C01-H", "SH1A-C01-V"]]
-    backward_plural = holder.magnets[["SH1A-C01-V", "SH1A-C01-H"]]
-    assert forward_plural.names() == backward_plural.names() == forward.names()
 
     forward_top_level = holder[["SH1A-C01-H", "SH1A-C01-V"]]
     backward_top_level = holder[["SH1A-C01-V", "SH1A-C01-H"]]
@@ -226,22 +253,14 @@ def test_magnet_and_magnets_holder_getitem_agree_on_order(holder):
 
 def test_combined_function_magnet_and_bpm_holders_return_list_selections_in_configuration_order(holder):
     """Every typed sub-holder must normalize list selections to configuration order, not just
-    .magnet/.magnets: this must also hold for .combined_function_magnet(s) and .bpm(s)."""
+    .magnet: this must also hold for .combined_function_magnet and .diagnostic.bpm."""
     cfm_forward = holder.combined_function_magnet[["SH1A-C01", "SH1A-C02"]]
     cfm_backward = holder.combined_function_magnet[["SH1A-C02", "SH1A-C01"]]
     assert cfm_forward.names() == cfm_backward.names() == ["SH1A-C01", "SH1A-C02"]
 
-    cfm_forward_plural = holder.combined_function_magnets[["SH1A-C01", "SH1A-C02"]]
-    cfm_backward_plural = holder.combined_function_magnets[["SH1A-C02", "SH1A-C01"]]
-    assert cfm_forward_plural.names() == cfm_backward_plural.names() == cfm_forward.names()
-
     bpm_forward = holder.diagnostic.bpm[["BPM_C04-01", "BPM_C04-02"]]
     bpm_backward = holder.diagnostic.bpm[["BPM_C04-02", "BPM_C04-01"]]
     assert bpm_forward.names() == bpm_backward.names() == ["BPM_C04-01", "BPM_C04-02"]
-
-    bpm_forward_plural = holder.diagnostic.bpms[["BPM_C04-01", "BPM_C04-02"]]
-    bpm_backward_plural = holder.diagnostic.bpms[["BPM_C04-02", "BPM_C04-01"]]
-    assert bpm_forward_plural.names() == bpm_backward_plural.names() == bpm_forward.names()
 
 
 @pytest.mark.parametrize(
@@ -249,9 +268,9 @@ def test_combined_function_magnet_and_bpm_holders_return_list_selections_in_conf
     [
         pytest.param(lambda h, k: h[k].names(), id="holder[]"),
         pytest.param(lambda h, k: h.find_elements(k), id="holder.find_elements"),
-        pytest.param(lambda h, k: h.get()[k].names(), id="holder.get()[]"),
+        pytest.param(lambda h, k: h.get_array()[k].names(), id="holder.get_array()[]"),
         pytest.param(lambda h, k: h.magnet[k].names(), id="holder.magnet[]"),
-        pytest.param(lambda h, k: h.magnets[k].names(), id="holder.magnets[]"),
+        pytest.param(lambda h, k: h.magnet.get_array()[k].names(), id="holder.magnet.get_array()[]"),
     ],
 )
 @pytest.mark.parametrize("reverse", [False, True], ids=["forward", "reversed"])
@@ -277,18 +296,18 @@ def test_every_accessor_returns_a_list_selection_in_configuration_order(holder, 
     literal names and for a list mixing a wildcard (matching several names) with a literal
     name, since a wildcard entry is where a naive pattern-order passthrough diverges from
     configuration order the most visibly."""
-    expected = [n for n in holder.get().names() if n in expected_members]
+    expected = [n for n in holder.get_array().names() if n in expected_members]
     assert select(holder, key[::-1] if reverse else key) == expected
 
 
 def test_subtracting_a_magnet_selection_from_a_mixed_selection_yields_a_cfm_array(holder):
     """A top-level selection mixing CombinedFunctionMagnet and their virtual correctors, minus
-    the corrector-only .magnets selection, must yield the CFMs alone as a
+    the corrector-only .magnet selection, must yield the CFMs alone as a
     CombinedFunctionMagnetArray. Regression test: this used to raise 'Aggregator not
     implemented for CombinedFunctionMagnetArray' because the derived array blindly inherited
     the use_aggregator flag of the ElementArray it was built from."""
     mixed = holder["SH*"]
-    only_magnets = holder.magnets["SH*"]
+    only_magnets = holder.magnet["SH*"]
     only_cfm = mixed - only_magnets
 
     assert type(only_cfm) is CombinedFunctionMagnetArray

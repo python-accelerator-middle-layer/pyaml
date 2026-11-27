@@ -73,3 +73,13 @@ def test_rf_holder_getitem_list_selection_ignores_request_order(design):
 def test_rf_transmitter_holder_getitem_regex(design):
     matching = design.rf.transmitter["re:^RFTRA[12]$"]
     assert sorted(matching.names()) == ["RFTRA1", "RFTRA2"]
+
+
+def test_rf_holders_get_array_return_every_plant_and_transmitter(design):
+    # get_array() returns every RF plant, in registration order
+    assert design.rf.get_array().names() == list(design._RFPLANT)
+    assert design.rf.get("DEFAULT_RF_PLANT") in design.rf.get_array()
+
+    # Same for the RF transmitters
+    assert design.rf.transmitter.get_array().names() == list(design._RFTRANSMITTER)
+    assert design.rf.transmitter.get("RFTRA1") in design.rf.transmitter.get_array()

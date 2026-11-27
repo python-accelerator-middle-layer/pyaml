@@ -67,7 +67,7 @@ def test_serialized_magnets_aggregator(install_test_package):
     qf1a.get_magnets()[0].hardware.set(30.0)
     qd2a.get_magnets()[0].hardware.set(20.0)
 
-    array = sr.live.magnets.get("ALL_SERIALIZED")
+    array = sr.live.magnet.get_array("ALL_SERIALIZED")
     expected = np.concatenate([_sub_strengths(qf1a, 30.0), _sub_strengths(qd2a, 20.0)])
     assert np.allclose(array.strengths.get(), expected)
     assert np.allclose(array.hardwares.get(), [30.0] * 4 + [20.0] * 3)
@@ -179,7 +179,7 @@ def test_array_with_consistent_magnets_of_a_series(install_test_package, mode):
     qf1a, qd2a = _family(sr, mode, "QF1A"), _family(sr, mode, "QD2A")
     qf1a.hardware.set(80.0)
     qd2a.hardware.set(20.0)
-    array = getattr(sr, mode).magnets.get("ALL_SERIALIZED")
+    array = getattr(sr, mode).magnet.get_array("ALL_SERIALIZED")
     array.strengths.set(array.strengths.get())
     assert qf1a.hardware.get() == pytest.approx(80.0)
     assert qd2a.hardware.get() == pytest.approx(20.0)
@@ -192,7 +192,7 @@ def test_array_with_inconsistent_magnets_of_a_series(install_test_package, mode,
     qf1a, qd2a = _family(sr, mode, "QF1A"), _family(sr, mode, "QD2A")
     qf1a.hardware.set(80.0)
     qd2a.hardware.set(20.0)
-    array = getattr(sr, mode).magnets.get("ALL_SERIALIZED")
+    array = getattr(sr, mode).magnet.get_array("ALL_SERIALIZED")
     strengths = array.strengths.get()
     requested = np.array([0.78, 0.79, 0.80, 0.81])
     strengths[:4] = requested
@@ -247,7 +247,7 @@ def test_array_hardwares_with_two_magnets_of_a_series_apply_their_average_curren
 def test_array_hardwares_write_each_series_with_the_average_of_its_magnets(install_test_package, mode):
     sr: Accelerator = Accelerator.load(CONFIG)
     qf1a, qd2a = _family(sr, mode, "QF1A"), _family(sr, mode, "QD2A")
-    array = getattr(sr, mode).magnets.get("ALL_SERIALIZED")
+    array = getattr(sr, mode).magnet.get_array("ALL_SERIALIZED")
 
     array.hardwares.set(np.array([10.0, 20.0, 30.0, 40.0, 5.0, 6.0, 7.0]))
 
@@ -316,7 +316,7 @@ def test_array_strengths_of_part_of_a_series_match_the_family_strengths(install_
 def test_array_hardwares_broadcast_a_single_value(install_test_package, mode, value):
     sr: Accelerator = Accelerator.load(CONFIG)
     qf1a, qd2a = _family(sr, mode, "QF1A"), _family(sr, mode, "QD2A")
-    array = getattr(sr, mode).magnets.get("ALL_SERIALIZED")
+    array = getattr(sr, mode).magnet.get_array("ALL_SERIALIZED")
 
     array.hardwares.set(value)
 
@@ -352,7 +352,7 @@ def test_array_writes_need_one_value_per_magnet(install_test_package, mode, acce
     qf1a.hardware.set(80.0)
     qd2a.hardware.set(20.0)
     # 7 magnets: 4 of QF1A and 3 of QD2A
-    array = getattr(sr, mode).magnets.get("ALL_SERIALIZED")
+    array = getattr(sr, mode).magnet.get_array("ALL_SERIALIZED")
 
     with pytest.raises(PyAMLException, match="One .* value per magnet"):
         getattr(array, accessor).set(np.array(value))
@@ -449,8 +449,8 @@ def test_power_supply_range_protects_every_write_to_a_series(install_test_packag
     too_strong = _sub_strengths(family, 100.0)
 
     writes = [
-        lambda: sr.live.magnets.get("QF1A_PART").strengths.set(too_strong[[1, 2]]),
-        lambda: sr.live.magnets.get("QF1A_PART").hardwares.set(np.array([95.0, 105.0])),
+        lambda: sr.live.magnet.get_array("QF1A_PART").strengths.set(too_strong[[1, 2]]),
+        lambda: sr.live.magnet.get_array("QF1A_PART").hardwares.set(np.array([95.0, 105.0])),
         lambda: family.strengths.set(too_strong),
         lambda: family.strength.set(np.mean(too_strong)),
         lambda: magnets[1].strength.set(too_strong[1]),
@@ -470,7 +470,7 @@ def test_array_with_part_of_a_series_within_the_power_supply_range(install_test_
     family.hardware.set(80.0)
     within = _sub_strengths(family, 70.0)
 
-    sr.live.magnets.get("QF1A_PART").strengths.set(within[[1, 2]])
+    sr.live.magnet.get_array("QF1A_PART").strengths.set(within[[1, 2]])
 
     # Magnets C06 and C07 ask for 70 A, magnets C05 and C08 follow
     assert family.hardware.get() == pytest.approx(70.0)

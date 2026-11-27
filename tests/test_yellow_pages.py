@@ -71,7 +71,7 @@ class _Holder:
         return list(self._diagnostics.keys())
 
     # Resolution
-    def _get_array(self, name: str):
+    def get_array(self, name: str):
         if name not in self._arrays:
             raise KeyError(name)
         return self._arrays[name]

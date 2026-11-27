@@ -141,7 +141,7 @@ class Chromaticity(TuningTool, DynamicValidation):
     def sextupoles(self) -> "MagnetArray":
         """Return the sextupole array used for correction."""
         self.check_peer()
-        return self.peer.magnets.get(self.sextu_array_name)
+        return self.peer.magnet.get_array(self.sextu_array_name)
 
     def get(self):
         """Return the requested dimensionless horizontal and vertical chromaticity."""

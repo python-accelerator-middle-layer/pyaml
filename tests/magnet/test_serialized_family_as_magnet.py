@@ -135,8 +135,8 @@ def test_configured_family_iterates_on_its_virtual_magnets():
 def test_family_name_adds_the_family_as_one_magnet(install_test_package, mode):
     holder = load(mode)
 
-    holder.magnets.add("ARRAY", ["QF1A"])
-    array = holder.magnets.get("ARRAY")
+    holder.magnet.add_array("ARRAY", ["QF1A"])
+    array = holder.magnet.get_array("ARRAY")
 
     # One element: the family itself
     assert array.names() == ["QF1A"]
@@ -166,9 +166,9 @@ def test_family_name_adds_the_family_as_one_magnet(install_test_package, mode):
 def test_magnets_of_a_family_in_the_array_are_not_added(install_test_package, mode, elements, expected):
     holder = load(mode)
 
-    holder.magnets.add("ARRAY", elements)
+    holder.magnet.add_array("ARRAY", elements)
 
-    assert holder.magnets.get("ARRAY").names() == expected
+    assert holder.magnet.get_array("ARRAY").names() == expected
 
 
 @pytest.mark.parametrize("mode", MODES)
@@ -177,9 +177,9 @@ def test_excluding_a_family_excludes_its_magnets(install_test_package, mode):
     holder = load(mode)
 
     # Every magnet of QF1A and QD2A, then QF1A is excluded: only the magnets of QD2A remain
-    holder.magnets.add("ARRAY", ["QF1A-C*", "QD2A-C*", "~QF1A"])
+    holder.magnet.add_array("ARRAY", ["QF1A-C*", "QD2A-C*", "~QF1A"])
 
-    assert holder.magnets.get("ARRAY").names() == ["QD2A-C05", "QD2A-C06", "QD2A-C07"]
+    assert holder.magnet.get_array("ARRAY").names() == ["QD2A-C05", "QD2A-C06", "QD2A-C07"]
 
 
 @pytest.mark.parametrize("mode", MODES)
@@ -189,7 +189,7 @@ def test_excluding_a_magnet_of_a_family_in_the_array_raises(install_test_package
 
     # QF1A drives QF1A-C05: the series cannot be split
     with pytest.raises(PyAMLException, match="QF1A-C05 cannot be excluded, it is driven by QF1A"):
-        holder.magnets.add("ARRAY", ["QF1A", "~QF1A-C05"])
+        holder.magnet.add_array("ARRAY", ["QF1A", "~QF1A-C05"])
 
 
 @pytest.mark.parametrize("mode", MODES)
@@ -198,9 +198,9 @@ def test_lone_exclusion_gives_an_empty_array(install_test_package, mode):
     holder = load(mode)
 
     # Nothing is included, so nothing is left
-    holder.magnets.add("ARRAY", ["~QF1A"])
+    holder.magnet.add_array("ARRAY", ["~QF1A"])
 
-    assert len(holder.magnets.get("ARRAY")) == 0
+    assert len(holder.magnet.get_array("ARRAY")) == 0
 
 
 @pytest.mark.parametrize("mode", MODES)
@@ -214,9 +214,9 @@ def test_array_with_a_family_and_one_of_its_magnets_raises(install_test_package,
         MagnetArray("MIXED", [family, family[1]])
 
     # Same thing when the array comes from a union of arrays
-    holder.magnets.add("FAMILY", ["QF1A"])
+    holder.magnet.add_array("FAMILY", ["QF1A"])
     with pytest.raises(PyAMLException, match="a serialized family and its magnets cannot be in the same array"):
-        holder.magnets.get("FAMILY") + family.magnets
+        holder.magnet.get_array("FAMILY") + family.magnets
 
 
 @pytest.mark.parametrize("elements", [["QF1A-C05", "QF1A-C05"], ["QF1A", "QF1A"]])
@@ -226,7 +226,7 @@ def test_name_listed_twice_still_raises(install_test_package, mode, elements):
     holder = load(mode)
 
     with pytest.raises(PyAMLException, match="duplicate name"):
-        holder.magnets.add("ARRAY", elements)
+        holder.magnet.add_array("ARRAY", elements)
 
 
 # ---------------------------------------------------------------------------
@@ -244,8 +244,8 @@ def test_array_reads_the_average_strength_of_each_family(install_test_package, m
     qd2a.hardware.set(20.0)
     quad.hardware.set(50.0)
 
-    holder.magnets.add("ARRAY", ["QF1A", "QD2A", "QF1E-C04"])
-    array = holder.magnets.get("ARRAY")
+    holder.magnet.add_array("ARRAY", ["QF1A", "QD2A", "QF1E-C04"])
+    array = holder.magnet.get_array("ARRAY")
 
     # One value per element: the average strength of each family, the strength of the quadrupole
     assert np.allclose(array.strengths.get(), [qf1a.strength.get(), qd2a.strength.get(), quad.strength.get()])
@@ -261,8 +261,8 @@ def test_array_writes_each_family_like_its_own_strength(install_test_package, mo
     quad = holder.magnet.get("QF1E-C04")
     qf1a.hardware.set(80.0)
     qd2a.hardware.set(20.0)
-    holder.magnets.add("ARRAY", ["QF1A", "QD2A", "QF1E-C04"])
-    array = holder.magnets.get("ARRAY")
+    holder.magnet.add_array("ARRAY", ["QF1A", "QD2A", "QF1E-C04"])
+    array = holder.magnet.get_array("ARRAY")
 
     # Ask for new strengths: each family gets the current giving this average strength,
     # exactly as family.strength.set() would do
@@ -286,8 +286,8 @@ def test_array_set_of_get_does_not_change_the_machine(install_test_package, mode
     qf1a.hardware.set(80.0)
     qd2a.hardware.set(20.0)
     quad.hardware.set(50.0)
-    holder.magnets.add("ARRAY", ["QF1A", "QD2A", "QF1E-C04"])
-    array = holder.magnets.get("ARRAY")
+    holder.magnet.add_array("ARRAY", ["QF1A", "QD2A", "QF1E-C04"])
+    array = holder.magnet.get_array("ARRAY")
 
     # Writing back what was read keeps every power supply where it was
     array.strengths.set(array.strengths.get())
@@ -301,8 +301,8 @@ def test_array_set_of_get_does_not_change_the_machine(install_test_package, mode
 @pytest.mark.parametrize("install_test_package", TANGO_DUMMY, indirect=True)
 def test_selections_holding_families_are_magnet_arrays(install_test_package, mode):
     holder = load(mode)
-    holder.magnets.add("ARRAY", ["QF1A", "QD2A", "QF1E-C04"])
-    array = holder.magnets.get("ARRAY")
+    holder.magnet.add_array("ARRAY", ["QF1A", "QD2A", "QF1E-C04"])
+    array = holder.magnet.get_array("ARRAY")
 
     # Families and a magnet, or families only: both are magnet arrays
     assert isinstance(array[0:3], MagnetArray)
@@ -315,8 +315,8 @@ def test_family_mixing_functions_has_no_average_strength_in_an_array():
     sr = Accelerator.load("tests/config/sr_serialized_magnets.yaml", include_locations=False, ignore_external=True)
 
     # mixedFunctionSeries holds a quadrupole and a sextupole
-    sr.design.magnets.add("ARRAY", ["mixedFunctionSeries"])
-    array = sr.design.magnets.get("ARRAY")
+    sr.design.magnet.add_array("ARRAY", ["mixedFunctionSeries"])
+    array = sr.design.magnet.get_array("ARRAY")
 
     # Its current is defined, its average strength is not
     assert len(array.hardwares.get()) == 1
@@ -333,7 +333,7 @@ def test_configured_magnet_array_matching_families_is_used_by_the_tune_tool():
     sr = Accelerator.load("tests/config/sr_serialized_magnets.yaml", include_locations=False, ignore_external=True)
 
     # QForTune is a pyaml.arrays.magnet with the patterns QD2? and QF1?, which match 4 families
-    quads = sr.design.magnets.get("QForTune")
+    quads = sr.design.magnet.get_array("QForTune")
     assert quads.names() == ["QD2A", "QD2E", "QF1A", "QF1E"]
 
     # The tune tool finds it as a regular magnet array: one knob per power supply
